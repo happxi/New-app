@@ -10,18 +10,15 @@
             theme: {
                 extend: {
                     colors: {
-                        'pastel-blue': {
-                            100: '#DDEFFF',
-                            300: '#9AC6F6',
-                            500: '#5A9BD6', // Primary Blue
-                            600: '#3A7CBB',
-                            700: '#1A5A9F',
+                        // 🚨 UPDATED: Primary Color to Pastel Blue
+                        'primary-blue': { 
+                            DEFAULT: '#A2D2FF', // Main accent color (Soft Sky)
+                            dark: '#73A3E0',    // Darker for hover
+                            light: '#EAF4FF',   // Very light for background/badge
                         },
-                        'luxury-gold': {
-                            300: '#FFD700',
-                            500: '#C5B358', // Accent Gold
-                            700: '#A99433',
-                        }
+                        'soft-cream': '#F8F8F8', // Background color (like)
+                        'text-dark': '#333333',
+                        'text-light': '#666666',
                     }
                 }
             }
@@ -29,8 +26,21 @@
     </script>
     <style>
         /* 기본 레이아웃 및 폰트 */
-        body { font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; background-color: #f7f9fc; }
-        .container { max-width: 1000px; }
+        body { 
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; 
+            background-color: #F8F8F8; /* Soft Cream Background */
+        }
+        .app-container {
+            max-width: 500px; /* 모바일 뷰 최대 폭 */
+            margin: 0 auto;
+            background-color: #ffffff; 
+            min-height: 100vh;
+            padding-bottom: 60px; /* 하단 탭바 높이 확보 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        .content-area {
+            padding: 16px;
+        }
 
         /* 모달 기본 스타일 */
         .modal {
@@ -51,11 +61,11 @@
         .modal.show { display: flex; opacity: 1; }
         .modal-content {
             background-color: #fff;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 24px;
+            border-radius: 16px;
             width: 90%;
-            max-width: 700px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             max-height: 90vh;
             overflow-y: auto;
             transform: translateY(-20px);
@@ -69,278 +79,350 @@
 
         /* 버튼 호버 효과 */
         .btn-scale { transition: transform 0.1s ease-out; }
-        .btn-scale:hover { transform: scale(1.05); }
+        .btn-scale:hover { transform: scale(1.03); }
 
         /* 마이페이지 탭 스타일 */
         .tab-btn {
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-bottom: 3px solid transparent;
             font-weight: 500;
-            color: #6b7280;
+            color: #9ca3af;
             transition: border-color 0.2s, color 0.2s;
         }
         .tab-btn.active {
-            color: #5A9BD6; /* Pastel Blue */
-            border-bottom-color: #5A9BD6;
+            color: #A2D2FF; /* Primary Blue */
+            border-bottom-color: #A2D2FF;
             font-weight: 700;
         }
         
-        /* 스탬프 스케치 스타일 */
+        /* 스탬프 스케치 스타일 (롱블랙 스타일) */
         .sketch-stamp { 
             fill: none; 
-            stroke: #d1d5db; /* 연한 회색 */
+            stroke: #d1d5db; /* 연한 회색 스케치 */
             stroke-width: 1.5;
-            transition: stroke-width 0.3s;
+            transition: all 0.3s;
         }
         .stamped-icon {
-            fill: #5A9BD6; /* 예쁜 파란색 */
-            stroke: #5A9BD6;
+            fill: #73A3E0; /* 획득 스탬프 색상 (Dark Blue) */
+            stroke: #73A3E0;
+            transition: all 0.3s;
         }
         .stamp-container { position: relative; }
+        
+        /* 하단 탭바 스타일 */
+        .bottom-tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 500px;
+            height: 60px;
+            background-color: #ffffff;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+            z-index: 50;
+        }
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            font-size: 10px;
+            color: #9ca3af;
+            transition: color 0.2s;
+        }
+        .tab-item.active {
+            color: #A2D2FF; /* Primary Blue */
+        }
+        .tab-item svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 2px;
+        }
         
     </style>
 </head>
 <body class="min-h-screen">
+    <div class="app-container">
 
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 onclick="navigateTo('home')" class="text-3xl font-extrabold text-pastel-blue-600 cursor-pointer hover:opacity-80 transition-opacity">
-                자휴레터
-            </h1>
-            <nav class="flex space-x-6">
-                <button onclick="navigateTo('home')" class="text-gray-600 hover:text-pastel-blue-500 font-medium btn-scale">🏠 홈</button>
-                <button onclick="navigateTo('newsletter')" class="text-gray-600 hover:text-pastel-blue-500 font-medium btn-scale">📖 레터</button>
-                <button onclick="navigateTo('editorTalk')" class="text-gray-600 hover:text-pastel-blue-500 font-medium btn-scale">💬 에디터 톡</button>
-                <button onclick="navigateTo('moment')" class="text-gray-600 hover:text-pastel-blue-500 font-medium btn-scale">✨ 모먼트</button>
-                <button onclick="navigateTo('qna')" class="text-gray-600 hover:text-pastel-blue-500 font-medium btn-scale">❓ Q&A</button>
-                <a href="https://index-html-zak5.vercel.app/" target="_blank" class="text-luxury-gold-500 hover:text-luxury-gold-700 font-bold btn-scale transition-transform">🌿 힐링 유형 테스트</a>
-            </nav>
-            <div id="userAuth" class="flex items-center space-x-3">
-                <button id="myPageBtn" onclick="navigateTo('myPage')" class="text-gray-600 hover:text-pastel-blue-500 font-medium btn-scale hide">마이페이지</button>
-                <button id="loginBtn" onclick="toggleAuthModal()" class="bg-pastel-blue-500 text-white px-4 py-2 rounded-full font-medium shadow-md hover:bg-pastel-blue-600 btn-scale">로그인</button>
-            </div>
-        </div>
-    </header>
-
-    <main class="container mx-auto px-4 py-8">
-        <section id="homePage" class="fade-in">
-            <h2 class="text-4xl font-extrabold text-gray-800 mb-4">자유로운 당신의 휴식 가이드</h2>
-            <p class="text-lg text-gray-600 mb-8">일과 삶의 균형, 자휴레터가 도와드릴게요.</p>
-            <div id="latestPosts" class="space-y-6">
-                <p class="text-gray-500 text-center">최신 글이 여기에 표시됩니다.</p>
-            </div>
-        </section>
-
-        <section id="newsletterPage" class="p-4 hide fade-in">
-            <h2 class="text-2xl font-extrabold text-pastel-blue-600 mb-6 border-b-4 border-pastel-blue-500 pb-2">당신을 위한 자휴레터 아카이브</h2>
-            
-            <div class="mb-4 flex space-x-2">
-                <input type="search" id="newsletterSearch" placeholder="제목/키워드 검색" onkeyup="filterNewsletters()" 
-                       class="flex-1 px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxury-gold-300">
-                <select id="newsletterFilter" onchange="filterNewsletters()" 
-                        class="px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxury-gold-300">
-                    <option value="all">전체 에디터</option>
-                </select>
-            </div>
-            
-            <div id="newsletterList" class="space-y-6">
-                <p class="text-gray-500 text-center mt-8">자휴레터 목록이 여기에 표시됩니다.</p>
-            </div>
-        </section>
-
-        <section id="editorTalkPage" class="hide fade-in">
-            <h2 class="text-2xl font-extrabold text-pastel-blue-600 mb-6 border-b-4 border-pastel-blue-500 pb-2">💬 에디터 톡</h2>
-            <div id="editorTalkList" class="space-y-4">
-                <p class="text-gray-500 text-center">에디터들의 이야기가 여기에 표시됩니다.</p>
-            </div>
-        </section>
-
-        <section id="momentPage" class="hide fade-in">
-            <h2 class="text-2xl font-extrabold text-pastel-blue-600 mb-6 border-b-4 border-pastel-blue-500 pb-2">✨ 모먼트 (짧은 단상)</h2>
-            <div id="momentList" class="space-y-4">
-                <p class="text-gray-500 text-center">에디터들의 짧은 단상이 여기에 표시됩니다.</p>
-            </div>
-        </section>
-        
-        <section id="qnaPage" class="hide fade-in">
-            <h2 class="text-2xl font-extrabold text-pastel-blue-600 mb-6 border-b-4 border-pastel-blue-500 pb-2">❓ Q&A</h2>
-            <div class="flex justify-end mb-4">
-                <button onclick="showPostWriteModal('qna')" class="bg-pastel-blue-500 text-white px-4 py-2 rounded-xl font-medium shadow-md hover:bg-pastel-blue-600 btn-scale">질문하기</button>
-            </div>
-            <div id="qnaList" class="space-y-4">
-                <p class="text-gray-500 text-center">Q&A 목록이 여기에 표시됩니다.</p>
-            </div>
-        </section>
-
-        <section id="myPage" class="p-4 hide fade-in">
-            </section>
-    </main>
-
-    <div id="postDetailModal" class="modal" onclick="closeModal(event, 'postDetailModal')">
-        <div class="modal-content">
-            <div class="flex justify-between items-start border-b pb-3 mb-4 sticky top-0 bg-white z-10">
-                <div>
-                    <h2 id="postDetailTitle" class="text-2xl font-bold text-gray-800"></h2>
-                    <div class="text-sm text-gray-500 mt-1 space-x-2">
-                        <span id="postDetailAuthor"></span>
-                        <span>|</span>
-                        <span id="postDetailDate"></span>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <button id="likeBtn-POSTID" onclick="toggleLike(currentPostId)" class="p-2 btn-scale" title="좋아요">
-                        </button>
-                    <button id="bookmarkBtn-POSTID" onclick="toggleBookmark(currentPostId)" class="p-2 btn-scale" title="스크랩">
-                        </button>
-                    <button id="stampBtn-POSTID" onclick="toggleStamp(currentPostId)" class="p-2 btn-scale" title="스탬프 획득">
-                        </button>
-                    <button onclick="closeModal(null, 'postDetailModal')" class="text-gray-400 hover:text-gray-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        <header class="bg-white sticky top-0 z-40 border-b border-gray-100">
+            <div class="content-area py-4 flex justify-between items-center">
+                <h1 onclick="navigateTo('home')" class="text-2xl font-bold text-text-dark cursor-pointer hover:opacity-80 transition-opacity">
+                    자휴레터
+                </h1>
+                <div id="userAuth" class="flex items-center space-x-3">
+                    <button id="authBtn" onclick="toggleAuthModal()" class="text-text-light hover:text-primary-blue btn-scale text-sm">
+                        로그인
+                    </button>
+                    <button id="settingBtn" class="text-text-light hover:text-primary-blue btn-scale hide">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.82 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.82 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.82-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.82-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     </button>
                 </div>
             </div>
+        </header>
 
-            <div id="postDetailContent" class="prose max-w-none mb-6">
+        <main class="content-area pt-4">
+            <section id="homePage" class="fade-in">
+                <h2 id="homeGreeting" class="text-2xl font-bold text-text-dark mb-2">자유로운 당신의 휴식 가이드</h2>
+                <p class="text-sm text-text-light mb-6">일과 삶의 균형, 자휴레터가 도와드릴게요.</p>
+                
+                <div class="bg-primary-blue-light p-4 rounded-xl shadow-inner mb-8 flex flex-col items-center text-center">
+                    <p class="text-sm font-medium text-text-dark mb-2">🌿 나만의 힐링 유형을 찾아보세요!</p>
+                    <a href="https://index-html-zak5.vercel.app/" target="_blank" class="bg-primary-blue text-white px-6 py-2 rounded-full font-bold shadow-md hover:bg-primary-blue-dark btn-scale text-sm">
+                        힐링 유형 테스트 바로가기
+                    </a>
                 </div>
 
-            <div id="commentSection" class="border-t pt-4">
-                <h3 class="text-lg font-bold text-gray-700 mb-4">댓글</h3>
-                <div id="postDetailComments" class="space-y-4">
+                <h3 class="text-xl font-bold text-text-dark mb-4">최신 콘텐츠</h3>
+                <div id="latestPosts" class="space-y-4">
+                    <p class="text-gray-400 text-center">최신 글이 여기에 표시됩니다.</p>
+                </div>
+            </section>
+
+            <section id="newsletterPage" class="hide fade-in">
+                <h2 class="text-2xl font-bold text-text-dark mb-2">📖 레터 아카이브</h2>
+                <p class="text-sm text-text-light mb-6">자유로운 휴식에 대한 모든 이야기</p>
+                
+                <div class="flex space-x-3 mb-6 border-b pb-3">
+                    <button data-filter="all" onclick="filterNewsletters('all')" class="filter-btn text-sm font-medium px-4 py-2 rounded-full border border-primary-blue bg-primary-blue text-white transition-colors">
+                        전체
+                    </button>
+                    <button data-filter="letter" onclick="filterNewsletters('letter')" class="filter-btn text-sm font-medium px-4 py-2 rounded-full border border-gray-300 text-text-light hover:bg-gray-50 transition-colors">
+                        자휴레터
+                    </button>
+                    <button data-filter="lab" onclick="filterNewsletters('lab')" class="filter-btn text-sm font-medium px-4 py-2 rounded-full border border-gray-300 text-text-light hover:bg-gray-50 transition-colors">
+                        자휴랩
+                    </button>
+                </div>
+                
+                <div id="newsletterList" class="space-y-4">
                     </div>
-                <div id="commentFormContainer">
+            </section>
+
+            <section id="editorTalkPage" class="hide fade-in">
+                <h2 class="text-2xl font-bold text-text-dark mb-2">💬 에디터 톡</h2>
+                <p class="text-sm text-text-light mb-6">에디터들의 일상을 만나보세요!</p>
+                <div id="editorTalkList" class="space-y-4">
                     </div>
+            </section>
+
+            <section id="momentPage" class="hide fade-in">
+                <h2 class="text-2xl font-bold text-text-dark mb-2">✨ 모먼트</h2>
+                <p class="text-sm text-text-light mb-6">짧은 단상과 영감을 기록합니다.</p>
+                <div id="momentList" class="space-y-4">
+                    </div>
+            </section>
+            
+            <section id="myPage" class="hide fade-in">
+                </section>
+        </main>
+
+        <nav class="bottom-tab-bar flex justify-around items-center">
+            <button class="tab-item active" data-page="home" onclick="navigateTo('home')">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span class="mt-1">홈</span>
+            </button>
+            <button class="tab-item" data-page="newsletter" onclick="navigateTo('newsletter')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.206 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.832 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.832 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.168 18 16.5 18s-3.332.477-4.5 1.253"/></svg>
+                <span class="mt-1">레터</span>
+            </button>
+            <button class="tab-item" data-page="editorTalk" onclick="navigateTo('editorTalk')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.682A9.956 9.956 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                <span class="mt-1">에디터 톡</span>
+            </button>
+            <button class="tab-item" data-page="moment" onclick="navigateTo('moment')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4M17 19h4M16 3h4m-4 10h4m-8 8v4m-4-4h4M3 10h4m-4 4h4m4-14v4M10 3h4m-4 10v4m-4-4h4"/></svg>
+                <span class="mt-1">모먼트</span>
+            </button>
+            <button class="tab-item" data-page="myPage" onclick="navigateTo('myPage')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14c4.418 0 8 3.582 8 8H4c0-4.418 3.582-8 8-8z"/></svg>
+                <span class="mt-1">마이</span>
+            </button>
+        </nav>
+
+        <div id="postDetailModal" class="modal" onclick="closeModal(event, 'postDetailModal')">
+            <div class="modal-content max-w-lg">
+                <div class="flex justify-between items-start border-b pb-3 mb-4 sticky top-0 bg-white z-10">
+                    <div>
+                        <h2 id="postDetailTitle" class="text-xl font-bold text-text-dark"></h2>
+                        <div class="text-xs text-text-light mt-1 space-x-2">
+                            <span id="postDetailAuthor"></span>
+                            <span>|</span>
+                            <span id="postDetailDate"></span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button id="likeBtn-POSTID" onclick="toggleLike(currentPostId)" class="p-1 btn-scale" title="좋아요"></button>
+                        <button id="bookmarkBtn-POSTID" onclick="toggleBookmark(currentPostId)" class="p-1 btn-scale" title="스크랩"></button>
+                        <button id="stampBtn-POSTID" onclick="toggleStamp(currentPostId)" class="p-1 btn-scale" title="스탬프 획득"></button>
+                        <button onclick="closeModal(null, 'postDetailModal')" class="text-gray-400 hover:text-text-dark ml-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="postDetailContent" class="prose max-w-none mb-6 text-text-dark">
+                    </div>
+
+                <div id="commentSection" class="border-t pt-4">
+                    <h3 class="text-lg font-bold text-text-dark mb-4">댓글</h3>
+                    <div id="postDetailComments" class="space-y-4">
+                        </div>
+                    <div id="commentFormContainer">
+                        </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="authModal" class="modal" onclick="closeModal(event, 'authModal')">
-        <div class="modal-content max-w-sm">
-            <h3 class="text-xl font-bold text-pastel-blue-600 mb-4">로그인 / 회원가입</h3>
-            <div id="loginForm">
-                <input type="email" id="authEmail" placeholder="이메일" class="w-full px-4 py-2 mb-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pastel-blue-500">
-                <input type="password" id="authPassword" placeholder="비밀번호" class="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pastel-blue-500">
-                <button onclick="handleLogin()" class="w-full bg-pastel-blue-500 text-white px-4 py-2 rounded-lg font-medium shadow-md hover:bg-pastel-blue-600 btn-scale mb-3">로그인</button>
-                <button onclick="handleSignup()" class="w-full bg-gray-400 text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-500 btn-scale">회원가입</button>
+        <div id="authModal" class="modal" onclick="closeModal(event, 'authModal')">
+            <div class="modal-content max-w-xs">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-primary-blue-light rounded-full flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-6 h-6 text-primary-blue" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary-blue">자휴레터에 오신 것을 환영합니다</h3>
+                    <p class="text-xs text-text-light mt-1">힐링이 필요한 당신을 위한 공간</p>
+                </div>
+                <div id="loginForm">
+                    <input type="email" id="authEmail" placeholder="이메일 (예: user@jahyu.com)" class="w-full px-4 py-3 mb-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue">
+                    <input type="password" id="authPassword" placeholder="비밀번호" class="w-full px-4 py-3 mb-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue">
+                    
+                    <label class="flex items-center mb-6">
+                        <input type="checkbox" id="keepLoggedIn" class="form-checkbox text-primary-blue border-gray-300 rounded-sm focus:ring-primary-blue">
+                        <span class="ml-2 text-sm text-text-light">로그인 상태 유지</span>
+                    </label>
+
+                    <button onclick="handleLogin()" class="w-full bg-primary-blue text-white px-4 py-3 rounded-full font-bold shadow-md hover:bg-primary-blue-dark btn-scale mb-4">로그인</button>
+                    
+                    <div class="flex justify-between text-sm text-text-light">
+                        <button onclick="showSignupScreen()" class="hover:text-primary-blue">회원가입</button>
+                        <button class="hover:text-primary-blue">비밀번호 찾기</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="postWriteModal" class="modal" onclick="closeModal(event, 'postWriteModal')">
-        <div class="modal-content">
-            <h3 id="writeModalTitle" class="text-xl font-bold text-pastel-blue-600 mb-4">새 게시글 작성</h3>
-            <input type="text" id="postTitle" placeholder="제목" class="w-full px-4 py-2 mb-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pastel-blue-500">
-            <textarea id="postContent" rows="8" placeholder="내용을 입력하세요." class="w-full px-4 py-2 mb-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pastel-blue-500"></textarea>
-            <div id="qnaOptions" class="flex items-center mb-4 hide">
-                <input type="checkbox" id="isPrivate" class="mr-2">
-                <label for="isPrivate" class="text-gray-700">비밀글로 작성하기 (작성자와 관리자만 볼 수 있습니다)</label>
+        <div id="postWriteModal" class="modal" onclick="closeModal(event, 'postWriteModal')">
+            <div class="modal-content max-w-md">
+                <h3 id="writeModalTitle" class="text-xl font-bold text-primary-blue mb-6">새 게시글 작성</h3>
+
+                <div id="categorySelectContainer" class="mb-4 hide">
+                    <label class="block text-sm font-medium text-text-dark mb-1">카테고리 선택</label>
+                    <select id="postCategory" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-blue">
+                        </select>
+                </div>
+
+                <input type="text" id="postTitle" placeholder="제목" class="w-full px-4 py-3 mb-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue">
+                <textarea id="postContent" rows="8" placeholder="내용을 입력하세요." class="w-full px-4 py-3 mb-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-blue"></textarea>
+                
+                <div id="qnaOptions" class="flex items-center mb-6 hide">
+                    <input type="checkbox" id="isPrivate" class="mr-2 form-checkbox text-primary-blue border-gray-300 rounded-sm focus:ring-primary-blue">
+                    <label for="isPrivate" class="text-text-light text-sm">비밀글로 작성하기</label>
+                </div>
+
+                <button onclick="submitPost()" class="w-full bg-primary-blue text-white px-4 py-3 rounded-full font-bold shadow-md hover:bg-primary-blue-dark btn-scale">작성 완료</button>
             </div>
-            <button onclick="submitPost()" class="w-full bg-pastel-blue-500 text-white px-4 py-2 rounded-lg font-medium shadow-md hover:bg-pastel-blue-600 btn-scale">작성 완료</button>
         </div>
-    </div>
 
-    <div id="notificationContainer" class="fixed bottom-4 right-4 space-y-2 z-50"></div>
+        <div id="stampSuccessModal" class="modal">
+            </div>
+
+        <div id="notificationContainer" class="fixed top-4 right-4 space-y-2 z-50"></div>
+    </div>
 
 
 <script>
     // --- Global Variables and Constants ---
     let currentPage = 'home';
-    let currentUser = null; // { id: 'user1', name: '혜란', email: 'hr@mail.com', isAdmin: true }
+    let currentUser = null; 
     let currentPostId = null;
     let posts = [];
     let comments = [];
-    let newsletters = []; // 레터 전용 데이터
-    let likedItems = {}; // { postId: { isLiked: true, isBookmarked: false, isStamped: true } }
     
-    // 관리자 이메일 목록 (댓글/Q&A 권한 확인용)
-    const ADMIN_EDITORS = ['admin@jahyu.com', 'hr@mail.com']; // 혜란님 이메일을 관리자로 임시 지정
-    
+    // 🚨 UPDATED: 햅씨를 포함한 관리자 이메일 목록
+    const ADMIN_EDITORS = ['admin@jahyu.com', 'hr@mail.com', 'happxi@jahyu.com', 'editor2@jahyu.com', 'editor3@jahyu.com']; 
+
     // --- Data Initialization & Utility Functions ---
 
-    // 로컬 스토리지에서 데이터 로드 (임시)
     function loadData() {
         // 임시 사용자 로그인 (테스트용)
         currentUser = { id: 'user1', name: '혜란', email: 'hr@mail.com', isAdmin: true };
         
-        // 임시 posts 데이터 (타입 포함)
-        posts = [
-            { id: 'p1', title: 'Q&A: 비밀글 기능 문의', content: '비밀글로 작성하면 저랑 관리자만 볼 수 있나요?', authorId: 'user1', authorName: '혜란', authorEmail: 'hr@mail.com', type: 'qna', timestamp: Date.now() - (1 * 60 * 60 * 1000), commentCount: 1, isPrivate: true },
-            { id: 'p2', title: '에디터톡: 일주일 잘 버티셨나요?', content: '주말에는 아무 생각 없이 쉬어야 해요!', authorId: 'editor2', authorName: '엘리', authorEmail: 'editor2@jahyu.com', type: 'editorTalk', timestamp: Date.now() - (2 * 24 * 60 * 60 * 1000), commentCount: 3, isPrivate: false },
-            { id: 'p3', title: '모먼트: 좋아하는 노래를 들으며', content: '이 노래를 들을 때마다 마음이 편해집니다.', authorId: 'editor3', authorName: '고칼', authorEmail: 'editor3@jahyu.com', type: 'moment', timestamp: Date.now() - (4 * 24 * 60 * 60 * 1000), commentCount: 0, isPrivate: false },
-            { id: 'p4', title: 'Q&A: 자유로운 휴식 팁을 주세요!', content: '자꾸 무언가를 하려고 해요.', authorId: 'user2', authorName: '직장인A', authorEmail: 'user2@mail.com', type: 'qna', timestamp: Date.now() - (6 * 24 * 60 * 60 * 1000), commentCount: 1, isPrivate: false },
+        let newsletters = [
+            { id: 'nl1', title: '[32호] 퇴사 후 번아웃, 저만 이런가요?', content: '퇴사 후에도 쉬지 못하는 당신에게...', authorName: '엘리', authorEmail: 'editor2@jahyu.com', type: 'letter', category: 'letter', timestamp: Date.now() - (2 * 24 * 60 * 60 * 1000) },
+            { id: 'nl2', title: '[31호] 이사를 앞둔 자취생을 위한 필수템 10가지', content: '실용적인 가이드...', authorName: '햅씨', authorEmail: 'happxi@jahyu.com', type: 'letter', category: 'letter', timestamp: Date.now() - (15 * 24 * 60 * 60 * 1000) },
+            { id: 'nl3', title: '[자휴랩] 글쓰기 노하우: 내 마음을 담는 법', content: '글쓰기 팁 공유...', authorName: '고칼', authorEmail: 'editor3@jahyu.com', type: 'letter', category: 'lab', timestamp: Date.now() - (5 * 24 * 60 * 60 * 1000) },
+            { id: 'nl4', title: '[30호] 월요병 이기는 법', content: '월요일 아침을 상쾌하게 시작하는 팁', authorName: '엘리', authorEmail: 'editor2@jahyu.com', type: 'letter', category: 'letter', timestamp: Date.now() - (30 * 24 * 60 * 60 * 1000) },
+            { id: 'nl5', title: '[자휴랩] 취미를 일로 만드는 방법', content: '취미와 수익을 동시에 잡는 법', authorName: '햅씨', authorEmail: 'happxi@jahyu.com', type: 'letter', category: 'lab', timestamp: Date.now() - (40 * 24 * 60 * 60 * 1000) },
         ];
         
-        // 임시 newsletters 데이터 (스탬프 테스트용)
-        newsletters = [
-            { id: 'nl1', title: '[32호] 퇴사 후 번아웃, 저만 이런가요?', content: '퇴사 후에도 쉬지 못하는 당신에게...', authorName: '엘리', type: 'letter', timestamp: Date.now() - (2 * 24 * 60 * 60 * 1000) },
-            { id: 'nl2', title: '[31호] 이사를 앞둔 자취생을 위한 필수템 10가지', content: '실용적인 가이드...', authorName: '햅씨', type: 'letter', timestamp: Date.now() - (15 * 24 * 60 * 60 * 1000) },
-            { id: 'nl3', title: '[자휴랩] 글쓰기 노하우: 내 마음을 담는 법', content: '글쓰기 팁 공유...', authorName: '고칼', type: 'letter', timestamp: Date.now() - (5 * 24 * 60 * 60 * 1000) },
-            { id: 'nl4', title: '[30호] 월요병 이기는 법', content: '월요일 아침을 상쾌하게 시작하는 팁', authorName: '엘리', type: 'letter', timestamp: Date.now() - (30 * 24 * 60 * 60 * 1000) },
-            { id: 'nl5', title: '[자휴랩] 취미를 일로 만드는 방법', content: '취미와 수익을 동시에 잡는 법', authorName: '햅씨', type: 'letter', timestamp: Date.now() - (40 * 24 * 60 * 60 * 1000) },
+        posts = [
+            { id: 'p1', title: '비밀글 기능 문의', content: '비밀글로 작성하면 저랑 관리자만 볼 수 있나요?', authorId: 'user1', authorName: '혜란', authorEmail: 'hr@mail.com', type: 'qna', timestamp: Date.now() - (1 * 60 * 60 * 1000), commentCount: 1, isPrivate: true, category: 'qna' },
+            { id: 'p2', title: '일주일 잘 버티셨나요?', content: '주말에는 아무 생각 없이 쉬어야 해요!', authorId: 'editor2', authorName: '엘리', authorEmail: 'editor2@jahyu.com', type: 'editorTalk', timestamp: Date.now() - (2 * 24 * 60 * 60 * 1000), commentCount: 3, isPrivate: false, category: 'editorTalk' },
+            { id: 'p3', title: '좋아하는 노래를 들으며', content: '이 노래를 들을 때마다 마음이 편해집니다.', authorId: 'editor3', authorName: '고칼', authorEmail: 'editor3@jahyu.com', type: 'moment', timestamp: Date.now() - (4 * 24 * 60 * 60 * 1000), commentCount: 0, isPrivate: false, category: 'moment' },
+            { id: 'p4', title: '자유로운 휴식 팁을 주세요!', content: '자꾸 무언가를 하려고 해요.', authorId: 'user2', authorName: '직장인A', authorEmail: 'user2@mail.com', type: 'qna', timestamp: Date.now() - (6 * 24 * 60 * 60 * 1000), commentCount: 1, isPrivate: false, category: 'qna' },
+            { id: 'p5', title: '퇴근 후 맥주 한 캔의 행복', content: '소소한 행복입니다.', authorId: 'user1', authorName: '혜란', authorEmail: 'hr@mail.com', type: 'moment', timestamp: Date.now() - (8 * 24 * 60 * 60 * 1000), commentCount: 0, isPrivate: false, category: 'moment' },
         ];
-
-        // posts에 newsletters 데이터 통합 (상세보기 및 좋아요/북마크 처리를 위해)
+        
         posts = [...newsletters, ...posts];
 
-        // 임시 comments 데이터
+        let likedItems = {
+            'p2': { isLiked: true }, 
+            'p5': { isLiked: true },
+            'nl1': { isBookmarked: true, isStamped: true }, // 스탬프 획득
+            'nl3': { isStamped: true }, // 스탬프 획득
+            'nl5': { isStamped: true },
+            'p3': { isBookmarked: true }, 
+        };
+        
         comments = [
-            { id: 'c1', postId: 'p1', authorName: '관리자', authorEmail: 'admin@jahyu.com', content: '네, 비밀글로 작성하시면 작성자님과 관리자만 확인 가능합니다.', timestamp: Date.now() - (30 * 60 * 1000) },
+            { id: 'c1', postId: 'p1', authorName: '관리자', authorEmail: 'happxi@jahyu.com', content: '네, 비밀글로 작성하시면 작성자님과 관리자만 확인 가능합니다.', timestamp: Date.now() - (30 * 60 * 1000) },
             { id: 'c2', postId: 'p2', authorName: '혜란', authorEmail: 'hr@mail.com', content: '덕분에 잘 버텼습니다! 주말 꿀휴식!', timestamp: Date.now() - (1 * 24 * 60 * 60 * 1000) },
             { id: 'c3', postId: 'p4', authorName: '관리자', authorEmail: 'admin@jahyu.com', content: '휴식도 연습이 필요해요. 가볍게 산책부터 시작해보세요.', timestamp: Date.now() - (3 * 24 * 60 * 60 * 1000) },
         ];
         
-        // 임시 likedItems 데이터 (혜란 user1 기준)
-        likedItems = {
-            'p2': { isLiked: true }, // 에디터톡 좋아요
-            'nl1': { isBookmarked: true, isStamped: true }, // 레터 북마크 및 스탬프 획득
-            'nl3': { isStamped: true }, // 레터 스탬프 획득
-            'p3': { isBookmarked: true }, // 모먼트 북마크
-        };
-
         // 초기 화면 렌더링
         updateAuthUI();
         navigateTo(currentPage);
-        initializeNewsletterFilters(); // 레터 필터 초기화
     }
 
-    // 새 글 뱃지 표시 로직
     function isNewPost(timestamp) {
         const oneWeek = 7 * 24 * 60 * 60 * 1000;
         return (Date.now() - timestamp) < oneWeek;
     }
 
     function getNewBadgeHtml(timestamp) {
-        return isNewPost(timestamp) ? '<span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">NEW</span>' : '';
+        // 🚨 UPDATED: New badge color to Light Blue
+        return isNewPost(timestamp) ? '<span class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-blue-light text-primary-blue">NEW</span>' : '';
     }
     
-    // 모달 닫기
     function closeModal(event, modalId) {
         if (!event || event.target.id === modalId || event.target.closest('.modal-close')) {
             document.getElementById(modalId).classList.remove('show');
         }
     }
     
-    // 알림 표시
     function showNotification(title, message) {
         const container = document.getElementById('notificationContainer');
         const notification = document.createElement('div');
+        // 🚨 UPDATED: Notification icon color to Primary Blue
         notification.className = 'bg-white p-4 rounded-lg shadow-xl border border-gray-100 flex items-center space-x-3 transform translate-x-full transition-transform duration-300';
         notification.innerHTML = `
-            <div class="flex-shrink-0 text-pastel-blue-500">
+            <div class="flex-shrink-0 text-primary-blue">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
             <div>
-                <p class="font-bold text-gray-800">${title}</p>
-                <p class="text-sm text-gray-600">${message}</p>
+                <p class="font-bold text-text-dark">${title}</p>
+                <p class="text-sm text-text-light">${message}</p>
             </div>
         `;
         container.appendChild(notification);
         
-        // 애니메이션: 나타나기
         setTimeout(() => {
             notification.style.transform = 'translateX(0)';
         }, 10);
 
-        // 애니메이션: 사라지기
         setTimeout(() => {
             notification.style.transform = 'translateX(calc(100% + 16px))';
             notification.addEventListener('transitionend', () => notification.remove());
@@ -350,47 +432,51 @@
     // --- Authentication Logic ---
 
     function updateAuthUI() {
-        const loginBtn = document.getElementById('loginBtn');
-        const myPageBtn = document.getElementById('myPageBtn');
+        const authBtn = document.getElementById('authBtn');
+        const settingBtn = document.getElementById('settingBtn');
+        const homeGreeting = document.getElementById('homeGreeting');
         
         if (currentUser) {
-            loginBtn.textContent = '로그아웃';
-            loginBtn.onclick = handleLogout;
-            myPageBtn.classList.remove('hide');
+            authBtn.textContent = '로그아웃';
+            authBtn.onclick = handleLogout;
+            settingBtn.classList.remove('hide');
+            homeGreeting.textContent = `어떤 자휴가 필요하신가요, ${currentUser.name}님?`;
         } else {
-            loginBtn.textContent = '로그인';
-            loginBtn.onclick = toggleAuthModal;
-            myPageBtn.classList.add('hide');
+            authBtn.textContent = '로그인';
+            authBtn.onclick = toggleAuthModal;
+            settingBtn.classList.add('hide');
+            homeGreeting.textContent = '자유로운 당신의 휴식 가이드';
         }
     }
 
     function toggleAuthModal() {
         document.getElementById('authModal').classList.toggle('show');
     }
+    
+    function showSignupScreen() {
+        showNotification('안내', '회원가입 기능은 현재 준비 중입니다.');
+    }
 
     function handleLogin() {
-        // 임시 로그인 로직
         const email = document.getElementById('authEmail').value;
-        if (email) {
+        const password = document.getElementById('authPassword').value;
+
+        // 임시 로그인 로직
+        if (email.includes('@') && password) {
+            const name = email.split('@')[0];
             currentUser = { 
-                id: 'user1', 
-                name: email.split('@')[0], 
+                id: 'user' + name, 
+                name: name, 
                 email: email, 
                 isAdmin: ADMIN_EDITORS.includes(email) 
             };
             closeModal(null, 'authModal');
             updateAuthUI();
-            showNotification('성공', `${currentUser.name}님 환영합니다!`);
-            // 로그인 후 마이페이지로 이동하거나 현재 페이지 갱신
+            showNotification('로그인 성공', `${currentUser.name}님 환영합니다!`);
             navigateTo(currentPage);
         } else {
-            showNotification('오류', '이메일을 입력해주세요.');
+            showNotification('오류', '유효한 이메일과 비밀번호를 입력해주세요.');
         }
-    }
-
-    function handleSignup() {
-        // 임시 회원가입 로직
-        showNotification('안내', '회원가입 기능은 현재 준비 중입니다.');
     }
 
     function handleLogout() {
@@ -410,8 +496,13 @@
             targetSection.classList.remove('hide');
             currentPage = page;
             
+            // 탭바 활성화
+            document.querySelectorAll('.bottom-tab-bar .tab-item').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-page') === page);
+            });
+            
+            // 페이지별 렌더링 호출
             if (page === 'home') renderLatestPosts();
-            if (page === 'qna') renderQnaList();
             if (page === 'editorTalk') renderPostList('editorTalk');
             if (page === 'moment') renderPostList('moment');
             if (page === 'newsletter') renderNewsletterList();
@@ -423,14 +514,13 @@
         const latestList = document.getElementById('latestPosts');
         latestList.innerHTML = '';
         
-        // 최신 4개 글 (Q&A 제외)
         const latest = posts
-            .filter(p => p.type !== 'qna')
+            .filter(p => p.type === 'letter' || p.type === 'editorTalk')
             .sort((a, b) => b.timestamp - a.timestamp)
-            .slice(0, 4);
+            .slice(0, 5);
 
         if (latest.length === 0) {
-            latestList.innerHTML = '<p class="text-gray-500 text-center mt-8">아직 등록된 게시물이 없습니다.</p>';
+            latestList.innerHTML = '<p class="text-gray-400 text-center mt-8">아직 등록된 콘텐츠가 없습니다.</p>';
             return;
         }
 
@@ -439,7 +529,6 @@
         });
     }
 
-    // 게시글 목록 렌더링 함수 (EditorTalk, Moment용)
     function renderPostList(type) {
         const listElement = document.getElementById(type + 'List');
         listElement.innerHTML = '';
@@ -449,7 +538,7 @@
             .sort((a, b) => b.timestamp - a.timestamp);
 
         if (filteredPosts.length === 0) {
-            listElement.innerHTML = '<p class="text-gray-500 text-center mt-8">아직 등록된 게시물이 없습니다.</p>';
+            listElement.innerHTML = '<p class="text-gray-400 text-center mt-8">아직 등록된 게시물이 없습니다.</p>';
             return;
         }
 
@@ -458,147 +547,87 @@
         });
     }
 
-    // 🚨 UPDATED FUNCTION: Q&A 게시글 목록 렌더링 (작성자/글제목 포맷 적용)
-    function renderQnaList() {
-        const qnaListElement = document.getElementById('qnaList');
-        qnaListElement.innerHTML = '';
-        
-        const qnaPosts = posts
-            .filter(p => p.type === 'qna')
-            .sort((a, b) => b.timestamp - a.timestamp);
-        
-        if (qnaPosts.length === 0) {
-            qnaListElement.innerHTML = '<p class="text-gray-500 text-center mt-8">아직 등록된 Q&A가 없습니다. 첫 질문을 남겨보세요!</p>';
-            return;
-        }
-
-        qnaPosts.forEach(post => {
-            const isAuthor = currentUser && currentUser.id === post.authorId;
-            const isAdmin = currentUser && currentUser.isAdmin;
-            let iconHtml = '';
-            let titleHtml; 
-            let clickAction = '';
-            
-            const newBadge = getNewBadgeHtml(post.timestamp); 
-
-            if (post.isPrivate) {
-                iconHtml = '<span class="text-sm mr-2 text-pastel-blue-500">🔒</span>';
-                
-                if (isAuthor || isAdmin) {
-                    // 작성자 또는 관리자는 '작성자 / 글제목' 표시, 클릭 가능
-                    const titleText = `${post.authorName} / ${post.title}`; 
-                    titleHtml = `<span class="font-medium text-gray-800 hover:text-pastel-blue-500 cursor-pointer">${titleText}</span>${newBadge}`;
-                    clickAction = `onclick="showPostDetail('${post.id}')"`;
-                } else {
-                    // 일반 사용자는 "🔒 비밀글입니다" 표시
-                    titleHtml = `<span class="font-medium text-gray-500">🔒 비밀글입니다</span>`;
-                    clickAction = ``; 
-                }
-            } else {
-                // 일반글은 '작성자 / 글제목' 표시, 모두에게 공개
-                const titleText = `${post.authorName} / ${post.title}`; 
-                titleHtml = `<span class="font-medium text-gray-800 hover:text-pastel-blue-500 cursor-pointer">${titleText}</span>${newBadge}`;
-                clickAction = `onclick="showPostDetail('${post.id}')"`;
-            }
-
-            const itemHtml = `
-                <div class="p-4 bg-white rounded-xl shadow-sm border border-gray-100 ${clickAction}">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="flex items-center">
-                            ${iconHtml}
-                            ${titleHtml}
-                        </div>
-                        <span class="text-xs text-gray-400">${new Date(post.timestamp).toLocaleDateString('ko-KR')}</span>
-                    </div>
-                    <div class="text-sm text-gray-500 flex justify-end">
-                        <span>댓글 ${comments.filter(c => c.postId === post.id).length || 0}</span>
-                    </div>
-                </div>
-            `;
-            qnaListElement.insertAdjacentHTML('beforeend', itemHtml);
-        });
-    }
-
-    // 목록 뷰에서 게시글 아이템 렌더링
+    // 목록 뷰에서 게시글 아이템 렌더링 (디자인 업데이트)
     function renderPostItem(post) {
         const commentCount = comments.filter(c => c.postId === post.id).length;
         const newBadge = getNewBadgeHtml(post.timestamp);
-        const icon = post.type === 'letter' ? '📖' : post.type === 'editorTalk' ? '💬' : '✨';
+        let icon = '';
+        if (post.type === 'letter') {
+            icon = post.category === 'lab' ? '💡' : '🔖';
+        } else if (post.type === 'editorTalk') {
+            icon = '💬';
+        } else if (post.type === 'moment') {
+            icon = '✨';
+        }
+
+        if (post.type === 'qna') {
+            return ''; 
+        }
         
         return `
-            <div onclick="showPostDetail('${post.id}')" class="p-4 bg-white rounded-xl shadow-sm border border-gray-100 cursor-pointer hover:bg-gray-50">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-bold text-gray-800 flex items-center">
+            <div onclick="showPostDetail('${post.id}')" class="p-4 bg-white rounded-xl shadow-sm border border-gray-100 cursor-pointer hover:bg-soft-cream transition-colors">
+                <div class="flex justify-between items-start">
+                    <h3 class="text-base font-bold text-text-dark flex items-center">
                         ${icon} ${post.title} ${newBadge}
                     </h3>
-                    <span class="text-xs text-gray-400">${post.authorName} | ${new Date(post.timestamp).toLocaleDateString('ko-KR')}</span>
+                    <span class="text-xs text-gray-400">${new Date(post.timestamp).toLocaleDateString('ko-KR')}</span>
                 </div>
-                <p class="text-sm text-gray-600 mt-1 flex justify-between">
-                    <span>${post.content.substring(0, 50)}...</span>
-                    <span class="text-xs text-gray-500 ml-4">댓글 ${commentCount}</span>
+                <p class="text-sm text-text-light mt-1 flex justify-between">
+                    <span>${post.content.substring(0, 40)}...</span>
+                    <span class="text-xs text-gray-500 ml-4">${post.authorName} | 댓글 ${commentCount}</span>
                 </p>
             </div>
         `;
     }
     
-    // 🚨 NEW FUNCTION: 레터 목록 렌더링
-    function renderNewsletterList(list = newsletters) {
+    // 레터 목록 필터링 (자휴레터/자휴랩)
+    function renderNewsletterList(filter = 'all') {
         const listElement = document.getElementById('newsletterList');
         listElement.innerHTML = '';
         
-        if (list.length === 0) {
-            listElement.innerHTML = `<p class="text-center text-gray-500 mt-8">검색 결과가 없습니다.</p>`;
+        const filteredList = posts.filter(p => p.type === 'letter' && (filter === 'all' || p.category === filter));
+        
+        // 필터 버튼 UI 업데이트 (Pastel Blue)
+        document.querySelectorAll('#newsletterPage .filter-btn').forEach(btn => {
+            const isActive = btn.getAttribute('data-filter') === filter;
+            btn.classList.toggle('bg-primary-blue', isActive);
+            btn.classList.toggle('text-white', isActive);
+            btn.classList.toggle('border-primary-blue', isActive);
+            btn.classList.toggle('bg-gray-50', !isActive);
+            btn.classList.toggle('text-text-light', !isActive);
+            btn.classList.toggle('border-gray-300', !isActive);
+        });
+
+        if (filteredList.length === 0) {
+            listElement.innerHTML = `<p class="text-center text-gray-400 mt-8">선택된 카테고리의 레터가 아직 없습니다.</p>`;
             return;
         }
         
-        list.forEach(letter => {
+        filteredList.forEach(letter => {
             const newBadge = getNewBadgeHtml(letter.timestamp);
-            
+            const icon = letter.category === 'lab' ? '💡' : '🔖';
+
             const itemHtml = `
-                <div onclick="showPostDetail('${letter.id}')" class="p-4 bg-white rounded-xl shadow-sm border border-gray-100 cursor-pointer hover:bg-gray-50">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-bold text-gray-800 flex items-center">
-                            ${letter.title} ${newBadge}
+                <div onclick="showPostDetail('${letter.id}')" class="p-4 bg-white rounded-xl shadow-sm border border-gray-100 cursor-pointer hover:bg-soft-cream transition-colors">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-base font-bold text-text-dark flex items-center">
+                            ${icon} ${letter.title} ${newBadge}
                         </h3>
-                        <span class="text-xs text-gray-500">${letter.authorName}</span>
+                        <span class="text-xs text-gray-400">${letter.authorName}</span>
                     </div>
-                    <p class="text-sm text-gray-600 mt-1">${letter.content.substring(0, 50) + '...'}</p>
+                    <p class="text-sm text-text-light mt-1">${letter.content.substring(0, 50) + '...'}</p>
                 </div>
             `;
             listElement.insertAdjacentHTML('beforeend', itemHtml);
         });
     }
 
-    // 🚨 NEW FUNCTION: 레터 목록 필터링/검색
-    function filterNewsletters() {
-        const searchTerm = document.getElementById('newsletterSearch').value.toLowerCase();
-        const filterEditor = document.getElementById('newsletterFilter').value;
-        
-        let filteredList = newsletters.filter(letter => {
-            const titleMatch = letter.title.toLowerCase().includes(searchTerm);
-            const contentMatch = letter.content.toLowerCase().includes(searchTerm); 
-            const editorMatch = filterEditor === 'all' || letter.authorName === filterEditor;
-            
-            return (titleMatch || contentMatch) && editorMatch;
-        });
-        
-        renderNewsletterList(filteredList);
+    function filterNewsletters(filter) {
+        renderNewsletterList(filter);
     }
-
-    // 🚨 NEW FUNCTION: 레터 필터 옵션 초기화
-    function initializeNewsletterFilters() {
-        const filterSelect = document.getElementById('newsletterFilter');
-        const editors = [...new Set(newsletters.map(n => n.authorName))];
-        
-        filterSelect.innerHTML = '<option value="all">전체 에디터</option>';
-        editors.forEach(editor => {
-            filterSelect.innerHTML += `<option value="${editor}">${editor}</option>`;
-        });
-    }
-
+    
     // --- Post Detail and Interaction (Like, Bookmark, Stamp) ---
     
-    // 🚨 UPDATED FUNCTION: showPostDetail (세 개의 버튼 렌더링 포함)
     function showPostDetail(postId) {
         currentPostId = postId;
         const post = posts.find(p => p.id === postId);
@@ -611,18 +640,18 @@
         const isAuthor = currentUser && currentUser.id === post.authorId;
         const isAdmin = currentUser && currentUser.isAdmin;
 
-        if (post.isPrivate && !(isAuthor || isAdmin)) {
+        // Q&A 비밀글 처리
+        if (post.type === 'qna' && post.isPrivate && !(isAuthor || isAdmin)) {
              showNotification('접근 불가', '비밀글은 작성자 또는 관리자만 볼 수 있습니다.');
              return;
         }
 
-        // 모달 헤더의 버튼 ID를 현재 postId로 업데이트
+        // 모달 헤더의 버튼 ID 업데이트
         ['likeBtn', 'bookmarkBtn', 'stampBtn'].forEach(prefix => {
             const btn = document.getElementById(`${prefix}-POSTID`);
             if (btn) btn.id = `${prefix}-${postId}`;
         });
         
-        // 버튼 UI 업데이트 호출
         updateLikeButton(postId); 
         updateBookmarkButton(postId, post.type);
         updateStampButton(postId, post.type); 
@@ -633,24 +662,13 @@
         document.getElementById('postDetailDate').textContent = new Date(post.timestamp).toLocaleDateString('ko-KR');
         document.getElementById('postDetailContent').innerHTML = post.content.replace(/\n/g, '<br>');
 
-
-        // 댓글 폼 렌더링
-        const commentFormContainer = document.getElementById('commentFormContainer');
-        if (commentFormContainer) {
-            commentFormContainer.innerHTML = renderCommentForm(post.type); 
-        }
-        
-        // 댓글 목록 렌더링
         const postComments = comments.filter(c => c.postId === postId);
-        const commentsContainer = document.getElementById('postDetailComments');
-        if (commentsContainer) {
-            commentsContainer.innerHTML = postComments.map(c => renderComment(c, post.type)).join('');
-        }
+        document.getElementById('postDetailComments').innerHTML = postComments.map(c => renderComment(c, post.type)).join('');
+        document.getElementById('commentFormContainer').innerHTML = renderCommentForm(post.type); 
         
         document.getElementById('postDetailModal').classList.add('show');
     }
     
-    // 🚨 UPDATED FUNCTION: 좋아요 토글
     function toggleLike(postId) {
         if (!currentUser) return showNotification('안내', '로그인이 필요합니다.');
         
@@ -665,11 +683,14 @@
             showNotification('알림', '글에 좋아요를 눌렀습니다!');
         }
         updateLikeButton(postId); 
+        if (currentPage === 'myPage') loadMyPageContent(document.querySelector('#myPageTabs .tab-btn.active').getAttribute('data-tab'));
     }
 
-    // 🚨 NEW FUNCTION: 북마크 토글
     function toggleBookmark(postId) {
         if (!currentUser) return showNotification('안내', '로그인이 필요합니다.');
+        
+        const post = posts.find(p => p.id === postId);
+        if (post.type === 'qna') return showNotification('안내', 'Q&A는 북마크 할 수 없습니다.');
         
         const isBookmarked = likedItems[postId]?.isBookmarked || false;
         
@@ -681,10 +702,10 @@
             likedItems[postId].isBookmarked = true;
             showNotification('알림', '글이 스크랩되었습니다!');
         }
-        updateBookmarkButton(postId, posts.find(p => p.id === postId)?.type); 
+        updateBookmarkButton(postId, post.type); 
+        if (currentPage === 'myPage') loadMyPageContent(document.querySelector('#myPageTabs .tab-btn.active').getAttribute('data-tab'));
     }
     
-    // 🚨 NEW FUNCTION: 자휴 스탬프 토글
     function toggleStamp(postId) {
         if (!currentUser) return showNotification('안내', '로그인이 필요합니다.');
         
@@ -696,134 +717,103 @@
         const isStamped = likedItems[postId]?.isStamped || false;
         
         if (isStamped) {
-            return showNotification('안내', '이미 획득한 오늘의 자휴 스탬프입니다.');
+            return showNotification('안내', '이미 획득한 자휴 스탬프입니다.');
         } else {
-            // 스탬프 획득 로직
             if (!likedItems[postId]) likedItems[postId] = {};
             likedItems[postId].isStamped = true;
-            
-            // 팝업 띄우기
             showStampSuccessPopup(); 
         }
         updateStampButton(postId, post.type);
-        // 마이페이지 스탬프 목록 갱신을 위해 navigateTo('myPage') 호출 가능
+        if (currentPage === 'myPage') loadMyPageContent(document.querySelector('#myPageTabs .tab-btn.active').getAttribute('data-tab'));
     }
 
-    // 🚨 NEW FUNCTION: 좋아요 버튼 UI 업데이트 (빨간 하트 적용)
     function updateLikeButton(postId) {
         const likeBtn = document.getElementById(`likeBtn-${postId}`);
         if (!likeBtn) return;
         
         const isLiked = likedItems[postId]?.isLiked || false;
-
-        if (isLiked) {
-            // 채워진 빨간 하트
-            likeBtn.innerHTML = `<svg class="w-6 h-6 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
-        } else {
-            // 비어있는 하트
-            likeBtn.innerHTML = `<svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-.318-.318a4.5 4.5 0 00-6.364 0z"/></svg>`;
-        }
+        // 빨간 하트와 파란 색상 테두리 아이콘 (Pastel Blue)
+        likeBtn.innerHTML = isLiked 
+            ? `<svg class="w-6 h-6 text-red-500 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`
+            : `<svg class="w-6 h-6 text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-.318-.318a4.5 4.5 0 00-6.364 0z"/></svg>`;
     }
 
-    // 🚨 NEW FUNCTION: 북마크 버튼 UI 업데이트
     function updateBookmarkButton(postId, postType) {
         const bookmarkBtn = document.getElementById(`bookmarkBtn-${postId}`);
         if (!bookmarkBtn) return;
         
-        // Q&A는 북마크 버튼을 숨김
         if (postType === 'qna') {
-            bookmarkBtn.classList.add('hide');
+            bookmarkBtn.classList.add('hidden');
             return;
         }
         
+        bookmarkBtn.classList.remove('hidden');
         const isBookmarked = likedItems[postId]?.isBookmarked || false;
 
-        if (isBookmarked) {
-            // Luxury Gold 색상
-            bookmarkBtn.innerHTML = `<svg class="w-6 h-6 text-luxury-gold-500 fill-current" viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>`;
-            bookmarkBtn.setAttribute('title', '스크랩 해제');
-        } else {
-            // 비어있는 북마크
-            bookmarkBtn.innerHTML = `<svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5v14l7-3 7 3V5a2 2 0 00-2-2H7a2 2 0 00-2 2z"/></svg>`;
-            bookmarkBtn.setAttribute('title', '스크랩');
-        }
-        bookmarkBtn.classList.remove('hide');
+        // Pastel Blue 색상으로 통일
+        bookmarkBtn.innerHTML = isBookmarked
+            ? `<svg class="w-6 h-6 text-primary-blue fill-current" viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>`
+            : `<svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5v14l7-3 7 3V5a2 2 0 00-2-2H7a2 2 0 00-2 2z"/></svg>`;
     }
     
-    // 🚨 NEW FUNCTION: 자휴 스탬프 버튼 UI 업데이트 (레터/모먼트에만 보임)
     function updateStampButton(postId, postType) {
         const stampBtn = document.getElementById(`stampBtn-${postId}`);
         if (!stampBtn) return;
         
-        // Q&A, 에디터톡은 버튼 숨김
         if (postType !== 'letter' && postType !== 'moment') {
-            stampBtn.classList.add('hide');
+            stampBtn.classList.add('hidden');
             return;
         }
         
-        stampBtn.classList.remove('hide');
+        stampBtn.classList.remove('hidden');
         const isStamped = likedItems[postId]?.isStamped || false;
 
-        if (isStamped) {
-            // 채워진 스탬프 (Luxury Gold 색상)
-            stampBtn.innerHTML = `<svg class="w-7 h-7 text-luxury-gold-500 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>`; 
-            stampBtn.setAttribute('title', '스탬프 획득 완료');
-        } else {
-            // 비어있는 스탬프 (테두리만 있는 예쁜 디자인)
-            stampBtn.innerHTML = `<svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s-8-4-8-10c0-4.42 3.58-8 8-8s8 3.58 8 8c0 6-8 10-8 10zM12 16l-3 1 3-3 3 3-3-1zM12 6v10"/></svg>`;
-            stampBtn.setAttribute('title', '스탬프 획득하기');
-        }
+        // 채워진 스탬프 (Dark Blue) vs 비어있는 스탬프 (회색 테두리)
+        updateStampButton.innerHTML = isStamped
+            ? `<svg class="w-7 h-7 stamped-icon fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>` 
+            : `<svg class="w-7 h-7 sketch-stamp" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>`; 
     }
     
-    // 🚨 NEW FUNCTION: 자휴 스탬프 획득 팝업
     function showStampSuccessPopup() {
-        const popupHtml = `
-            <div id="stampSuccessModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full transform transition-all scale-100 ease-out border-4 border-pastel-blue-300 relative">
-                    <button onclick="document.getElementById('stampSuccessModal').remove()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                    <div class="text-center">
-                        <svg class="w-20 h-20 text-pastel-blue-500 fill-current mx-auto mb-4" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                        <h4 class="text-2xl font-bold text-pastel-blue-700 mb-2">오늘의 자휴 성공!</h4>
-                        <p class="text-gray-600">새로운 스탬프를 마이페이지에서 확인해보세요.</p>
-                    </div>
+        const modal = document.getElementById('stampSuccessModal');
+        modal.innerHTML = `
+            <div class="modal-content max-w-xs p-8">
+                <div class="text-center">
+                    <svg class="w-16 h-16 text-primary-blue fill-current mx-auto mb-4" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    <h4 class="text-2xl font-bold text-primary-blue mb-2">스탬프 획득 완료!</h4>
+                    <p class="text-text-light">마이페이지에서 새로운 스탬프를 확인해보세요.</p>
+                    <button onclick="closeModal(null, 'stampSuccessModal')" class="mt-4 bg-primary-blue text-white px-6 py-2 rounded-full font-bold shadow-md hover:bg-primary-blue-dark btn-scale">확인</button>
                 </div>
             </div>
         `;
-        document.body.insertAdjacentHTML('beforeend', popupHtml);
+        modal.classList.add('show');
     }
     
     // --- Comment Logic ---
     
-    // 🚨 UPDATED FUNCTION: 댓글 렌더링 로직 (관리자 이름 '관리자'로 통일)
     function renderComment(comment, postType) {
         const isEditorReply = ADMIN_EDITORS.includes(comment.authorEmail);
         
         let avatarClass = 'bg-gray-200 text-gray-600';
-        let nameClass = 'font-medium text-gray-700';
-        let contentClass = 'text-gray-700';
+        let nameClass = 'font-medium text-text-dark';
         let name = comment.authorName;
-        let containerClass = '';
 
-        // Q&A이고 관리자 답변일 경우
         if (postType === 'qna' && isEditorReply) { 
-            avatarClass = 'bg-pastel-blue-200 text-pastel-blue-700';
-            nameClass = 'font-bold text-pastel-blue-700';
-            name = `관리자`; // 🚨 이름 '관리자'로 고정
-            contentClass = 'text-gray-800';
-            containerClass = 'admin-reply'; 
+            // 🚨 UPDATED: Q&A 답변 아바타/이름 색상 (Light/Primary Blue)
+            avatarClass = 'bg-primary-blue-light text-primary-blue';
+            nameClass = 'font-bold text-primary-blue';
+            name = `관리자`; 
         }
 
         const commentHtml = `
-            <div class="flex space-x-3 mb-4">
-                <div class="w-8 h-8 rounded-full ${avatarClass} flex items-center justify-center text-xs flex-shrink-0">${name.charAt(0)}</div> 
-                <div class="flex-1 ${containerClass}">
+            <div class="flex space-x-3 mb-4 p-3 border-b border-soft-cream">
+                <div class="w-8 h-8 rounded-full ${avatarClass} flex items-center justify-center text-sm font-bold flex-shrink-0">${name.charAt(0)}</div> 
+                <div class="flex-1">
                     <div class="flex items-center justify-between mb-1">
                         <span class="${nameClass} text-sm">${name}</span>
-                        <span class="text-xs text-gray-400">${new Date(comment.timestamp).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}</span>
+                        <span class="text-xs text-gray-400">${new Date(comment.timestamp).toLocaleDateString('ko-KR')}</span>
                     </div>
-                    <div class="${contentClass}">
+                    <div class="text-text-dark text-sm">
                         ${comment.content}
                     </div>
                 </div>
@@ -832,22 +822,21 @@
         return commentHtml;
     }
 
-    // 🚨 UPDATED FUNCTION: Q&A 댓글 입력 폼 렌더링 (권한 제어)
     function renderCommentForm(postType) {
         if (!currentUser) {
-            return `<p class="text-center text-gray-500 py-4">로그인 후 댓글을 작성할 수 있습니다.</p>`;
+            return `<p class="text-center text-gray-400 py-4 text-sm">로그인 후 댓글을 작성할 수 있습니다.</p>`;
         }
         
-        // Q&A는 관리자(에디터)만 답변 가능
         if (postType === 'qna' && !currentUser.isAdmin) {
-            return `<p class="text-center text-pastel-blue-500 py-4 font-medium">관리자(에디터)만이 Q&A에 답변할 수 있습니다.</p>`;
+            // 🚨 UPDATED: Q&A 경고 문구 색상
+            return `<p class="text-center text-primary-blue py-4 font-medium text-sm">관리자(에디터)만이 Q&A에 답변할 수 있습니다.</p>`;
         }
         
         return `
             <div class="flex space-x-3 p-4 border-t border-gray-100">
                 <input type="text" id="commentContent" placeholder="${postType === 'qna' ? '관리자 답변을 입력하세요.' : '댓글을 입력하세요.'}" 
-                       class="flex-1 px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pastel-blue-400">
-                <button onclick="submitComment('${postType}')" class="bg-pastel-blue-500 text-white px-4 py-2 rounded-xl font-medium btn-scale transition-transform">등록</button>
+                       class="flex-1 px-4 py-2 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-blue text-sm">
+                <button onclick="submitComment('${postType}')" class="bg-primary-blue text-white px-4 py-2 rounded-full font-medium btn-scale text-sm">등록</button>
             </div>
         `;
     }
@@ -871,31 +860,56 @@
         comments.push(newComment);
         document.getElementById('commentContent').value = '';
         
-        // 댓글 목록 갱신
+        // 댓글 목록 갱신 및 모달 재렌더링
         const postComments = comments.filter(c => c.postId === currentPostId);
         document.getElementById('postDetailComments').innerHTML = postComments.map(c => renderComment(c, postType)).join('');
 
         showNotification('성공', '댓글이 등록되었습니다.');
-        // Q&A 목록 갱신 (댓글 수 반영을 위해)
-        if (postType === 'qna') renderQnaList();
+        // Q&A 목록 갱신 (MyPage Q&A 탭 활성화를 위해)
+        if (postType === 'qna' && currentPage === 'myPage') loadMyPageContent('qna');
     }
     
-    // --- Post Write Logic (Q&A) ---
+    // --- Post Write Logic (Q&A, Letter) ---
     
     function showPostWriteModal(type) {
         if (!currentUser) {
             return showNotification('안내', '로그인이 필요합니다.');
         }
         
-        document.getElementById('writeModalTitle').textContent = type === 'qna' ? '❓ Q&A 작성' : '새 글 작성';
+        document.getElementById('postWriteModal').setAttribute('data-post-type', type);
         document.getElementById('postTitle').value = '';
         document.getElementById('postContent').value = '';
-        
+
         const qnaOptions = document.getElementById('qnaOptions');
-        qnaOptions.classList.toggle('hide', type !== 'qna');
-        document.getElementById('isPrivate').checked = false;
+        const categoryContainer = document.getElementById('categorySelectContainer');
+        const postCategory = document.getElementById('postCategory');
         
-        document.getElementById('postWriteModal').setAttribute('data-post-type', type);
+        qnaOptions.classList.add('hide');
+        categoryContainer.classList.add('hide');
+
+        if (type === 'qna') {
+            document.getElementById('writeModalTitle').textContent = '❓ Q&A 작성';
+            qnaOptions.classList.remove('hide');
+            document.getElementById('isPrivate').checked = false;
+        } else if (type === 'letter') {
+            document.getElementById('writeModalTitle').textContent = '📖 새 레터 작성';
+            categoryContainer.classList.remove('hide');
+            
+            // 카테고리 옵션 설정
+            postCategory.innerHTML = `
+                <option value="" disabled selected>카테고리 선택</option>
+                <option value="letter">자휴레터</option>
+                <option value="lab">자휴랩</option>
+            `;
+            
+            if (!currentUser.isAdmin) {
+                showNotification('오류', '레터 작성은 관리자/에디터만 가능합니다.');
+                return;
+            }
+        } else {
+            document.getElementById('writeModalTitle').textContent = '새 글 작성';
+        }
+
         document.getElementById('postWriteModal').classList.add('show');
     }
 
@@ -903,12 +917,22 @@
         const type = document.getElementById('postWriteModal').getAttribute('data-post-type');
         const title = document.getElementById('postTitle').value.trim();
         const content = document.getElementById('postContent').value.trim();
-        const isPrivate = type === 'qna' ? document.getElementById('isPrivate').checked : false;
+        let category = type;
 
         if (!title || !content) {
             showNotification('오류', '제목과 내용을 모두 입력해주세요.');
             return;
         }
+        
+        if (type === 'letter') {
+            category = document.getElementById('postCategory').value;
+            if (!category) {
+                showNotification('오류', '레터 카테고리를 선택해주세요.');
+                return;
+            }
+        }
+        
+        const isPrivate = type === 'qna' ? document.getElementById('isPrivate').checked : false;
 
         const newPost = {
             id: type.charAt(0) + Date.now(),
@@ -918,6 +942,7 @@
             authorName: currentUser.name,
             authorEmail: currentUser.email,
             type: type,
+            category: category,
             timestamp: Date.now(),
             commentCount: 0,
             isPrivate: isPrivate
@@ -927,36 +952,50 @@
         closeModal(null, 'postWriteModal');
         showNotification('성공', '게시글이 성공적으로 작성되었습니다!');
         
-        if (type === 'qna') renderQnaList();
+        // 작성 후 해당 페이지로 이동하거나 갱신
+        if (type === 'qna') navigateTo('myPage'); // Q&A는 마이페이지로 이동
+        else navigateTo(type);
     }
 
     // --- MyPage Logic ---
 
+    // MyPage 탭 구조 변경 (Q&A 포함)
     function renderMyPage() {
         if (!currentUser) {
-            document.getElementById('myPage').innerHTML = '<p class="text-center text-gray-500 py-12">로그인이 필요합니다.</p>';
+            document.getElementById('myPage').innerHTML = '<p class="text-center text-gray-400 py-12">로그인이 필요합니다.</p>';
             return;
         }
         
         const myPageHtml = `
-            <h2 class="text-3xl font-extrabold text-pastel-blue-600 mb-6 border-b-4 border-pastel-blue-500 pb-2">나의 자휴 공간</h2>
-            <div class="bg-white p-6 rounded-xl shadow-md mb-8 flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-full bg-pastel-blue-100 text-pastel-blue-600 flex items-center justify-center text-xl font-bold">${currentUser.name.charAt(0)}</div>
+            <h2 class="text-2xl font-bold text-text-dark mb-6">나의 자휴 공간</h2>
+            <div class="bg-primary-blue-light p-4 rounded-xl shadow-inner mb-8 flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-full bg-primary-blue-dark text-white flex items-center justify-center text-lg font-bold">${currentUser.name.charAt(0)}</div>
                 <div>
-                    <p class="text-lg font-bold text-gray-800">${currentUser.name}님</p>
-                    <p class="text-sm text-gray-500">${currentUser.email}</p>
+                    <p class="text-base font-bold text-text-dark">${currentUser.name}님</p>
+                    <p class="text-xs text-text-light">${currentUser.email}</p>
                 </div>
             </div>
             
-            <div class="mt-8 border-b border-gray-200">
-                <nav class="flex space-x-4" id="myPageTabs">
-                    <button class="tab-btn active" data-tab="likes" onclick="loadMyPageContent('likes')">❤️ 좋아요한 글</button>
-                    <button class="tab-btn" data-tab="bookmarks" onclick="loadMyPageContent('bookmarks')">🔖 북마크한 글</button> 
-                    <button class="tab-btn" data-tab="stamps" onclick="loadMyPageContent('stamps')">⭐️ 자휴 스탬프</button> 
+            <div class="mt-8 border-b border-gray-200 overflow-x-auto">
+                <nav class="flex space-x-2" id="myPageTabs">
+                    <button class="tab-btn active whitespace-nowrap" data-tab="likes" onclick="loadMyPageContent('likes')">❤️ 좋아요</button>
+                    <button class="tab-btn whitespace-nowrap" data-tab="bookmarks" onclick="loadMyPageContent('bookmarks')">🔖 북마크</button> 
+                    <button class="tab-btn whitespace-nowrap" data-tab="qna" onclick="loadMyPageContent('qna')">❓ Q&A</button> 
+                    <button class="tab-btn whitespace-nowrap" data-tab="stamps" onclick="loadMyPageContent('stamps')">⭐️ 자휴 스탬프</button> 
                 </nav>
             </div>
             <div id="myPageContent" class="py-6 space-y-4">
                 </div>
+            ${currentUser.isAdmin ? `
+                <div class="mt-8 border-t pt-6">
+                    <h3 class="text-xl font-bold text-primary-blue mb-4">관리자 기능</h3>
+                    <div class="flex space-x-3">
+                        <button onclick="showPostWriteModal('letter')" class="bg-primary-blue text-white px-4 py-2 rounded-full font-medium btn-scale text-sm hover:bg-primary-blue-dark">레터 작성</button>
+                        <button onclick="showPostWriteModal('editorTalk')" class="bg-primary-blue text-white px-4 py-2 rounded-full font-medium btn-scale text-sm hover:bg-primary-blue-dark">에디터톡 작성</button>
+                        <button onclick="showPostWriteModal('moment')" class="bg-primary-blue text-white px-4 py-2 rounded-full font-medium btn-scale text-sm hover:bg-primary-blue-dark">모먼트 작성</button>
+                    </div>
+                </div>
+            ` : ''}
         `;
         
         document.getElementById('myPage').innerHTML = myPageHtml;
@@ -964,7 +1003,8 @@
     }
 
     function loadMyPageContent(tab) {
-        // 탭 버튼 활성화
+        if (!currentUser) return;
+        
         document.querySelectorAll('#myPageTabs .tab-btn').forEach(btn => {
             btn.classList.toggle('active', btn.getAttribute('data-tab') === tab);
         });
@@ -978,69 +1018,114 @@
         if (tab === 'likes') {
             filteredPosts = posts.filter(p => likedItems[p.id]?.isLiked);
             title = '좋아요한 글';
-            renderPostListContent(contentElement, filteredPosts, title);
+            renderMyPostListContent(contentElement, filteredPosts, title);
         } else if (tab === 'bookmarks') {
             filteredPosts = posts.filter(p => likedItems[p.id]?.isBookmarked);
             title = '북마크한 글';
-            renderPostListContent(contentElement, filteredPosts, title);
+            renderMyPostListContent(contentElement, filteredPosts, title);
+        } else if (tab === 'qna') { // Q&A TAB
+            filteredPosts = posts.filter(p => p.type === 'qna' && p.authorId === currentUser.id);
+            title = '내가 작성한 Q&A';
+            renderMyQnaListContent(contentElement, filteredPosts, title);
         } else if (tab === 'stamps') {
-            // 🚨 UPDATED: 자휴 스탬프 목록 롱블랙 스타일 렌더링
-            
-            // 스탬프 획득 가능한 모든 글 (레터 + 모먼트)
             const allStampablePosts = posts.filter(p => p.type === 'letter' || p.type === 'moment');
-            
-            if (allStampablePosts.length === 0) {
-                 contentElement.innerHTML = `<p class="text-center text-gray-500 mt-8">스탬프를 획득할 수 있는 게시물이 아직 없습니다.</p>`;
-                return;
-            }
-
-            // 모든 스탬프 항목을 렌더링
-            const stampGridHtml = allStampablePosts.map(post => {
-                const isStamped = likedItems[post.id]?.isStamped || false;
-                const iconClass = isStamped ? 'stamped-icon' : 'sketch-stamp';
-                const clickAction = isStamped ? `showPostDetail('${post.id}')` : `toggleStamp('${post.id}')`;
-                const stampText = isStamped ? '획득 완료' : '미획득';
-
-                return `
-                    <div class="p-4 bg-white rounded-xl shadow-sm border border-gray-100 text-center flex flex-col items-center justify-center cursor-pointer hover:shadow-lg transition-shadow" onclick="${clickAction}">
-                        <div class="w-16 h-16 mb-2 stamp-container">
-                            <svg class="w-full h-full ${iconClass}" viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                            </svg>
-                        </div>
-                        <p class="text-sm font-medium ${isStamped ? 'text-pastel-blue-600 font-bold' : 'text-gray-500'} mt-1">${post.title.substring(0, 15)}...</p>
-                        <span class="text-xs ${isStamped ? 'text-pastel-blue-400' : 'text-gray-400'}">${stampText}</span>
-                    </div>
-                `;
-            }).join('');
-            
-            const acquiredCount = allStampablePosts.filter(p => likedItems[p.id]?.isStamped).length;
-
-            contentElement.innerHTML = `
-                <h3 class="text-xl font-bold text-pastel-blue-600 mb-4">⭐️ 자휴 스탬프 (${acquiredCount} / ${allStampablePosts.length}개 획득)</h3>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    ${stampGridHtml}
-                </div>
-            `;
+            renderMyStampListContent(contentElement, allStampablePosts);
         }
     }
 
-    function renderPostListContent(contentElement, list, title) {
+    // MyPage Q&A 렌더링 (Q&A 전용 목록 뷰)
+    function renderMyQnaListContent(contentElement, list, title) {
         if (list.length === 0) {
-            contentElement.innerHTML = `<p class="text-center text-gray-500 mt-8">아직 ${title} 목록이 비어있습니다.</p>`;
+            contentElement.innerHTML = `
+                <p class="text-center text-gray-400 mt-8">아직 작성한 Q&A가 없습니다.</p>
+                <div class="text-center mt-4">
+                    <button onclick="showPostWriteModal('qna')" class="bg-primary-blue text-white px-4 py-2 rounded-full font-medium btn-scale text-sm hover:bg-primary-blue-dark">질문 작성하기</button>
+                </div>
+            `;
+            return;
+        }
+
+        const listHtml = list.map(post => {
+            const isAnswered = comments.some(c => c.postId === post.id && ADMIN_EDITORS.includes(c.authorEmail));
+            const statusClass = isAnswered ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700';
+            const statusText = isAnswered ? '답변 완료' : '답변 대기';
+            const isPrivateIcon = post.isPrivate ? '🔒 ' : '';
+
+            return `
+                <div onclick="showPostDetail('${post.id}')" class="p-4 bg-white rounded-xl shadow-sm border border-gray-100 cursor-pointer hover:bg-soft-cream transition-colors">
+                    <div class="flex justify-between items-center mb-1">
+                        <h4 class="text-base font-bold text-text-dark">${isPrivateIcon}${post.title}</h4>
+                        <span class="text-xs ${statusClass} px-2 py-0.5 rounded-full">${statusText}</span>
+                    </div>
+                    <p class="text-xs text-text-light mt-1 flex justify-between">
+                        <span>${new Date(post.timestamp).toLocaleDateString('ko-KR')}</span>
+                        <span>댓글 ${comments.filter(c => c.postId === post.id).length}</span>
+                    </p>
+                </div>
+            `;
+        }).join('');
+
+        contentElement.innerHTML = `
+            <h3 class="text-xl font-bold text-text-dark mb-4">${title} (${list.length}개)</h3>
+            ${listHtml}
+        `;
+    }
+
+
+    function renderMyPostListContent(contentElement, list, title) {
+        if (list.length === 0) {
+            contentElement.innerHTML = `<p class="text-center text-gray-400 mt-8">아직 ${title} 목록이 비어있습니다.</p>`;
             return;
         }
 
         const listHtml = list.map(post => `
-            <div onclick="showPostDetail('${post.id}')" class="p-4 bg-white rounded-xl shadow-sm border border-gray-100 cursor-pointer hover:bg-gray-50">
-                <h4 class="text-lg font-bold text-gray-800">${post.title}</h4>
-                <p class="text-sm text-gray-500 mt-1">${post.authorName} | ${new Date(post.timestamp).toLocaleDateString('ko-KR')}</p>
+            <div onclick="showPostDetail('${post.id}')" class="p-4 bg-white rounded-xl shadow-sm border border-gray-100 cursor-pointer hover:bg-soft-cream transition-colors">
+                <h4 class="text-base font-bold text-text-dark">${post.title}</h4>
+                <p class="text-sm text-text-light mt-1">${post.authorName} | ${new Date(post.timestamp).toLocaleDateString('ko-KR')}</p>
             </div>
         `).join('');
 
         contentElement.innerHTML = `
-            <h3 class="text-xl font-bold text-pastel-blue-600 mb-4">${title} (${list.length}개)</h3>
+            <h3 class="text-xl font-bold text-text-dark mb-4">${title} (${list.length}개)</h3>
             ${listHtml}
+        `;
+    }
+
+    // MyPage 스탬프 렌더링 (롱블랙 스타일)
+    function renderMyStampListContent(contentElement, allStampablePosts) {
+        const acquiredCount = allStampablePosts.filter(p => likedItems[p.id]?.isStamped).length;
+        
+        if (allStampablePosts.length === 0) {
+             contentElement.innerHTML = `<p class="text-center text-gray-400 mt-8">스탬프를 획득할 수 있는 게시물이 아직 없습니다.</p>`;
+            return;
+        }
+
+        const stampGridHtml = allStampablePosts.map(post => {
+            const isStamped = likedItems[post.id]?.isStamped || false;
+            // CSS: .stamped-icon (Dark Blue) vs .sketch-stamp (Gray)
+            const iconClass = isStamped ? 'stamped-icon' : 'sketch-stamp'; 
+            const clickAction = isStamped ? `showPostDetail('${post.id}')` : `toggleStamp('${post.id}')`; 
+            const stampText = isStamped ? '획득' : '미획득';
+            const stampTitle = post.title.length > 15 ? post.title.substring(0, 15) + '...' : post.title;
+
+            return `
+                <div class="p-4 bg-white rounded-xl shadow-sm border border-gray-100 text-center flex flex-col items-center justify-center cursor-pointer hover:shadow-lg transition-shadow" onclick="${clickAction}">
+                    <div class="w-12 h-12 mb-2 stamp-container">
+                        <svg class="w-full h-full ${iconClass}" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                    </div>
+                    <p class="text-xs font-medium ${isStamped ? 'text-text-dark font-bold' : 'text-gray-500'} mt-1">${stampTitle}</p>
+                    <span class="text-xs ${isStamped ? 'text-primary-blue' : 'text-gray-400'}">${stampText}</span>
+                </div>
+            `;
+        }).join('');
+        
+        contentElement.innerHTML = `
+            <h3 class="text-xl font-bold text-text-dark mb-4">⭐️ 자휴 스탬프 (${acquiredCount} / ${allStampablePosts.length}개 획득)</h3>
+            <div class="grid grid-cols-3 gap-4">
+                ${stampGridHtml}
+            </div>
         `;
     }
 
