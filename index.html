@@ -6,7 +6,7 @@
     <title>자휴레터 - 햅삐님 오늘도 행복하세요!</title>  
     <style>  
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');  
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');  
+        @import url('https://fonts.googleapis.com/css2?family=M+Gothic:wght@300;400;700&display=swap');  
   
         :root {  
             /* 💜 연보라색 파스텔톤 무드 */  
@@ -17,15 +17,16 @@
             --color-accent: #BB8FCE; /* 포인트 연보라색 */  
             --color-text: #2C3E50;  
             --color-text-light: #7F8C8D;  
-            --color-white: rgba(255, 255, 255, 0.9);  
+            --color-white: rgba(255, 255, 255, 0.95);  
             --color-shadow: rgba(155, 89, 182, 0.2);  
+            --color-black: #1a1a1a;  
         }  
   
         * {  
             box-sizing: border-box;  
             margin: 0;  
             padding: 0;  
-            font-family: 'Noto Sans KR', sans-serif;  
+            font-family: 'M Gothic', 'Noto Sans KR', sans-serif;  
         }  
   
         body {  
@@ -43,6 +44,32 @@
             min-height: calc(100vh - 80px);  
             padding: 0 16px 20px;  
             padding-bottom: 100px;  
+            display: none; /* 로그인 전에는 숨김 */  
+        }  
+  
+        /* 🎯 메인 헤더 */  
+        .main-header {  
+            text-align: center;  
+            padding: 40px 0 20px;  
+        }  
+  
+        .main-header h1 {  
+            font-size: 28px;  
+            font-weight: 700;  
+            margin-bottom: 8px;  
+            color: var(--color-black);  
+            border-radius: 25px;  
+            padding: 15px 20px;  
+            background: var(--color-white);  
+            box-shadow: 0 4px 15px var(--color-shadow);  
+            display: inline-block;  
+        }  
+  
+        .main-header p {  
+            font-size: 14px;  
+            color: var(--color-text-light);  
+            font-weight: 300;  
+            margin-top: 10px;  
         }  
   
         /* 💎 유리질감 카드 */  
@@ -58,28 +85,6 @@
             width: 100%;  
         }  
   
-        /* 🎯 메인 헤더 */  
-        .main-header {  
-            text-align: center;  
-            padding: 40px 0 20px;  
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);  
-            -webkit-background-clip: text;  
-            -webkit-text-fill-color: transparent;  
-        }  
-  
-        .main-header h1 {  
-            font-family: 'Playfair Display', serif;  
-            font-size: 28px;  
-            font-weight: 700;  
-            margin-bottom: 8px;  
-        }  
-  
-        .main-header p {  
-            font-size: 16px;  
-            color: var(--color-text-light);  
-            font-weight: 300;  
-        }  
-  
         /* --- 로그인/회원가입 모달 --- */  
         .auth-modal {  
             position: fixed;  
@@ -87,7 +92,7 @@
             left: 0;  
             width: 100%;  
             height: 100%;  
-            background: rgba(0, 0, 0, 0.5);  
+            background: rgba(0, 0, 0, 0.6);  
             display: flex;  
             align-items: center;  
             justify-content: center;  
@@ -100,6 +105,7 @@
             padding: 30px;  
             width: 90%;  
             max-width: 350px;  
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);  
         }  
   
         .auth-content h2 {  
@@ -107,6 +113,7 @@
             text-align: center;  
             margin-bottom: 25px;  
             font-size: 24px;  
+            font-weight: 700;  
         }  
   
         .auth-input {  
@@ -116,12 +123,14 @@
             border-radius: 15px;  
             margin-bottom: 15px;  
             font-size: 16px;  
-            transition: border-color 0.3s;  
+            transition: all 0.3s;  
+            background: rgba(255, 255, 255, 0.9);  
         }  
   
         .auth-input:focus {  
             outline: none;  
             border-color: var(--color-primary);  
+            transform: translateY(-2px);  
         }  
   
         .auth-button {  
@@ -141,6 +150,34 @@
         .auth-button:hover {  
             background: var(--color-primary-dark);  
             transform: translateY(-2px);  
+            box-shadow: 0 6px 20px rgba(155, 89, 182, 0.4);  
+        }  
+  
+        /* --- 미니멀 귀여운 아이콘 --- */  
+        .icon-circle {  
+            width: 70px;  
+            height: 70px;  
+            margin: 0 auto 8px;  
+            border-radius: 50%;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);  
+            box-shadow: 0 8px 25px var(--color-shadow);  
+            transition: all 0.3s;  
+            position: relative;  
+            overflow: hidden;  
+        }  
+  
+        .icon-circle:hover {  
+            transform: translateY(-5px) scale(1.05);  
+            box-shadow: 0 12px 30px rgba(155, 89, 182, 0.4);  
+        }  
+  
+        .icon-circle svg {  
+            width: 32px;  
+            height: 32px;  
+            fill: white;  
         }  
   
         /* --- 액션 버튼 --- */  
@@ -170,7 +207,7 @@
             display: flex;  
             justify-content: space-around;  
             margin: 30px 0;  
-            gap: 20px;  
+            gap: 15px;  
         }  
   
         .action-item {  
@@ -179,27 +216,6 @@
             font-size: 13px;  
             text-align: center;  
             flex: 1;  
-        }  
-  
-        .action-icon {  
-            width: 70px;  
-            height: 70px;  
-            margin: 0 auto 8px;  
-            border-radius: 50%;  
-            display: flex;  
-            align-items: center;  
-            justify-content: center;  
-            font-size: 28px;  
-              
-            background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);  
-            box-shadow: 0 8px 25px var(--color-shadow);  
-            color: white;  
-            transition: all 0.3s;  
-        }  
-  
-        .action-item:hover .action-icon {  
-            transform: translateY(-5px) scale(1.05);  
-            box-shadow: 0 12px 30px rgba(155, 89, 182, 0.4);  
         }  
   
         /* --- 필터링 버튼 --- */  
@@ -235,6 +251,7 @@
             margin-bottom: 12px;  
             box-shadow: 0 2px 10px rgba(155, 89, 182, 0.1);  
             transition: all 0.3s;  
+            cursor: pointer;  
         }  
   
         .post-item:hover {  
@@ -350,32 +367,29 @@
             grid-template-columns: repeat(10, 1fr);  
             gap: 8px;  
             margin-top: 20px;  
+            justify-items: center;  
         }  
   
         .stamp-icon {  
-            width: 28px;  
-            height: 28px;  
+            width: 25px;  
+            height: 25px;  
             border-radius: 50%;  
             display: flex;  
             align-items: center;  
             justify-content: center;  
-            font-size: 14px;  
+            font-size: 12px;  
             transition: all 0.3s;  
         }  
   
         .unstamped {  
-            background: #f0f0f0;  
-            color: #ccc;  
+            background: rgba(240, 240, 240, 0.3);  
+            border: 1px solid rgba(200, 200, 200, 0.3);  
         }  
   
         .stamped {  
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);  
-            color: white;  
-            box-shadow: 0 2px 8px rgba(155, 89, 182, 0.3);  
-        }  
-  
-        .stamped::after {  
-            content: '✓';  
+            background: radial-gradient(circle, var(--color-primary-dark) 0%, var(--color-primary) 70%);  
+            box-shadow: 0 2px 8px rgba(155, 89, 182, 0.4);  
+            border: 2px solid var(--color-primary-light);  
         }  
   
         /* --- 하단 네비게이션 바 --- */  
@@ -411,18 +425,37 @@
             color: var(--color-primary);  
         }  
   
-        .nav-item span:first-child {  
-            font-size: 24px;  
+        .nav-icon {  
+            width: 28px;  
+            height: 28px;  
             margin-bottom: 4px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+        }  
+  
+        .nav-icon svg {  
+            width: 24px;  
+            height: 24px;  
+            fill: currentColor;  
+            transition: all 0.2s;  
+        }  
+  
+        .nav-item.active .nav-icon svg {  
+            fill: var(--color-primary);  
         }  
   
         .central-button {  
             background: var(--color-primary) !important;  
             color: white !important;  
             border-radius: 15px;  
-            padding: 10px 5px;  
-            margin: -10px 2px;  
+            padding: 8px 5px;  
+            margin: -8px 2px;  
             box-shadow: 0 4px 15px var(--color-shadow);  
+        }  
+  
+        .central-button .nav-icon svg {  
+            fill: white !important;  
         }  
   
         /* --- 상세페이지 --- */  
@@ -478,7 +511,7 @@
             border: 2px solid var(--color-primary-light);  
             border-radius: 10px;  
             resize: none;  
-            font-family: 'Noto Sans KR', sans-serif;  
+            font-family: 'M Gothic', 'Noto Sans KR', sans-serif;  
             margin-bottom: 15px;  
         }  
   
@@ -512,6 +545,10 @@
             display: none !important;  
         }  
   
+        .show {  
+            display: block !important;  
+        }  
+  
         .fade-in {  
             animation: fadeIn 0.3s ease-out;  
         }  
@@ -526,17 +563,52 @@
                 transform: translateY(0);  
             }  
         }  
+  
+        /* 초기 로딩 화면 */  
+        .loading-screen {  
+            position: fixed;  
+            top: 0;  
+            left: 0;  
+            width: 100%;  
+            height: 100%;  
+            background: linear-gradient(135deg, var(--color-secondary) 0%, #F4ECF7 100%);  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            z-index: 10000;  
+        }  
+  
+        .loading-content {  
+            text-align: center;  
+        }  
+  
+        .loading-content h1 {  
+            color: var(--color-primary);  
+            font-size: 24px;  
+            margin-bottom: 10px;  
+        }  
     </style>  
 </head>  
 <body>  
-    <!-- 로그인 모달 -->  
-    <div id="loginModal" class="auth-modal">  
+    <!-- 초기 로딩 화면 -->  
+    <div id="loadingScreen" class="loading-screen">  
+        <div class="loading-content">  
+            <h1>자휴레터</h1>  
+            <p style="color: var(--color-text-light);">로딩 중...</p>  
+        </div>  
+    </div>  
+  
+    <!-- 로그인 모달 (초기에 바로 표시) -->  
+    <div id="loginModal" class="auth-modal hide">  
         <div class="auth-content">  
-            <h2>자휴레터</h2>  
+            <h2>로그인</h2>  
             <input type="email" id="loginEmail" class="auth-input" placeholder="이메일">  
             <input type="password" id="loginPassword" class="auth-input" placeholder="비밀번호">  
             <button onclick="handleLogin()" class="auth-button">로그인</button>  
-            <button onclick="showSignup()" class="auth-button" style="background: transparent; color: var(--color-primary); border: 2px solid var(--color-primary);">회원가입</button>  
+            <div style="text-align: center; margin-top: 20px;">  
+                <p style="color: var(--color-text-light); font-size: 12px;">계정이 없으신가요?</p>  
+                <button onclick="showSignup()" style="background: none; border: none; color: var(--color-primary); font-weight: 600; margin-top: 5px; cursor: pointer;">회원가입</button>  
+            </div>  
         </div>  
     </div>  
   
@@ -548,7 +620,7 @@
             <input type="password" id="signupPassword" class="auth-input" placeholder="비밀번호">  
             <input type="password" id="signupPasswordConfirm" class="auth-input" placeholder="비밀번호 확인">  
             <button onclick="handleSignup()" class="auth-button">가입하기</button>  
-            <button onclick="showLogin()" class="auth-button" style="background: transparent; color: var(--color-primary); border: 2px solid var(--color-primary);">로그인으로 돌아가기</button>  
+            <button onclick="showLogin()" class="auth-button" style="background: transparent; color: var(--color-primary); border: 2px solid var(--color-primary); width: 100%; margin-top: 10px;">로그인으로 돌아가기</button>  
         </div>  
     </div>  
   
@@ -569,27 +641,47 @@
         </div>  
     </div>  
   
-    <div id="app"></div>  
+    <div id="app" class="container"></div>  
   
     <nav class="bottom-nav">  
         <a href="#" class="nav-item active" data-tab="home">  
-            <span>🏠</span>  
+            <div class="nav-icon">  
+                <svg viewBox="0 0 24 24">  
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>  
+                </svg>  
+            </div>  
             <span>홈</span>  
         </a>  
         <a href="#" class="nav-item" data-tab="letter">  
-            <span>💌</span>  
+            <div class="nav-icon">  
+                <svg viewBox="0 0 24 24">  
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>  
+                </svg>  
+            </div>  
             <span>레터</span>  
         </a>  
         <a href="#" class="nav-item central-button" data-tab="mood">  
-            <span></span>  
+            <div class="nav-icon">  
+                <svg viewBox="0 0 24 24">  
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>  
+                </svg>  
+            </div>  
             <span>무드</span>  
         </a>  
         <a href="#" class="nav-item" data-tab="editor-talk">  
-            <span>☕</span>  
-            <span>에디토크</span>  
+            <div class="nav-icon">  
+                <svg viewBox="0 0 24 24">  
+                    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>  
+                </svg>  
+            </div>  
+            <span>에디터톡</span>  
         </a>  
         <a href="#" class="nav-item" data-tab="mypage">  
-            <span>👤</span>  
+            <div class="nav-icon">  
+                <svg viewBox="0 0 24 24">  
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>  
+                </svg>  
+            </div>  
             <span>마이</span>  
         </a>  
     </nav>  
@@ -610,6 +702,7 @@
         let userStamps = 45;  
         let selectedImage = null;  
         let currentLetterFilter = '자휴레터';  
+        let isLoggedIn = false;  
   
         // 게시물 데이터  
         let posts = [  
@@ -639,7 +732,7 @@
                 id: 3,  
                 author: '써니',  
                 content: '오늘은 창문을 열고 햇살을 받으며 차 한잔~',  
- date: '2025.12.08',  
+                date: '2025.12.08',  
                 category: 'editor-talk',  
                 likes: 15,  
                 comments: 5,  
@@ -652,8 +745,18 @@
         const moodsData = [  
             { id: 1, userId: 'hyeran@example.com', content: '오늘 하루 너무 지쳤어요...', mood: '😩', date: '2025.12.10' },  
             { id: 2, userId: 'happxi@jahyu.com', content: '모두 수고했어요! 내일은 더 빛날 거예요 ✨', mood: '🥰', date: '2025.12.09' },  
-            { id: 3, userId: 'elly@jahyu.com', content: '주말에 쉬고 싶어요~', mood: '😊', date: '2025.12.08' }  
+            { id: 3, userId: 'elly@jahyu.com', content: '주말에 쉬고 싶어요~', mood: '😊', date: '2025.12.08' },  
+            { id: 4, userId: 'gokal@jahyu.com', content: '오늘은 날씨가 좋아서 기분이 좋아요!', mood: '😄', date: '2025.12.07' },  
+            { id: 5, userId: 'yudan@jahyu.com', content: '주말에 여행 가~! 기대된다', mood: '🥰', date: '2025.12.06' }  
         ];  
+  
+        // 페이지 로드시 로그인 모달 표시  
+        window.addEventListener('DOMContentLoaded', () => {  
+            setTimeout(() => {  
+                document.getElementById('loadingScreen').style.display = 'none';  
+                showLogin();  
+            }, 1500);  
+        });  
   
         // 로그인 처리  
         function handleLogin() {  
@@ -663,10 +766,12 @@
             const user = users.find(u => u.id === email && u.password === password);  
             if (user) {  
                 currentUser = user;  
+                isLoggedIn = true;  
                 document.getElementById('loginModal').classList.add('hide');  
+                document.getElementById('app').classList.add('show');  
                 renderTab('home');  
             } else {  
-                alert('이메일 또는 비밀번호가 올바르지 않습니다.');  
+                showMessage('이메일 또는 비밀번호가 올바르지 않습니다.');  
             }  
         }  
   
@@ -677,11 +782,25 @@
             const confirm = document.getElementById('signupPasswordConfirm').value;  
               
             if (password !== confirm) {  
-                alert('비밀번호가 일치하지 않습니다.');  
+                showMessage('비밀번호가 일치하지 않습니다.');  
                 return;  
             }  
               
-            alert('회원가입이 완료되었습니다. 로그인해주세요.');  
+            if (users.find(u => u.id === email)) {  
+                showMessage('이미 가입된 이메일입니다.');  
+                return;  
+            }  
+              
+            const newUser = {  
+                id: email,  
+                name: email.split('@')[0],  
+                password: password,  
+                role: 'user',  
+                avatar: email[0].toUpperCase()  
+            };  
+              
+            users.push(newUser);  
+            showMessage('회원가입이 완료되었습니다. 로그인해주세요.');  
             showLogin();  
         }  
   
@@ -696,10 +815,33 @@
             document.getElementById('signupModal').classList.remove('hide');  
         }  
   
+        // 메시지 표시  
+        function showMessage(message) {  
+            const messageDiv = document.createElement('div');  
+            messageDiv.style.cssText = `  
+                position: fixed;  
+                top: 20px;  
+                left: 50%;  
+                transform: translateX(-50%);  
+                background: var(--color-primary);  
+                color: white;  
+                padding: 12px 24px;  
+                border-radius: 25px;  
+                z-index: 10000;  
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);  
+            `;  
+            messageDiv.textContent = message;  
+            document.body.appendChild(messageDiv);  
+              
+            setTimeout(() => {  
+                messageDiv.remove();  
+            }, 3000);  
+        }  
+  
         // 홈 템플릿  
         function getHomeTemplate() {  
             return `  
-                <div class="container fade-in">  
+                <div class="fade-in">  
                     <div class="main-header">  
                         <h1>햅삐님 오늘도 행복하세요!</h1>  
                         <p>메마른 일상에 휴식 한 방울!</p>  
@@ -708,7 +850,7 @@
                     <div class="glass-card">  
                         <div style="text-align: center; padding: 30px 0;">  
                             <h2 style="color: var(--color-primary); font-size: 20px; margin-bottom: 10px;">  
-                                <strong style="color: var(--color-primary);">자휴레터</strong> & <strong style="color: var(--color-accent);">자휴랩</strong>  
+                                오늘은 어떤 힐링이 필요하세요?  
                             </h2>  
                             <p style="color: var(--color-text-light); margin-bottom: 20px;">  
                                 자휴레터와 자휴랩을 주제별로 한 눈에!  
@@ -718,517 +860,18 @@
                     </div>  
   
                     <div class="action-group">  
-                        <a href="https://pf.kakao.com/_xxxxxx" class="action-item" target="_blank">  
-                            <div class="action-icon">🗣️</div>  
-                            <p>1:1 카톡</p>  
+                        <a href="http://pf.kakao.com/_Jfjxgn" class="action-item" target="_blank">  
+                            <div class="icon-circle">  
+                                <svg viewBox="0 0 24 24">  
+                                    <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>  
+                                </svg>  
+                            </div>  
+                            <p>1:1 채팅</p>  
                         </a>  
                         <a href="http://pf.kakao.com/_Jfjxgn/111753149" class="action-item" target="_blank">  
-                            <div class="action-icon">🖋️</div>  
-                            <p>문장 수집</p>  
-                        </a>  
-                        <a href="https://index-html-zak5.vercel.app/" class="action-item" target="_blank">  
-                            <div class="action-icon">✨</div>  
-                            <p>힐링테스트</p>  
-                        </a>  
-                        <a href="https://maily.so/happci/posts/2nzn7qegrp5" class="action-item" target="_blank">  
-                            <div class="action-icon">📮</div>  
-                            <p>레터보기</p>  
-                        </a>  
-                    </div>  
-                </div>  
-            `;  
-        }  
-  
-        // 레터 아카이브 템플릿  
-        function getLetterTemplate() {  
-            const letterPosts = [  
-                { title: '[자휴레터] 힐링 에세이 12월호', date: '2025.12.10', category: '자휴레터' },  
-                { title: '[자휴랩] 주말 쉼의 기술', date: '2025.12.09', category: '자휴랩' },  
-                { title: '[자휴레터] 일상의 작은 행복 찾기', date: '2025.12.08', category: '자휴레터' },  
-                { title: '[자휴랩] 감성적인 카페 추천', date: '2025.12.07', category: '자휴랩' }  
-            ];  
-  
-            const filteredPosts = letterPosts.filter(post => post.category === currentLetterFilter);  
-  
-            return `  
-                <div class="container fade-in">  
-                    <div class="main-header">  
-                        <h2>레터 아카이브</h2>  
-                    </div>  
-  
-                    <div class="filter-buttons">  
-                        <button class="${currentLetterFilter === '자휴레터' ? 'active' : ''}" onclick="filterLetters('자휴레터')">자휴레터</button>  
-                        <button class="${currentLetterFilter === '자휴랩' ? 'active' : ''}" onclick="filterLetters('자휴랩')">자휴랩</button>  
-                    </div>  
-  
-                    <div style="margin-bottom: 20px;">  
-                        ${filteredPosts.map(post => `  
-                            <div class="post-item">  
-                                <div class="post-header">  
-                                    <div class="post-avatar">자</div>  
-                                    <div class="post-info">  
-                                        <h4>${post.title}</h4>  
-                                        <p>${post.date}</p>  
-                                    </div>  
-                                </div>  
-                                <div class="post-actions">  
-                                    <button class="action-btn">❤️ 좋아요</button>  
-                                    <button class="action-btn">💬 댓글</button>  
-                                    <button class="action-btn">🔖 북마크</button>  
-                                </div>  
+                            <div class="icon-circle">  
+                                <svg viewBox="0 0 24 24">  
+                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>  
+                                </svg>  
                             </div>  
-                        `).join('')}  
-                    </div>  
-                </div>  
-            `;  
-        }  
-  
-        // 에디터톡 템플릿  
-        function getEditorTalkTemplate() {  
-            const isAdmin = currentUser && currentUser.role !== 'user';  
-              
-            return `  
-                <div class="container fade-in">  
-                    <div class="main-header">  
-                        <h2>에디터톡</h2>  
-                        <p>에디터의 일상을 더 가까이에서 만나보세요!</p>  
-                    </div>  
-  
-                    ${isAdmin ? `  
-                        <button onclick="openWriteModal()" class="action-button" style="width: 100%; margin-bottom: 20px;">  
-                            ✍️ 글쓰기  
-                        </button>  
-                    ` : ''}  
-  
-                    <div>  
-                        ${posts.map(post => {  
-                            const authorProfile = users.find(u => u.name === post.author);  
-                            return `  
-                                <div class="post-item" onclick="showPostDetail(${post.id})">  
-                                    <div class="post-header">  
-                                        <div class="post-avatar" style="background: ${authorProfile ? getAdminColor(authorProfile.name) : '#9B59B6'}">${authorProfile ? authorProfile.avatar : '자'}</div>  
-                                        <div class="post-info">  
-                                            <h4>${post.author}</h4>  
-                                            <p>${post.date}</p>  
-                                        </div>  
-                                    </div>  
-                                    <div class="post-content">${post.content}</div>  
-                                    ${post.image ? `<img src="${post.image}" alt="게시물 이미지" class="post-image">` : ''}  
-                                    <div class="post-actions">  
-                                        <button class="action-btn ${post.likedBy.includes(currentUser?.id) ? 'active' : ''}" onclick="toggleLike(event, ${post.id})">  
-                                            ❤️ ${post.likes}  
-                                        </button>  
-                                        <button class="action-btn">  
-                                            💬 ${post.comments}  
-                                        </button>  
-                                        <button class="action-btn ${post.bookmarkedBy.includes(currentUser?.id) ? 'active' : ''}" onclick="toggleBookmark(event, ${post.id})">  
-                                            🔖  
-                                        </button>  
-                                    </div>  
-                                </div>  
-                            `;  
-                        }).join('')}  
-                    </div>  
-                </div>  
-            `;  
-        }  
-  
-        // 무드 템플릿  
-        function getMoodTemplate() {  
-            // 햅씨 관리자인 경우 모든 사용자의 무드 표시  
-            if (currentUser && currentUser.role === 'super_admin') {  
-                return getAdminMoodTemplate();  
-            }  
-  
-            return `  
-                <div class="container fade-in">  
-                    <div class="main-header">  
-                        <h2>오늘의 무드</h2>  
-                        <p>당신의 감정을 기록해보세요</p>  
-                    </div>  
-  
-                    <div class="glass-card" style="text-align: center; padding: 40px 20px; min-height: 300px;">  
-                        <p style="font-size: 16px; color: var(--color-text-light); margin-bottom: 30px;">  
-                            여기에 월간/주간 무드 트래커가 시각화됩니다  
-                        </p>  
-                        <div style="font-size: 48px; margin-bottom: 20px;">📊</div>  
-                        <button onclick="openWriteModal()" class="action-button">  
-                            무드 기록 작성  
-                        </button>  
-                    </div>  
-                </div>  
-            `;  
-        }  
-  
-        // 햅씨 관리자용 무드 템플릿  
-        function getAdminMoodTemplate() {  
-            const groupedMoods = {};  
-            moodsData.forEach(mood => {  
-                if (!groupedMoods[mood.userId]) {  
-                    const user = users.find(u => u.id === mood.userId);  
-                    groupedMoods[mood.userId] = {  
-                        user: user,  
-                        moods: []  
-                    };  
-                }  
-                groupedMoods[mood.userId].moods.push(mood);  
-            });  
-  
-            return `  
-                <div class="container fade-in">  
-                    <div class="main-header admin-dashboard">  
-                        <h2>👑 관리자 대시보드</h2>  
-                        <p>모든 햅삐님들의 감정을 살펴보세요</p>  
-                    </div>  
-  
-                    ${Object.entries(groupedMoods).map(([userId, data]) => `  
-                        <div class="glass-card admin-dashboard">  
-                            <div class="post-header">  
-                                <div class="post-avatar" style="background: ${getAdminColor(data.user.name)}">${data.user.avatar}</div>  
-                                <div class="post-info">  
-                                    <h4>${data.user.name}</h4>  
-                                    <p>${data.user.id}</p>  
-                                </div>  
-                            </div>  
-                            <div style="margin-top: 15px;">  
-                                ${data.moods.map(mood => `  
-                                    <div class="post-item" style="margin-bottom: 10px;">  
-                                        <p style="margin-bottom: 5px;"><strong>${mood.mood} ${mood.date}</strong></p>  
-                                        <p>${mood.content}</p>  
-                                    </div>  
-                                `).join('')}  
-                            </div>  
-                        </div>  
-                    `).join('')}  
-                </div>  
-            `;  
-        }  
-  
-        // 마이페이지 템플릿  
-        function getMyPageTemplate() {  
-            const isVIP = userStamps >= 50;  
-              
-            return `  
-                <div class="container fade-in">  
-                    <div class="main-header">  
-                        <h2>${isVIP ? '⭐ VIP 햅삐님!' : 'My Space'}</h2>  
-                        <p>${isVIP ? '특별한 혜택을 즐겨보세요!' : '오늘도 자휴레터와 함께해요'}</p>  
-                    </div>  
-  
-                    <ul class="mypage-menu">  
-                        <li><button class="mypage-button" onclick="showContentList('mypost')">내가 쓴 글 ▶︎</button></li>  
-                        <li><button class="mypage-button" onclick="showContentList('mycomment')">나의 댓글 ▶︎</button></li>  
-                        <li><button class="mypage-button" onclick="showContentList('mylike')">좋아요한 글 ▶︎</button></li>  
-                        <li><button class="mypage-button" onclick="showContentList('mybookmark')">북마크한 글 ▶︎</button></li>  
-                        <li><button class="mypage-button" onclick="showContentList('mystamp')">자휴 스탬프 (${userStamps}개) ▶︎</button></li>  
-                        <li><button class="mypage-button" onclick="handleLogout()">로그아웃 ▶︎</button></li>  
-                    </ul>  
-  
-                    <div class="glass-card">  
-                        <h3 style="color: var(--color-primary); margin-bottom: 15px;">나의 자휴 스탬프</h3>  
-                        <div class="stamp-grid">  
-                            ${Array(50).fill(0).map((_, index) => `  
-                                <div class="stamp-icon ${index < userStamps ? 'stamped' : 'unstamped'}"></div>  
-                            `).join('')}  
-                        </div>  
-                        <p style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--color-text-light);">  
-                            *스탬프 50개 이상 누적시 자휴레터VIP가 됩니다! <br>  
-                            (갑자기 깜짝 스폐셜레터를 보내드릴게요❤️)  
-                        </p>  
-                    </div>  
-                </div>  
-            `;  
-        }  
-  
-        // 게시물 상세 템플릿  
-        function getPostDetailTemplate(postId) {  
-            const post = posts.find(p => p.id === postId);  
-            if (!post) return '';  
-  
-            const authorProfile = users.find(u => u.name === post.author);  
-            const isLiked = post.likedBy.includes(currentUser?.id);  
-            const isBookmarked = post.bookmarkedBy.includes(currentUser?.id);  
-  
-            return `  
-                <div class="container fade-in">  
-                    <div class="detail-header">  
-                        <h2 style="color: var(--color-primary);">게시물 상세</h2>  
-                    </div>  
-  
-                    <div class="detail-content">  
-                        <div class="post-header">  
-                            <div class="post-avatar" style="background: ${authorProfile ? getAdminColor(authorProfile.name) : '#9B59B6'}">${authorProfile ? authorProfile.avatar : '자'}</div>  
-                            <div class="post-info">  
-                                <h4>${post.author}</h4>  
-                                <p>${post.date}</p>  
-                            </div>  
-                        </div>  
-                        <div class="post-content" style="font-size: 16px; line-height: 1.6; margin: 20px 0;">  
-                            ${post.content}  
-                        </div>  
-                        ${post.image ? `<img src="${post.image}" alt="게시물 이미지" style="width: 100%; border-radius: 10px; margin-bottom: 20px;">` : ''}  
-                    </div>  
-  
-                    <div class="detail-actions">  
-                        <button class="action-btn ${isLiked ? 'active' : ''}" onclick="toggleLike(event, ${post.id})">  
-                            ❤️ ${post.likes}  
-                        </button>  
-                        <button class="action-btn">  
-                            💬 ${post.comments}  
-                        </button>  
-                        <button class="action-btn ${isBookmarked ? 'active' : ''}" onclick="toggleBookmark(event, ${post.id})">  
-                            🔖 북마크  
-                        </button>  
-                    </div>  
-  
-                    <button class="action-button" style="width: 100%; margin-top: 20px;" onclick="renderTab('editor-talk')">  
-                        목록으로 돌아가기  
-                    </button>  
-                </div>  
-            `;  
-        }  
-  
-        // 컨텐츠 목록 템플릿  
-        function getContentListTemplate(type) {  
-            const titles = {  
-                'mypost': '내가 쓴 글',  
-                'mycomment': '나의 댓글',  
-                'mylike': '좋아요한 글',  
-                'mybookmark': '북마크한 글',  
-                'mystamp': '자휴 스탬프'  
-            };  
-  
-            return `  
-                <div class="container fade-in">  
-                    <div class="detail-header">  
-                        <h2 style="color: var(--color-primary);">${titles[type]}</h2>  
-                    </div>  
-  
-                    <div class="glass-card" style="padding: 30px; text-align: center;">  
-                        <p style="font-size: 16px; color: var(--color-text-light); margin-bottom: 20px;">  
-                            ${titles[type]} 데이터가 여기에 연동됩니다  
-                        </p>  
-                        <p>- 12/10: 테스트 게시물 1</p>  
-                        <p>- 12/08: 테스트 게시물 2</p>  
-                        <p style="margin-top: 20px; color: var(--color-primary); font-weight: 600;">  
-                            ✅ 해당 페이지 렌더링으로 기능 연동이 완료되었습니다  
-                        </p>  
-                    </div>  
-  
-                    <button class="action-button" style="width: 100%; margin-top: 20px;" onclick="renderTab('mypage')">  
-                        마이페이지로 돌아가기  
-                    </button>  
-                </div>  
-            `;  
-        }  
-  
-        // 관리자 색상 함수  
-        function getAdminColor(name) {  
-            const colors = {  
-                '햅씨': '#9B59B6',  
-                '엘리': '#E74C3C',  
-                '고칼': '#3498DB',  
-                '유단': '#2ECC71',  
-                '써니': '#F39C12'  
-            };  
-            return colors[name] || '#9B59B6';  
-        }  
-  
-        // 렌더링 함수  
-        function renderTab(tabName, actionType = null) {  
-            currentTab = tabName;  
-            const app = document.getElementById('app');  
-            app.innerHTML = '';  
-  
-            // 네비게이션 업데이트  
-            document.querySelectorAll('.nav-item').forEach(item => {  
-                item.classList.remove('active');  
-                if (item.getAttribute('data-tab') === tabName) {  
-                    item.classList.add('active');  
-                }  
-            });  
-  
-            if (actionType && ['mypost', 'mycomment', 'mylike', 'mybookmark', 'mystamp'].includes(actionType)) {  
-                app.innerHTML = getContentListTemplate(actionType);  
-                return;  
-            }  
-  
-            switch (tabName) {  
-                case 'home':  
-                    app.innerHTML = getHomeTemplate();  
-                    break;  
-                case 'letter':  
-                    app.innerHTML = getLetterTemplate();  
-                    break;  
-                case 'editor-talk':  
-                    app.innerHTML = getEditorTalkTemplate();  
-                    break;  
-                case 'mood':  
-                    app.innerHTML = getMoodTemplate();  
-                    break;  
-                case 'mypage':  
-                    app.innerHTML = getMyPageTemplate();  
-                    break;  
-                default:  
-                    app.innerHTML = '<div class="container"><div class="glass-card"><p>페이지를 찾을 수 없습니다.</p></div></div>';  
-            }  
-  
-            window.scrollTo(0, 0);  
-        }  
-  
-        // 필터링 함수  
-        function filterLetters(category) {  
-            currentLetterFilter = category;  
-            renderTab('letter');  
-        }  
-  
-        // 글쓰기 모달  
-        function openWriteModal() {  
-            document.getElementById('writeModal').classList.remove('hide');  
-        }  
-  
-        function closeWriteModal() {  
-            document.getElementById('writeModal').classList.add('hide');  
-            selectedImage = null;  
-            document.getElementById('writeContent').value = '';  
-            document.getElementById('imageUploadArea').innerHTML = `  
-                <div style="font-size: 32px; margin-bottom: 8px;">📷</div>  
-                <p>사진 추가하기</p>  
-            `;  
-        }  
-  
-        // 이미지 업로드  
-        function handleImageUpload(event) {  
-            const file = event.target.files[0];  
-            if (file) {  
-                const reader = new FileReader();  
-                reader.onload = function(e) {  
-                    selectedImage = e.target.result;  
-                    document.getElementById('imageUploadArea').innerHTML = `  
-                        <img src="${selectedImage}" alt="선택된 이미지" style="max-width: 100%; max-height: 200px; border-radius: 10px; margin-bottom: 8px;">  
-                        <p>사진 변경하기</p>  
-                    `;  
-                };  
-                reader.readAsDataURL(file);  
-            }  
-        }  
-  
-        // 게시물 제출  
-        function submitPost() {  
-            if (!currentUser || currentUser.role === 'user') {  
-                alert('권한이 없습니다.');  
-                return;  
-            }  
-  
-            const content = document.getElementById('writeContent').value;  
-            if (!content) {  
-                alert('내용을 입력해주세요.');  
-                return;  
-            }  
-  
-            const newPost = {  
-                id: posts.length + 1,  
-                author: currentUser.name,  
-                content: content,  
-                date: new Date().toLocaleDateString('ko-KR'),  
-                category: 'editor-talk',  
-                likes: 0,  
-                comments: 0,  
-                likedBy: [],  
-                bookmarkedBy: [],  
-                image: selectedImage  
-            };  
-  
-            posts.unshift(newPost);  
-            closeWriteModal();  
-            renderTab('editor-talk');  
-            alert('게시물이 작성되었습니다.');  
-        }  
-  
-        // 좋아요 토글  
-        function toggleLike(event, postId) {  
-            event.stopPropagation();  
-            if (!currentUser) {  
-                alert('로그인이 필요합니다.');  
-                return;  
-            }  
-  
-            const post = posts.find(p => p.id === postId);  
-            if (!post) return;  
-  
-            const userIndex = post.likedBy.indexOf(currentUser.id);  
-            if (userIndex > -1) {  
-                post.likedBy.splice(userIndex, 1);  
-                post.likes--;  
-            } else {  
-                post.likedBy.push(currentUser.id);  
-                post.likes++;  
-            }  
-  
-            renderTab('editor-talk');  
-        }  
-  
-        // 북마크 토글  
-        function toggleBookmark(event, postId) {  
-            event.stopPropagation();  
-            if (!currentUser) {  
-                alert('로그인이 필요합니다.');  
-                return;  
-            }  
-  
-            const post = posts.find(p => p.id === postId);  
-            if (!post) return;  
-  
-            const userIndex = post.bookmarkedBy.indexOf(currentUser.id);  
-            if (userIndex > -1) {  
-                post.bookmarkedBy.splice(userIndex, 1);  
-            } else {  
-                post.bookmarkedBy.push(currentUser.id);  
-            }  
-  
-            renderTab('editor-talk');  
-        }  
-  
-        // 상세페이지 보기  
-        function showPostDetail(postId) {  
-            const app = document.getElementById('app');  
-            app.innerHTML = getPostDetailTemplate(postId);  
-        }  
-  
-        // 컨텐츠 목록 보기  
-        function showContentList(type) {  
-            renderTab('content-list', type);  
-        }  
-  
-        // 로그아웃  
-        function handleLogout() {  
-            if (confirm('로그아웃 하시겠습니까?')) {  
-                currentUser = null;  
-                renderTab('home');  
-            }  
-        }  
-  
-        // 이벤트 리스너  
-        document.addEventListener('click', handleAppClicks);  
-  
-        function handleAppClicks(e) {  
-            const target = e.target.closest('[data-tab], .action-button, .mypage-button');  
-            if (!target) return;  
-  
-            if (target.hasAttribute('data-tab')) {  
-                e.preventDefault();  
-                const tab = target.getAttribute('data-tab');  
-                renderTab(tab);  
-            }  
-        }  
-  
-        // 초기 로드  
-        window.addEventListener('DOMContentLoaded', () => {  
-            // 자동 로그인 (테스트용)  
-            currentUser = users.find(u => u.id === 'hyeran@example.com');  
-            document.getElementById('loginModal').classList.add('hide');  
-            renderTab('home');  
-        });  
-    </script>  
-</body>  
-</html>  
+                            <p>문장 수집
