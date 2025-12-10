@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.6)</title> <meta name="description" content="에디터들의 응원이 도착해요!">
+    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.7)</title> <meta name="description" content="에디터들의 응원이 도착해요!">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -365,8 +365,7 @@
             // 🚨 2단계 방어: 글쓰기 모달이 실수로 뜨는 것을 막기 위해 강제로 숨김 처리
             document.getElementById('writePostModal').classList.add('hide');
 
-            // 초기 로딩 시 무조건 로그인 모달이 뜰 수 있도록 명시적으로 호출
-            showLoginModal();
+            // 🚨 showLoginModal() 강제 호출 제거. auth.onAuthStateChanged에서 처리.
             
             auth.onAuthStateChanged(user => {
                 if (user) {
@@ -377,14 +376,14 @@
                         isAdmin: isEditor(user.email)
                     };
                     localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    hideLoginModal();
+                    hideLoginModal(); // 🚨 로그인 성공 시 여기서 숨김
                     updateUserInfo();
                     loadData();
                     navigateTo('home');
                 } else {
                     currentUser = null;
                     localStorage.removeItem('currentUser');
-                    showLoginModal();
+                    showLoginModal(); // 🚨 로그인 상태가 아닐 때만 모달 표시
                 }
             });
         }
@@ -480,18 +479,18 @@
                 })
                 .then(userCredential => {
                     showNotification('로그인 성공', `${userCredential.user.email}님, 환영합니다.`);
-                    navigateTo('home'); // 🚨 순서 변경: 페이지 이동 먼저 실행
-                    hideLoginModal();   // 그 다음 모달 숨기기
+                    navigateTo('home'); // 🚨 페이지 이동은 여기서 실행
+                    // hideLoginModal() 호출 제거 (리스너가 처리)
                 })
                 .catch(error => {
                     // 임시 로그인 성공 처리 (관리자 테스트 용)
                     if (email === "hyeran@jahu.com" && password === "1234") {
-                        // 혜란님은 에디터 목록에서 제외되었지만, 테스트 용도로 isAdmin을 다시 true로 설정합니다.
+                        // 테스트 용도로 isAdmin은 true로 유지
                         currentUser = { id: 'temp-admin-id', name: "혜란", email: email, isAdmin: true }; 
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
                         showNotification('임시 로그인', '관리자 테스트 로그인에 성공했습니다.');
-                        navigateTo('home'); // 🚨 임시 로그인 성공 후에도 페이지 이동 먼저 실행
-                        hideLoginModal();
+                        navigateTo('home'); // 임시 로그인 후 페이지 이동 실행
+                        // hideLoginModal() 호출 제거 (리스너가 처리)
                     } else {
                         showNotification('로그인 실패', `에러: ${error.message}`);
                     }
