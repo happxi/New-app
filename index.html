@@ -1,4 +1,341 @@
-<nav class="bottom-nav bg-white flex justify-around items-center border-t border-gray-100">
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>메마른 일상에 한 방울의 휴식! 자휴레터</title> 
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Primary Color: Pastel Blue
+                        'primary-blue': { 
+                            DEFAULT: '#A2D2FF', // Main accent color (Soft Sky)
+                            dark: '#73A3E0',    // Darker for hover
+                            light: '#EAF4FF',   // Very light for background/badge
+                        },
+                        // Accent color for NEW badges
+                        'new-pink': '#FFC0CB', 
+                        'soft-cream': '#F8F8F8', // Background color
+                        'text-dark': '#333333',
+                        'text-light': '#666666',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .app-container {
+            max-width: 600px; /* 모바일/태블릿 뷰에 적합한 최대 너비 설정 */
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: #F8F8F8; /* soft-cream 배경 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            padding-bottom: 60px; /* 하단 탭바 공간 확보 */
+        }
+        .content-area {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+            height: 56px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 50;
+        }
+        .tab-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .hide {
+            display: none !important;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .btn-scale:active {
+            transform: scale(0.95);
+            transition: transform 0.1s;
+        }
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none; /* 기본 숨김 */
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .new-badge {
+            background-color: #FFC0CB; /* new-pink */
+            color: #333333;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            display: inline-block;
+        }
+        .stamp-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #A2D2FF; /* primary-blue */
+        }
+        .stamp-icon-unlocked {
+            background-color: #A2D2FF;
+            color: white;
+        }
+        .stamp-icon-locked {
+            color: #A2D2FF;
+            opacity: 0.5;
+        }
+        /* 커뮤니티 탭 스타일 */
+        .community-tab-item {
+            padding: 8px 16px;
+            font-size: 0.875rem; /* text-sm */
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+            color: #666666;
+        }
+        .active-community-tab {
+             color: #A2D2FF;
+             font-weight: bold;
+             border-bottom: 2px solid #A2D2FF;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="app-container">
+
+        <header class="bg-white sticky top-0 z-40 border-b border-gray-100">
+            <div class="content-area py-4 flex justify-between items-center">
+                <h1 onclick="navigateTo('home')" class="text-2xl font-bold text-text-dark cursor-pointer hover:opacity-80 transition-opacity">
+                    자휴레터
+                </h1>
+                <div id="userAuth" class="flex items-center space-x-3">
+                    <button id="authBtn" onclick="toggleAuthModal()" class="text-text-light hover:text-primary-blue btn-scale text-sm">
+                        로그인
+                    </button>
+                    <button id="settingBtn" class="text-text-light hover:text-primary-blue btn-scale hide">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.82 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.82 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.82-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.82-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="content-area pt-4">
+            
+            <section id="homePage" class="fade-in">
+                <h2 id="homeGreeting" class="text-2xl font-bold text-text-dark mb-2"></h2>
+                <p id="homeDescription" class="text-sm text-text-light mb-6"></p>
+                
+                <div class="bg-primary-blue-light p-4 rounded-xl shadow-inner mb-8 flex flex-col items-center text-center">
+                    <p class="text-xl font-bold text-primary-blue mb-2">
+                        지금 꼭 필요한 위로를 받아보세요!
+                    </p>
+                    <p class="text-sm text-text-dark mb-4">
+                        자휴레터와 자휴랩을 주제별로 한 눈에!
+                    </p>
+                    <button onclick="navigateTo('newsletter')" class="bg-primary-blue text-white px-6 py-2 rounded-full font-bold shadow-md hover:bg-primary-blue-dark btn-scale text-sm">
+                        레터 아카이브 바로가기
+                    </button>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-8">
+                    <button onclick="navigateTo('community')" class="text-xs bg-gray-200 text-text-dark px-3 py-1 rounded-full btn-scale">커뮤니티로</button>
+                    <button onclick="navigateTo('myPage')" class="text-xs bg-gray-200 text-text-dark px-3 py-1 rounded-full btn-scale">마이페이지로</button>
+                </div>
+
+            </section>
+            
+            <section id="newsletterPage" class="hide fade-in">
+                <div class="flex space-x-2 mb-4">
+                    <button class="px-4 py-1 text-sm rounded-full bg-primary-blue text-white font-bold btn-scale">전체</button>
+                    <button class="px-4 py-1 text-sm rounded-full bg-white text-text-dark border border-gray-200 btn-scale">자휴레터</button>
+                    <button class="px-4 py-1 text-sm rounded-full bg-white text-text-dark border border-gray-200 btn-scale">자휴랩</button>
+                </div>
+
+                <h2 class="text-xl font-bold text-text-dark mb-4 flex items-center">
+                    레터 목록
+                    <button id="writeBtnNewsletter" class="text-text-light ml-auto text-sm hide" onclick="toggleWriteModal('newsletter')">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                    </button>
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="navigateTo('detail', {type: 'letter', id: 1})">
+                        <p class="text-xs text-primary-blue font-semibold mb-1">자휴레터</p>
+                        <h3 class="text-lg font-bold text-text-dark flex items-center">
+                            나에게 필요한 진짜 휴식 찾기
+                            <span class="new-badge">NEW</span>
+                        </h3>
+                        <p class="text-sm text-text-light mt-1">지친 일상 속에서 에너지를 재충전하는 방법</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="navigateTo('detail', {type: 'letter', id: 2})">
+                        <p class="text-xs text-text-light font-semibold mb-1">자휴랩</p>
+                        <h3 class="text-lg font-bold text-text-dark">
+                            갓생 말고 갓잠 자는 루틴
+                        </h3>
+                        <p class="text-sm text-text-light mt-1">수면의 질을 높여주는 과학적인 접근법</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="communityPage" class="hide fade-in">
+                <h2 class="text-xl font-bold text-text-dark mb-4">커뮤니티</h2>
+
+                <div class="flex border-b border-gray-200 mb-6">
+                    <button class="community-tab-item active-community-tab text-primary-blue font-bold border-b-2 border-primary-blue" data-tab="talk" onclick="changeCommunityTab('talk')">💬 에디터 톡</button>
+                    <button class="community-tab-item" data-tab="moment" onclick="changeCommunityTab('moment')">✨ 모먼트</button>
+                </div>
+
+                <div id="communityTalk" class="community-content">
+                    <h3 class="font-bold text-lg text-text-dark mb-3 flex items-center">
+                        에디터 톡
+                        <button id="writeBtnTalk" class="text-text-light ml-auto text-sm hide" onclick="toggleWriteModal('editorTalk')">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                        </button>
+                    </h3>
+                    <p class="text-sm text-text-light mb-4">에디터들의 소소한 일상과 생각을 공유해요.</p>
+                    <div class="space-y-3">
+                        <div class="bg-white p-3 rounded-xl shadow-sm cursor-pointer" onclick="navigateTo('detail', {type: 'talk', id: 1})">
+                            <p class="text-text-dark">주말에 다녀온 북촌 한옥마을의 고요함 ✨</p>
+                            <p class="text-xs text-text-light mt-1">햅삐 에디터 · 3시간 전</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl shadow-sm cursor-pointer" onclick="navigateTo('detail', {type: 'talk', id: 2})">
+                            <p class="text-text-dark">새로운 아이디어는 늘 산책 중에 떠오른다!</p>
+                            <p class="text-xs text-text-light mt-1">자휴 에디터 · 1일 전</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="communityMoment" class="community-content hide">
+                    <h3 class="font-bold text-lg text-text-dark mb-3 flex items-center">
+                        모먼트
+                        <button id="writeBtnMoment" class="text-text-light ml-auto text-sm hide" onclick="toggleWriteModal('moment')">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                        </button>
+                    </h3>
+                    <p class="text-sm text-text-light mb-4">구독자님들의 일상 속 행복 모먼트를 공유해 주세요!</p>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="aspect-square bg-gray-300 rounded-lg flex items-center justify-center text-xs text-white">사진 1</div>
+                        <div class="aspect-square bg-gray-300 rounded-lg flex items-center justify-center text-xs text-white">사진 2</div>
+                        <div class="aspect-square bg-gray-300 rounded-lg flex items-center justify-center text-xs text-white">사진 3</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="myPage" class="hide fade-in">
+                <h2 class="text-xl font-bold text-text-dark mb-6">마이페이지</h2>
+
+                <div id="profileCard" class="bg-primary-blue-light p-5 rounded-xl text-center mb-6 shadow-sm hide">
+                    <div class="w-16 h-16 bg-primary-blue rounded-full mx-auto mb-3 flex items-center justify-center text-white text-2xl font-bold">H</div>
+                    <p id="profileName" class="text-lg font-bold text-text-dark">햅삐님</p>
+                    <p id="profileEmail" class="text-sm text-text-light">happxi@jahyu.com</p>
+                </div>
+                
+                <div class="flex border-b border-gray-200 mb-6">
+                    <button class="my-tab-item active-tab text-primary-blue font-bold border-b-2 border-primary-blue" data-tab="liked">❤️ 좋아요</button>
+                    <button class="my-tab-item" data-tab="bookmarked">🔖 북마크</button>
+                    <button class="my-tab-item" data-tab="qna">❓ Q&A</button>
+                    <button class="my-tab-item" data-tab="stamp">⭐️ 스탬프</button>
+                </div>
+
+                <div id="tabContentLiked" class="my-tab-content">
+                    <p class="text-sm text-text-light">좋아요를 누른 레터/톡 목록 (예시)</p>
+                </div>
+                <div id="tabContentBookmarked" class="my-tab-content hide">
+                    <p class="text-sm text-text-light">북마크한 레터/톡 목록 (예시)</p>
+                </div>
+                <div id="tabContentQna" class="my-tab-content hide">
+                    <p class="text-sm text-text-light">내가 작성한 Q&A 목록 (예시)</p>
+                </div>
+                
+                <div id="tabContentStamp" class="my-tab-content hide">
+                    <h3 class="font-bold text-text-dark mb-4">나의 스탬프 컬렉션</h3>
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="text-center">
+                            <div class="stamp-icon stamp-icon-unlocked mx-auto">🌱</div>
+                            <p class="text-xs mt-1 text-text-dark font-semibold">첫 방문</p>
+                        </div>
+                        <div class="text-center">
+                            <div id="stampIconNewsletter" class="stamp-icon stamp-icon-unlocked mx-auto">💌</div>
+                            <p class="text-xs mt-1 text-text-dark font-semibold">레터 완독</p>
+                        </div>
+                        <div class="text-center">
+                            <div id="stampIconTalk" class="stamp-icon stamp-icon-locked mx-auto">💬</div>
+                            <p class="text-xs mt-1 text-text-light">톡 참여</p>
+                        </div>
+                        <div class="text-center">
+                            <div id="stampIconMoment" class="stamp-icon stamp-icon-locked mx-auto">📸</div>
+                            <p class="text-xs mt-1 text-text-light">모먼트 공유</p>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            
+            <section id="detailPage" class="hide fade-in">
+                <h2 id="detailTitle" class="text-2xl font-bold text-text-dark mb-4">레터 제목 (예시)</h2>
+                <p class="text-xs text-text-light mb-6">by 햅삐 에디터 | 2025.12.10</p>
+                <div id="detailContent" class="text-text-dark leading-relaxed mb-8">
+                    <p>안녕하세요, 햅삐님! 오늘 레터는 당신의 행복을 위한 작은 위로입니다. </p>
+                    <p class="mt-4">이 글을 끝까지 읽어주시면 특별한 스탬프가 지급됩니다!</p>
+                </div>
+
+                <div id="stampAction" class="text-center mb-8">
+                    <button onclick="acquireStamp('newsletter')" class="bg-new-pink text-text-dark px-6 py-2 rounded-full font-bold shadow-md hover:opacity-90 btn-scale">
+                        ⭐️ 스탬프 획득하기
+                    </button>
+                </div>
+                
+                <h3 class="text-xl font-bold text-text-dark mb-4">댓글 (2)</h3>
+                </section>
+
+        </main>
+
+        <nav class="bottom-nav bg-white flex justify-around items-center border-t border-gray-100">
             <div id="tabHome" class="tab-item text-primary-blue" onclick="navigateTo('home')">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 <span class="text-xs mt-1">홈</span>
@@ -7,13 +344,9 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664L12 3l7.11 5.406a2 2 0 01.89 1.664V19M21 19H3.93a1 1 0 01-.89-.553L1.58 17.5l.48-.99a1 1 0 01.89-.553H21M3 19h18"/></svg>
                 <span class="text-xs mt-1">레터</span>
             </div>
-            <div id="tabEditorTalk" class="tab-item text-text-light" onclick="navigateTo('editorTalk')">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 4v-4z"/></svg>
-                <span class="text-xs mt-1">에디터톡</span>
-            </div>
-            <div id="tabMoment" class="tab-item text-text-light" onclick="navigateTo('moment')">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-12 5h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                <span class="text-xs mt-1">모먼트</span>
+            <div id="tabCommunity" class="tab-item text-text-light" onclick="navigateTo('community')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.136C4.93 15.542 5 14.53 5 13c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                <span class="text-xs mt-1">커뮤니티</span>
             </div>
             <div id="tabMyPage" class="tab-item text-text-light hide" onclick="navigateTo('myPage')">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14c-1.333 0-4.477 1.25-6 3h12c-1.523-1.75-4.667-3-6-3z"/></svg>
@@ -21,27 +354,151 @@
             </div>
         </nav>
         
-        <script>
-    // ... (중략)
+        <div id="authModal" class="modal" onclick="closeModal(event, 'authModal')">
+            <div class="modal-content max-w-xs">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-primary-blue-light rounded-full flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-6 h-6 text-primary-blue" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary-blue">햅삐님 반갑습니다!</h3>
+                    <p class="text-xs text-text-light mt-1">당신의 힐링을 위한, 자휴레터</p>
+                </div>
+                <form id="loginForm" class="space-y-4">
+                    <input type="email" id="email" placeholder="이메일" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                    <input type="password" id="password" placeholder="비밀번호" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                    <button type="submit" class="w-full bg-primary-blue text-white p-3 rounded-lg font-bold hover:bg-primary-blue-dark btn-scale">로그인</button>
+                    <p class="text-center text-xs text-text-light">아직 계정이 없으신가요? <a href="#" class="text-primary-blue hover:underline font-semibold">회원가입</a></p>
+                </form>
+            </div>
+        </div>
+
+        <div id="writeModal" class="modal" onclick="closeModal(event, 'writeModal')">
+            <div class="modal-content">
+                <h3 id="writeModalTitle" class="text-xl font-bold text-text-dark mb-4">새 글 작성</h3>
+                <form id="writeForm" class="space-y-4">
+                    <input type="text" id="writeTitle" placeholder="제목" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                    <textarea id="writeContent" placeholder="내용을 작성하세요..." class="w-full p-3 border border-gray-300 rounded-lg h-32" required></textarea>
+                    <input type="hidden" id="contentType" value="newsletter">
+                    <button type="submit" class="w-full bg-primary-blue text-white p-3 rounded-lg font-bold hover:bg-primary-blue-dark btn-scale">등록하기</button>
+                </form>
+            </div>
+        </div>
+        
+        <div id="toast" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-text-dark text-white px-4 py-2 rounded-lg shadow-xl text-sm hide transition-opacity duration-300 opacity-0 z-50">
+            알림 메시지
+        </div>
+    </div>
+
+
+<script>
+    // --- Global Variables and Constants ---
+    const HAPPSI_EMAIL = 'happxi@jahyu.com'; // 관리자 계정 이메일 (햅삐님)
+    let currentUser = null; // 현재 로그인 사용자 정보 (null: 비로그인)
+    let userStamps = { // 사용자 스탬프 획득 상태 (예시)
+        newsletter: true, // 레터 완독 (기본 획득 가정)
+        talk: false,
+        moment: false
+    };
+
+    // --- Core Navigation and UI Functions ---
 
     /**
-     * 사용자 로그인 상태에 따라 UI를 업데이트합니다. (V7.5 반영: 마이페이지 탭 숨김)
+     * 페이지 이동 및 UI 업데이트를 처리합니다.
+     */
+    function navigateTo(pageId, params = {}) {
+        const pages = ['homePage', 'newsletterPage', 'communityPage', 'myPage', 'detailPage']; 
+        const targetPage = pageId + 'Page';
+        
+        pages.forEach(id => document.getElementById(id).classList.add('hide'));
+        
+        if (document.getElementById(targetPage)) {
+            document.getElementById(targetPage).classList.remove('hide');
+        }
+
+        updateTabbar(pageId);
+        
+        if (pageId === 'detail') {
+            loadDetailPage(params.type, params.id);
+        } else if (pageId === 'myPage') {
+            loadMyPageContent();
+        } else if (pageId === 'community') {
+            // 커뮤니티 탭으로 이동 시 기본적으로 '톡' 탭 활성화
+            changeCommunityTab('talk'); 
+        }
+        
+        updateAdminButtons();
+        window.scrollTo(0, 0); 
+    }
+
+    /**
+     * 하단 탭바의 활성화 상태를 업데이트합니다.
+     */
+    function updateTabbar(activePage) {
+        const tabs = document.querySelectorAll('.bottom-nav .tab-item');
+        tabs.forEach(tab => {
+            tab.classList.remove('text-primary-blue');
+            tab.classList.add('text-text-light');
+            
+            if (tab.id.toLowerCase().includes(activePage.toLowerCase())) {
+                tab.classList.add('text-primary-blue');
+                tab.classList.remove('text-text-light');
+            }
+        });
+    }
+
+    /**
+     * 커뮤니티 페이지 내 상단 탭 전환 함수
+     */
+    function changeCommunityTab(tabId) {
+        document.querySelectorAll('.community-tab-item').forEach(btn => {
+            btn.classList.remove('active-community-tab', 'text-primary-blue', 'font-bold', 'border-b-2', 'border-primary-blue');
+        });
+        document.querySelectorAll('.community-content').forEach(content => content.classList.add('hide'));
+
+        const activeBtn = document.querySelector(`.community-tab-item[data-tab="${tabId}"]`);
+        activeBtn.classList.add('active-community-tab', 'text-primary-blue', 'font-bold', 'border-b-2', 'border-primary-blue');
+
+        if (tabId === 'talk') {
+            document.getElementById('communityTalk').classList.remove('hide');
+        } else if (tabId === 'moment') {
+            document.getElementById('communityMoment').classList.remove('hide');
+        }
+    }
+    
+    // --- Authentication and User State ---
+    
+    function toggleAuthModal() {
+        if (currentUser) {
+            handleLogout();
+        } else {
+            document.getElementById('authModal').style.display = 'flex';
+        }
+    }
+
+    function closeModal(event, modalId) {
+        if (event.target.id === modalId || event.target.closest('.modal-content')) {
+            // 모달 내부를 클릭하면 닫히지 않게 처리
+            if(event.target.closest('.modal-content') && event.target.id !== modalId) return;
+            document.getElementById(modalId).style.display = 'none';
+        }
+    }
+
+    /**
+     * 사용자 로그인 상태에 따라 UI를 업데이트합니다. (V7.7 반영: 마이페이지 탭 숨김)
      */
     function updateAuthUI() {
-        // ... (버튼 및 홈 요소 정의 생략)
+        const authBtn = document.getElementById('authBtn');
+        const settingBtn = document.getElementById('settingBtn');
+        const homeGreeting = document.getElementById('homeGreeting');
+        const homeDescription = document.getElementById('homeDescription');
         const profileCard = document.getElementById('profileCard');
-        const profileName = document.getElementById('profileName');
-        const profileEmail = document.getElementById('profileEmail');
+        const tabMyPage = document.getElementById('tabMyPage'); // 마이페이지 탭
         
-        // V7.5 추가: 마이페이지 탭 요소 정의
-        const tabMyPage = document.getElementById('tabMyPage');
-        
-        // 관리자/에디터 버튼 표시 상태 업데이트
         updateAdminButtons();
 
         if (currentUser) {
-            // ... (로그인 상태 시 로직 유지)
             authBtn.textContent = '로그아웃';
+            authBtn.onclick = handleLogout;
             settingBtn.classList.remove('hide');
             tabMyPage.classList.remove('hide'); // 로그인 시 마이페이지 탭 표시
             
@@ -49,24 +506,18 @@
             if (currentUser.email === HAPPSI_EMAIL) {
                  homeGreeting.textContent = `햅삐님 오늘은 더 행복하세요!`;
                  homeDescription.textContent = `우리, 더 편하고 프라이빗하게 소통해요!`;
-                 profileCard.classList.remove('hide');
-                 profileName.textContent = '햅삐님';
-                 profileEmail.textContent = HAPPSI_EMAIL;
             } else {
                  // 일반 사용자 문구
                  homeGreeting.textContent = `어떤 위로가 필요하신가요, ${currentUser.name}님?`;
                  homeDescription.textContent = `성장과 행복을 위한 가이드를 만나보세요.`;
-                 profileCard.classList.remove('hide');
-                 profileName.textContent = currentUser.name;
-                 profileEmail.textContent = currentUser.email;
             }
+            profileCard.classList.remove('hide');
         } else {
-            // ... (비로그인 상태 시 로직)
             authBtn.textContent = '로그인';
             authBtn.onclick = toggleAuthModal;
             settingBtn.classList.add('hide');
             profileCard.classList.add('hide');
-            tabMyPage.classList.add('hide'); // V7.5 반영: 비로그인 시 마이페이지 탭 숨김
+            tabMyPage.classList.add('hide'); // V7.7 반영: 비로그인 시 마이페이지 탭 숨김
 
             // 비로그인 시 문구
             homeGreeting.textContent = '당신의 행복 레터 가이드';
@@ -74,5 +525,157 @@
         }
     }
     
-    // ... (후략)
+    function handleLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById('email').value;
+        const name = email.split('@')[0]; // 임시 이름 설정
+        
+        if (email === HAPPSI_EMAIL) {
+            currentUser = { name: '햅삐', email: email };
+            showToast('✅ 관리자 계정으로 로그인되었습니다.');
+        } else {
+            currentUser = { name: name, email: email };
+            showToast('✅ 로그인 성공!');
+        }
+        
+        document.getElementById('authModal').style.display = 'none';
+        document.getElementById('loginForm').reset();
+        updateAuthUI();
+        updateStampUI();
+    }
+
+    function handleLogout() {
+        currentUser = null;
+        showToast('👋 로그아웃 되었습니다.');
+        updateAuthUI();
+        navigateTo('home');
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        updateAuthUI();
+        navigateTo('home');
+        
+        // 마이페이지 탭 전환 리스너
+        document.querySelectorAll('.my-tab-item').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.my-tab-item').forEach(btn => {
+                    btn.classList.remove('active-tab', 'text-primary-blue', 'font-bold', 'border-b-2', 'border-primary-blue');
+                });
+                document.querySelectorAll('.my-tab-content').forEach(content => content.classList.add('hide'));
+                
+                this.classList.add('active-tab', 'text-primary-blue', 'font-bold', 'border-b-2', 'border-primary-blue');
+                document.getElementById('tabContent' + this.dataset.tab.charAt(0).toUpperCase() + this.dataset.tab.slice(1)).classList.remove('hide');
+            });
+        });
+
+        // 초기 마이페이지 탭 설정
+        document.querySelector('.my-tab-item[data-tab="liked"]').click();
+        
+    });
+
+    // --- Content/Modal Logic ---
+    // ... (toggleWriteModal, writeForm submit, loadDetailPage, acquireStamp, updateStampUI, showToast 함수 유지) ...
+    function toggleWriteModal(type) {
+        if (!currentUser || currentUser.email !== HAPPSI_EMAIL) {
+            showToast('권한이 없습니다.');
+            return;
+        }
+        
+        document.getElementById('contentType').value = type;
+        
+        let title = '';
+        if (type === 'newsletter') title = '새 레터 작성';
+        else if (type === 'editorTalk') title = '새 에디터 톡 작성';
+        else if (type === 'moment') title = '새 모먼트 작성';
+        
+        document.getElementById('writeModalTitle').textContent = title;
+        document.getElementById('writeModal').style.display = 'flex';
+    }
+
+    document.getElementById('writeForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const type = document.getElementById('contentType').value;
+        const title = document.getElementById('writeTitle').value;
+        
+        showToast(`'${title}' (${type})이/가 등록되었습니다.`);
+        
+        document.getElementById('writeModal').style.display = 'none';
+        document.getElementById('writeForm').reset();
+        
+        if (type === 'newsletter') navigateTo('newsletter');
+        else if (type === 'editorTalk') {
+            navigateTo('community');
+            changeCommunityTab('talk');
+        }
+        else if (type === 'moment') {
+            navigateTo('community');
+            changeCommunityTab('moment');
+        }
+    });
+
+    function loadDetailPage(type, id) {
+        document.getElementById('detailTitle').textContent = `${type.toUpperCase()} #${id} 제목`;
+        
+        const stampAction = document.getElementById('stampAction');
+        if (type === 'letter' || type === 'moment') {
+            stampAction.classList.remove('hide');
+        } else {
+            stampAction.classList.add('hide');
+        }
+    }
+    
+    function acquireStamp(stampKey) {
+        if (!currentUser) {
+            showToast('로그인 후 이용해 주세요.');
+            return;
+        }
+
+        if (userStamps[stampKey]) {
+            showToast(`이미 ${stampKey} 스탬프를 획득하셨습니다!`);
+            return;
+        }
+        
+        userStamps[stampKey] = true;
+        showToast('⭐️ 스탬프 획득 완료!');
+        
+        updateStampUI();
+    }
+
+    function updateStampUI() {
+        // ... (스탬프 UI 업데이트 로직 유지) ...
+        if (userStamps.newsletter) {
+            const icon = document.getElementById('stampIconNewsletter');
+            icon.classList.remove('stamp-icon-locked', 'text-text-light');
+            icon.classList.add('stamp-icon-unlocked');
+        }
+        if (userStamps.talk) {
+            const icon = document.getElementById('stampIconTalk');
+            icon.classList.remove('stamp-icon-locked', 'text-text-light');
+            icon.classList.add('stamp-icon-unlocked');
+        }
+        if (userStamps.moment) {
+            const icon = document.getElementById('stampIconMoment');
+            icon.classList.remove('stamp-icon-locked', 'text-text-light');
+            icon.classList.add('stamp-icon-unlocked');
+        }
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.remove('hide', 'opacity-0');
+        toast.classList.add('opacity-100');
+        
+        setTimeout(() => {
+            toast.classList.remove('opacity-100');
+            toast.classList.add('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('hide');
+            }, 300);
+        }, 3000);
+    }
 </script>
+
+</body>
+</html>
