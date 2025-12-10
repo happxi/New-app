@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.0)</title>
-    <meta name="description" content="에디터들의 응원이 도착해요!">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.2)</title> <meta name="description" content="에디터들의 응원이 도착해요!"> <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -49,7 +46,6 @@
         #postDetailModal { position: fixed; inset: 0; background: white; z-index: 55; transform: translateY(100%); transition: transform 0.3s ease-out; overflow-y: auto; }
         #postDetailModal.show { transform: translateY(0); }
         .disabled-click { cursor: not-allowed; opacity: 0.6; }
-        .my-page-tab.active { border-bottom: 2px solid #ec4899; color: #db2777; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -64,16 +60,14 @@
             </div>
             
             <div id="loginForm">
-                <div class="space-y-4 mb-3">
+                <div class="space-y-4 mb-6">
                     <input type="email" id="loginEmail" placeholder="이메일" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxury-pink-400">
                     <input type="password" id="loginPassword" placeholder="비밀번호" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxury-pink-400">
                 </div>
-                
                 <div class="flex items-center mb-6">
                     <input type="checkbox" id="rememberMe" class="form-checkbox text-luxury-pink-500 rounded border-gray-300">
                     <label for="rememberMe" class="ml-2 text-sm text-gray-700">로그인 상태 유지</label>
                 </div>
-
                 <button onclick="login()" class="w-full bg-gradient-to-r from-luxury-pink-400 to-luxury-pink-500 text-white py-3 rounded-xl font-medium mb-4 btn-scale transition-transform">로그인</button>
                 <div class="flex justify-between text-sm">
                     <button onclick="showSignup()" class="text-luxury-pink-500 font-medium">회원가입</button>
@@ -186,7 +180,7 @@
         </div>
 
         <main id="mainContent">
-            <section id="homePage" class="p-4 fade-in">
+            <section id="homePage" class="p-4 hide fade-in">
                 <h1 class="text-xl font-bold text-gray-800 mb-4">어떤 자휴가 필요하신가요, 햅삐님?</h1>
                 </section>
             
@@ -195,10 +189,9 @@
                 <div id="newsletterList" class="space-y-6">
                     </div>
             </section>
-            
+
             <section id="editorPage" class="p-4 hide fade-in">
-                <h2 class="text-2xl font-extrabold text-gray-800 mb-2 border-b-4 border-luxury-pink-500 pb-2">에디터톡</h2>
-                <p class="text-lg font-medium text-gray-600 mb-6">에디터들과 더 친해져요!</p>
+                <h2 class="text-2xl font-extrabold text-gray-800 mb-6 border-b-4 border-luxury-pink-500 pb-2">에디터톡</h2>
                 <div id="editorTabs" class="flex space-x-2 mb-4 overflow-x-auto pb-2">
                     </div>
                 <div id="editorList" class="space-y-4">
@@ -257,30 +250,17 @@
 
         <nav class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-100 px-6 py-2 z-40">
             <div class="flex justify-around items-center h-full">
-                <button onclick="navigateTo('newsletter')" class="nav-item flex flex-col items-center text-xs text-luxury-pink-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>레터</button>
+                <button onclick="navigateTo('newsletter')" class="nav-item flex flex-col items-center text-xs text-gray-500 hover:text-gray-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>레터</button>
                 <button onclick="navigateTo('editor')" class="nav-item flex flex-col items-center text-xs text-gray-500 hover:text-gray-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>에디터톡</button>
                 <button onclick="navigateTo('moment')" class="nav-item flex flex-col items-center text-xs text-gray-500 hover:text-gray-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>모먼트</button>
-                <button onclick="navigateTo('mypage')" class="nav-item flex flex-col items-center text-xs text-gray-500 hover:text-gray-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>마이</button>
+                <button onclick="navigateTo('mypage')" class="nav-item flex flex-col items-center text-xs text-gray-500 hover:text-gray-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>마이페이지</button>
             </div>
         </nav>
     </div>
 
     <div id="adminOverlay" onclick="toggleAdmin()"></div>
-    <div id="adminPanel" class="p-6">
-        <h3 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">관리자 설정</h3>
-        
-        <div id="newsletterUploadSection" class="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
-            <h4 class="text-lg font-bold text-luxury-pink-600 mb-3">🔗 뉴스레터 URL 등록</h4>
-            <div class="space-y-3">
-                <input type="text" id="nlTitle" placeholder="제목" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-luxury-pink-400">
-                <input type="url" id="nlUrl" placeholder="외부 콘텐츠 URL (예: http://naver.com/...)" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-luxury-pink-400">
-                <textarea id="nlSummary" placeholder="요약 (선택 사항)" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-luxury-pink-400"></textarea>
-                <button onclick="submitNewsletterUrl()" class="w-full bg-luxury-gold-500 text-white py-2 rounded-lg font-medium btn-scale transition-transform">뉴스레터 등록</button>
-            </div>
+    <div id="adminPanel">
         </div>
-        
-        <button onclick="logout()" class="w-full bg-red-500 text-white py-2 rounded-lg font-medium btn-scale transition-transform">로그아웃</button>
-    </div>
 
     <div id="writePostModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50 hide">
         <div class="bg-white rounded-t-2xl w-full max-w-md h-5/6 flex flex-col">
@@ -326,7 +306,7 @@
 
     <script>
         // --------------------------------------------------------------------------------------
-        // 1. 🔑 Firebase 설정 (혜란 님의 키로 자동 입력 완료)
+        // 1. 🔑 Firebase 설정 
         // --------------------------------------------------------------------------------------
         const firebaseConfig = {
             apiKey: "AIzaSyDq2eT8H6tNcsrT8dhZWsEyyMZbpCZIZZQ",
@@ -343,18 +323,17 @@
         const auth = firebase.auth();         
         // --------------------------------------------------------------------------------------
 
-        // 🚨 이메일 주소 설정 (@jahyu.com 확인)
         const ADMIN_EDITORS = [
-            "elly@jahu.com", 
-            "happxi@jahu.com", 
+            "hyeran@jahu.com", 
+            "hapssi@jahu.com", 
             "gokal@jahu.com", 
             "yudan@jahu.com", 
             "sunny@jahu.com"
         ];
         
         const EDITOR_NAMES = {
-            "elly@jahu.com": "엘리",
-            "happxi@jahu.com": "햅씨", 
+            "hyeran@jahu.com": "혜란",
+            "hapssi@jahu.com": "햅씨",
             "gokal@jahu.com": "고칼",
             "yudan@jahu.com": "유단",
             "sunny@jahu.com": "써니",
@@ -374,6 +353,9 @@
         });
         
         function initializeApp() {
+            // 초기 로딩 시 무조건 로그인 모달이 뜰 수 있도록 명시적으로 호출
+            showLoginModal();
+            
             auth.onAuthStateChanged(user => {
                 if (user) {
                     currentUser = {
@@ -383,10 +365,10 @@
                         isAdmin: isEditor(user.email)
                     };
                     localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    hideLoginModal(); 
+                    hideLoginModal();
                     updateUserInfo();
                     loadData();
-                    navigateTo(currentPage === 'home' ? 'home' : currentPage); // 마지막 페이지 유지
+                    navigateTo('home');
                 } else {
                     currentUser = null;
                     localStorage.removeItem('currentUser');
@@ -396,7 +378,7 @@
         }
 
         function isEditor(email) {
-            return email && email.endsWith('@jahyu.com') && ADMIN_EDITORS.includes(email);
+            return ADMIN_EDITORS.includes(email);
         }
 
         // --------------------- 모달/UI 관련 함수 ---------------------
@@ -445,14 +427,11 @@
                 showNotification('안내', '로그인이 필요합니다.');
                 return;
             }
-            // 🚨 에디터 톡톡은 관리자만 작성 가능
             if (type === 'editor' && !currentUser.isAdmin) {
                 showNotification('권한 없음', '에디터만 글을 작성할 수 있습니다.');
                 return;
             }
             
-            // ... (생략된 모달 표시 및 초기화 로직) ...
-
             const modal = document.getElementById('writePostModal');
             modal.classList.remove('hide'); 
 
@@ -461,10 +440,8 @@
                 type === 'editor' ? '에디터 톡톡 작성' :
                 type === 'moment' ? '자휴 모먼트 작성' :
                 type === 'qna' ? 'Q&A 작성' : '글쓰기';
-            
-            // ... (생략된 옵션 표시/숨김 설정) ...
         }
-        
+
         function hideWritePost() {
             const modal = document.getElementById('writePostModal');
             if (modal) {
@@ -474,12 +451,7 @@
             }
         }
 
-        function hidePostDetail() {
-            document.getElementById('postDetailModal').classList.remove('show');
-            currentPostId = null;
-        }
-
-        // --------------------- 인증 로직 (로그인 오류 해결 보강) ---------------------
+        // --------------------- 인증 로직 ---------------------
         
         function login() {
             const email = document.getElementById('loginEmail').value;
@@ -487,24 +459,24 @@
             const rememberMe = document.getElementById('rememberMe').checked; 
 
             const persistenceType = rememberMe ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION;
-
+            
             auth.setPersistence(persistenceType)
                 .then(() => {
                     return auth.signInWithEmailAndPassword(email, password);
                 })
                 .then(userCredential => {
                     showNotification('로그인 성공', `${userCredential.user.email}님, 환영합니다.`);
-                    hideLoginModal(); // 🚨 오류 해결: 로그인 성공 시 모달 즉시 닫기
+                    hideLoginModal(); 
                     navigateTo('home'); 
                 })
                 .catch(error => {
-                    // 🚨 임시 로그인 성공 처리 (오류 해결: 성공 시 UI 액션을 명확히 분리)
+                    // 임시 로그인 성공 처리 (관리자 테스트 용)
                     if (email === "hyeran@jahu.com" && password === "1234") {
                         currentUser = { id: 'temp-admin-id', name: "혜란", email: email, isAdmin: true };
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                        showNotification('임시 로그인', 'Firebase 인증 설정 후에는 정식 로그인을 사용해주세요.');
-                        hideLoginModal(); // 🚨 오류 해결: 모달 닫기
-                        navigateTo('home'); // 🚨 오류 해결: 화면 전환
+                        showNotification('임시 로그인', '관리자 테스트 로그인에 성공했습니다.');
+                        hideLoginModal();
+                        navigateTo('home');
                     } else {
                         showNotification('로그인 실패', `에러: ${error.message}`);
                     }
@@ -523,7 +495,7 @@
             });
         }
         
-        // (signup, sendPasswordResetEmail 함수는 생략)
+        // (signup, sendPasswordResetEmail, loadData 등 기타 함수는 생략)
 
         // --------------------- 페이지 이동 및 데이터 로직 ---------------------
         
@@ -534,12 +506,6 @@
             
             currentPage = page;
             
-            // 페이지별 로딩 함수 호출 (생략된 함수 가정)
-            if (page === 'newsletter') loadNewsletterData();
-            // else if (page === 'editor') loadEditorData();
-            // else if (page === 'moment') loadMomentData();
-            // else if (page === 'mypage') loadMyPageData();
-
             // 하단 네비게이션 활성화
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('text-luxury-pink-600');
@@ -562,7 +528,6 @@
             }
         }
         
-        // 🚨 My Page 콘텐츠 로드 (UI 전환 기능만 추가)
         function loadMyPageContent(type) {
             const detailElement = document.getElementById('myPageContentDetail');
             const titleElement = document.getElementById('detailTitle');
@@ -580,8 +545,6 @@
             
             detailElement.classList.remove('hide');
         }
-
-        // (loadData, submitPost, submitNewsletterUrl 등 기타 함수들은 생략합니다.)
     </script>
 </body>
 </html>
