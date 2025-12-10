@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.4)</title> <meta name="description" content="에디터들의 응원이 도착해요!">
+    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.5)</title> <meta name="description" content="에디터들의 응원이 도착해요!">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +31,12 @@
         * { font-family: 'Noto Sans KR', sans-serif; }
         body { overflow-x: hidden; }
         .hide { display: none; }
+        
+        /* 🚨 1단계 방어: 글쓰기 모달이 처음부터 절대 보이지 않도록 CSS 레벨에서 강제 숨김 */
+        #writePostModal {
+            display: none !important;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 0.3s ease-out; }
         .btn-scale:active { transform: scale(0.95); }
@@ -315,7 +321,7 @@
             authDomain: "jahyu-e24cd.firebaseapp.com",
             databaseURL: "https://jahyu-e24cd-default-rtdb.firebaseio.com", 
             projectId: "jahyu-e24cd",
-            storageBucket: "jahyu-e24cd.firebaseapis.com",
+            storageBucket: "jahyu-e24cd.firebasestorage.app",
             messagingSenderId: "955637836464",
             appId: "1:955637836464:web:441e7746872d7448fca975"
         };
@@ -325,11 +331,11 @@
         const auth = firebase.auth();         
         // --------------------------------------------------------------------------------------
 
-        // 🚨 요청에 따라 혜란님을 제외하고 엘리님을 추가하여 에디터 목록을 수정했습니다.
+        // 혜란님 제외, 엘리님 추가된 최종 에디터 목록
         const ADMIN_EDITORS = [
             "hapssi@jahu.com", 
             "gokal@jahu.com",
-            "elli@jahu.com", // 엘리님 추가
+            "elli@jahu.com", 
             "yudan@jahu.com", 
             "sunny@jahu.com"
         ];
@@ -337,7 +343,7 @@
         const EDITOR_NAMES = {
             "hapssi@jahu.com": "햅씨",
             "gokal@jahu.com": "고칼",
-            "elli@jahu.com": "엘리", // 엘리님 추가
+            "elli@jahu.com": "엘리",
             "yudan@jahu.com": "유단",
             "sunny@jahu.com": "써니",
         };
@@ -356,7 +362,8 @@
         });
         
         function initializeApp() {
-            // 🚨 최우선 방어: 글쓰기 모달이 실수로 뜨는 것을 막기 위해 강제로 숨김 처리
+            // 🚨 2단계 방어: 글쓰기 모달이 실수로 뜨는 것을 막기 위해 강제로 숨김 처리
+            // CSS에서 이미 display: none !important;로 숨겼지만, 이중 방어로 재확인
             document.getElementById('writePostModal').classList.add('hide');
 
             // 초기 로딩 시 무조건 로그인 모달이 뜰 수 있도록 명시적으로 호출
@@ -439,6 +446,7 @@
             }
             
             const modal = document.getElementById('writePostModal');
+            // 🚨 JS 레벨에서 hide 클래스를 제거하여 모달 표시를 준비합니다.
             modal.classList.remove('hide'); 
 
             document.getElementById('postTypeInput').value = type;
@@ -451,6 +459,7 @@
         function hideWritePost() {
             const modal = document.getElementById('writePostModal');
             if (modal) {
+                // 🚨 JS 레벨에서 hide 클래스를 추가하여 모달을 숨깁니다.
                 modal.classList.add('hide');
                 document.getElementById('postTitle').value = '';
                 document.getElementById('postContent').innerText = '';
@@ -478,9 +487,10 @@
                 .catch(error => {
                     // 임시 로그인 성공 처리 (관리자 테스트 용)
                     if (email === "hyeran@jahu.com" && password === "1234") {
-                        currentUser = { id: 'temp-admin-id', name: "혜란", email: email, isAdmin: true };
+                        // 혜란님은 에디터 목록에서 제외되었으므로, isAdmin은 false 처리
+                        currentUser = { id: 'temp-admin-id', name: "혜란", email: email, isAdmin: false }; 
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                        showNotification('임시 로그인', '관리자 테스트 로그인에 성공했습니다.');
+                        showNotification('임시 로그인', '일반 사용자 테스트 로그인에 성공했습니다.');
                         hideLoginModal();
                         navigateTo('home');
                     } else {
