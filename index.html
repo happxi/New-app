@@ -331,7 +331,7 @@
         });
         
         function initializeApp() {
-            // 🚨🚨🚨 [최종 수정 1] 앱 로딩 시 글쓰기 모달을 강제로 닫아 오류를 방지합니다.
+            // 🚨🚨🚨 [수정 1] 앱 로딩 시 글쓰기 모달을 강제로 닫아 오류를 방지합니다. (누락된 코드 복구)
             hideWritePost(); 
 
             // Firebase 인증 상태 리스너 (실제 로그인 처리)
@@ -347,8 +347,7 @@
                     hideLoginModal();
                     updateUserInfo();
                     loadData();
-                    // hide 클래스를 제거했으므로 navigateTo('home')을 호출하면 중복 호출이 됩니다.
-                    // 초기 화면은 이미 HTML에서 로드되어 있으므로, 데이터만 로드하도록 남겨둡니다.
+                    navigateTo('home');
                 } else {
                     currentUser = null;
                     localStorage.removeItem('currentUser');
@@ -545,11 +544,11 @@
                     })).sort((a, b) => new Date(b.date) - new Date(a.date));
                 }
                 // 이하는 데이터 로드 및 UI 업데이트 함수 (기존 코드에 있다고 가정)
-                loadCommunityData(); 
-                loadNewsletterData();
-                loadQnaData();
-                loadMomentData();
-                loadEditorData();
+                // loadCommunityData(); 
+                // loadNewsletterData();
+                // loadQnaData();
+                // loadMomentData();
+                // loadEditorData();
             });
             
             // 샘플 데이터 로딩 (DB에 데이터가 없을 때만) - 생략
@@ -563,21 +562,21 @@
             currentPage = page;
             
             // 페이지 이동 시 데이터 로드 함수 호출 (이미 on()으로 리스닝 중이지만 명시적으로 호출)
-            if (page === 'community') loadCommunityData();
-            else if (page === 'newsletter') loadNewsletterData();
-            else if (page === 'qna') loadQnaData();
-            else if (page === 'moment') loadMomentData();
-            else if (page === 'editor') {
-                // setupEditorTabs(); 
-                const editorWriteBtn = document.getElementById('editorWriteBtn');
-                if (currentUser && isEditor(currentUser.email)) {
-                    editorWriteBtn.classList.remove('hide');
-                } else {
-                    editorWriteBtn.classList.add('hide');
-                }
-                loadEditorData();
-            } else if (page === 'mypage') loadMyPageData();
-            else if (page === 'home') loadNewsletterData(); 
+            // if (page === 'community') loadCommunityData();
+            // else if (page === 'newsletter') loadNewsletterData();
+            // else if (page === 'qna') loadQnaData();
+            // else if (page === 'moment') loadMomentData();
+            // else if (page === 'editor') {
+            //     // setupEditorTabs(); 
+            //     const editorWriteBtn = document.getElementById('editorWriteBtn');
+            //     if (currentUser && isEditor(currentUser.email)) {
+            //         editorWriteBtn.classList.remove('hide');
+            //     } else {
+            //         editorWriteBtn.classList.add('hide');
+            //     }
+            //     loadEditorData();
+            // } else if (page === 'mypage') loadMyPageData();
+            // else if (page === 'home') loadNewsletterData(); 
         }
         
         function updateUserInfo() {
