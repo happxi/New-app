@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자휴레터 - 자유로운 당신의 휴식 가이드</title>
+    <title>자휴레터 - 자유로운 당신의 휴식 가이드 (최종 개선)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
 
         :root {
             /* 🎨 컬러 팔레트 */
-            --color-primary: #9B59B6; /* 보라색 (자휴레터 중앙 버튼) */
-            --color-secondary: #FFC0CB; /* 연한 핑크 (햅씨 따뜻한 무드) */
-            --color-pastel-blue: #A9D1DF; /* 파스텔 하늘색 (무드 배경) */
+            --color-primary: #9B59B6; 
+            --color-secondary: #FFC0CB; 
+            --color-pastel-blue: #A9D1DF; 
             --color-text-dark: #333333;
             --color-text-light: #FFFFFF;
             --color-background: #F8F8F8;
-            --color-glass-overlay: rgba(255, 255, 255, 0.7);
+            --color-glass-overlay: rgba(255, 255, 255, 0.5); 
         }
 
         * {
@@ -34,13 +34,13 @@
             align-items: center;
         }
 
-        /* 💎 Glassmorphism 믹스인 스타일 */
+        /* 💎 Glassmorphism */
         .glass-card {
             background: var(--color-glass-overlay);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 4px 16px rgba(100, 100, 100, 0.1);
             padding: 20px;
             margin-bottom: 15px;
@@ -50,401 +50,112 @@
         .container {
             width: 100%;
             max-width: 450px;
-            padding: 20px 20px 80px 20px; /* 하단 네비게이션 공간 확보 */
+            padding: 20px 20px 80px 20px;
             flex-grow: 1;
         }
 
-        /* --- 상단 헤더 및 타이틀 --- */
-        header {
-            width: 100%;
-            max-width: 450px;
-            padding: 20px;
-            text-align: center;
-        }
+        /* --- 공통 스타일 --- */
         .headline-text {
-            font-size: 1.8em;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: var(--color-text-dark);
+            font-size: 1.8em; font-weight: 700; margin-bottom: 25px; text-align: center; padding-top: 20px;
         }
 
-        /* --- 홈 섹션 --- */
-        .archive-section {
-            text-align: center;
-            padding: 30px 20px;
-        }
-        .archive-section h2 {
-            font-size: 1.4em;
-            margin-bottom: 5px;
-        }
-        .archive-section p {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 20px;
-        }
-        .goto-archive-btn {
-            background-color: var(--color-primary);
-            color: var(--color-text-light);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
-        }
-        .goto-archive-btn:active {
-            transform: scale(0.98);
-        }
-
-        /* 🌟 메인 액션 버튼 그룹 (유리구슬 아이콘) */
+        /* 🌟 메인 액션 버튼 그룹 (강화된 유리구슬 아이콘) */
         .action-group {
-            display: flex;
-            justify-content: space-around;
-            margin: 30px 0;
-            text-align: center;
+            display: flex; justify-content: space-around; margin: 30px 0; text-align: center;
         }
         .action-item {
-            text-decoration: none;
-            color: var(--color-text-dark);
-            font-size: 0.9em;
-            width: 80px;
+            text-decoration: none; color: var(--color-text-dark); font-size: 0.9em; width: 80px;
         }
-        /* 🎨 투명한 유리구슬 아이콘 디자인 */
         .glass-icon-wrapper {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 10px auto;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            
-            /* 유리구슬 느낌 */
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.8);
-            transition: all 0.2s;
-        }
-        .action-item:active .glass-icon-wrapper {
-            transform: scale(0.95);
-        }
-        /* (실제 구현 시 이모티콘 대신 커스텀 아이콘 SVG/이미지 사용) */
-
-
-        /* --- 에디터톡 섹션 --- */
-        .editor-talk-container h2, .moment-container h2 {
-            margin-bottom: 5px;
-        }
-        .editor-talk-container .subtitle {
-            font-size: 0.85em;
-            color: #888;
-            margin-bottom: 20px;
-        }
-        .write-btn {
-            float: right;
-            background-color: var(--color-secondary);
-            color: var(--color-text-light);
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: transform 0.2s;
-            margin-top: -35px;
-        }
-        .write-btn:active {
-            transform: scale(0.98);
+            width: 60px; height: 60px; margin: 0 auto 10px auto; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5em;
+            background: rgba(255, 255, 255, 0.4); 
+            backdrop-filter: blur(12px); border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 0 10px rgba(255, 255, 255, 0.7);
+            transition: all 0.2s; overflow: hidden;
         }
 
-        .post-item {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+        /* --- 레터 아카이브 기능 개선 --- */
+        .search-bar {
+            width: 100%; padding: 10px; margin-bottom: 15px;
+            border: 1px solid #ddd; border-radius: 8px; font-size: 1em;
+            background: rgba(255, 255, 255, 0.8);
         }
 
-        /* 🌟 에디터 이름 특별 디자인 */
-        .editor-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+        /* 💥 트렌디한 필터링 버튼 */
+        .filter-buttons {
+            display: flex; justify-content: space-around; margin-bottom: 20px;
         }
+        .filter-buttons button {
+            flex: 1; padding: 10px; margin: 0 5px; border: 2px solid var(--color-primary); 
+            background: transparent; color: var(--color-primary); font-weight: 700;
+            border-radius: 25px; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .filter-buttons button.active {
+            background-color: var(--color-primary); color: var(--color-text-light);
+            transform: scale(1.05); box-shadow: 0 4px 10px rgba(155, 89, 182, 0.4);
+        }
+
+        /* --- 에디터 이름 특별 디자인 --- */
         .author-profile {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--color-text-light);
-            font-weight: 700;
-            font-size: 0.9em;
-            margin-right: 10px;
+            width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; color: var(--color-text-light); font-weight: 700; font-size: 0.9em; margin-right: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         .author-name {
-            font-weight: 700;
-            font-size: 1em;
-            /* ✨ 에디터 이름 배경 하이라이트 */
-            padding: 2px 6px;
-            border-radius: 5px;
-            background: linear-gradient(90deg, var(--color-secondary) 0%, rgba(255, 255, 255, 0) 100%);
-        }
-        .post-text {
-            font-size: 0.95em;
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-        .post-actions span {
-            font-size: 0.9em;
-            margin-right: 10px;
-            color: #777;
-            cursor: pointer;
+            font-weight: 700; font-size: 1em; padding: 2px 6px; border-radius: 5px;
         }
 
-        /* --- 모먼트 섹션 --- */
-        .moment-container {
-            text-align: center;
-            padding-top: 20px;
-        }
+        /* --- 모먼트 탭 --- */
+        .moment-container h2 { margin-bottom: 5px; }
         .moment-container .description {
-            font-size: 0.85em;
-            color: #888;
-            margin-bottom: 20px;
-            /* 줄바꿈 요청 반영 */
-            white-space: pre-wrap; 
+            font-size: 0.85em; color: #888; margin-bottom: 20px; white-space: pre-wrap; line-height: 1.4;
         }
-        .write-moment-btn {
-            background-color: var(--color-secondary);
-            color: var(--color-text-light);
-            border: none;
-            padding: 10px 30px;
-            border-radius: 25px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: transform 0.2s;
-            margin-top: 10px;
-        }
-        .write-moment-btn:active {
-            transform: scale(0.98);
-        }
-        
-        /* --- 무드 탭 (파스텔 하늘색 배경) --- */
+        .moment-container .description span { display: block; }
+
+        /* --- 무드 탭 (배경색) --- */
         .mood-container {
-            background-color: var(--color-pastel-blue);
-            min-height: 100vh;
-            padding: 20px;
-            width: 100%;
-            max-width: 450px;
-            margin: 0 auto;
-        }
-        .mood-container h2 {
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        .mood-container .description {
-            text-align: center;
-            font-size: 0.9em;
-            color: var(--color-text-dark);
-            margin-bottom: 30px;
-        }
-        .record-mood-btn {
-            display: block;
-            width: 100%;
-            max-width: 200px;
-            margin: 30px auto 0 auto;
-            background-color: var(--color-primary);
-            color: var(--color-text-light);
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .record-mood-btn:active {
-            transform: scale(0.98);
+            background-color: var(--color-pastel-blue); min-height: 100vh; padding: 20px; width: 100%; max-width: 450px; margin: 0 auto;
         }
 
-        /* --- 마이 탭 --- */
-        .mypage-menu li {
-            list-style: none;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        .mypage-menu li:last-child {
-            border-bottom: none;
-        }
-
-        .stamp-section {
-            margin-top: 30px;
-            text-align: center;
-        }
-        .stamp-section h3 {
-            margin-bottom: 20px;
-            color: var(--color-primary);
-        }
+        /* 🖼️ 자휴 스탬프 디자인 (파스텔톤 원형) */
         .stamp-grid {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 5px;
-            margin-bottom: 20px;
+            display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin-bottom: 20px;
         }
         .stamp-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
+            width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 1.2em; border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
         }
-        .unstamped {
-            background-color: #ddd;
-            color: #aaa;
-        }
+        .unstamped { background-color: #f0f0f0; color: #aaa; }
         .stamped {
-            /* 획득 시 색이 입혀지고 진해지는 효과 */
-            background-color: #ffd700; /* 골드 색상 예시 */
-            color: #ccac00;
-            box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(45deg, #FFDAB9, #FFB6C1); 
+            color: var(--color-text-light); box-shadow: 0 2px 5px rgba(255, 182, 193, 0.5);
+            font-size: 1.5em; 
         }
-
-        .vip-notice-active {
-            background-color: var(--color-secondary);
-            color: var(--color-text-light);
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: 500;
-        }
-        .vip-notice-inactive {
-            color: #777;
-            padding: 10px;
-            font-size: 0.9em;
+        .stamped:after {
+            content: '✓'; 
         }
 
         /* --- 하단 네비게이션 바 --- */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 450px;
-            display: flex;
-            justify-content: space-around;
-            background: var(--color-glass-overlay);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255, 255, 255, 0.5);
-            padding: 10px 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-            z-index: 100;
+            position: fixed; bottom: 0; width: 100%; max-width: 450px; display: flex; justify-content: space-around;
+            background: var(--color-glass-overlay); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.5); padding: 10px 0; box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); z-index: 100;
         }
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: #888;
-            font-size: 0.7em;
-            padding: 5px;
-            transition: color 0.2s;
-            flex-grow: 1;
+            display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #888;
+            font-size: 0.7em; padding: 5px; transition: color 0.2s; flex-grow: 1;
         }
-        .nav-item.active {
-            color: var(--color-primary);
-            font-weight: 700;
-        }
-        .nav-item span:first-child {
-            font-size: 1.5em;
-            margin-bottom: 3px;
-        }
+        .nav-item.active { color: var(--color-primary); font-weight: 700; }
+        .nav-item span:first-child { font-size: 1.5em; margin-bottom: 3px; }
 
-        /* 🌟 중앙 '자휴레터' 버튼 디자인 */
+        /* 중앙 '무드' 버튼 (무드 탭 연결) - 문구 수정 */
         .central-button {
-            background-color: var(--color-primary); /* 보라색 배경 */
-            color: var(--color-text-light) !important;
-            border-radius: 10px;
-            margin: -10px 5px -10px 5px;
-            padding: 10px 0;
-            font-size: 0.8em;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(139, 0, 255, 0.4);
-            transition: all 0.2s;
+            background-color: var(--color-primary); color: var(--color-text-light) !important;
+            border-radius: 10px; margin: -10px 5px -10px 5px; padding: 10px 0; font-size: 0.8em;
+            font-weight: 700; box-shadow: 0 4px 10px rgba(139, 0, 255, 0.4); transition: all 0.2s;
             flex-grow: 1.5;
-        }
-        .central-button span:first-child {
-            display: none; /* 아이콘 제거 */
-        }
-        .central-button:active {
-            transform: scale(0.98);
-            opacity: 0.9;
-        }
-
-        /* --- 모달 (새 창/새 탭 기능 대신 임시 모달로 대체) --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none; /* 기본 숨김 */
-            justify-content: center;
-            align-items: center;
-            z-index: 200;
-        }
-        .modal-content {
-            background: var(--color-background);
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        }
-        .modal-content input, .modal-content textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1em;
-        }
-        .modal-content textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-        .modal-content button {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--color-primary);
-            color: var(--color-text-light);
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-        }
-
-        /* --- 관리자 무드 기록 페이지 (햅씨 전용) --- */
-        #admin-mood-view {
-            background-color: #F0F8FF; /* 햅씨 관리자 강조 */
-        }
-        .admin-mood-list {
-            margin-top: 20px;
-        }
-        .admin-mood-item {
-            background: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid var(--color-pastel-blue);
-        }
-        .admin-mood-item.vip-user {
-            border-left: 5px solid gold; /* 50개 이상 사용자 강조 */
-            background-color: #FFFACD;
         }
     </style>
 </head>
@@ -456,12 +167,13 @@
     <nav class="bottom-nav">
         <a href="#" class="nav-item active" data-tab="home"><span>🏠</span><span class="label">홈</span></a>
         <a href="#" class="nav-item" data-tab="letter"><span>✉️</span><span class="label">레터</span></a>
-        <a href="#" class="nav-item central-button" data-tab="write"><span></span><span class="label">자휴레터</span></a>
-        <a href="#" class="nav-item" data-tab="community"><span>👥</span><span class="label">커뮤니티</span></a>
+        <a href="#" class="nav-item central-button" data-tab="mood"><span></span><span class="label">무드</span></a>
+        <a href="#" class="nav-item" data-tab="editor-talk"><span>👥</span><span class="label">에디터톡</span></a>
+        <a href="#" class="nav-item" data-tab="moment"><span>✨</span><span class="label">모먼트</span></a>
         <a href="#" class="nav-item" data-tab="mypage"><span>👤</span><span class="label">마이</span></a>
     </nav>
 
-    <div class="modal-overlay" id="record-modal">
+    <div class="modal-overlay" id="record-modal" style="display:none;">
         <div class="modal-content">
             <h3 id="modal-title">무드 기록 작성</h3>
             <input type="text" id="record-title" placeholder="제목을 입력하세요 (선택)">
@@ -474,35 +186,30 @@
                 <span data-mood="tired" style="cursor:pointer; margin: 0 5px;">😫</span>
             </div>
 
-            <textarea id="record-content" placeholder="오늘의 기록을 남겨주세요."></textarea>
+            <textarea id="record-content" placeholder="내용을 입력해주세요."></textarea>
             <button id="save-button">무드 기록</button>
         </div>
     </div>
 
 
     <script>
-        // 🚨 시뮬레이션 데이터 (실제 DB 데이터 대체)
-        const USER_ROLE = 'admin_super'; // 'user', 'admin_general', 'admin_super' (햅씨)
-        const CURRENT_USER = '햅씨';
+        // --- 🚨 시뮬레이션 데이터 ---
+        const USER_ROLE = 'user'; // 'user', 'admin_general', 'admin_super' (햅씨)
         const EDITOR_PROFILES = {
-            '햅씨': { color: '#87CEEB', role: 'admin_super' }, // 하늘색
-            '엘리': { color: '#9932CC', role: 'admin_general' }, // 보라색
-            '고칼': { color: '#FF7F50', role: 'admin_general' }, // 코랄
-            '써니': { color: '#FFD700', role: 'admin_general' }, // 골드
-            '유단': { color: '#3CB371', role: 'admin_general' }, // 연두색
+            '햅씨': { color: '#87CEEB', role: 'admin_super' }, 
+            '엘리': { color: '#9932CC', role: 'admin_general' }, 
+            '고칼': { color: '#FF7F50', role: 'admin_general' }, 
+            '써니': { color: '#FFD700', role: 'admin_general' }, 
+            '유단': { color: '#3CB371', role: 'admin_general' },
         };
         const editorTalks = [
             { author: '엘리', content: '일주일 잘 버티셨나요? 주말에는 아무 생각 없이 쉬어야 해요!', date: '2025.12.08' },
             { author: '고칼', content: '이번 주 트렌디 카페 추천 리스트 정리 중이에요.', date: '2025.12.09' },
         ];
-        const userMoodRecords = [
-            // 햅씨가 볼 수 있는 모든 사용자 기록
-            { user: '혜란', mood: 'happy', content: '오늘 날씨가 너무 좋았다.', date: '2025.12.10', stamps: 52, isDeleted: false },
-            { user: '구독자A', mood: 'sad', content: '회사에서 힘든 일이 있었음.', date: '2025.12.09', stamps: 49, isDeleted: false },
-            { user: '구독자B', mood: 'tired', content: '지각해서 후회됨. (삭제된 내역)', date: '2025.12.08', stamps: 30, isDeleted: true },
-        ];
-        const userStamps = 45; // 현재 사용자의 스탬프 개수 (마이페이지용)
+        let userStamps = 45; 
         let selectedMood = '';
+        let currentTab = 'home';
+        let currentLetterFilter = '자휴레터'; 
 
 
         // --- HTML 템플릿 함수 ---
@@ -510,21 +217,21 @@
         // 🏠 홈 템플릿
         function getHomeTemplate() {
             return `
-                <header><h1 class="headline-text">자휴레터와 함께 행복하세요!</h1></header>
+                <h1 class="headline-text">자휴레터와 함께 행복하세요!</h1>
                 <div class="container">
                     <section class="archive-section glass-card">
                         <h2>콘텐츠 아카이브</h2>
                         <p>자휴레터와 자휴랩을 주제별로 한 눈에!</p>
-                        <button class="goto-archive-btn">레터 아카이브 바로가기</button>
+                        <button class="goto-archive-btn" data-tab="letter">레터 아카이브 바로가기</button>
                     </section>
 
                     <section class="action-group">
-                        <a href="http://pf.kakao.com/_xxxxxx" class="action-item" target="_blank">
-                            <div class="glass-icon-wrapper">✉️</div> 
-                            <p>카톡 추가</p>
+                        <a href="https://pf.kakao.com/_xxxxxx" class="action-item" target="_blank">
+                            <div class="glass-icon-wrapper">💬</div> 
+                            <p>1:1 카톡</p>
                         </a>
                         <a href="http://pf.kakao.com/_Jfjxgn/111753149" class="action-item" target="_blank">
-                            <div class="glass-icon-wrapper">✍️</div> 
+                            <div class="glass-icon-wrapper">📝</div> 
                             <p>문장 수집</p>
                         </a>
                         <a href="#" class="action-item" data-tab="letter">
@@ -532,19 +239,37 @@
                             <p>레터 보기</p>
                         </a>
                     </section>
+                </div>
+            `;
+        }
+        
+        // ✉️ 레터 아카이브 템플릿 (검색 및 필터링 추가)
+        function getLetterTemplate() {
+            return `
+                <div class="container">
+                    <header style="text-align:center;"><h2>레터 아카이브</h2></header>
                     
-                    <section style="margin-top: 20px;">
-                        <h3>최신 레터</h3>
-                        <div class="glass-card" style="padding: 15px;">[32호] 퇴사 후 번아웃, 저만 이런가요?</div>
-                    </section>
+                    <input type="text" class="search-bar" placeholder="콘텐츠 제목, 내용을 키워드로 검색">
+
+                    <div class="filter-buttons" id="letter-filter">
+                        <button class="${currentLetterFilter === '자휴레터' ? 'active' : ''}" data-filter="자휴레터">자휴레터</button>
+                        <button class="${currentLetterFilter === '자휴랩' ? 'active' : ''}" data-filter="자휴랩">자휴랩</button>
+                    </div>
+
+                    <div id="letter-content">
+                        <h3>${currentLetterFilter} 목록</h3>
+                        <div class="glass-card" style="padding: 15px;">
+                            <p>현재 필터링: **${currentLetterFilter}**</p>
+                            <p>여기에 필터링된 레터 목록이 표시됩니다. (북마크/좋아요 활성화)</p>
+                        </div>
+                    </div>
                 </div>
             `;
         }
 
-        // 💬 에디터톡 템플릿
+        // 👥 에디터톡 템플릿
         function getEditorTalkTemplate() {
-            // 일반 관리자 및 최고 관리자만 글쓰기 버튼 노출
-            const canWrite = USER_ROLE === 'admin_super' || USER_ROLE === 'admin_general';
+            const isEditor = USER_ROLE.includes('admin');
             
             const postList = editorTalks.map(post => {
                 const profile = EDITOR_PROFILES[post.author];
@@ -559,9 +284,9 @@
                         </div>
                         <p class="post-text">${post.content}</p>
                         <div class="post-actions">
-                            <span data-action="like">❤️ 좋아요</span>
-                            <span data-action="comment">💬 댓글</span>
-                            <span data-action="bookmark">🔖 북마크</span>
+                            <span data-action="like" style="cursor:pointer;">❤️ 좋아요</span>
+                            <span data-action="comment" style="cursor:pointer;">💬 댓글</span>
+                            <span data-action="bookmark" style="cursor:pointer;">🔖 북마크</span>
                         </div>
                     </div>
                 `;
@@ -569,49 +294,57 @@
 
             return `
                 <div class="container">
-                    <header><h2>에디터톡</h2></header>
-                    <p class="subtitle">에디터들의 일상을 더 가까이에서!</p>
-                    ${canWrite ? `<button class="write-btn" id="write-editor-talk">글쓰기</button>` : ''}
-                    <div class="post-list" style="padding-top: 10px;">${postList}</div>
+                    <header style="text-align:center;"><h2>에디터톡</h2></header>
+                    <p class="subtitle" style="text-align:center;">에디터들의 일상을 더 가까이에서!</p>
+                    
+                    <div style="display:flex; justify-content:flex-end; margin-bottom: 20px;">
+                        ${isEditor ? `<button class="write-btn" id="write-editor-talk" style="background:var(--color-secondary); color:white; border-radius:20px; padding: 8px 15px; border:none; cursor:pointer;">
+                            글쓰기
+                        </button>` : ''}
+                    </div>
+
+                    <div class="post-list">${postList}</div>
                 </div>
             `;
         }
 
-        // 🌈 무드 탭 템플릿
-        function getMoodTemplate() {
-            // 햅씨 (최고 관리자) 전용 페이지
-            if (USER_ROLE === 'admin_super' && CURRENT_USER === '햅씨') {
-                const adminList = userMoodRecords.map(record => {
-                    const isVip = record.stamps >= 50;
-                    return `
-                        <div class="admin-mood-item ${isVip ? 'vip-user' : ''}">
-                            <p><strong>사용자: ${record.user}</strong> ${isVip ? '(VIP)' : ''}</p>
-                            <p>감정: ${record.mood} | 날짜: ${record.date}</p>
-                            <p>기록: ${record.content}</p>
-                            <p style="font-size:0.8em; color:${record.isDeleted ? 'red' : 'green'};">
-                                스탬프: ${record.stamps}개 (${record.isDeleted ? '삭제됨' : '정상'})
-                            </p>
-                            ${record.isDeleted ? `<button data-action="delete-permanent">영구 삭제</button>` : `<button data-action="delete">삭제</button>`}
+        // ✨ 모먼트 탭 템플릿 (하단바에서 접근)
+        function getMomentTemplate() {
+            return `
+                <div class="container moment-container">
+                    <header style="text-align:center;"><h2>햅삐 모먼트</h2></header>
+                    <p class="description">
+                        지금 꼭 필요한 위로를 받아보세요!<br>
+                        <span>행복한 순간을 기록해주세요!</span>
+                    </p>
+                    
+                    <button class="write-moment-btn" id="open-moment-write">
+                        작성
+                    </button>
+                    <div style="margin-top: 20px;">
+                        <div class="glass-card" style="padding: 15px;">
+                            <p>일반 사용자들의 모먼트 게시물이 표시됩니다.</p>
+                            <p>북마크, 좋아요, 댓글 기능 활성화</p>
                         </div>
-                    `;
-                }).join('');
-
-                return `
-                    <div class="container" id="admin-mood-view">
-                        <header><h2>햅씨 관리자 무드 기록</h2></header>
-                        <p class="subtitle">전체 사용자 무드 기록 및 삭제 내역</p>
-                        <div class="admin-mood-list">${adminList}</div>
                     </div>
-                `;
-            }
+                </div>
+            `;
+        }
 
+        // 🌈 무드 탭 템플릿 (중앙 무드 버튼 연결)
+        function getMoodTemplate() {
+            
             // 일반 사용자 (일반 관리자 포함) 페이지
             return `
                 <div class="mood-container">
-                    <header><h2>오늘의 무드</h2></header>
+                    <header style="text-align:center;"><h2>오늘의 무드</h2></header>
                     <p class="description">햅삐 님만의 감정일기: 오늘 하루는 어떠셨어요?</p>
-                    <button class="record-mood-btn" id="open-mood-modal">무드 기록</button>
+                    <div class="glass-card" style="background:rgba(255,255,255,0.7); min-height:200px;">
+                        <p style="text-align:center; color:#555;">여기에 월간/주간 무드 트래커가 시각화됩니다.</p>
                     </div>
+                    
+                    <button class="record-mood-btn" id="open-mood-modal">무드 기록</button>
+                </div>
             `;
         }
 
@@ -619,21 +352,21 @@
         // 👤 마이 탭 템플릿
         function getMyPageTemplate(stamps) {
             const isVIP = stamps >= 50;
+            
             const stampGrid = Array(50).fill(0).map((_, index) => {
                 const collected = index < stamps;
-                return `<div class="stamp-icon ${collected ? 'stamped' : 'unstamped'}">${collected ? '⭐' : '⚪'}</div>`;
+                return `<div class="stamp-icon ${collected ? 'stamped' : 'unstamped'}"></div>`;
             }).join('');
 
             return `
                 <div class="container">
-                    <header><h2>마이 페이지</h2></header>
+                    <header style="text-align:center;"><h2>마이 페이지</h2></header>
                     <ul class="mypage-menu glass-card">
-                        <li data-action="mypost">내가 쓴 글</li>
-                        <li data-action="mycomment">나의 댓글</li>
-                        <li data-action="mylike">좋아요한 글</li>
-                        <li data-action="mybookmark">북마크한 글</li>
+                        <li data-action="mypost">내가 쓴 글 (클릭 활성화)</li>
+                        <li data-action="mycomment">나의 댓글 (클릭 활성화)</li>
+                        <li data-action="mylike">좋아요한 글 (클릭 활성화)</li>
+                        <li data-action="mybookmark">북마크한 글 (클릭 활성화)</li>
                         <li data-action="mystamp">자휴 스탬프 (${stamps}개)</li>
-                        <li data-action="myqna">Q&A 메뉴</li>
                         <li class="logout-btn" data-action="logout">로그아웃</li>
                     </ul>
 
@@ -661,50 +394,44 @@
         // --- 메인 렌더링 및 이벤트 핸들러 ---
 
         const app = document.getElementById('app');
-        const navItems = document.querySelectorAll('.nav-item');
+        const navItems = document.querySelectorAll('.bottom-nav .nav-item');
         const modalOverlay = document.getElementById('record-modal');
         const saveButton = document.getElementById('save-button');
         const moodIcons = document.getElementById('mood-icons');
         
         function renderTab(tabName) {
+            currentTab = tabName;
             app.innerHTML = '';
             
             navItems.forEach(item => item.classList.remove('active'));
-            document.querySelector(`.nav-item[data-tab="${tabName}"]`).classList.add('active');
+            const activeNav = document.querySelector(`.nav-item[data-tab="${tabName}"]`);
+            if (activeNav) activeNav.classList.add('active');
 
-            // 탭별 템플릿 렌더링
+            document.body.style.backgroundColor = 'var(--color-background)';
             switch (tabName) {
                 case 'home':
                     app.innerHTML = getHomeTemplate();
                     break;
                 case 'letter':
-                    app.innerHTML = `<div class="container"><header><h2>레터 아카이브</h2></header><p>레터와 자휴랩 목록이 표시되며, 상단 탭이 트렌디하게 반응합니다.</p></div>`;
-                    // 💡 상단 '자휴레터'/'자휴랩' 반응형 디자인 로직 추가 필요
+                    app.innerHTML = getLetterTemplate();
                     break;
-                case 'community': // 에디터톡 + 모먼트
-                    // 임시로 에디터톡만 표시
+                case 'editor-talk':
                     app.innerHTML = getEditorTalkTemplate();
-                    // 💡 에디터톡/모먼트 탭 구조 로직 추가 필요
                     break;
-                case 'write': // 하단 중앙 버튼 (무드 탭으로 연결)
-                    renderTab('mood');
+                case 'moment':
+                    app.innerHTML = getMomentTemplate();
                     break;
                 case 'mood':
                     app.innerHTML = getMoodTemplate();
-                    // 무드 탭 클릭 시 CSS 조정
-                    app.style.backgroundColor = USER_ROLE === 'admin_super' ? '#F0F8FF' : 'var(--color-pastel-blue)'; 
-                    document.body.style.backgroundColor = app.style.backgroundColor;
+                    document.body.style.backgroundColor = 'var(--color-pastel-blue)'; 
                     break;
                 case 'mypage':
                     app.innerHTML = getMyPageTemplate(userStamps);
-                    app.style.backgroundColor = 'var(--color-background)';
-                    document.body.style.backgroundColor = app.style.backgroundColor;
                     break;
                 default:
                     app.innerHTML = `<div class="container">페이지를 찾을 수 없습니다.</div>`;
             }
 
-            // 스크롤을 맨 위로 이동
             window.scrollTo(0, 0);
         }
 
@@ -714,47 +441,96 @@
 
         // --- 이벤트 리스너 ---
 
-        // 네비게이션 클릭 이벤트
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
+        document.addEventListener('click', handleAppClicks);
+
+        function handleAppClicks(e) {
+            const target = e.target.closest('[data-tab], [data-filter], [data-action], .goto-archive-btn, #open-moment-write, #write-editor-talk, #open-mood-modal');
+            if (!target) return;
+            
+            // 네비게이션 탭 클릭 또는 홈 아카이브 버튼 클릭
+            if (target.hasAttribute('data-tab') || target.classList.contains('goto-archive-btn')) {
                 e.preventDefault();
-                const tab = item.getAttribute('data-tab');
+                const tab = target.getAttribute('data-tab');
                 renderTab(tab);
-            });
-        });
-
-        // 무드 기록 모달 열기/닫기 이벤트 (일반 사용자 및 일반 관리자)
-        app.addEventListener('click', (e) => {
-            if (e.target.id === 'open-mood-modal') {
-                document.getElementById('modal-title').textContent = '무드 기록 작성';
-                saveButton.textContent = '무드 기록';
+            } 
+            // 레터 아카이브 필터링 버튼 클릭
+            else if (target.hasAttribute('data-filter')) {
+                e.preventDefault();
+                currentLetterFilter = target.getAttribute('data-filter');
+                renderTab('letter'); 
+            }
+            // 모먼트 작성 버튼
+            else if (target.id === 'open-moment-write') {
+                e.preventDefault();
+                document.getElementById('modal-title').textContent = '햅삐 모먼트 작성';
+                document.getElementById('save-button').textContent = '작성';
+                // 모먼트 작성 시 감정 아이콘 숨김 처리
+                moodIcons.style.display = 'none'; 
                 modalOverlay.style.display = 'flex';
             }
-            if (e.target.id === 'write-editor-talk') {
+            // 에디터톡 글쓰기 버튼
+            else if (target.id === 'write-editor-talk') {
+                e.preventDefault();
                 document.getElementById('modal-title').textContent = '에디터톡 게시물 작성';
-                saveButton.textContent = '게시';
-                // 💡 이미지 첨부 기능 로직 추가 필요
+                document.getElementById('save-button').textContent = '게시';
+                moodIcons.style.display = 'none'; 
                 modalOverlay.style.display = 'flex';
             }
-        });
+            // 무드 기록 버튼
+            else if (target.id === 'open-mood-modal') {
+                e.preventDefault();
+                document.getElementById('modal-title').textContent = '무드 기록 작성';
+                document.getElementById('save-button').textContent = '무드 기록';
+                moodIcons.style.display = 'block'; 
+                modalOverlay.style.display = 'flex';
+            }
+            // 마이페이지 기능 활성화
+            else if (target.hasAttribute('data-action')) {
+                 const action = target.getAttribute('data-action');
+                 if (['mypost', 'mycomment', 'mylike', 'mybookmark'].includes(action)) {
+                    alert(`[${target.textContent}] 기능이 활성화되었습니다. 해당 목록을 조회합니다.`);
+                 }
+                 if (action === 'mystamp') {
+                    alert(`현재 ${userStamps}개의 스탬프를 모으셨습니다!`);
+                 }
+                 if (action === 'logout') {
+                     alert('로그아웃 되었습니다.');
+                     renderTab('home');
+                 }
+            }
+        }
 
+        // 모달 닫기 및 저장 이벤트
         modalOverlay.addEventListener('click', (e) => {
             if (e.target.id === 'record-modal' || e.target.id === 'save-button') {
-                // 저장 버튼 클릭 또는 모달 배경 클릭 시 닫기
+                e.preventDefault();
+                const saveButtonText = document.getElementById('save-button').textContent;
+                
+                if (e.target.id === 'save-button') {
+                    alert(`${document.getElementById('modal-title').textContent}이 기록되었습니다!`);
+                }
+                
+                document.getElementById('record-title').value = '';
+                document.getElementById('record-content').value = '';
                 modalOverlay.style.display = 'none';
-                // 💡 저장 로직 (API 호출, 스탬프 부여 등) 추가 필요
+                
+                // 저장 후 해당 탭으로 복귀
+                if (saveButtonText === '무드 기록') {
+                    renderTab('mood');
+                } else if (saveButtonText === '작성') {
+                    renderTab('moment');
+                } else if (saveButtonText === '게시') {
+                    renderTab('editor-talk');
+                }
             }
         });
 
         // 무드 아이콘 선택 로직
         moodIcons.addEventListener('click', (e) => {
             if (e.target.tagName === 'SPAN' && e.target.hasAttribute('data-mood')) {
-                // 모든 아이콘의 스타일 초기화 (커스텀 디자인으로 대체)
                 moodIcons.querySelectorAll('span').forEach(icon => {
                     icon.style.border = 'none';
                 });
-                
-                // 선택된 아이콘 강조 (색상 다르게)
                 e.target.style.border = `2px solid var(--color-primary)`;
                 e.target.style.borderRadius = '5px';
                 selectedMood = e.target.getAttribute('data-mood');
