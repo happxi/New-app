@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.5)</title> <meta name="description" content="에디터들의 응원이 도착해요!">
+    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.6)</title> <meta name="description" content="에디터들의 응원이 도착해요!">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -363,7 +363,6 @@
         
         function initializeApp() {
             // 🚨 2단계 방어: 글쓰기 모달이 실수로 뜨는 것을 막기 위해 강제로 숨김 처리
-            // CSS에서 이미 display: none !important;로 숨겼지만, 이중 방어로 재확인
             document.getElementById('writePostModal').classList.add('hide');
 
             // 초기 로딩 시 무조건 로그인 모달이 뜰 수 있도록 명시적으로 호출
@@ -481,18 +480,18 @@
                 })
                 .then(userCredential => {
                     showNotification('로그인 성공', `${userCredential.user.email}님, 환영합니다.`);
-                    hideLoginModal(); 
-                    navigateTo('home'); 
+                    navigateTo('home'); // 🚨 순서 변경: 페이지 이동 먼저 실행
+                    hideLoginModal();   // 그 다음 모달 숨기기
                 })
                 .catch(error => {
                     // 임시 로그인 성공 처리 (관리자 테스트 용)
                     if (email === "hyeran@jahu.com" && password === "1234") {
-                        // 혜란님은 에디터 목록에서 제외되었으므로, isAdmin은 false 처리
-                        currentUser = { id: 'temp-admin-id', name: "혜란", email: email, isAdmin: false }; 
+                        // 혜란님은 에디터 목록에서 제외되었지만, 테스트 용도로 isAdmin을 다시 true로 설정합니다.
+                        currentUser = { id: 'temp-admin-id', name: "혜란", email: email, isAdmin: true }; 
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                        showNotification('임시 로그인', '일반 사용자 테스트 로그인에 성공했습니다.');
+                        showNotification('임시 로그인', '관리자 테스트 로그인에 성공했습니다.');
+                        navigateTo('home'); // 🚨 임시 로그인 성공 후에도 페이지 이동 먼저 실행
                         hideLoginModal();
-                        navigateTo('home');
                     } else {
                         showNotification('로그인 실패', `에러: ${error.message}`);
                     }
