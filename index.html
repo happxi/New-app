@@ -1,1210 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자휴레터 - 자유로운 당신의 휴식 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
 
-<!DOCTYPE html>  
-<html lang="ko">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>자휴레터 - 자유로운 당신의 휴식 가이드</title>  
-    <script src="https://cdn.tailwindcss.com"></script>  
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">  
-    <style>  
-        * {  
-            font-family: 'Noto Sans KR', sans-serif;  
-        }  
-          
-        /* 🎨 트렌디한 컬러 팔레트 */  
-        :root {  
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);  
-            --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #f3e7e9 100%);  
-            --card-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);  
-            --primary-blue: #667eea;  
-            --soft-blue: #e0e7ff;  
-            --accent-pink: #f093fb;  
-            --text-dark: #4a5568;  
-            --text-light: #718096;  
-            --glass-bg: rgba(255, 255, 255, 0.9);  
-            --new-badge-gradient: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);  
-            --secret-bg: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);  
-            --happxi-bg: linear-gradient(135deg, #ffd70020 0%, #ffb34720 100%);  
-        }  
-  
-        body {  
-            background: var(--bg-gradient);  
-            min-height: 100vh;  
-            overflow-x: hidden;  
-        }  
-  
-        /* ✨ 유리질감 디자인 */  
-        .glass-card {  
-            background: var(--glass-bg);  
-            backdrop-filter: blur(15px);  
-            border: 1px solid rgba(255, 255, 255, 0.3);  
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);  
-        }  
-  
-        /* 🔒 보안 10단계 강화 - 프라이버시 보호 디자인 */  
-        .privacy-protected {  
-            background: var(--secret-bg);  
-            backdrop-filter: blur(15px);  
-            border: 2px solid rgba(102, 126, 234, 0.15);  
-            border-radius: 20px;  
-            padding: 20px;  
-            position: relative;  
-            overflow: hidden;  
-        }  
-  
-        .privacy-protected::before {  
-            content: '🔒';  
-            position: absolute;  
-            top: 8px;  
-            right: 8px;  
-            font-size: 16px;  
-            opacity: 0.2;  
-            animation: privacyPulse 3s ease-in-out infinite;  
-        }  
-  
-        /* 👑 햅씨 전용 관리자 디자인 */  
-        .happxi-admin {  
-            background: var(--happxi-bg);  
-            backdrop-filter: blur(15px);  
-            border: 2px solid rgba(255, 215, 0, 0.3);  
-            border-radius: 20px;  
-            padding: 20px;  
-            position: relative;  
-            overflow: hidden;  
-        }  
-  
-        .happxi-admin::before {  
-            content: '👑';  
-            position: absolute;  
-            top: 8px;  
-            right: 8px;  
-            font-size: 18px;  
-            animation: crownFloat 2s ease-in-out infinite;  
-        }  
-  
-        @keyframes privacyPulse {  
-            0%, 100% { opacity: 0.2; transform: scale(1); }  
-            50% { opacity: 0.3; transform: scale(1.1); }  
-        }  
-  
-        @keyframes crownFloat {  
-            0%, 100% { transform: translateY(0px) rotate(0deg); }  
-            50% { transform: translateY(-3px) rotate(5deg); }  
-        }  
-  
-        /* 🌟 프리미엄 버튼 디자인 */  
-        .premium-btn {  
-            background: var(--primary-gradient);  
-            color: white;  
-            padding: 12px 24px;  
-            border-radius: 25px;  
-            font-weight: 500;  
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);  
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);  
-        }  
-  
-        .premium-btn:hover {  
-            transform: translateY(-2px);  
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);  
-        }  
-  
-        /* 💖 편지 스타일 알림 디자인 */  
-        .letter-notification {  
-            position: fixed;  
-            top: 20px;  
-            left: 50%;  
-            transform: translateX(-50%);  
-            z-index: 9999;  
-            background: var(--glass-bg);  
-            backdrop-filter: blur(20px);  
-            border: 2px solid rgba(102, 126, 234, 0.2);  
-            border-radius: 20px;  
-            padding: 20px;  
-            min-width: 300px;  
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);  
-        }  
-  
-        .letter-notification::before {  
-            content: '💌';  
-            position: absolute;  
-            top: -15px;  
-            right: -15px;  
-            font-size: 50px;  
-            opacity: 0.2;  
-            animation: float 3s ease-in-out infinite;  
-        }  
-  
-        @keyframes float {  
-            0%, 100% { transform: translateY(0px) rotate(0deg); }  
-            50% { transform: translateY(-10px) rotate(10deg); }  
-        }  
-  
-        /* 🆕 NEW 뱃지 디자인 */  
-        .new-badge {  
-            background: var(--new-badge-gradient);  
-            color: white;  
-            padding: 4px 10px;  
-            border-radius: 15px;  
-            font-size: 11px;  
-            font-weight: bold;  
-            animation: pulse 2s infinite;  
-            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);  
-        }  
-  
-        @keyframes pulse {  
-            0%, 100% { transform: scale(1); }  
-            50% { transform: scale(1.05); }  
-        }  
-  
-        /* 🎯 세련된 카드 디자인 */  
-        .trend-card {  
-            background: var(--glass-bg);  
-            backdrop-filter: blur(15px);  
-            border-radius: 20px;  
-            padding: 20px;  
-            border: 1px solid rgba(255, 255, 255, 0.2);  
-            transition: all 0.3s ease;  
-            cursor: pointer;  
-        }  
-  
-        .trend-card:hover {  
-            transform: translateY(-5px);  
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);  
-        }  
-  
-        /* 📱 모바일 최적화 네비게이션 */  
-        .bottom-nav {  
-            position: fixed;  
-            bottom: 0;  
-            left: 0;  
-            right: 0;  
-            height: 70px;  
-            z-index: 1000;  
-            background: var(--glass-bg);  
-            backdrop-filter: blur(20px);  
-            border-top: 1px solid rgba(102, 126, 234, 0.1);  
-        }  
-  
-        .nav-item {  
-            display: flex;  
-            flex-direction: column;  
-            align-items: center;  
-            justify-content: center;  
-            height: 100%;  
-            color: var(--text-light);  
-            text-decoration: none;  
-            transition: all 0.3s ease;  
-            position: relative;  
-            padding: 5px 10px;  
-        }  
-  
-        .nav-item.active {  
-            color: var(--primary-blue);  
-        }  
-  
-        .nav-item::before {  
-            content: '';  
-            position: absolute;  
-            top: 0;  
-            left: 50%;  
-            transform: translateX(-50%);  
-            width: 30px;  
-            height: 3px;  
-            background: var(--primary-gradient);  
-            border-radius: 2px;  
-            opacity: 0;  
-            transition: opacity 0.3s ease;  
-        }  
-  
-        .nav-item.active::before {  
-            opacity: 1;  
-        }  
-  
-        /* 🎨 기분 트래커 디자인 */  
-        .mood-item {  
-            width: 50px;  
-            height: 50px;  
-            border-radius: 50%;  
-            display: flex;  
-            align-items: center;  
-            justify-content: center;  
-            font-size: 24px;  
-            cursor: pointer;  
-            transition: all 0.3s ease;  
-            border: 3px solid transparent;  
-            background: rgba(255, 255, 255, 0.8);  
-        }  
-  
-        .mood-item:hover {  
-            transform: scale(1.1);  
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);  
-        }  
-  
-        .mood-item.selected {  
-            border-color: var(--primary-blue);  
-            background: var(--soft-blue);  
-            transform: scale(1.15);  
-        }  
-  
-        /* 📸 모먼트 피드 디자인 */  
-        .moment-card {  
-            background: var(--glass-bg);  
-            backdrop-filter: blur(15px);  
-            border-radius: 20px;  
-            padding: 20px;  
-            margin-bottom: 20px;  
-            border: 1px solid rgba(255, 255, 255, 0.2);  
-            transition: all 0.3s ease;  
-        }  
-  
-        .moment-card:hover {  
-            transform: translateY(-3px);  
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);  
-        }  
-  
-        /* 🎭 모달 디자인 */  
-        .modal {  
-            position: fixed;  
-            top: 0;  
-            left: 0;  
-            width: 100%;  
-            height: 100%;  
-            background: rgba(0, 0, 0, 0.5);  
-            backdrop-filter: blur(10px);  
-            z-index: 2000;  
-            display: flex;  
-            align-items: center;  
-            justify-content: center;  
-            opacity: 0;  
-            visibility: hidden;  
-            transition: all 0.3s ease;  
-        }  
-  
-        .modal.active {  
-            opacity: 1;  
-            visibility: visible;  
-        }  
-  
-        .modal-content {  
-            background: var(--glass-bg);  
-            backdrop-filter: blur(20px);  
-            border-radius: 25px;  
-            padding: 30px;  
-            max-width: 500px;  
-            width: 90%;  
-            max-height: 90vh;  
-            overflow-y: auto;  
-            transform: scale(0.7);  
-            transition: transform 0.3s ease;  
-        }  
-  
-        .modal.active .modal-content {  
-            transform: scale(1);  
-        }  
-  
-        /* 📝 작성 영역 디자인 */  
-        .compose-textarea {  
-            width: 100%;  
-            min-height: 150px;  
-            border-radius: 15px;  
-            border: 2px solid rgba(102, 126, 234, 0.2);  
-            padding: 15px;  
-            resize: none;  
-            background: rgba(255, 255, 255, 0.8);  
-            font-family: 'Noto Sans KR', sans-serif;  
-            transition: border-color 0.3s ease;  
-        }  
-  
-        .compose-textarea:focus {  
-            outline: none;  
-            border-color: var(--primary-blue);  
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);  
-        }  
-  
-        /* 🎭 로그인 화면 디자인 */  
-        .login-input {  
-            width: 100%;  
-            padding: 12px 16px;  
-            border-radius: 15px;  
-            border: 2px solid rgba(102, 126, 234, 0.2);  
-            background: rgba(255, 255, 255, 0.8);  
-            transition: all 0.3s ease;  
-            margin-bottom: 15px;  
-        }  
-  
-        .login-input:focus {  
-            outline: none;  
-            border-color: var(--primary-blue);  
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);  
-        }  
-  
-        /* 반응형 디자인 */  
-        .hide { display: none !important; }  
-        .fade-in { animation: fadeIn 0.5s ease-out; }  
-          
-        @keyframes fadeIn {  
-            from { opacity: 0; transform: translateY(20px); }  
-            to { opacity: 1; transform: translateY(0); }  
-        }  
-  
-        /* 커스텀 스크롤바 */  
-        ::-webkit-scrollbar {  
-            width: 8px;  
-        }  
-  
-        ::-webkit-scrollbar-track {  
-            background: rgba(255, 255, 255, 0.1);  
-        }  
-  
-        ::-webkit-scrollbar-thumb {  
-            background: var(--primary-blue);  
-            border-radius: 4px;  
-        }  
-  
-        ::-webkit-scrollbar-thumb:hover {  
-            background: var(--accent-pink);  
-        }  
-  
-        /* 💬 에디터톡 작성 영역 */  
-        .editor-compose {  
-            background: var(--glass-bg);  
-            backdrop-filter: blur(15px);  
-            border: 2px solid rgba(102, 126, 234, 0.2);  
-            border-radius: 20px;  
-            padding: 20px;  
-            margin-bottom: 20px;  
-        }  
-  
-        .interaction-btn {  
-            background: rgba(255, 255, 255, 0.8);  
-            border: 2px solid rgba(102, 126, 234, 0.2);  
-            border-radius: 12px;  
-            padding: 6px 12px;  
-            font-size: 12px;  
-            cursor: pointer;  
-            transition: all 0.2s ease;  
-            margin-right: 8px;  
-        }  
-  
-        .interaction-btn:hover {  
-            background: var(--soft-blue);  
-            border-color: var(--primary-blue);  
-        }  
-  
-        .interaction-btn.liked {  
-            background: var(--primary-blue);  
-            color: white;  
-            border-color: var(--primary-blue);  
-        }  
-    </style>  
-</head>  
-<body>  
-  
-<!-- ✉️ 저녁 6시 편지 알림 -->  
-<div id="letterNotification" class="letter-notification hide">  
-    <div class="text-center">  
-        <div class="text-2xl mb-2">💌</div>  
-        <h3 class="text-lg font-bold mb-1" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">  
-            햅삐님의 편지가 도착했어요!  
-        </h3>  
-        <p class="text-sm text-gray-600 mb-4">  
-            정말 고생말았어요! 오늘 하루를 기록하러 가볼까요?  
-        </p>  
-        <button onclick="openTodayMood()" class="premium-btn w-full">  
-            지금 기록하기 ✨  
-        </button>  
-    </div>  
-</div>  
-  
-<div id="appContainer" class="min-h-screen pb-[70px]">  
-  
-    <!-- 🏠 홈페이지 -->  
-    <section id="homePage" class="p-5 pt-16 fade-in">  
-        <div class="text-center mb-8">  
-            <h1 class="text-3xl font-bold mb-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">  
-                햅삐님 오늘도 행복하세요!  
-            </h1>  
-            <p class="text-gray-600">메마른 일상에 휴식 한 방울!</p>  
-        </div>  
-  
-        <div class="glass-card rounded-3xl p-6 mb-6">  
-            <div class="flex items-center justify-between">  
-                <div>  
-                    <h3 class="text-xl font-bold text-gray-800" id="userGreeting">혜란님 오늘도 행복하세요! 🌿</h3>  
-                    <p class="text-sm text-gray-600 mt-1">당신의 힐링을 위한, 자휴레터</p>  
-                </div>  
-                <div class="text-4xl animate-pulse">💖</div>  
-            </div>  
-        </div>  
-  
-        <div class="mb-6">  
-            <h3 class="text-xl font-bold mb-4 text-gray-800">HOT TREND</h3>  
-            <div class="trend-card" onclick="openHealingTypeTest()">  
-                <div class="flex items-center justify-between">  
-                    <div>  
-                        <h4 class="font-bold text-lg text-gray-800">나만의 힐링 유형 TEST</h4>  
-                        <p class="text-sm text-gray-600 mt-1">나에게 딱 맞는 휴식을 찾아보자!</p>  
-                    </div>  
-                    <div class="text-2xl">✨</div>  
-                </div>  
-            </div>  
-        </div>  
-  
-        <div class="grid grid-cols-3 gap-4">  
-            <button class="glass-card rounded-2xl p-4 text-center transition hover:shadow-lg" onclick="openChat()">  
-                <div class="text-3xl mb-2">💬</div>  
-                <span class="text-xs text-gray-600">1:1 카톡</span>  
-            </button>  
-            <button class="glass-card rounded-2xl p-4 text-center transition hover:shadow-lg" onclick="openSentenceCollection()">  
-                <div class="text-3xl mb-2">📖</div>  
-                <span class="text-xs text-gray-600">문장 수집</span>  
-            </button>  
-            <button class="glass-card rounded-2xl p-4 text-center transition hover:shadow-lg" onclick="openLetterView()">  
-                <div class="text-3xl mb-2">💌</div>  
-                <span class="text-xs text-gray-600">레터 보기</span>  
-            </button>  
-        </div>  
-    </section>  
-  
-    <!-- 📬 레터 페이지 -->  
-    <section id="newsletterPage" class="p-5 pt-16 hide fade-in">  
-        <h2 class="text-3xl font-bold mb-4 text-gray-800">자휴레터 아카이브</h2>  
-        <p class="text-gray-600 mb-6">자휴레터와 자휴랩을 주제별로 한 눈에!</p>  
-  
-        <div class="flex mb-6">  
-            <button class="premium-btn mr-4" onclick="filterLetters('jahyuLetter')">  
-                <span class="font-bold" style="color: #667eea;">자휴레터</span>  
-            </button>  
-            <button class="premium-btn" onclick="filterLetters('jahyuLab')">  
-                <span class="font-bold" style="color: #f093fb;">자휴랩</span>  
-            </button>  
-        </div>  
-  
-        <div class="space-y-4" id="letterFeed">  
-            <div class="glass-card rounded-2xl p-5" data-category="jahyuLetter">  
-                <h4 class="text-lg font-bold text-gray-800 mb-1">32호. 퇴사 후 번아웃, 저만 이런가요?</h4>  
-                <p class="text-sm text-gray-600">퇴사 후에도 쉬지 못하는 당신에게...</p>  
-                <div class="mt-3 text-xs text-gray-500">3일 전</div>  
-            </div>  
-              
-            <div class="glass-card rounded-2xl p-5" data-category="jahyuLetter">  
-                <h4 class="text-lg font-bold text-gray-800 mb-1">31호. 주말에도 일생각이 멈추지 않아요</h4>  
-                <p class="text-sm text-gray-600">완전한 휴식을 위한 마음 벗기기법</p>  
-                <div class="mt-3 text-xs text-gray-500">1주일 전</div>  
-            </div>  
-        </div>  
-    </section>  
-  
-    <!-- 💬 에디터톡 페이지 -->  
-    <section id="editorTalkPage" class="p-5 pt-16 hide fade-in">  
-        <div class="flex items-center justify-between mb-6">  
-            <div>  
-                <h2 class="text-3xl font-bold text-gray-800">에디터 톡</h2>  
-                <p class="text-gray-600 mt-1" id="editorTalkDescription">에디터와 햅삐님들이 소통하는 공간</p>  
-            </div>  
-        </div>  
-  
-        <!-- 📝 관리자 전용 작성 영역 -->  
-        <div id="editorComposeArea" class="editor-compose hide">  
-            <form onsubmit="submitEditorPost(event)">  
-                <h4 class="font-bold text-gray-800 mb-3">📝 에디터님 글쓰기</h4>  
-                <textarea placeholder="햅삐님들에게 응원의 메시지를 전해주세요!" rows="4" class="compose-textarea mb-3" id="editorContent"></textarea>  
-                <button type="submit" class="premium-btn">  
-                    게시하기 💬  
-                </button>  
-            </form>  
-        </div>  
-  
-        <div id="editorTalkFeed" class="space-y-4">  
-            <!-- 에디터톡 피드가 여기에 동적으로 생성됩니다 -->  
-        </div>  
-    </section>  
-  
-    <!-- 📸 모먼트 페이지 -->  
-    <section id="momentPage" class="p-5 pt-16 hide fade-in">  
-        <div class="flex items-center justify-between mb-6">  
-            <div>  
-                <h2 class="text-3xl font-bold text-gray-800">모먼트</h2>  
-                <p class="text-gray-600 mt-1">햅삐님들의 일상이 궁금해요! 행복한 순간들을 공유해주세요!</p>  
-            </div>  
-            <button onclick="openMomentCompose()" class="premium-btn">  
-                작성하기 ✨  
-            </button>  
-        </div>  
-          
-        <div id="momentsFeed" class="space-y-4">  
-            <div class="moment-card">  
-                <div class="flex items-center mb-3">  
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-400 to-red-400 flex items-center justify-center text-white font-bold mr-3">  
-                        혜  
-                    </div>  
-                    <div class="flex-1">  
-                        <p class="font-bold text-gray-800">혜란</p>  
-                        <p class="text-xs text-gray-500">3시간 전</p>  
-                    </div>  
-                </div>  
-                <p class="text-gray-700 mb-3">오늘은 날씨도 좋고 카페에서 여유롭게 쉬고 있어요 ☕️✨</p>  
-                <img src="https://picsum.photos/seed/cafe1/400/300.jpg" alt="카페 이미지" class="w-full rounded-xl mb-3">  
-                <div class="flex items-center justify-between text-sm text-gray-600">  
-                    <div class="flex gap-4">  
-                        <span>💙 12</span>  
-                        <span>💬 3</span>  
-                    </div>  
-                    <span>👁️ 234</span>  
-                </div>  
-            </div>  
-        </div>  
-    </section>  
-  
-    <!-- 👤 마이페이지 -->  
-    <section id="myPage" class="p-5 pt-16 hide fade-in">  
-        <h2 class="text-3xl font-bold mb-4 text-gray-800">마이페이지</h2>  
-          
-        <div class="glass-card rounded-2xl p-6 mb-6">  
-            <div class="flex items-center">  
-                <div class="w-20 h-20 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-2xl font-bold mr-4" id="profileAvatar">  
-                    혜  
-                </div>  
-                <div>  
-                    <h3 class="text-xl font-bold text-gray-800" id="profileName">혜란</h3>  
-                    <p class="text-gray-600" id="profileEmail">hyeran@example.com</p>  
-                    <div class="mt-2">  
-                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs" id="profileRole">일반 회원</span>  
-                    </div>  
-                </div>  
-            </div>  
-        </div>  
-          
-        <div class="space-y-3 mb-6">  
-            <button class="w-full glass-card rounded-2xl p-4 text-left">  
-                <span class="font-medium text-gray-800">설정</span>  
-            </button>  
-            <button class="w-full glass-card rounded-2xl p-4 text-left">  
-                <span class="font-medium text-gray-800">알림</span>  
-            </button>  
-            <button class="w-full glass-card rounded-2xl p-4 text-left">  
-                <span class="font-medium text-gray-800">고객센터</span>  
-            </button>  
-        </div>  
-          
-        <button onclick="handleLogout()" class="w-full bg-red-500 text-white rounded-2xl p-4 font-medium hover:bg-red-600 transition">  
-            로그아웃  
-        </button>  
-    </section>  
-</div>  
-  
-<!-- 📝 다이어리 작성 모달 -->  
-<div id="diaryModal" class="modal" onclick="closeModal('diaryModal')">  
-    <div class="modal-content" onclick="event.stopPropagation()">  
-        <div class="flex items-center justify-between mb-6">  
-            <h3 class="text-2xl font-bold" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">  
-                오늘의 기록 ✨  
-            </h3>  
-            <button onclick="closeModal('diaryModal')" class="text-gray-500 hover:text-gray-700">  
-                ✕  
-            </button>  
-        </div>  
-          
-        <form onsubmit="submitDiary(event)">  
-            <div class="mb-6">  
-                <p class="text-sm font-medium text-gray-700 mb-3">오늘의 기분은 어떤가요?</p>  
-                <div class="flex gap-2 justify-center flex-wrap">  
-                    <div class="mood-item" onclick="selectMood(this, '😄', '행복')" data-mood="행복">😄</div>  
-                    <div class="mood-item" onclick="selectMood(this, '😌', '평온')" data-mood="평온">😌</div>  
-                    <div class="mood-item" onclick="selectMood(this, '🥰', '설렘')" data-mood="설렘">🥰</div>  
-                    <div class="mood-item" onclick="selectMood(this, '😩', '지침')" data-mood="지침">😩</div>  
-                    <div class="mood-item" onclick="selectMood(this, '😠', '분노')" data-mood="분노">😠</div>  
-                    <div class="mood-item" onclick="selectMood(this, '😢', '슬픔')" data-mood="슬픔">😢</div>  
-                    <div class="mood-item" onclick="selectMood(this, '😟', '불안')" data-mood="불안">😟</div>  
-                    <div class="mood-item" onclick="selectMood(this, '😐', '무관심')" data-mood="무관심">😐</div>  
-                </div>  
-            </div>  
-              
-            <input type="text" placeholder="제목을 입력하세요 (선택)" class="w-full p-3 rounded-xl border-2 border-gray-200 mb-4 focus:border-purple-400 focus:outline-none" id="diaryTitle">  
-              
-            <textarea placeholder="오늘은 어떤 하루였나요?" rows="8" class="compose-textarea mb-4" id="diaryContent"></textarea>  
-              
-            <button type="submit" class="premium-btn w-full" id="diarySubmitBtn" disabled>  
-                기록 완료 💖  
-            </button>  
-        </form>  
-    </div>  
-</div>  
-  
-<!-- 📷 모먼트 작성 모달 -->  
-<div id="momentModal" class="modal" onclick="closeModal('momentModal')">  
-    <div class="modal-content" onclick="event.stopPropagation()">  
-        <div class="flex items-center justify-between mb-6">  
-            <h3 class="text-2xl font-bold" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">  
-                모먼트 작성 📸  
-            </h3>  
-            <button onclick="closeModal('momentModal')" class="text-gray-500 hover:text-gray-700">  
-                ✕  
-            </button>  
-        </div>  
-          
-        <form onsubmit="submitMoment(event)">  
-            <div class="mb-4">  
-                <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-purple-400 transition" onclick="document.getElementById('imageInput').click()">  
-                    <div class="text-4xl mb-2">📸</div>  
-                    <p class="text-gray-600">사진을 추가해주세요</p>  
-                    <p class="text-sm text-gray-500">클릭 또는 드래그</p>  
-                </div>  
-                <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">  
-            </div>  
-              
-            <textarea placeholder="오늘의 순간을 공유해주세요 🌟" rows="4" class="compose-textarea mb-4" id="momentContent"></textarea>  
-              
-            <button type="submit" class="premium-btn w-full">  
-                모먼트 공유 ✨  
-            </button>  
-        </form>  
-    </div>  
-</div>  
-  
-<!-- 📱 하단 네비게이션 -->  
-<nav class="bottom-nav">  
-    <a href="#" class="nav-item active" onclick="navigateTo('newsletter', event)">  
-        <span class="nav-icon">✉️</span>  
-        <span class="nav-text">레터</span>  
-    </a>  
-    <a href="#" class="nav-item" onclick="navigateTo('editorTalk', event)">  
-        <span class="nav-icon">💬</span>  
-        <span class="nav-text">에디터톡</span>  
-    </a>  
-    <a href="#" class="nav-item" onclick="navigateTo('moment', event)">  
-        <span class="nav-icon">📸</span>  
-        <span class="nav-text">모먼트</span>  
-    </a>  
-    <a href="#" class="nav-item" onclick="navigateTo('myPage', event)">  
-        <span class="nav-icon">👤</span>  
-        <span class="nav-text">마이페이지</span>  
-    </a>  
-</nav>  
-  
-<script>  
-    // 🔐 보안 10단계 강화 - 인증 및 데이터 관리 시스템  
-    const appData = {  
-        // 사용자 데이터 구조  
-        users: [  
-            // 👑 햅씨 - 최고 관리자 (모든 사용자의 무드 접근 가능)  
-            {   
-                id: 'happxi@jahyu.com',   
-                name: '햅씨',   
-                password: 'admin123',   
-                role: 'super_admin',   
-                avatar: '햅',  
-                permissions: ['view_all_moods', 'manage_system', 'write_editor_talk']  
-            },  
-            // 일반 관리자 4명 (이름 변경 및 아이디 수정)  
-            {   
-                id: 'elly@jahyu.com',      // ID 변경  
-                name: '엘리',              // 이름 변경  
-                password: 'admin123',   
-                role: 'admin',   
-                avatar: '엘',  
-                permissions: ['basic_access', 'write_editor_talk']  
-            },  
-            {   
-                id: 'gokal@jahyu.com',     // ID 변경  
-                name: '고칼',              // 이름 변경  
-                password: 'admin123',   
-                role: 'admin',   
-                avatar: '고',  
-                permissions: ['basic_access', 'write_editor_talk']  
-            },  
-            {   
-                id: 'yudan@jahyu.com',     // ID 변경  
-                name: '유단',              // 이름 변경  
-                password: 'admin123',   
-                role: 'admin',   
-                avatar: '유',  
-                permissions: ['basic_access', 'write_editor_talk']  
-            },  
-            {   
-                id: 'sunny@jahyu.com',     // ID 변경  
-                name: '써니',              // 이름 변경  
-                password: 'admin123',   
-                role: 'admin',   
-                avatar: '써',  
-                permissions: ['basic_access', 'write_editor_talk']  
-            },  
-            // 일반 사용자  
-            {   
-                id: 'hyeran@example.com',   
-                name: '혜란',   
-                password: 'user123',   
-                role: 'user',   
-                avatar: '혜',  
-                permissions: ['basic_access']  
-            }  
-        ],  
-        currentUser: { id: 'hyeran@example.com', name: '혜란', role: 'user', avatar: '혜', permissions: ['basic_access'] },  
-        diaries: [  
-            { id: 1, userId: 'hyeran@example.com', date: '2025-12-10', title: '오늘 하루 너무 지쳤어요', content: '일이 너무 많아서 힘들었지만, 집에 와서 따뜻한 차를 마시니 조금 풀리네요.', emotion: '😩', moodName: '지침' },  
-            { id: 2, userId: 'hyeran@example.com', date: '2025-12-09', title: '새로운 시작에 대한 기대와 불안', content: '성장통이기를 바라며.', emotion: '😌', moodName: '평온' },  
-            { id: 3, userId: 'hyeran@example.com', date: '2025-12-07', title: '소확행, 따뜻한 라떼 한 잔', content: '모든 피로가 녹는 기분.', emotion: '😄', moodName: '행복' },  
-            { id: 4, userId: 'elly@jahyu.com', date: '2025-12-10', title: '관리자의 하루', content: '오늘도 다들 열심히 하셨네요!', emotion: '🥰', moodName: '설렘' },  
-            { id: 5, userId: 'happxi@jahyu.com', date: '2025-12-08', title: '모두를 응원합니다', content: '오늘 하루도 수고했어요!', emotion: '🥰', moodName: '설렘' },  
-            { id: 6, userId: 'gokal@jahyu.com', date: '2025-12-06', title: '주말 기다려짐', content: '주말에 쉬고 싶어요.', emotion: '😄', moodName: '행복' }  
-        ],  
-        moments: [  
-            { id: 1, userId: 'hyeran@example.com', content: '오늘은 날씨도 좋고 카페에서 여유롭게 쉬고 있어요 ☕️✨', likes: 12, comments: 3, views: 234, time: '3시간 전' }  
-        ],  
-        editorTalks: [  
-            {   
-                id: 1,   
-                userId: 'happxi@jahyu.com',   
-                content: '햅삐님들! 일주일 잘 버티셨나요? 주말에는 아무 생각 없이 쉬어야 해요! ☕️',   
-                likes: 45,   
-                comments: 8,   
-                time: '2시간 전',  
-                likedBy: []  
-            },  
-            {   
-                id: 2,   
-                userId: 'elly@jahyu.com',   
-                content: '모두 오늘 하루도 정말 수고 많으셨어요! 내일은 더 빛날 거예요 ✨',   
-                likes: 23,   
-                comments: 5,   
-                time: '5시간 전',  
-                likedBy: []  
-            }  
-        ]  
-    };  
-  
-    let selectedMood = { icon: '', name: '' };  
-    let currentTab = 'newsletter';  
-  
-    // 🚀 앱 초기화  
-    function initApp() {  
-        showMainApp();  
-        setupEventListeners();  
-    }  
-  
-    // 📱 메인 앱 표시  
-    function showMainApp() {  
-        document.getElementById('appContainer').classList.remove('hide');  
-          
-        updateUserProfile();  
-        updateEditorTalkPageForRole();  
-        navigateTo('newsletter');  
-        renderEditorTalks();  
-    }  
-  
-    // 👤 사용자 프로필 업데이트  
-    function updateUserProfile() {  
-        if (!appData.currentUser) return;  
-          
-        const user = appData.currentUser;  
-          
-        document.getElementById('userGreeting').textContent = `${user.name}님 오늘도 행복하세요! 🌿`;  
-        document.getElementById('profileAvatar').textContent = user.avatar;  
-        document.getElementById('profileName').textContent = user.name;  
-        document.getElementById('profileEmail').textContent = user.id;  
-          
-        let roleText = '일반 회원';  
-        let roleClass = 'bg-purple-100 text-purple-800';  
-          
-        if (user.role === 'super_admin') {  
-            roleText = '👑 햅씨 (최고 관리자)';  
-            roleClass = 'bg-yellow-100 text-yellow-800';  
-        } else if (user.role === 'admin') {  
-            roleText = '관리자';  
-            roleClass = 'bg-blue-100 text-blue-800';  
-        }  
-          
-        const roleElement = document.getElementById('profileRole');  
-        if (roleElement) {  
-            roleElement.textContent = roleText;  
-            roleElement.className = `${roleClass} px-3 py-1 rounded-full text-xs`;  
-        }  
-    }  
-  
-    // 💬 역할별 에디터톡 페이지 설정  
-    function updateEditorTalkPageForRole() {  
-        const editorDescription = document.getElementById('editorTalkDescription');  
-        const composeArea = document.getElementById('editorComposeArea');  
-          
-        if (!appData.currentUser) return;  
-          
-        if (isAdmin()) {  
-            // 모든 관리자는 글쓰기 가능  
-            editorDescription.textContent = '에디터와 햅삐님들이 소통하는 공간 (글쓰기 가능)';  
-            composeArea.classList.remove('hide');  
-        } else {  
-            // 일반 사용자는 읽기만 가능  
-            editorDescription.textContent = '에디터와 햅삐님들이 소통하는 공간 (읽기 전용)';  
-            composeArea.classList.add('hide');  
-        }  
-    }  
-  
-    // 🔐 관리자 여부 확인  
-    function isAdmin() {  
-        return appData.currentUser &&   
-               (appData.currentUser.role === 'super_admin' || appData.currentUser.role === 'admin');  
-    }  
-  
-    // 💬 에디터톡 렌더링  
-    function renderEditorTalks() {  
-        const feed = document.getElementById('editorTalkFeed');  
-        if (!feed) return;  
-          
-        feed.innerHTML = '';  
-          
-        if (!appData.currentUser) {  
-            feed.innerHTML = '<div class="text-center text-gray-400 mt-10"><p>로그인이 필요합니다.</p></div>';  
-            return;  
-        }  
-          
-        const sortedTalks = appData.editorTalks.sort((a, b) => new Date(b.time) - new Date(a.time));  
-          
-        sortedTalks.forEach(talk => {  
-            const talkCard = createEditorTalkCard(talk);  
-            feed.appendChild(talkCard);  
-        });  
-    }  
-  
-    // 💬 에디터톡 카드 생성  
-    function createEditorTalkCard(talk) {  
-        const card = document.createElement('div');  
-        card.className = 'glass-card rounded-2xl p-5';  
-          
-        const user = appData.users.find(u => u.id === talk.userId);  
-        const isLiked = talk.likedBy?.includes(appData.currentUser.id) || false;  
-          
-        card.innerHTML = `  
-            <div class="flex items-center mb-3">  
-                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white font-bold mr-3">  
-                    ${user.avatar}  
-                </div>  
-                <div class="flex-1">  
-                    <p class="font-bold text-gray-800">${user.name}</p>  
-                    <p class="text-xs text-gray-500">${talk.time}</p>  
-                </div>  
-            </div>  
-            <p class="text-gray-700 mb-4">${talk.content}</p>  
-            <div class="flex items-center gap-4">  
-                <button onclick="toggleLike(\( {talk.id})" class="interaction-btn \){isLiked ? 'liked' : ''}">  
-                    💙 ${talk.likes}  
-                </button>  
-                <button onclick="showCommentInput(${talk.id})" class="interaction-btn">  
-                    💬 ${talk.comments}  
-                </button>  
-            </div>  
-        `;  
-          
-        return card;  
-    }  
-  
-    // 📝 에디터톡 글 작성  
-    function submitEditorPost(event) {  
-        event.preventDefault();  
-          
-        if (!isAdmin()) {  
-            alert('권한이 없습니다.');  
-            return;  
-        }  
-          
-        const content = document.getElementById('editorContent').value.trim();  
-        if (!content) {  
-            alert('내용을 입력해주세요.');  
-            return;  
-        }  
-          
-        const newTalk = {  
-            id: Date.now(),  
-            userId: appData.currentUser.id,  
-            content: content,  
-            likes: 0,  
-            comments: 0,  
-            time: '방금 전',  
-            likedBy: []  
-        };  
-          
-        appData.editorTalks.unshift(newTalk);  
-        renderEditorTalks();  
-          
-        document.getElementById('editorContent').value = '';  
-        alert('에디터톡에 게시되었어요! 💬');  
-    }  
-  
-    // 💙 좋아요 토글  
-    function toggleLike(talkId) {  
-        if (!appData.currentUser) return;  
-          
-        const talk = appData.editorTalks.find(t => t.id === talkId);  
-        if (!talk) return;  
-          
-        if (!talk.likedBy) talk.likedBy = [];  
-          
-        const userIndex = talk.likedBy.indexOf(appData.currentUser.id);  
-        if (userIndex > -1) {  
-            talk.likedBy.splice(userIndex, 1);  
-            talk.likes--;  
-        } else {  
-            talk.likedBy.push(appData.currentUser.id);  
-            talk.likes++;  
-        }  
-          
-        renderEditorTalks();  
-    }  
-  
-    // 💬 댓글 입력 (간단한 구현)  
-    function showCommentInput(talkId) {  
-        const comment = prompt('댓글을 입력하세요:');  
-        if (comment) {  
-            const talk = appData.editorTalks.find(t => t.id === talkId);  
-            if (talk) {  
-                talk.comments++;  
-                renderEditorTalks();  
-                alert('댓글이 작성되었어요! 💬');  
-            }  
-        }  
-    }  
-  
-    function formatDate(dateString) {  
-        const date = new Date(dateString);  
-        return date.toLocaleDateString('ko-KR', {   
-            month: 'long',   
-            day: 'numeric',  
-            year: date.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined  
-        });  
-    }  
-  
-    function isWithin7Days(diaryDate) {  
-        const diary = new Date(diaryDate);  
-        const today = new Date();  
-        const diffTime = Math.abs(today - diary);  
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));  
-        return diffDays <= 7;  
-    }  
-  
-    function getTodayDiariesCount() {  
-        const today = new Date().toISOString().split('T')[0];  
-        return appData.diaries.filter(diary => diary.date === today).length;  
-    }  
-  
-    // 기분 선택 및 다이어리 제출 (이전과 동일)  
-    function selectMood(element, icon, name) {  
-        document.querySelectorAll('.mood-item').forEach(item => item.classList.remove('selected'));  
-        element.classList.add('selected');  
-        selectedMood = { icon, name };  
-        checkDiaryForm();  
-    }  
-  
-    function checkDiaryForm() {  
-        const content = document.getElementById('diaryContent').value.trim();  
-        const submitBtn = document.getElementById('diarySubmitBtn');  
-          
-        if (selectedMood.icon && content) {  
-            submitBtn.disabled = false;  
-            submitBtn.classList.add('opacity-100');  
-        } else {  
-            submitBtn.disabled = true;  
-            submitBtn.classList.remove('opacity-100');  
-        }  
-    }  
-  
-    function submitDiary(event) {  
-        event.preventDefault();  
-          
-        if (!selectedMood.icon) {  
-            alert('기분을 선택해주세요.');  
-            return;  
-        }  
-          
-        if (!appData.currentUser) {  
-            alert('로그인이 필요합니다.');  
-            return;  
-        }  
-          
-        const title = document.getElementById('diaryTitle').value.trim();  
-        const content = document.getElementById('diaryContent').value.trim();  
-          
-        const newDiary = {  
-            id: Date.now(),  
-            userId: appData.currentUser.id,  
-            date: new Date().toISOString().split('T')[0],  
-            title: title,  
-            content: content,  
-            emotion: selectedMood.icon,  
-            moodName: selectedMood.name  
-        };  
-          
-        appData.diaries.push(newDiary);  
-        closeModal('diaryModal');  
-          
-        document.getElementById('diaryTitle').value = '';  
-        document.getElementById('diaryContent').value = '';  
-        selectedMood = { icon: '', name: '' };  
-        document.querySelectorAll('.mood-item').forEach(item => item.classList.remove('selected'));  
-          
-        alert('오늘의 무드가 완벽하게 보호되며 저장되었어요! 💖');  
-    }  
-  
-    function handleImageUpload(event) {  
-        const file = event.target.files[0];  
-        if (file) {  
-            const reader = new FileReader();  
-            reader.onload = function(e) {  
-                const dropZone = event.target.parentElement;  
-                dropZone.innerHTML = `  
-                    <img src="${e.target.result}" alt="업로드된 이미지" class="w-full h-32 object-cover rounded-lg mb-2">  
-                    <p class="text-sm text-gray-600">클릭해서 다른 이미지 선택</p>  
-                `;  
-            };  
-            reader.readAsDataURL(file);  
-        }  
-    }  
-  
-    function submitMoment(event) {  
-        event.preventDefault();  
-        const content = document.getElementById('momentContent').value.trim();  
-          
-        if (content) {  
-            const newMoment = {  
-                id: Date.now(),  
-                userId: appData.currentUser.id,  
-                content: content,  
-                likes: 0,  
-                comments: 0,  
-                views: 0,  
-                time: '방금 전'  
-            };  
-              
-            appData.moments.unshift(newMoment);  
-            closeModal('momentModal');  
-            document.getElementById('momentContent').value = '';  
-            alert('모먼트가 공유되었어요! ✨');  
-        }  
-    }  
-  
-    // 페이지 네비게이션  
-    function navigateTo(page, event) {  
-        if (event) event.preventDefault();  
-          
-        document.querySelectorAll('section').forEach(section => section.classList.add('hide'));  
-          
-        const targetPage = document.getElementById(page + 'Page');  
-        if (targetPage) {  
-            targetPage.classList.remove('hide');  
-            targetPage.classList.add('fade-in');  
-        }  
-          
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));  
-        event?.currentTarget?.classList.add('active');  
-          
-        currentTab = page;  
-          
-        if (page === 'editorTalk') {  
-            renderEditorTalks();  
-        }  
-    }  
-  
-    function filterLetters(category) {  
-        const letters = document.querySelectorAll('#letterFeed > div');  
-        letters.forEach(letter => {  
-            if (category === 'all' || letter.dataset.category === category) {  
-                letter.style.display = 'block';  
-            } else {  
-                letter.style.display = 'none';  
-            }  
-        });  
-    }  
-  
-    function openTodayMood() {  
-        document.getElementById('letterNotification').classList.add('hide');  
-        setTimeout(() => openDiaryWrite(), 300);  
-    }  
-  
-    function openDiaryWrite() {  
-        if (!appData.currentUser) return;  
-        document.getElementById('diaryModal').classList.add('active');  
-    }  
-  
-    function openMomentCompose() {  
-        if (!appData.currentUser) return;  
-        document.getElementById('momentModal').classList.add('active');  
-    }  
-  
-    function closeModal(modalId) {  
-        document.getElementById(modalId).classList.remove('active');  
-    }  
-  
-    function openHealingTypeTest() {  
-        window.open('https://index-html-zak5.vercel.app/', '_blank');  
-    }  
-  
-    function openChat() {  
-        window.open('http://pf.kakao.com/_Jfjxgn/111753149', '_blank');  
-    }  
-  
-    function openSentenceCollection() {  
-        window.open('http://pf.kakao.com/_Jfjxgn/111753149', '_blank');  
-    }  
-  
-    function openLetterView() {  
-        window.open('https://maily.so/happci/posts/2nzn7qegrp5', '_blank');  
-    }  
-  
-    function showSignup() {  
-        alert('회원가입 기능이 곧 추가될 예정입니다! 💝');  
-    }  
-  
-    function toggleUserDiaries(userId) {  
-        alert('더보기 기능이 구현될 예정입니다!');  
-    }  
-  
-    function showDiaryDetail(diaryId) {  
-        const diary = appData.diaries.find(d => d.id === diaryId);  
-        if (!diary) return;  
-          
-        const user = appData.users.find(u => u.id === diary.userId);  
-        alert(`  
-📝 ${diary.title || '제목 없음'}  
-  
-작성자: \( {user.name} ( \){user.id})  
-작성일: ${formatDate(diary.date)}  
-기분: \( {diary.emotion} \){diary.moodName}  
-  
-내용:  
-${diary.content}  
-        `);  
-    }  
-  
-    function setupEventListeners() {  
-        const diaryContent = document.getElementById('diaryContent');  
-        if (diaryContent) {  
-            diaryContent.addEventListener('input', checkDiaryForm);  
-        }  
-          
-        document.querySelectorAll('.modal').forEach(modal => {  
-            modal.addEventListener('click', function(e) {  
-                if (e.target === this) {  
-                    this.classList.remove('active');  
-                }  
-            });  
-        });  
-    }  
-  
-    // 🚪 로그아웃 (보안 강화)  
-    function handleLogout() {  
-        if (confirm('정말 로그아웃하시겠습니까?')) {  
-            appData.currentUser = null;  
-            localStorage.removeItem('jahyuLogin');  
-            sessionStorage.clear();  
-              
-            document.getElementById('appContainer').classList.add('hide');  
-              
-            navigateTo('newsletter');  
-        }  
-    }  
-  
-    window.addEventListener('DOMContentLoaded', initApp);  
-</script>  
-  
-</body>  
+        /* 🎨 트렌디한 컬러 팔레트 */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #f3e7e9 100%);
+            --primary-blue: #667eea;
+            --soft-blue: #e0e7ff;
+            --accent-pink: #f093fb;
+            --text-dark: #4a5568;
+            --text-light: #718096;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-nav-bg: rgba(255, 255, 255, 0.7); /* 네비게이션용 투명도 조절 */
+            --new-badge-gradient: linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%);
+            --secret-bg: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+            --happxi-bg: linear-gradient(135deg, #ffd70020 0%, #ffb34720 100%);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ✨ 유리질감 디자인 */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+        }
+
+        /* 🔒 보안 디자인 (기존 유지) */
+        .privacy-protected {
+            background: var(--secret-bg);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(102, 126, 234, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .privacy-protected::before {
+            content: '🔒';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 16px;
+            opacity: 0.2;
+            animation: privacyPulse 3s ease-in-out infinite;
+        }
+
+        /* 👑 햅씨 전용 관리자 디자인 (기존 유지) */
+        .happxi-admin {
+            background: var(--happxi-bg);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .happxi-admin::before {
+            content: '👑';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 18px;
+            animation: crownFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes privacyPulse {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.1); }
+        }
+
+        @keyframes crownFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-3px) rotate(5deg); }
+        }
+
+        /* 🌟 프리미엄 버튼 디자인 (기존 유지) */
+        .premium-btn {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .premium-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 🎯 세련된 카드 디자인 (기존 유지) */
+        .trend-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .trend-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        /* 📱 모바일 최적화 네비게이션 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 75px; /* 높이 약간 증가 */
+            z-index: 1000;
+            background: var(--glass-nav-bg); /* 유리질감 배경 */
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(102, 126, 234, 0.1);
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 5px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+            flex: 1;
+            min-width: 0; /* overflow 방지 */
+        }
+
+        .nav-item.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-icon-container {
+            font-size: 22px; /* 아이콘 크기 */
+            margin-bottom: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        /* 핀터레스트 참고 - 감각적인 테두리 아이콘 스타일 */
+        .nav-icon-container i {
+            font-style: normal;
+            display: inline-block;
+            transition: all 0.3s ease;
+            color: var(--text-light);
+        }
+
+        .nav-item.active .nav-icon-container i {
+            color: var(--primary-blue);
+        }
+        
+        /* 자휴랩 특수 버튼 스타일 */
+        .jahyu-lab-btn {
+            transform: translateY(-15px);
+            background: var(--secondary-gradient);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.5);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            padding-top: 5px;
+        }
+
+        .jahyu-lab-btn:hover {
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.7);
+            transform: translateY(-18px);
+        }
+        
+        .nav-text {
+            font-size: 11px;
+            line-height: 1;
+        }
+
+        /* ------------------------------------ */
+        /* 기타 스타일 (기존 유지) */
+        .hide { display: none !important; }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 새로운 스타일: 필터 버튼 */
+        .filter-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .filter-btn:not(.active) {
+            background: rgba(255, 255, 255, 0.7);
+            color: var(--text-dark);
+            border-color: rgba(102, 126, 234, 0.2);
+        }
+
+        /* 글자 색상 그라데이션 */
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* 로그인/회원가입 인풋 스타일 (기존 유지) */
+        .login-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+    </style>
+</head>
+<body>
+
+<section id="authPage" class="p-5 pt-16 min-h-screen flex items-center justify-center fade-in">
+    <div class="glass-card rounded-3xl p-8 max-w-sm w-full">
+        <div class="text-center mb-6">
+            <h2 class="text-3xl font-bold mb-2 gradient-text">
+                자휴레터
+            </h2>
+            <p class="text-gray-600">당신의 특별한 휴식을 위한 공간</p>
+        </div>
+
+        <form onsubmit="handleLogin(event)" id="loginForm">
+            <h3 class="text-xl font-bold mb-4 text-gray-800">로그인</h3>
+            <input type="email" id="loginEmail" placeholder="이메일을 입력하세요" class="login-input" required>
+            <input type="password" id="loginPassword" placeholder="비밀번호를 입력하세요" class="login-input" required>
+
+            <div class="flex items-center mb-4">
+                <input type="checkbox" id="rememberLogin" class="mr-2">
+                <label for="rememberLogin" class="text-sm text-gray-700">로그인 정보 저장하기</label>
+            </div>
+
+            <button type="submit" class="premium-btn w-full">
+                로그인 💝
+            </button>
+        </form>
+        
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                계정이 없으신가요?
+                <button onclick="showSignup()" class="text-purple-600 font-medium hover:underline">회원가입</button>
+            </p>
+        </div>
+    </div>
+</section>
+
+
+<div id="appContainer" class="min-h-screen pb-[75px] hide">
+
+    <section id="homePage" class="p-5 pt-16 fade-in">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold mb-2 gradient-text">
+                햅삐님 오늘도 행복하세요! 🌿
+            </h1>
+            <p class="text-gray-600">메마른 일상에 휴식 한 방울! ✨</p>
+        </div>
+
+        <div class="glass-card rounded-3xl p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800" id="userGreeting">혜란님 오늘도 행복하세요! 🌿</h3>
+                    <p class="text-sm text-gray-600 mt-1">당신의 힐링을 위한, 자휴레터</p>
+                </div>
+                <div class="text-4xl animate-pulse">💖</div>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <h3 class="text-xl font-bold mb-4 text-gray-800">HOT TREND</h3>
+            <a href="https://index-html-zak5.vercel.app/" target="_blank" class="trend-card block">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-lg text-gray-800">나만의 힐링 유형 TEST</h4>
+                        <p class="text-sm text-gray-600 mt-1">나에게 딱 맞는 휴식을 찾아보자! 🔮</p>
+                    </div>
+                    <div class="text-2xl">✨</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+            <a href="http://pf.kakao.com/_Jfjxgn/111753149" target="_blank" class="glass-card rounded-2xl p-4 text-center transition hover:shadow-lg">
+                <div class="text-3xl mb-2">💬</div>
+                <span class="text-xs text-gray-600">1:1 카톡</span>
+            </a>
+            <button class="glass-card rounded-2xl p-4 text-center transition hover:shadow-lg" onclick="alert('문장 수집 기능 준비 중입니다')">
+                <div class="text-3xl mb-2">📖</div>
+                <span class="text-xs text-gray-600">문장 수집</span>
+            </button>
+            <a href="https://maily.so/happci/posts/2nzn7qegrp5" target="_blank" class="glass-card rounded-2xl p-4 text-center transition hover:shadow-lg">
+                <div class="text-3xl mb-2">💌</div>
+                <span class="text-xs text-gray-600">레터 보기</span>
+            </a>
+        </div>
+    </section>
+
+    <section id="newsletterPage" class="p-5 pt-16 hide fade-in">
+        <h2 class="text-3xl font-bold mb-2 text-gray-800">자휴레터 아카이브</h2>
+        <p class="text-gray-600 mb-6">자휴레터와 자휴랩을 주제별로 한 눈에!</p>
+
+        <div class="flex gap-3 mb-6">
+            <button id="filterAll" class="filter-btn active" onclick="filterLetters('all')">
+                전체
+            </button>
+            <button id="filterJahyuLetter" class="filter-btn" onclick="filterLetters('자휴레터')">
+                <span class="font-bold gradient-text">자휴레터</span>
+            </button>
+            <button id="filterJahyuLab" class="filter-btn" onclick="filterLetters('자휴랩')">
+                <span class="font-bold gradient-text">자휴랩</span>
+            </button>
+        </div>
+
+        <div id="lettersFeed" class="space-y-4">
+            </div>
+    </section>
+
+    <section id="editorTalkPage" class="p-5 pt-16 hide fade-in">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800">에디터 톡</h2>
+                <p class="text-gray-600 mt-1" id="editorTalkDescription">에디터와 햅삐님들이 소통하는 공간</p>
+            </div>
+        </div>
+
+        <div id="editorComposeArea" class="editor-compose hide">
+            <form onsubmit="submitEditorPost(event)">
+                <h4 class="font-bold text-gray-800 mb-3">📝 에디터님 글쓰기</h4>
+                <textarea placeholder="햅삐님들에게 응원의 메시지를 전해주세요!" rows="4" class="compose-textarea mb-3" id="editorContent"></textarea>
+                <button type="submit" class="premium-btn">
+                    게시하기 💬
+                </button>
+            </form>
+        </div>
+
+        <div id="editorTalkFeed" class="space-y-4">
+            </div>
+    </section>
+
+    <section id="momentPage" class="p-5 pt-16 hide fade-in">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800">모먼트</h2>
+                <p class="text-gray-600 mt-1">햅삐님들의 일상이 궁금해요! 행복한 순간들을 공유해주세요!</p>
+            </div>
+            <button onclick="alert('모먼트 작성 기능 준비 중입니다. ✨')" class="premium-btn">
+                작성하기 ✨
+            </button>
+        </div>
+
+        <div id="momentsFeed" class="space-y-4">
+            <div class="moment-card">
+                <div class="flex items-center mb-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-400 to-red-400 flex items-center justify-center text-white font-bold mr-3">
+                        혜
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-bold text-gray-800">혜란</p>
+                        <p class="text-xs text-gray-500">3시간 전</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-3">오늘은 날씨도 좋고 카페에서 여유롭게 쉬고 있어요 ☕️✨</p>
+                <img src="https://picsum.photos/seed/cafe1/400/300.jpg" alt="카페 이미지" class="w-full rounded-xl mb-3">
+                <div class="flex items-center justify-between text-sm text-gray-600">
+                    <div class="flex gap-4">
+                        <span>💙 12</span>
+                        <span>💬 3</span>
+                    </div>
+                    <span>👁️ 234</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sanctuaryPage" class="p-5 pt-16 hide fade-in">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800">오늘의 무드</h2>
+                <p class="text-gray-600 mt-1" id="moodDescription">
+                    햅삐님이 오늘 느낀 감정과 생각들을 솔직하게 기록해 보세요!
+                </p>
+            </div>
+            <button onclick="alert('오늘의 무드 기록 기능 준비 중입니다. ✍️')" class="premium-btn" id="moodWriteBtn">
+                기록하기 ✍️
+            </button>
+        </div>
+
+        <div id="diaryList" class="space-y-4">
+            </div>
+    </section>
+
+    <section id="myPage" class="p-5 pt-16 hide fade-in">
+        <h2 class="text-3xl font-bold mb-4 text-gray-800">마이페이지</h2>
+
+        <div class="glass-card rounded-2xl p-6 mb-6">
+            <div class="flex items-center">
+                <div class="w-20 h-20 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white text-2xl font-bold mr-4" id="profileAvatar">
+                    혜
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800" id="profileName">혜란</h3>
+                    <p class="text-gray-600" id="profileEmail">hyeran@example.com</p>
+                    <div class="mt-2">
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs" id="profileRole">일반 회원</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-3 mb-6">
+            <button class="w-full glass-card rounded-2xl p-4 text-left">
+                <span class="font-medium text-gray-800">설정</span>
+            </button>
+            <button class="w-full glass-card rounded-2xl p-4 text-left">
+                <span class="font-medium text-gray-800">알림</span>
+            </button>
+            <button class="w-full glass-card rounded-2xl p-4 text-left">
+                <span class="font-medium text-gray-800">고객센터</span>
+            </button>
+        </div>
+
+        <button onclick="handleLogout()" class="w-full bg-red-500 text-white rounded-2xl p-4 font-medium hover:bg-red-600 transition">
+            로그아웃
+        </button>
+    </section>
+</div>
+
+<nav class="bottom-nav">
+    <a href="#" class="nav-item active" onclick="navigateTo('home', event)">
+        <div class="nav-icon-container"><i class="ri-home-4-line"></i></div>
+        <span class="nav-text">홈</span>
+    </a>
+    <a href="#" class="nav-item" onclick="navigateTo('newsletter', event)">
+        <div class="nav-icon-container"><i class="ri-mail-line"></i></div>
+        <span class="nav-text">레터</span>
+    </a>
+    <a href="#" class="nav-item" onclick="navigateTo('editorTalk', event)">
+        <div class="nav-icon-container"><i class="ri-message-3-line"></i></div>
+        <span class="nav-text">에디터톡</span>
+    </a>
+    <a href="#" class="jahyu-lab-btn" onclick="navigateTo('jahyuLab', event)">
+        <div class="text-2xl leading-none">🧪</div>
+        <span class="text-xs leading-none mt-0.5">자휴랩</span>
+    </a>
+    <a href="#" class="nav-item" onclick="navigateTo('moment', event)">
+        <div class="nav-icon-container"><i class="ri-camera-line"></i></div>
+        <span class="nav-text">모먼트</span>
+    </a>
+    <a href="#" class="nav-item" onclick="navigateTo('sanctuary', event)">
+        <div class="nav-icon-container"><i class="ri-emotion-line"></i></div>
+        <span class="nav-text">무드</span>
+    </a>
+    <a href="#" class="nav-item" onclick="navigateTo('myPage', event)">
+        <div class="nav-icon-container"><i class="ri-user-line"></i></div>
+        <span class="nav-text">마이</span>
+    </a>
+</nav>
+
+<script>
+    // 🔐 보안 10단계 강화 - 인증 및 데이터 관리 시스템
+    const appData = {
+        users: [
+            { id: 'happxi@jahyu.com', name: '햅씨', password: 'admin123', role: 'super_admin', avatar: '햅', permissions: ['view_all_moods', 'manage_system', 'write_editor_talk'] },
+            { id: 'elly@jahyu.com', name: '엘리', password: 'admin123', role: 'admin', avatar: '엘', permissions: ['basic_access', 'write_editor_talk'] },
+            { id: 'gokal@jahyu.com', name: '고칼', password: 'admin123', role: 'admin', avatar: '고', permissions: ['basic_access', 'write_editor_talk'] },
+            { id: 'yudan@jahyu.com', name: '유단', password: 'admin123', role: 'admin', avatar: '유', permissions: ['basic_access', 'write_editor_talk'] },
+            { id: 'sunny@jahyu.com', name: '써니', password: 'admin123', role: 'admin', avatar: '써', permissions: ['basic_access', 'write_editor_talk'] },
+            { id: 'hyeran@example.com', name: '혜란', password: 'user123', role: 'user', avatar: '혜', permissions: ['basic_access'] }
+        ],
+        currentUser: null,
+        diaries: [
+            { id: 1, userId: 'hyeran@example.com', date: '2025-12-10', title: '오늘 하루 너무 지쳤어요', content: '일이 너무 많아서 힘들었지만, 집에 와서 따뜻한 차를 마시니 조금 풀리네요.', emotion: '😩', moodName: '지침' },
+            { id: 2, userId: 'hyeran@example.com', date: '2025-12-09', title: '새로운 시작에 대한 기대와 불안', content: '성장통이기를 바라며.', emotion: '😌', moodName: '평온' },
+            { id: 3, userId: 'hyeran@example.com', date: '2025-12-07', title: '소확행, 따뜻한 라떼 한 잔', content: '모든 피로가 녹는 기분.', emotion: '😄', moodName: '행복' },
+            { id: 4, userId: 'elly@jahyu.com', date: '2025-12-10', title: '관리자의 하루', content: '오늘도 다들 열심히 하셨네요!', emotion: '🥰', moodName: '설렘' },
+            { id: 5, userId: 'happxi@jahyu.com', date: '2025-12-08', title: '모두를 응원합니다', content: '오늘 하루도 수고했어요!', emotion: '🥰', moodName: '설렘' },
+            { id: 6, userId: 'gokal@jahyu.com', date: '2025-12-06', title: '주말 기다려짐', content: '주말에 쉬고 싶어요.', emotion: '😄', moodName: '행복' }
+        ],
+        moments: [
+            { id: 1, userId: 'hyeran@example.com', content: '오늘은 날씨도 좋고 카페에서 여유롭게 쉬고 있어요 ☕️✨', likes: 12, comments: 3, views: 234, time: '3시간 전' }
+        ],
+        editorTalks: [
+            { id: 1, userId: 'happxi@jahyu.com', content: '햅삐님들! 일주일 잘 버티셨나요? 주말에는 아무 생각 없이 쉬어야 해요! ☕️', likes: 45, comments: 8, time: '2시간 전', likedBy: [] },
+            { id: 2, userId: 'elly@jahyu.com', content: '모두 오늘 하루도 정말 수고 많으셨어요! 내일은 더 빛날 거예요 ✨', likes: 23, comments: 5, time: '5시간 전', likedBy: [] }
+        ],
+        letters: [
+            { id: 1, title: '32호. 퇴사 후 번아웃, 저만 이런가요?', summary: '퇴사 후에도 쉬지 못하는 당신에게...', type: '자휴레터', time: '3일 전' },
+            { id: 2, title: '31호. 주말에도 일생각이 멈추지 않아요', summary: '완전한 휴식을 위한 마음 벗기기법', type: '자휴레터', time: '1주일 전' },
+            { id: 3, title: '1호. 글쓰기, 왜 해야 하는가?', summary: '자휴랩 첫 번째 이야기: 글쓰기의 중요성', type: '자휴랩', time: '2주일 전' },
+            { id: 4, title: '30호. 내일의 나에게 부담을 넘기지 않기', summary: '오늘 할 일은 오늘 끝내기', type: '자휴레터', time: '2주일 전' },
+            { id: 5, title: '2호. 기획안 작성의 A to Z', summary: '성공적인 뉴스레터 기획 노하우', type: '자휴랩', time: '3주일 전' }
+        ]
+    };
+
+    let currentTab = 'home';
+    let currentFilter = 'all'; // 레터 필터 상태
+
+    // 🚀 앱 초기화
+    function initApp() {
+        if (!checkAutoLogin()) {
+            document.getElementById('authPage').classList.remove('hide');
+        }
+        setupEventListeners();
+    }
+
+    // 🔐 자동 로그인 체크
+    function checkAutoLogin() {
+        const savedLogin = localStorage.getItem('jahyuLogin');
+        if (savedLogin) {
+            try {
+                const { email, password } = JSON.parse(savedLogin);
+                const user = authenticateUser(email, password);
+                if (user) {
+                    appData.currentUser = user;
+                    // 자동 로그인 시 로그인 정보는 바로 제거 (보안 목적)
+                    // localStorage.removeItem('jahyuLogin'); 
+                    showMainApp();
+                    return true;
+                }
+            } catch (error) {
+                localStorage.removeItem('jahyuLogin');
+            }
+        }
+        return false;
+    }
+
+    // 🔐 사용자 인증
+    function authenticateUser(email, password) {
+        const user = appData.users.find(u => u.id === email);
+        if (!user) return null;
+        if (user.password === password) {
+            return {
+                id: user.id,
+                name: user.name,
+                role: user.role,
+                avatar: user.avatar,
+                permissions: user.permissions
+            };
+        }
+        return null;
+    }
+
+    // 👤 로그인 처리
+    function handleLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const remember = document.getElementById('rememberLogin').checked;
+
+        const user = authenticateUser(email, password);
+
+        if (user) {
+            appData.currentUser = user;
+
+            if (remember) {
+                localStorage.setItem('jahyuLogin', JSON.stringify({ email, password }));
+            } else {
+                localStorage.removeItem('jahyuLogin');
+            }
+
+            showMainApp();
+        } else {
+            alert('이메일 또는 비밀번호가 올바르지 않습니다.');
+        }
+    }
+
+    // 🚪 로그아웃
+    function handleLogout() {
+        if (confirm('정말 로그아웃하시겠습니까?')) {
+            appData.currentUser = null;
+            localStorage.removeItem('jahyuLogin');
+            
+            document.getElementById('authPage').classList.remove('hide');
+            document.getElementById('appContainer').classList.add('hide');
+
+            navigateTo('auth'); // 로그인 페이지로 이동
+        }
+    }
+
+    // 📱 메인 앱 표시
+    function showMainApp() {
+        document.getElementById('authPage').classList.add('hide');
+        document.getElementById('appContainer').classList.remove('hide');
+
+        updateUserProfile();
+        updateMoodPageForRole();
+        updateEditorTalkPageForRole();
+        renderLetters(currentFilter);
+        navigateTo('home');
+    }
+
+    // 👤 사용자 프로필 업데이트 (기존과 동일)
+    function updateUserProfile() {
+        if (!appData.currentUser) return;
+        const user = appData.currentUser;
+        
+        document.getElementById('userGreeting').textContent = `${user.name}님 오늘도 행복하세요! 🌿`;
+        document.getElementById('profileAvatar').textContent = user.avatar;
+        document.getElementById('profileName').textContent = user.name;
+        document.getElementById('profileEmail').textContent = user.id;
+
+        let roleText = '일반 회원';
+        let roleClass = 'bg-gray-100 text-gray-800';
+
+        if (user.role === 'super_admin') {
+            roleText = '👑 햅씨 (최고 관리자)';
+            roleClass = 'bg-yellow-100 text-yellow-800';
+        } else if (user.role === 'admin') {
+            roleText = '관리자';
+            roleClass = 'bg-blue-100 text-blue-800';
+        }
+
+        const roleElement = document.getElementById('profileRole');
+        if (roleElement) {
+            roleElement.textContent = roleText;
+            roleElement.className = `${roleClass} px-3 py-1 rounded-full text-xs`;
+        }
+    }
+
+    // 🎭 역할별 페이지 설정 (기존과 동일)
+    function updateMoodPageForRole() {
+        const moodDescription = document.getElementById('moodDescription');
+        if (!appData.currentUser) return;
+        if (appData.currentUser.role === 'super_admin') {
+            moodDescription.textContent = '모든 햅삐님들의 감정을 돌보고 있습니다. 👑';
+        } else {
+            moodDescription.textContent = '당신만의 개인적인 감정 기록공간입니다. 🔒';
+        }
+    }
+
+    function updateEditorTalkPageForRole() {
+        const editorDescription = document.getElementById('editorTalkDescription');
+        const composeArea = document.getElementById('editorComposeArea');
+        if (!appData.currentUser) return;
+        if (isAdmin()) {
+            editorDescription.textContent = '에디터와 햅삐님들이 소통하는 공간 (글쓰기 가능)';
+            composeArea.classList.remove('hide');
+        } else {
+            editorDescription.textContent = '에디터와 햅삐님들이 소통하는 공간 (읽기 전용)';
+            composeArea.classList.add('hide');
+        }
+    }
+
+    function isAdmin() {
+        return appData.currentUser && (appData.currentUser.role === 'super_admin' || appData.currentUser.role === 'admin');
+    }
+    
+    // 📬 레터 렌더링 및 필터링
+    function renderLetters(filterType) {
+        const feed = document.getElementById('lettersFeed');
+        if (!feed) return;
+
+        feed.innerHTML = '';
+        currentFilter = filterType;
+
+        const filteredLetters = appData.letters.filter(letter => {
+            if (filterType === 'all') return true;
+            return letter.type === filterType;
+        }).sort((a, b) => b.id - a.id); // 최신순 정렬
+
+        if (filteredLetters.length === 0) {
+            feed.innerHTML = `<div class="text-center text-gray-400 mt-10"><p>${filterType} 레터는 아직 없어요! 💌</p></div>`;
+            return;
+        }
+
+        filteredLetters.forEach(letter => {
+            const letterCard = createLetterCard(letter);
+            feed.appendChild(letterCard);
+        });
+
+        // 필터 버튼 활성화 업데이트
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('filter' + filterType.charAt(0).toUpperCase() + filterType.slice(1).replace('랩', 'Lab')).classList.add('active');
+        if (filterType === 'all') document.getElementById('filterAll').classList.add('active');
+    }
+
+    // 📬 레터 카드 생성
+    function createLetterCard(letter) {
+        const card = document.createElement('div');
+        card.className = 'glass-card rounded-2xl p-5 cursor-pointer hover:shadow-lg transition';
+
+        const typeColor = letter.type === '자휴레터' ? 'text-purple-600' : 'text-pink-600';
+        const typeBg = letter.type === '자휴레터' ? 'bg-purple-100' : 'bg-pink-100';
+
+        card.innerHTML = `
+            <div class="flex items-center justify-between mb-2">
+                <span class="${typeBg} ${typeColor} px-3 py-1 rounded-full text-xs font-medium">${letter.type}</span>
+                <span class="text-xs text-gray-500">${letter.time}</span>
+            </div>
+            <h4 class="text-lg font-bold text-gray-800 mb-1">${letter.title}</h4>
+            <p class="text-sm text-gray-600">${letter.summary}</p>
+        `;
+
+        return card;
+    }
+
+    // 📬 레터 필터 기능
+    function filterLetters(type) {
+        renderLetters(type);
+    }
+
+    // 💬 에디터톡 렌더링, 토글 좋아요, 댓글 입력 (기존과 동일)
+    function renderEditorTalks() {
+        const feed = document.getElementById('editorTalkFeed');
+        if (!feed) return;
+        feed.innerHTML = '';
+        if (!appData.currentUser) {
+            feed.innerHTML = '<div class="text-center text-gray-400 mt-10"><p>로그인이 필요합니다.</p></div>';
+            return;
+        }
+        const sortedTalks = appData.editorTalks.sort((a, b) => new Date(b.time) - new Date(a.time));
+        sortedTalks.forEach(talk => {
+            const talkCard = createEditorTalkCard(talk);
+            feed.appendChild(talkCard);
+        });
+    }
+
+    function createEditorTalkCard(talk) {
+        const card = document.createElement('div');
+        card.className = 'glass-card rounded-2xl p-5';
+        const user = appData.users.find(u => u.id === talk.userId);
+        const isLiked = talk.likedBy?.includes(appData.currentUser.id) || false;
+        card.innerHTML = `
+            <div class="flex items-center mb-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white font-bold mr-3">
+                    ${user.avatar}
+                </div>
+                <div class="flex-1">
+                    <p class="font-bold text-gray-800">${user.name}</p>
+                    <p class="text-xs text-gray-500">${talk.time}</p>
+                </div>
+            </div>
+            <p class="text-gray-700 mb-4">${talk.content}</p>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleLike(${talk.id})" class="interaction-btn ${isLiked ? 'liked' : ''}">
+                    💙 ${talk.likes}
+                </button>
+                <button onclick="showCommentInput(${talk.id})" class="interaction-btn">
+                    💬 ${talk.comments}
+                </button>
+            </div>
+        `;
+        return card;
+    }
+
+    function toggleLike(talkId) {
+        if (!appData.currentUser) return;
+        const talk = appData.editorTalks.find(t => t.id === talkId);
+        if (!talk) return;
+        if (!talk.likedBy) talk.likedBy = [];
+        const userIndex = talk.likedBy.indexOf(appData.currentUser.id);
+        if (userIndex > -1) {
+            talk.likedBy.splice(userIndex, 1);
+            talk.likes--;
+        } else {
+            talk.likedBy.push(appData.currentUser.id);
+            talk.likes++;
+        }
+        renderEditorTalks();
+    }
+
+    function showCommentInput(talkId) {
+        const comment = prompt('댓글을 입력하세요:');
+        if (comment) {
+            const talk = appData.editorTalks.find(t => t.id === talkId);
+            if (talk) {
+                talk.comments++;
+                renderEditorTalks();
+                alert('댓글이 작성되었어요! 💬');
+            }
+        }
+    }
+    
+    function submitEditorPost(event) {
+        event.preventDefault();
+        if (!isAdmin()) {
+            alert('권한이 없습니다.');
+            return;
+        }
+        const content = document.getElementById('editorContent').value.trim();
+        if (!content) {
+            alert('내용을 입력해주세요.');
+            return;
+        }
+        const newTalk = {
+            id: Date.now(),
+            userId: appData.currentUser.id,
+            content: content,
+            likes: 0,
+            comments: 0,
+            time: '방금 전',
+            likedBy: []
+        };
+        appData.editorTalks.unshift(newTalk);
+        renderEditorTalks();
+        document.getElementById('editorContent').value = '';
+        alert('에디터톡에 게시되었어요! 💬');
+    }
+
+    // 📝 다이어리 렌더링 (기존과 동일)
+    function renderDiaries() {
+        const diaryList = document.getElementById('diaryList');
+        if (!diaryList) return;
+        diaryList.innerHTML = '';
+        if (!appData.currentUser) {
+            diaryList.innerHTML = '<div class="text-center text-gray-400 mt-10"><p>로그인이 필요합니다.</p></div>';
+            return;
+        }
+        const visibleDiaries = getVisibleDiaries();
+        if (visibleDiaries.length === 0) {
+            const emptyMessage = isSuperAdmin()
+                ? '<div class="text-center text-gray-400 mt-10"><div class="text-4xl mb-2">📝</div><p>아직 아무런 기록이 없어요.</p><p class="text-sm mt-1">햅삐님들의 첫 기록을 기다리는 중이에요! 💝</p></div>'
+                : '<div class="text-center text-gray-400 mt-10"><div class="text-4xl mb-2">📝</div><p>아직 기록된 무드가 없어요.</p><p class="text-sm mt-1">첫 기록을 남겨보세요! 💝</p></div>';
+            diaryList.innerHTML = emptyMessage;
+            return;
+        }
+        if (isSuperAdmin()) {
+            const groupedDiaries = groupDiariesByUser(visibleDiaries);
+            renderAdminDiaryView(groupedDiaries);
+        } else {
+            visibleDiaries.forEach(diary => {
+                const isNew = isWithin7Days(diary.date);
+                const diaryCard = createDiaryCard(diary, isNew);
+                diaryList.appendChild(diaryCard);
+            });
+        }
+    }
+
+    function getVisibleDiaries() {
+        if (!appData.currentUser) return [];
+        return appData.diaries.filter(diary => {
+            if (appData.currentUser.role === 'super_admin') {
+                return true;
+            }
+            return diary.userId === appData.currentUser.id;
+        }).sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    function isSuperAdmin() {
+        return appData.currentUser && appData.currentUser.role === 'super_admin';
+    }
+
+    function groupDiariesByUser(diaries) {
+        const grouped = {};
+        diaries.forEach(diary => {
+            if (!grouped[diary.userId]) {
+                const user = appData.users.find(u => u.id === diary.userId);
+                grouped[diary.userId] = {
+                    user: user,
+                    diaries: []
+                };
+            }
+            grouped[diary.userId].diaries.push(diary);
+        });
+        return grouped;
+    }
+
+    function renderAdminDiaryView(groupedDiaries) {
+        const diaryList = document.getElementById('diaryList');
+
+        const totalDiaries = Object.values(groupedDiaries).reduce((sum, group) => sum + group.diaries.length, 0);
+        const totalUsers = Object.keys(groupedDiaries).length;
+
+        const statsCard = document.createElement('div');
+        statsCard.className = 'happxi-admin rounded-2xl p-6 mb-6';
+        statsCard.innerHTML = `
+            <h3 class="text-xl font-bold mb-4 text-gray-800">👑 햅씨 관리자 대시보드</h3>
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                    <div class="text-2xl font-bold text-purple-600">${totalUsers}</div>
+                    <div class="text-sm text-gray-600">활성 사용자</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-blue-600">${totalDiaries}</div>
+                    <div class="text-sm text-gray-600">총 기록</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-green-600">${getTodayDiariesCount()}</div>
+                    <div class="text-sm text-gray-600">오늘 기록</div>
+                </div>
+            </div>
+        `;
+        diaryList.appendChild(statsCard);
+
+        Object.entries(groupedDiaries).forEach(([userId, group]) => {
+            const userCard = createAdminUserCard(group.user, group.diaries);
+            diaryList.appendChild(userCard);
+        });
+    }
+    
+    function createAdminUserCard(user, diaries) {
+        const userCard = document.createElement('div');
+        userCard.className = 'happxi-admin rounded-2xl p-5 mb-6';
+        const sortedDiaries = diaries.sort((a, b) => new Date(b.date) - new Date(a.date));
+        userCard.innerHTML = `
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center text-white font-bold mr-3">
+                        ${user.avatar}
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-800">${user.name}</h4>
+                        <p class="text-sm text-gray-600">${user.id}</p>
+                    </div>
+                </div>
+                <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs">
+                    ${diaries.length}개의 기록
+                </span>
+            </div>
+            <div class="space-y-3" id="user-diaries-${user.id}">
+                ${sortedDiaries.slice(0, 3).map(diary => {
+                    const isNew = isWithin7Days(diary.date);
+                    return `
+                        <div class="privacy-protected rounded-xl p-3 cursor-pointer hover:shadow-md transition">
+                            <div class="flex items-center justify-between mb-1">
+                                <h5 class="font-medium text-gray-800 text-sm">
+                                    ${diary.title || '제목 없음'}
+                                    ${isNew ? '<span class="new-badge ml-2">NEW</span>' : ''}
+                                </h5>
+                                <span class="text-lg">${diary.emotion}</span>
+                            </div>
+                            <p class="text-xs text-gray-600 line-clamp-2">${diary.content}</p>
+                            <div class="mt-1 text-xs text-gray-500">${formatDate(diary.date)} • ${diary.moodName}</div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+            ${diaries.length > 3 ? `
+                <button onclick="alert('더보기 기능은 구현 중입니다!')" class="text-sm text-purple-600 font-medium mt-3">
+                    더보기 (${diaries.length - 3}개)
+                </button>
+            ` : ''}
+        `;
+        return userCard;
+    }
+
+    function createDiaryCard(diary, isNew) {
+        const card = document.createElement('div');
+        card.className = 'privacy-protected';
+        card.innerHTML = `
+            <div class="flex items-start">
+                <div class="text-center mr-4">
+                    <div class="text-2xl mb-1">${new Date(diary.date).getDate()}</div>
+                    <div class="text-xs text-gray-500">${formatDate(diary.date).split(' ')[0]}</div>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-bold text-gray-800">
+                            ${diary.title || '제목 없음'}
+                            ${isNew ? '<span class="new-badge ml-2">NEW</span>' : ''}
+                        </h3>
+                        <span class="text-2xl">${diary.emotion}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 line-clamp-2">${diary.content}</p>
+                    <div class="mt-2 text-xs text-gray-500">${diary.moodName}</div>
+                </div>
+            </div>
+        `;
+        return card;
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ko-KR', {
+            month: 'long',
+            day: 'numeric',
+            year: date.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined
+        });
+    }
+
+    function isWithin7Days(diaryDate) {
+        const diary = new Date(diaryDate);
+        const today = new Date();
+        const diffTime = Math.abs(today - diary);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays <= 7;
+    }
+
+    function getTodayDiariesCount() {
+        const today = new Date().toISOString().split('T')[0];
+        return appData.diaries.filter(diary => diary.date === today).length;
+    }
+    
+    // 페이지 네비게이션
+    function navigateTo(page, event) {
+        if (event) event.preventDefault();
+
+        // 인증된 사용자만 접근 가능한 페이지 체크
+        if (page !== 'auth' && !appData.currentUser) {
+            alert('로그인이 필요합니다.');
+            return;
+        }
+
+        document.querySelectorAll('section').forEach(section => section.classList.add('hide'));
+
+        const targetPageId = page === 'auth' ? 'authPage' : page + 'Page';
+        const targetPage = document.getElementById(targetPageId);
+        
+        if (targetPage) {
+            targetPage.classList.remove('hide');
+            targetPage.classList.add('fade-in');
+        }
+
+        // 네비게이션 활성화 상태 업데이트
+        document.querySelectorAll('.nav-item, .jahyu-lab-btn').forEach(item => item.classList.remove('active'));
+        
+        // 클릭된 요소가 nav-item 또는 jahyu-lab-btn인 경우 active 클래스 추가
+        if (event) {
+            const clickedElement = event.currentTarget;
+            if (clickedElement.classList.contains('nav-item')) {
+                clickedElement.classList.add('active');
+            } else if (clickedElement.classList.contains('jahyu-lab-btn')) {
+                // 자휴랩 버튼 클릭 시, nav-item active 클래스 대신 스타일 유지
+            }
+        }
+        
+        // 페이지 새로고침 로직
+        currentTab = page;
+        if (page === 'sanctuary') {
+            renderDiaries();
+        } else if (page === 'editorTalk') {
+            renderEditorTalks();
+        } else if (page === 'newsletter') {
+            renderLetters(currentFilter);
+        } else if (page === 'jahyuLab') {
+            // 자휴랩 버튼 클릭 시 레터 페이지로 이동하며 자휴랩 필터 적용
+            renderLetters('자휴랩');
+            // 네비게이션 active 상태도 '레터'로 보이도록 설정 (선택 사항)
+            document.querySelector('.nav-item:nth-child(2)').classList.add('active'); 
+        }
+    }
+
+    function showSignup() {
+        alert('회원가입 기능이 곧 추가될 예정입니다! 💝');
+    }
+    
+    function setupEventListeners() {
+        // ... (기타 이벤트 리스너)
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+</script>
+
+</body>
 </html>
