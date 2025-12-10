@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.7)</title> <meta name="description" content="에디터들의 응원이 도착해요!">
+    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.8)</title> <meta name="description" content="에디터들의 응원이 도착해요!">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,8 @@
     <style>
         * { font-family: 'Noto Sans KR', sans-serif; }
         body { overflow-x: hidden; }
-        .hide { display: none; }
+        /* 🚨 강화 2: hide 클래스는 display: none; 을 보장합니다. */
+        .hide { display: none !important; } 
         
         /* 🚨 1단계 방어: 글쓰기 모달이 처음부터 절대 보이지 않도록 CSS 레벨에서 강제 숨김 */
         #writePostModal {
@@ -365,8 +366,7 @@
             // 🚨 2단계 방어: 글쓰기 모달이 실수로 뜨는 것을 막기 위해 강제로 숨김 처리
             document.getElementById('writePostModal').classList.add('hide');
 
-            // 🚨 showLoginModal() 강제 호출 제거. auth.onAuthStateChanged에서 처리.
-            
+            // 🚨 강화 3: 로그인 상태 변경 리스너를 통해 모달 표시를 제어합니다.
             auth.onAuthStateChanged(user => {
                 if (user) {
                     currentUser = {
@@ -376,7 +376,10 @@
                         isAdmin: isEditor(user.email)
                     };
                     localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    hideLoginModal(); // 🚨 로그인 성공 시 여기서 숨김
+                    
+                    // 🚨 강화 1: 로그인 성공 시 여기서만 숨김 호출 (단일화)
+                    hideLoginModal(); 
+                    
                     updateUserInfo();
                     loadData();
                     navigateTo('home');
@@ -405,14 +408,24 @@
         }
 
         function showLoginModal() {
-            document.getElementById('loginModal').classList.remove('hide');
+            const modal = document.getElementById('loginModal');
+            modal.classList.remove('hide');
+            modal.style.display = 'flex'; // 🚨 강제 디스플레이 표시 추가
             document.getElementById('loginForm').classList.remove('hide');
             document.getElementById('signupForm').classList.add('hide');
             document.getElementById('passwordResetForm').classList.add('hide');
         }
 
         function hideLoginModal() {
-            document.getElementById('loginModal').classList.add('hide');
+            // 🚨 강화 2, 4, 7: 모달 숨김 로직의 안정성 강화
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.classList.add('hide'); 
+                modal.style.display = 'none'; // 🚨 강제 디스플레이 숨김 추가
+                console.log('✅ 로그인 모달 숨김 함수 실행 완료 (V5.8 강화)'); // 🚨 디버그 메시지 추가
+            } else {
+                console.error('Login Modal Element not found.');
+            }
         }
 
         function showSignup() {
@@ -479,18 +492,29 @@
                 })
                 .then(userCredential => {
                     showNotification('로그인 성공', `${userCredential.user.email}님, 환영합니다.`);
-                    navigateTo('home'); // 🚨 페이지 이동은 여기서 실행
-                    // hideLoginModal() 호출 제거 (리스너가 처리)
+                    
+                    // 🚨 강화 5: 페이지 이동에 지연을 주어 DOM 적용 시간 확보
+                    setTimeout(() => {
+                        navigateTo('home');
+                    }, 0); 
+                    
+                    // hideLoginModal() 호출 제거 (리스너가 처리 - 강화 1)
                 })
                 .catch(error => {
-                    // 임시 로그인 성공 처리 (관리자 테스트 용)
+                    // 임시 로그인 성공 처리 (강화 6)
                     if (email === "hyeran@jahu.com" && password === "1234") {
                         // 테스트 용도로 isAdmin은 true로 유지
                         currentUser = { id: 'temp-admin-id', name: "혜란", email: email, isAdmin: true }; 
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
                         showNotification('임시 로그인', '관리자 테스트 로그인에 성공했습니다.');
-                        navigateTo('home'); // 임시 로그인 후 페이지 이동 실행
-                        // hideLoginModal() 호출 제거 (리스너가 처리)
+                        
+                        setTimeout(() => {
+                            navigateTo('home');
+                        }, 0);
+                        
+                        // 🚨 임시 로그인 시에는 강제 숨김 처리 (추가 안전 장치)
+                        hideLoginModal(); 
+                        
                     } else {
                         showNotification('로그인 실패', `에러: ${error.message}`);
                     }
