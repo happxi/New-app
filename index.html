@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자휴레터 - 이탈리아 대학생 감성 UI</title>
+    <title>자휴레터 - 연한 파란색 파스텔 무드 UI</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
-        
-        /* 폰트 추가: 이탈리아 감성에 맞는 Serif 계열 (예시: Georgia) */
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
 
         :root {
-            /* 💖 이탈리아 파스텔 감성 컬러 팔레트 */
-            --color-primary-dark: #6A5ACD; /* Lavander - 메인 강조 */
-            --color-secondary-pastel: #F08080; /* Coral - 포인트 */
-            --color-background-soft: #FCF5E3; /* 베이지-크림 배경 */
+            /* 💖 연한 파란색 파스텔톤 무드 */
+            --color-primary-dark: #6A5ACD; /* Lavander - 메인 강조 (유지) */
+            --color-secondary-pastel: #F08080; /* Coral - 포인트 (유지) */
+            --color-background-soft: #CCE5FF; /* 🌟 전체 배경색: 연한 하늘색 파스텔톤 (매우 연하게) */
             --color-glass-base: rgba(255, 255, 255, 0.7); /* 투명도 높임 */
             --color-glass-shadow: rgba(106, 90, 205, 0.1);
             --color-text-dark: #333333;
@@ -30,7 +28,8 @@
         }
 
         body {
-            background-color: var(--color-background-soft);
+            /* 🌟 전체 배경색 적용 */
+            background-color: var(--color-background-soft); 
             color: var(--color-text-dark);
             min-height: 100vh;
             display: flex;
@@ -43,7 +42,7 @@
             background: var(--color-glass-base);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            border-radius: 25px; /* 더 몽글몽글하게 */
+            border-radius: 25px; 
             border: 1px solid var(--color-border-light);
             box-shadow: 0 8px 25px var(--color-glass-shadow);
             padding: 20px;
@@ -60,7 +59,7 @@
 
         /* --- 헤드라인 --- */
         .headline-text {
-            font-family: 'Playfair Display', serif; /* 감성 폰트 적용 */
+            font-family: 'Playfair Display', serif; 
             font-size: 2.2em;
             font-weight: 700;
             margin-bottom: 25px;
@@ -90,7 +89,7 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
-        /* 🌟 메인 액션 버튼 그룹 (아이콘 디자인 변경 및 투명도 강화) */
+        /* 🌟 메인 액션 버튼 그룹 */
         .action-group { display: flex; justify-content: space-around; margin: 30px 0; text-align: center; }
         .action-item { text-decoration: none; color: var(--color-text-dark); font-size: 0.85em; width: 80px; }
         .glass-icon-wrapper {
@@ -119,7 +118,7 @@
             transform: scale(1.05); box-shadow: 0 4px 10px rgba(106, 90, 205, 0.4);
         }
 
-        /* --- 마이페이지 버튼 & 스탬프 디자인 (스탬프 감성 유지) --- */
+        /* --- 마이페이지 버튼 & 스탬프 디자인 --- */
         .mypage-button-list {
             padding: 0; list-style: none;
         }
@@ -155,7 +154,7 @@
         }
         .stamped:after { content: '✓'; }
 
-        /* --- 하단 네비게이션 바 (모먼트 삭제, 무드 중앙) --- */
+        /* --- 하단 네비게이션 바 --- */
         .bottom-nav {
             position: fixed; bottom: 0; width: 100%; max-width: 450px; display: flex; justify-content: space-around;
             background: var(--color-glass-base); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
@@ -178,6 +177,24 @@
         .central-button:hover {
             transform: translateY(-2px);
         }
+
+        /* 모달 오버레이 스타일 */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+        .modal-content {
+            background: var(--color-background-soft);
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -194,7 +211,7 @@
     </nav>
 
     <div class="modal-overlay" id="record-modal" style="display:none;">
-        <div class="modal-content" style="background: var(--color-background-soft); border-radius: 20px;">
+        <div class="modal-content">
             <h3 id="modal-title" style="margin-bottom: 20px;">무드 기록 작성</h3>
             <input type="text" id="record-title" placeholder="제목을 입력하세요 (선택)" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px;">
             
@@ -232,7 +249,7 @@
 
         // --- HTML 템플릿 함수 ---
 
-        // 🏠 홈 템플릿 (몽글몽글 투명 디자인 강화)
+        // 🏠 홈 템플릿 
         function getHomeTemplate() {
             return `
                 <h1 class="headline-text">La Tua Pausa Perfetta</h1>
@@ -325,11 +342,11 @@
             `;
         }
 
-        // 🌈 무드 탭 템플릿 (무드 기록 작성 버튼 포함)
+        // 🌈 무드 탭 템플릿 
         function getMoodTemplate() {
             
             return `
-                <div class="mood-container">
+                <div class="container">
                     <header style="text-align:center;"><h2>오늘의 무드 트래커</h2></header>
                     <p class="description" style="text-align:center; margin-bottom: 30px;">당신의 감정 일기를 기록하고 추적하세요.</p>
                     
@@ -346,7 +363,7 @@
         }
 
 
-        // 👤 마이 탭 템플릿 (기능 연동 강화)
+        // 👤 마이 탭 템플릿
         function getMyPageTemplate(stamps) {
             const isVIP = stamps >= 50;
             
@@ -366,7 +383,7 @@
                         <li><button class="mypage-button" data-action="mylike">좋아요한 글 <span>▶︎</span></button></li>
                         <li><button class="mypage-button" data-action="mybookmark">북마크한 글 <span>▶︎</span></button></li>
                         <li><button class="mypage-button" data-action="mystamp">자휴 스탬프 (${stamps}개) <span>▶︎</span></button></li>
-                        <li><button class="mypage-button" data-action="logout" style="color: ${isVIP ? var(--color-secondary-pastel) : '#555'};">로그아웃 <span>▶︎</span></button></li>
+                        <li><button class="mypage-button" data-action="logout" style="color: ${isVIP ? 'var(--color-secondary-pastel)' : '#555'};">로그아웃 <span>▶︎</span></button></li>
                     </ul>
 
                     <section class="stamp-section glass-card">
@@ -396,7 +413,7 @@
                         <p style="font-weight: 700; margin-bottom: 15px;">${title} 데이터가 여기에 연동됩니다.</p>
                         <p>- 12/10: 테스트 게시물 1</p>
                         <p>- 12/08: 테스트 게시물 2</p>
-                        <p style="margin-top: 15px; color: ${var(--color-secondary-pastel)};">✅ 해당 페이지 렌더링으로 기능 연동이 성공적으로 구현되었습니다.</p>
+                        <p style="margin-top: 15px; color: var(--color-secondary-pastel);">✅ 해당 페이지 렌더링으로 기능 연동이 성공적으로 구현되었습니다.</p>
                     </div>
                  </div>
              `;
@@ -417,7 +434,7 @@
             const activeNav = document.querySelector(`.nav-item[data-tab="${tabName}"]`);
             if (activeNav) activeNav.classList.add('active');
 
-            document.body.style.backgroundColor = 'var(--color-background-soft)';
+            // body의 배경색은 CSS 변수를 통해 통일되었으므로, 여기서 개별적으로 덮어쓰지 않습니다.
             
             if (actionType && ['mypost', 'mycomment', 'mylike', 'mybookmark'].includes(actionType)) {
                  app.innerHTML = getContentListTemplate(actionType);
@@ -436,7 +453,6 @@
                     break;
                 case 'mood':
                     app.innerHTML = getMoodTemplate();
-                    document.body.style.backgroundColor = '#A9D1DF'; /* 무드 탭은 고유 배경색 */
                     break;
                 case 'mypage':
                     app.innerHTML = getMyPageTemplate(userStamps);
@@ -478,7 +494,6 @@
                  
                  if (['mypost', 'mycomment', 'mylike', 'mybookmark'].includes(action)) {
                     e.preventDefault();
-                    // 💡 목록 페이지 렌더링으로 기능 연동 구현
                     renderTab('content-list', action); 
                  }
                  else if (action === 'mystamp') {
@@ -500,11 +515,7 @@
                 document.getElementById('save-button').textContent = isMood ? '무드 기록' : '게시';
                 document.getElementById('mood-icons').style.display = isMood ? 'block' : 'none'; 
                 
-                // 모달 표시
                 modalOverlay.style.display = 'flex';
-                // 모달이 화면 중앙에 오도록 처리 (CSS로 처리되어 있으나 명시적으로 확인)
-                modalOverlay.style.alignItems = 'center';
-                modalOverlay.style.justifyContent = 'center';
             }
         }
 
@@ -513,7 +524,6 @@
             const saveButtonText = document.getElementById('save-button').textContent;
             
             if (e.target.id === 'record-modal') {
-                // 배경 클릭 시 닫기
                 modalOverlay.style.display = 'none';
             } else if (e.target.id === 'save-button') {
                 e.preventDefault();
@@ -524,7 +534,6 @@
                 document.getElementById('record-content').value = '';
                 modalOverlay.style.display = 'none';
                 
-                // 저장 후 해당 탭으로 복귀
                 if (saveButtonText === '무드 기록') {
                     // 스탬프 획득 로직 시뮬레이션
                     userStamps = Math.min(50, userStamps + 1); 
