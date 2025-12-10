@@ -1,127 +1,107 @@
-<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>자휴레터 - 자유로운 당신의 휴식 가이드</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 사용자 정의 스타일 */
-        .glass-nav {
-            backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.8);
+        /* V15.0: 디자인 팔레트 및 그라데이션 정의 */
+        .bg-gentle-pink { background-color: #FEEEEE; } /* 배경 연한 핑크 */
+        .text-primary-violet { color: #8A48D9; }      /* 포인트 바이올렛 */
+        .bg-primary-violet { background-color: #8A48D9; }
+        .bg-gradient-soft { 
+            background: linear-gradient(135deg, #FFDDE1 0%, #E1FFFD 100%); /* 몽환적인 핑크 -> 민트 그라데이션 */
         }
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            z-index: 1000;
-            border-top: 1px solid #f0f0f0;
+        .bg-gradient-card { 
+            background: linear-gradient(135deg, #FEE4F5 0%, #DDEFFC 100%); /* 카드 배경 감성 그라데이션 */
         }
-        .tab-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-        }
-        .text-primary-blue { color: #4A90E2; }
-        .bg-primary-blue { background-color: #4A90E2; }
+        .shadow-glow { box-shadow: 0 10px 30px rgba(138, 72, 217, 0.15); } /* 은은한 그림자 */
+
+        /* 기본 레이아웃 유지 */
+        .glass-nav { backdrop-filter: blur(10px); background-color: rgba(255, 255, 255, 0.9); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; z-index: 1000; border-top: 1px solid #f0f0f0; }
         .hide { display: none !important; }
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
+        
         /* V13.0 스타일 유지 */
-        .shadow-soft { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); }
-        .placeholder-gentle-gray::placeholder { color: #BDBDBD; font-style: italic; }
-        #submitDiaryBtn:not(:disabled) { background-color: #4A90E2; cursor: pointer; }
-        #submitDiaryBtn:not(:disabled):hover { background-color: #3A7BC8; }
-        .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000;
-            display: none; /* 초기 상태는 숨김 */
-        }
-        .modal-content {
-            background: white; border-radius: 1rem; overflow-y: auto; max-width: 90%; margin: auto;
-        }
+        .placeholder-gentle-gray::placeholder { color: #C0C0C0; font-style: italic; }
+        #submitDiaryBtn:not(:disabled) { background-color: #8A48D9; cursor: pointer; } /* 버튼 색상 변경 */
+        #submitDiaryBtn:not(:disabled):hover { background-color: #6A39A9; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: none; }
     </style>
 </head>
-<body>
+<body class="bg-gentle-pink">
 
-<div id="appContainer" class="min-h-screen pb-[60px] bg-gray-50">
+<div id="appContainer" class="min-h-screen pb-[60px]">
 
-    <section id="homePage" class="p-4 pt-10 fade-in">
-        <h1 class="text-3xl font-bold text-text-main">자유로운 당신의 휴식 가이드</h1>
-        <p class="text-text-sub mt-2">일과 삶의 균형, 자휴레터가 도와드릴게요.</p>
+    <section id="homePage" class="p-5 pt-12 fade-in">
+        <h1 class="text-3xl font-extrabold text-primary-violet">자유로운 당신의 휴식 가이드</h1>
+        <p class="text-gray-600 mt-2">일과 삶의 균형, 자휴레터가 도와드릴게요. ✨</p>
         
-        <div id="greetingArea" class="mt-6 bg-white p-4 rounded-xl shadow-soft">
-            <h3 id="greetingTitle" class="text-xl font-bold text-primary-blue">햅삐님 오늘도 행복하세요! 🌱</h3>
-            <p id="greetingSub" class="text-sm text-text-sub mt-1">당신의 힐링을 위한, 자휴레터</p>
+        <div id="greetingArea" class="mt-8 bg-gradient-card p-6 rounded-2xl shadow-glow">
+            <h3 id="greetingTitle" class="text-xl font-bold text-gray-800">햅삐님 오늘도 행복하세요! 🌿</h3>
+            <p id="greetingSub" class="text-sm text-gray-500 mt-1">당신의 힐링을 위한, 자휴레터</p>
         </div>
         
-        <div class="mt-8">
-            <h3 class="text-xl font-bold text-text-main mb-4">HOT TREND</h3>
-            <div class="bg-gradient-to-r from-pink-100 to-purple-100 p-5 rounded-xl shadow-soft">
-                <p class="font-bold text-lg">나의 힐링 유형은?</p>
-                <p class="text-sm mt-1">지금 바로 테스트하고 맞춤 레터 받기</p>
-                </div>
+        <div class="mt-10">
+            <h3 class="text-xl font-bold text-primary-violet mb-4">HOT TREND</h3>
+            <div class="bg-gradient-soft p-6 rounded-2xl shadow-glow cursor-pointer transition hover:scale-[1.01]" 
+                 onclick="alert('트렌드 레터 보기 기능 작동!')">
+                <p class="font-bold text-lg text-gray-800">나의 힐링 유형은?</p>
+                <p class="text-sm mt-1 text-gray-600">지금 바로 테스트하고 맞춤 레터 받기 🔮</p>
+            </div>
         </div>
-        <div class="flex justify-around mt-6">
-            <div class="flex flex-col items-center">
-                <div class="w-12 h-12 bg-yellow-300 rounded-full flex items-center justify-center text-xl">💬</div>
-                <span class="text-xs mt-1">카톡 추가</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <div class="w-12 h-12 bg-blue-300 rounded-full flex items-center justify-center text-xl">📖⭐</div>
-                <span class="text-xs mt-1">문장 수집</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <div class="w-12 h-12 bg-red-400 rounded-full flex items-center justify-center text-xl">💌</div> <span class="text-xs mt-1">레터 보기</span>
-            </div>
+        
+        <div class="flex justify-around mt-8">
+            <button class="flex flex-col items-center p-2 rounded-xl transition active:scale-95" onclick="alert('카톡 추가 기능 작동!')">
+                <div class="w-14 h-14 bg-white rounded-full shadow-md flex items-center justify-center text-3xl border border-gray-100">💬</div>
+                <span class="text-xs mt-2 text-gray-600">카톡 추가</span>
+            </button>
+            <button class="flex flex-col items-center p-2 rounded-xl transition active:scale-95" onclick="alert('문장 수집 기능 작동!')">
+                <div class="w-14 h-14 bg-white rounded-full shadow-md flex items-center justify-center text-3xl border border-gray-100">📖</div>
+                <span class="text-xs mt-2 text-gray-600">문장 수집</span>
+            </button>
+            <button class="flex flex-col items-center p-2 rounded-xl transition active:scale-95" onclick="alert('레터 보기 기능 작동!')">
+                <div class="w-14 h-14 bg-white rounded-full shadow-md flex items-center justify-center text-3xl border border-gray-100">💌</div>
+                <span class="text-xs mt-2 text-gray-600">레터 보기</span>
+            </button>
         </div>
     </section>
 
-    <section id="newsletterPage" class="p-4 pt-10 hide fade-in">
-        <h2 class="text-3xl font-bold text-text-main">레터 아카이브</h2>
-        <p class="text-text-sub mt-2">지금 꼭 필요한 위로를 받아보세요!</p>
-        <div class="mt-6 bg-white p-5 rounded-xl shadow-soft">
+    <section id="newsletterPage" class="p-5 pt-12 hide fade-in">
+        <h2 class="text-3xl font-bold text-primary-violet">레터 아카이브</h2>
+        <p class="text-gray-600 mt-2">지금 꼭 필요한 위로를 받아보세요!</p>
+        <div class="mt-6 bg-white p-5 rounded-xl shadow-soft border-l-4 border-primary-violet/50">
             <h4 class="text-lg font-bold">32호. 퇴사 후 번아웃, 저만 이런가요?</h4>
-            <p class="text-sm text-text-sub mt-1">퇴사 후에도 쉬지 못하는 당신에게......</p>
+            <p class="text-sm text-gray-500 mt-1">퇴사 후에도 쉬지 못하는 당신에게......</p>
         </div>
     </section>
-
-    <section id="editorTalkPage" class="p-4 pt-10 hide fade-in">
-        <h2 class="text-3xl font-bold text-text-main">에디터 톡</h2>
-        <div class="mt-6 bg-white p-5 rounded-xl shadow-soft">
+    <section id="editorTalkPage" class="p-5 pt-12 hide fade-in">
+        <h2 class="text-3xl font-bold text-primary-violet">에디터 톡</h2>
+        <div class="mt-6 bg-white p-5 rounded-xl shadow-soft border-l-4 border-primary-violet/50">
             <p class="font-bold">일주일 잘 버티셨나요?</p>
-            <p class="text-sm text-text-sub mt-1">주말에는 아무 생각 없이 쉬어야 해요!...</p>
+            <p class="text-sm text-gray-500 mt-1">주말에는 아무 생각 없이 쉬어야 해요!...</p>
         </div>
     </section>
-    
-    <section id="momentPage" class="p-4 pt-10 hide fade-in">
-        <h2 class="text-3xl font-bold text-text-main">모먼트 (짧은 단상)</h2>
-        <p class="text-text-sub mt-2">에디터들의 짧은 단상이 여기에 표시됩니다.</p>
+    <section id="momentPage" class="p-5 pt-12 hide fade-in">
+        <h2 class="text-3xl font-bold text-primary-violet">모먼트 (짧은 단상)</h2>
+        <p class="text-gray-600 mt-2">에디터들의 짧은 단상이 여기에 표시됩니다.</p>
     </section>
-
-    <section id="sanctuaryPage" class="p-4 pt-10 hide fade-in">
+    <section id="sanctuaryPage" class="p-5 pt-12 hide fade-in">
         <div id="sanctuaryHeader" class="mb-6 flex justify-between items-start">
             </div>
         <div id="diaryListContainer" class="space-y-4 pb-20">
             <p class="text-center text-gray-400 mt-10">로그인 후 나만의 무드를 기록해보세요.</p>
         </div>
     </section>
-
-    <section id="myPage" class="p-4 pt-10 hide fade-in">
-        <h2 class="text-3xl font-bold text-text-main">마이페이지</h2>
-        <div id="myProfileArea" class="mt-6">로그인이 필요합니다.</div>
-        <div id="myMenuContainer">
-            </div>
+    <section id="myPage" class="p-5 pt-12 hide fade-in">
+        <h2 class="text-3xl font-bold text-primary-violet">마이페이지</h2>
+        <div id="myProfileArea" class="mt-6 bg-white p-5 rounded-xl shadow-soft">로그인이 필요합니다.</div>
     </section>
+
 
 </div>
 
 <nav id="bottomNav" class="bottom-nav glass-nav flex justify-around items-center px-2">
-    <button class="tab-item w-full h-full text-primary-blue" onclick="navigateTo('home')" id="nav-home">
+    <button class="tab-item w-full h-full text-primary-violet" onclick="navigateTo('home')" id="nav-home">
         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
         <span class="text-[10px] font-medium mt-0.5">홈</span>
     </button>
@@ -154,7 +134,7 @@
 <div id="diaryWriteModal" class="modal bg-black/90 backdrop-blur-xl" onclick="closeModal(event, 'diaryWriteModal')">
     <div class="modal-content w-full h-full max-w-none max-h-none p-0 rounded-none bg-white relative">
         <header class="p-4 flex justify-between items-center border-b border-gray-100 sticky top-0 bg-white z-10">
-            <h3 class="text-lg font-bold text-primary-blue">오늘의 기록 ✒️</h3>
+            <h3 class="text-lg font-bold text-primary-violet">오늘의 기록 ✒️</h3>
             <button onclick="closeModal(null, 'diaryWriteModal')" class="text-gray-500 hover:text-gray-800">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -163,7 +143,7 @@
         <form id="diaryForm" class="p-6 h-[calc(100vh-60px)] flex flex-col">
             
             <div id="moodTracker" class="mb-4 pt-2 pb-4 border-b border-gray-100">
-                <p class="text-sm font-medium text-text-sub mb-2 flex justify-between items-center">
+                <p class="text-sm font-medium text-gray-600 mb-2 flex justify-between items-center">
                     오늘의 기분은 어떤가요?
                 </p>
                 <div class="flex justify-between items-center overflow-x-auto gap-2">
@@ -178,7 +158,7 @@
                 </div>
             </div>
             
-            <input type="text" id="diaryTitle" placeholder="제목을 입력하세요 (선택)" class="w-full text-2xl font-bold p-3 border-b-2 border-gray-100 focus:outline-none focus:border-primary-blue/70 transition mb-4">
+            <input type="text" id="diaryTitle" placeholder="제목을 입력하세요 (선택)" class="w-full text-2xl font-bold p-3 border-b-2 border-gray-200 focus:outline-none focus:border-primary-violet/70 transition mb-4">
             
             <textarea id="diaryContent" placeholder="오늘은 어떤 하루였나요? (기록 시작 시 사라집니다)" rows="15" 
                       class="w-full flex-grow text-base leading-relaxed p-3 bg-white focus:outline-none resize-none placeholder-gentle-gray"
@@ -196,30 +176,27 @@
     </div>
 </div>
 
-
 <script>
     // ------------------------------------------------------------------
-    // V14.0: 핵심 데이터 및 상태 정의 (오류 방지)
+    // V15.0: 핵심 데이터 및 상태 정의 (V14.0 유지)
     // ------------------------------------------------------------------
     const data = {
         diaries: [
             { id: 1, userId: 'hyeran', date: '2025.12.09', title: '새로운 시작에 대한 기대와 불안', content: '성장통이기를 바라며.', emotion: '😌', moodName: '평온', moodColor: '#A2E8E4' },
-            { id: 2, userId: 'hyeran', date: '2025.12.07', title: '소확행, 따뜻한 라떼 한 잔', content: '모든 피로가 녹는 기분.', emotion: '😊', moodName: '행복', moodColor: '#FFD700' },
+            { id: 2, userId: 'hyeran', date: '2025.12.07', title: '소확행, 따뜻한 라떼 한 잔', content: '모든 피로가 녹는 기분.', emotion: '😄', moodName: '행복', moodColor: '#FFD700' },
             { id: 3, userId: 'another', date: '2025.12.06', title: '다른 유저의 기록', content: '이건 보여주면 안됨.', emotion: '😐', moodName: '무관심', moodColor: '#D3D3D3' }
         ],
-        // userId: 'hyeran' 또는 'happxi'로 설정하여 로그인 상태 시뮬레이션
         currentUser: { id: 'hyeran', name: '혜란님' } 
     };
 
     let selectedMood = { mood: '', icon: '', color: '' };
-    // V14.0: 초기 탭을 'home'으로 명확히 정의
     let currentTab = 'home'; 
 
     const PAGES = ['homePage', 'newsletterPage', 'editorTalkPage', 'momentPage', 'sanctuaryPage', 'myPage'];
     const TABS = ['nav-home', 'nav-newsletter', 'nav-editorTalk', 'nav-moment', 'nav-sanctuary', 'nav-myPage'];
 
     // ------------------------------------------------------------------
-    // V14.0: 핵심 함수 - 페이지 이동 및 UI 업데이트 (충돌 방지 로직)
+    // V15.0: 핵심 함수 - 페이지 이동 및 UI 업데이트 (버튼 작동 오류 해결)
     // ------------------------------------------------------------------
     function hideAllPages() {
         PAGES.forEach(id => {
@@ -231,67 +208,74 @@
     function deactivateAllTabs() {
         TABS.forEach(id => {
             const tab = document.getElementById(id);
-            if (tab) tab.classList.remove('text-primary-blue');
+            if (tab) tab.classList.remove('text-primary-violet'); // V15.0 색상 반영
             if (tab) tab.classList.add('text-gray-400');
         });
     }
 
     function navigateTo(pageId) {
-        if (!PAGES.includes(pageId)) return; // 잘못된 페이지 ID 방지
+        // 'Page' 접미사가 생략된 경우를 대비한 보정
+        const fullPageId = pageId.endsWith('Page') ? pageId : pageId + 'Page'; 
+        
+        if (!PAGES.includes(fullPageId)) {
+            console.error('Invalid page ID:', fullPageId);
+            return;
+        }
 
         // 1. 모든 페이지 숨김
         hideAllPages();
         
-        // 2. 요청된 페이지 표시
-        const pageElement = document.getElementById(pageId);
-        if (pageElement) pageElement.classList.remove('hide');
+        // 2. 요청된 페이지 표시 (fade-in 효과 적용)
+        const pageElement = document.getElementById(fullPageId);
+        if (pageElement) {
+            pageElement.classList.remove('hide');
+            // 클래스 재추가로 애니메이션 트리거 (UX 향상)
+            pageElement.classList.remove('fade-in'); 
+            void pageElement.offsetWidth; 
+            pageElement.classList.add('fade-in'); 
+        }
 
         // 3. 모든 탭 비활성화
         deactivateAllTabs();
         
         // 4. 요청된 탭 활성화
-        const tabElement = document.getElementById('nav-' + pageId.replace('Page', ''));
+        const navId = 'nav-' + pageId;
+        const tabElement = document.getElementById(navId);
         if (tabElement) {
             tabElement.classList.remove('text-gray-400');
-            tabElement.classList.add('text-primary-blue');
+            tabElement.classList.add('text-primary-violet'); // V15.0 색상 반영
         }
 
         // 5. 현재 탭 상태 업데이트
-        currentTab = pageId.replace('Page', '');
+        currentTab = pageId;
 
-        // 6. 페이지별 특화 렌더링 호출 (데이터 종속성 처리)
-        if (pageId === 'sanctuaryPage') renderSanctuary();
-        // if (pageId === 'myPage') renderMyPage(); // V10.0 마이페이지 렌더링 함수가 있다면 호출
-
-        console.log('Navigated to: ' + pageId); // 디버깅용
+        // 6. 페이지별 특화 렌더링 호출
+        if (pageId === 'sanctuary') renderSanctuary();
     }
 
     // ------------------------------------------------------------------
-    // V14.0: 초기 로드 함수 (홈 화면 진입 보장)
+    // V15.0: 초기 로드 함수 (홈 화면 진입 및 기능 리스너 초기화 보장)
     // ------------------------------------------------------------------
     function initApp() {
         // 모든 페이지/모달이 확실하게 숨겨진 상태에서 시작
         hideAllPages();
-        // navigateTo('homePage')를 통해 홈 화면 진입 보장
-        navigateTo('homePage'); 
         
-        // V10.0: Dynamic Greeting 초기화 (더미 데이터 사용)
+        // **핵심 수정: DOM 로드 후 navigateTo('home')을 명확히 호출하여 홈 화면 진입 보장**
+        navigateTo('home'); 
+        
+        // V10.0: Dynamic Greeting 초기화
         const greetingTitle = document.getElementById('greetingTitle');
-        const greetingSub = document.getElementById('greetingSub');
         if(data.currentUser) {
-            greetingTitle.innerText = `${data.currentUser.name} 오늘도 행복하세요! 🌱`;
+            greetingTitle.innerText = `${data.currentUser.name} 오늘도 행복하세요! 🌿`;
         }
         
-        // V13.0: 모달 리스너 재부착
-        setupModalListeners();
-        setupMoodTrackerListeners(); // 무드 트래커 리스너 초기화
+        // 모든 리스너 재부착 확인
+        setupMoodTrackerListeners(); 
     }
-
-    // ------------------------------------------------------------------
-    // V14.0: V13.0 관련 다이어리 함수 유지/수정
-    // ------------------------------------------------------------------
+    
+    // V15.0: 다이어리 기능 함수들 (V14.0 로직 유지)
     function closeModal(event, modalId) {
-        if (event && event.target.id !== modalId) return;
+        if (event && event.target.id !== modalId && !event.target.classList.contains('modal')) return;
         document.getElementById(modalId).style.display = 'none';
     }
     
@@ -301,7 +285,6 @@
             return;
         }
         document.getElementById('diaryWriteModal').style.display = 'flex';
-        // 모달 열 때 상태 초기화
         document.getElementById('diaryTitle').value = '';
         document.getElementById('diaryContent').value = '';
         selectedMood = { mood: '', icon: '', color: '' };
@@ -309,21 +292,23 @@
             btn.style.borderColor = 'transparent';
             btn.style.boxShadow = 'none';
         });
-        checkDiaryFormStatus(); // 버튼 비활성화
+        checkDiaryFormStatus();
     }
-
+    
     function checkDiaryFormStatus() {
+        // ... (V14.0 로직 유지) ...
         const content = document.getElementById('diaryContent').value.trim();
         const submitBtn = document.getElementById('submitDiaryBtn');
         
         if (selectedMood.mood && content) {
             submitBtn.disabled = false;
             submitBtn.classList.remove('bg-gray-300', 'cursor-not-allowed');
-            submitBtn.classList.add('bg-primary-blue', 'hover:bg-blue-600');
+            // V15.0: 버튼 활성화 시 색상 변경
+            submitBtn.classList.add('bg-primary-violet', 'hover:bg-violet-600'); 
         } else {
             submitBtn.disabled = true;
             submitBtn.classList.add('bg-gray-300', 'cursor-not-allowed');
-            submitBtn.classList.remove('bg-primary-blue', 'hover:bg-blue-600');
+            submitBtn.classList.remove('bg-primary-violet', 'hover:bg-violet-600');
         }
     }
     
@@ -336,14 +321,12 @@
                     btn.style.boxShadow = 'none';
                 });
                 
-                const mood = e.currentTarget.getAttribute('data-mood');
                 const color = e.currentTarget.getAttribute('data-color');
-                
                 e.currentTarget.style.borderColor = color;
                 e.currentTarget.style.boxShadow = `0 0 10px ${color}80`;
                 
                 selectedMood = {
-                    mood: mood,
+                    mood: e.currentTarget.getAttribute('data-mood'),
                     icon: e.currentTarget.innerText.trim(),
                     color: color
                 };
@@ -354,6 +337,7 @@
     }
     
     function submitDiaryPost() {
+        // ... (V14.0 로직 유지) ...
         const title = document.getElementById('diaryTitle').value;
         const content = document.getElementById('diaryContent').value.trim();
         
@@ -364,7 +348,7 @@
 
         const newDiary = {
             id: Date.now(),
-            userId: data.currentUser.id, // 현재 사용자 ID 저장 (보안 시뮬레이션)
+            userId: data.currentUser.id,
             date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
             title: title,
             content: content,
@@ -377,56 +361,52 @@
         closeModal(null, 'diaryWriteModal');
         
         alert(`'${newDiary.moodName}' 무드로 기록이 저장되었습니다.`);
-        navigateTo('sanctuaryPage'); // 기록 후 해당 페이지로 이동
+        navigateTo('sanctuary'); 
     }
 
     function renderSanctuary() {
+        // ... (V14.0 로직 유지, V15.0 디자인 반영) ...
         if (!data.currentUser) {
-            // 비로그인 시 로직 (로그인 유도)
-            document.getElementById('sanctuaryPage').innerHTML = `<p class="text-center text-gray-400 mt-20">로그인 후 나만의 비밀 공간, '오늘의 무드'를 이용할 수 있습니다.</p>`;
-            return;
+             document.getElementById('sanctuaryPage').innerHTML = `<p class="text-center text-gray-400 mt-20">로그인 후 나만의 비밀 공간, '오늘의 무드'를 이용할 수 있습니다.</p>`;
+             return;
         }
         
         const header = document.getElementById('sanctuaryHeader');
         const container = document.getElementById('diaryListContainer');
         
-        // V13.0: Header에 소제목 추가
-        const diaryName = "오늘의 무드";
         header.innerHTML = `
             <div class="flex-grow">
-                <h2 class="text-2xl font-bold text-text-main flex items-center">
-                    ${diaryName} 
-                    <svg class="w-5 h-5 ml-2 text-primary-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6-6h.008v.008H6v-.008zm0 3h.008v.008H6v-.008zm0 3h.008v.008H6v-.008zm3-3h.008v.008H9v-.008zm0 3h.008v.008H9v-.008zm9-9h.008v.008H18v-.008zm0 3h.008v.008H18v-.008zm0 3h.008v.008H18v-.008z"/></svg>
+                <h2 class="text-2xl font-bold text-primary-violet flex items-center">
+                    오늘의 무드 
+                    <svg class="w-5 h-5 ml-2 text-primary-violet" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6-6h.008v.008H6v-.008zm0 3h.008v.008H6v-.008zm0 3h.008v.008H6v-.008zm3-3h.008v.008H9v-.008zm0 3h.008v.008H9v-.008zm9-9h.008v.008H18v-.008zm0 3h.008v.008H18v-.008zm0 3h.008v.008H18v-.008z"/></svg>
                 </h2>
-                <p class="text-sm text-text-sub mt-1">햅삐님이 오늘 느낀 감정과 생각들을 솔직하게 기록해 보세요!</p>
+                <p class="text-sm text-gray-600 mt-1">햅삐님이 오늘 느낀 감정과 생각들을 솔직하게 기록해 보세요!</p>
             </div>
-            <button id="writeDiaryBtn" onclick="showDiaryWriteModal()" class="p-2 bg-primary-blue rounded-full text-white shadow-md hover:bg-blue-600 transition active:scale-90">
+            <button id="writeDiaryBtn" onclick="showDiaryWriteModal()" class="p-2 bg-primary-violet rounded-full text-white shadow-md hover:bg-violet-600 transition active:scale-90">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             </button>
         `;
         
         container.innerHTML = '';
         
-        // V13.0: 보안/접근성 반영: 로그인된 사용자의 기록만 필터링
         const allowedUsers = [data.currentUser.id, 'happxi'];
         const userDiaries = data.diaries.filter(d => allowedUsers.includes(d.userId));
 
         userDiaries.forEach(diary => {
-            // Daily Card Flip 디자인 구현 (V13.0 스타일 유지)
             const html = `
                 <div class="bg-white p-5 rounded-2xl shadow-soft border-l-4" style="border-color: ${diary.moodColor || '#D3D3D3'}; cursor: pointer; transition: transform 0.2s;" onclick="toggleDiaryContent(this, ${diary.id})">
                     <div class="flex items-start justify-between">
-                        <div class="flex flex-col items-center mr-4 text-text-sub">
+                        <div class="flex flex-col items-center mr-4 text-gray-500">
                             <span class="font-bold text-xl">${diary.date.split('.')[2]}</span>
                             <span class="text-xs">${diary.date.substring(0, 7)}</span>
                         </div>
                         
                         <div class="flex-grow">
-                            <h3 class="text-lg font-bold text-text-main leading-tight flex justify-between items-center">
+                            <h3 class="text-lg font-bold text-gray-800 leading-tight flex justify-between items-center">
                                 ${diary.title || '제목 없음'} 
                                 <span class="text-2xl">${diary.emotion}</span>
                             </h3>
-                            <p class="diary-preview text-sm text-text-sub mt-1 line-clamp-2">${diary.content}</p>
+                            <p class="diary-preview text-sm text-gray-500 mt-1 line-clamp-2">${diary.content}</p>
                             <div class="diary-full-content mt-4 border-t pt-3 text-base leading-relaxed text-gray-700 hide">
                                 ${diary.content}
                             </div>
@@ -443,6 +423,7 @@
     }
     
     function toggleDiaryContent(cardElement, diaryId) {
+        // ... (V14.0 로직 유지) ...
         const preview = cardElement.querySelector('.diary-preview');
         const fullContent = cardElement.querySelector('.diary-full-content');
         
@@ -455,8 +436,9 @@
         }
     }
 
+
     // ------------------------------------------------------------------
-    // V14.0: 앱 초기화 (홈 화면 진입 보장)
+    // V15.0: 앱 초기화 (DOM 로드 시 실행)
     // ------------------------------------------------------------------
     window.addEventListener('load', initApp);
     
