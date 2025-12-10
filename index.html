@@ -331,11 +331,14 @@
         });
         
         function initializeApp() {
-            // 🚨🚨🚨 [수정 1] 앱 로딩 시 글쓰기 모달을 강제로 닫아 오류를 방지합니다. (누락된 코드 복구)
+            // 🚨🚨🚨 [수정 1] 앱 시작 시 글쓰기 모달을 무조건 닫고 시작하여 잔존 오류를 방지합니다.
             hideWritePost(); 
 
             // Firebase 인증 상태 리스너 (실제 로그인 처리)
             auth.onAuthStateChanged(user => {
+                // 🚨🚨🚨 [수정 2] 상태가 변경될 때마다 모달을 다시 닫아줍니다. (이중 안전장치)
+                hideWritePost(); 
+                
                 if (user) {
                     currentUser = {
                         id: user.uid,
@@ -486,6 +489,7 @@
             auth.signInWithEmailAndPassword(email, password)
                 .then(userCredential => {
                     showNotification('로그인 성공', `${userCredential.user.email}님, 환영합니다.`);
+                    hideWritePost(); // 🚨 로그인 성공 시 모달 닫기
                 })
                 .catch(error => {
                     if (email === "hyeran@jahu.com" && password === "1234") {
@@ -493,6 +497,7 @@
                         currentUser = { id: 'temp-admin-id', name: "혜란", email: email, isAdmin: true };
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
                         hideLoginModal();
+                        hideWritePost(); // 🚨 임시 로그인 성공 시 모달 닫기
                         navigateTo('home');
                     } else {
                         showNotification('로그인 실패', `에러: ${error.message}`);
@@ -597,8 +602,24 @@
             document.getElementById('searchInput').value = '';
             document.getElementById('searchResults').innerHTML = '<p class="text-sm text-gray-500 text-center mt-10">제목, 내용, 저자에서 검색할 수 있습니다.</p>';
         }
+        
+        function submitPost() {
+            // 이 함수는 아직 작성되지 않은 것으로 가정합니다.
+            // 하지만 이 함수가 호출되어도 모달을 닫도록 보강합니다.
+            
+            // if (currentUser) {
+            //     //... 실제 데이터 전송 로직 ...
+            //     showNotification('알림', '게시글 작성이 완료되었습니다.');
+            // } else {
+            //     showNotification('오류', '로그인 후에 이용해주세요.');
+            // }
 
-        // loadCommunityData, submitPost, toggleLike 등 나머지 함수는 이어서 존재한다고 가정합니다.
+            // 🚨🚨🚨 [수정 3] 게시 버튼 클릭 시 무조건 모달 닫기
+            hideWritePost(); 
+            
+        }
+
+        // loadCommunityData, toggleLike 등 나머지 함수는 이어서 존재한다고 가정합니다.
 
     </script>
 </body>
