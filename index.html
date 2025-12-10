@@ -192,7 +192,7 @@
             text-decoration: underline;
         }
   
-        /* 🎯 헤더 레디자인 */
+        /* 🎯 헤더 레디자인 (텍스트 잘림 방지 패딩/마진 조정) */
         .main-header {
             text-align: center;
             padding: 35px 0 25px;
@@ -205,7 +205,7 @@
             color: var(--color-black);
             font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif; /* 둥글고 부드러운 서체 */
             border-radius: 24px;
-            padding: 20px 25px;
+            padding: 20px 25px; /* 넉넉한 세로 패딩 */
             background: linear-gradient(135deg,   
                 rgba(135, 206, 235, 0.9) 0%,   
                 rgba(107, 182, 255, 0.85) 100%);
@@ -215,6 +215,16 @@
             border: 1px solid var(--color-glass-border);
             letter-spacing: -0.5px; /* 자간 조정 */
             display: inline-block;
+            max-width: 100%; /* 너비 확보 */
+        }
+        
+        /* 서브 헤더 타이틀 텍스트 잘림 방지 추가 패딩 */
+        .main-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-black);
+            margin-bottom: 8px;
+            padding: 0 10px; /* 좌우 패딩 추가 */
         }
   
         .main-header p {
@@ -222,6 +232,7 @@
             color: var(--color-text-light);
             font-weight: 300;
             margin-top: 10px;
+            padding: 0 10px; /* 좌우 패딩 추가 */
         }
   
         /* ⬅️ 백버튼 */
@@ -273,7 +284,7 @@
                 0 12px 35px rgba(74, 144, 226, 0.12),
                 0 4px 15px rgba(255, 255, 255, 0.8) inset,
                 0 1px 8px rgba(135, 206, 235, 0.3) inset;
-            padding: 25px 15px; /* 세로 높이 축소 */
+            padding: 25px 20px; /* 좌우 패딩 넉넉하게 수정 */
             margin-bottom: 20px;
             width: 100%;
             min-height: 200px; /* 최소 높이 제한 */
@@ -523,18 +534,20 @@
             font-weight: 700;
         }
   
-        /* 💎 예쁜 스탬프 리뉴얼 */
+        /* 💎 예쁜 스탬프 리뉴얼 (30개에 맞게 수정) */
         .stamp-grid {
+            /* 50개 -> 30개로 변경 (5열 배치) */
             display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(5, 1fr); /* 5열로 조정 */
+            gap: 12px; /* 간격 늘림 */
             margin-top: 20px;
             justify-items: center;
         }
   
         .stamp-icon {
-            width: 25px;
-            height: 25px;
+            /* 크기 조정 */
+            width: 35px; /* 크기 키움 */
+            height: 35px; /* 크기 키움 */
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -546,7 +559,7 @@
         /* 스탬프 번호 스타일 */
         .stamp-number {
             position: absolute;
-            font-size: 10px; /* 글씨 크기 작게 */
+            font-size: 12px; /* 글씨 크기 조정 */
             font-weight: 700;
             color: var(--color-text); /* 기본 텍스트 색상 */
             text-align: center;
@@ -1010,6 +1023,8 @@
         let selectedImage = null;
         let letterFilter = '자휴레터';
         let isLoggedIn = false;
+        
+        const MAX_STAMPS = 30; // 스탬프 최대 개수 (요청 반영)
   
         // 게시물 데이터
         const posts = [
@@ -1079,6 +1094,19 @@
         // 페이지 초기화 - 자동 로그인 체크
         document.addEventListener('DOMContentLoaded', function() {
             checkAutoLogin();
+            // 홈 화면 '레터 아카이브 바로가기' 버튼 클릭 이벤트 리스너 추가 (요청 반영)
+            document.getElementById('appContainer').addEventListener('click', function(e) {
+                const target = e.target.closest('.action-button[data-tab="letter"]');
+                if (target) {
+                    e.preventDefault();
+                    if (isLoggedIn) {
+                        renderTab('letter');
+                    } else {
+                        showToast('로그인이 필요합니다.');
+                        showLoginModal();
+                    }
+                }
+            });
         });
   
         // 자동 로그인 체크
@@ -1280,7 +1308,8 @@
             const today = getTodayDateString();
             const hasMoodToday = moods.some(m => m.user === currentUser.name && m.date === today);
   
-            if (hasMoodToday && currentUser.role === 'user') {
+            // 에디터도 스탬프 적립을 하므로, 모두 당일 1회 제한
+            if (hasMoodToday) {
                 showToast('오늘은 이미 무드를 기록했어요! 내일 다시 만나요 😊');
                 return;
             }
@@ -1349,7 +1378,7 @@
             const today = getTodayDateString();
             const hasMoodToday = moods.some(m => m.user === currentUser.name && m.date === today);
   
-            if (hasMoodToday && currentUser.role === 'user') {
+            if (hasMoodToday) {
                 showToast('오늘은 이미 무드를 기록했어요! 내일 다시 만나요 😊');
                 return;
             }
@@ -1366,12 +1395,12 @@
             moods.unshift(newMood);
             closeMoodModal();
   
-            // 스탬프 적립
-            if (currentUser.role === 'user') {
+            // 스탬프 적립 (에디터도 적립되도록 수정)
+            if (userStamps < MAX_STAMPS) {
                 userStamps++;
                 showStampToast('스탬프가 적립되었습니다!');
             } else {
-                showToast('무드가 기록되었습니다. (에디터는 스탬프 미적립)');
+                showToast('무드가 기록되었습니다.');
             }
             
             renderTab('mood');
@@ -1403,12 +1432,12 @@
             // 입력값 초기화
             commentInput.value = '';
   
-            // 스탬프 적립
-            if (currentUser.role === 'user') {
+            // 스탬프 적립 (에디터도 적립되도록 수정)
+            if (userStamps < MAX_STAMPS) {
                 userStamps++;
                 showStampToast('스탬프가 적립되었습니다!');
             } else {
-                showToast('댓글이 작성되었습니다. (에디터는 스탬프 미적립)');
+                showToast('댓글이 작성되었습니다.');
             }
   
             // 상세 페이지 새로고침
@@ -1744,7 +1773,7 @@
             const today = getTodayDateString();
             const hasMoodToday = currentUser && moods.some(m => m.user === currentUser.name && m.date === today);
             const buttonText = hasMoodToday ? '오늘의 무드 기록 완료 ✅' : '무드 기록 작성';
-            const buttonDisabled = hasMoodToday && currentUser.role === 'user';
+            const buttonDisabled = hasMoodToday; // 에디터도 스탬프 적립하므로 당일 1회만 허용
   
             return `
                 <div class="fade-in">
@@ -1812,7 +1841,7 @@
         }
   
         function getMyPageTemplate() {
-            const isVIP = userStamps >= 50;
+            const isVIP = userStamps >= MAX_STAMPS;
               
             return `
                 <div class="fade-in">
@@ -1843,14 +1872,14 @@
                     <div class="glass-card bubble-animation">
                         <h3 style="color: var(--color-primary); margin-bottom: 25px; text-align: center;">나의 자휴 스탬프</h3>
                         <div class="stamp-grid">
-                            ${Array(50).fill(0).map((_, index) => `
+                            ${Array(MAX_STAMPS).fill(0).map((_, index) => `
                                 <div class="stamp-icon ${index < userStamps ? 'stamped' : 'unstamped'}">
                                     <span class="stamp-number">${index + 1}</span>
                                 </div>
                             `).join('')}
                         </div>
                         <p style="text-align: center; margin-top: 25px; font-size: 12px; color: var(--color-text)">
-                            *오늘의 무드 또는 에디터톡 댓글 작성시 스탬프가 적립됩니다! 50개 이상 모으신 화면을 캡쳐해서 자휴레터 카카오톡채널로 보내주세요! 어느날 스폐셜레터가 도착할지도 몰라요!❤️
+                            *오늘의 무드 또는 에디터톡 댓글 작성시 스탬프가 적립됩니다! ${MAX_STAMPS}개 모으신 화면을 캡쳐해서 자휴레터 카카오톡채널로 보내주세요! 어느날 스폐셜레터가 도착할지도 몰로요!❤️
                         </p>
                     </div>
                 </div>
@@ -1962,7 +1991,7 @@
   
                     <div class="glass-card bubble-animation" style="min-height: 300px; max-height: none;">
                         <p style="color: var(--color-text-light); font-weight: 500; margin-bottom: 15px;">
-                            ${type === 'mystamp' ? `현재 스탬프: ${userStamps}개` : '[데이터 연동 영역]'} ${title} 목록이 여기에 표시됩니다.
+                            ${type === 'mystamp' ? `현재 스탬프: ${userStamps}개 / 최대 ${MAX_STAMPS}개` : '[데이터 연동 영역]'} ${title} 목록이 여기에 표시됩니다.
                         </p>
                         <div style="border-top: 1px solid var(--color-primary-lighter); padding-top: 15px;">
                             <p style="font-size: 14px; margin-bottom: 8px;">- 2025.12.10: 테스트 게시물 제목</p>
