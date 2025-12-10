@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.2)</title> <meta name="description" content="에디터들의 응원이 도착해요!"> <script src="https://cdn.tailwindcss.com"></script>
+    <title>자휴레터 - 힐링이 필요한 당신을 위해 (V5.4)</title> <meta name="description" content="에디터들의 응원이 도착해요!">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -313,7 +315,7 @@
             authDomain: "jahyu-e24cd.firebaseapp.com",
             databaseURL: "https://jahyu-e24cd-default-rtdb.firebaseio.com", 
             projectId: "jahyu-e24cd",
-            storageBucket: "jahyu-e24cd.firebasestorage.app",
+            storageBucket: "jahyu-e24cd.firebaseapis.com",
             messagingSenderId: "955637836464",
             appId: "1:955637836464:web:441e7746872d7448fca975"
         };
@@ -323,18 +325,19 @@
         const auth = firebase.auth();         
         // --------------------------------------------------------------------------------------
 
+        // 🚨 요청에 따라 혜란님을 제외하고 엘리님을 추가하여 에디터 목록을 수정했습니다.
         const ADMIN_EDITORS = [
-            "hyeran@jahu.com", 
             "hapssi@jahu.com", 
-            "gokal@jahu.com", 
+            "gokal@jahu.com",
+            "elli@jahu.com", // 엘리님 추가
             "yudan@jahu.com", 
             "sunny@jahu.com"
         ];
         
         const EDITOR_NAMES = {
-            "hyeran@jahu.com": "혜란",
             "hapssi@jahu.com": "햅씨",
             "gokal@jahu.com": "고칼",
+            "elli@jahu.com": "엘리", // 엘리님 추가
             "yudan@jahu.com": "유단",
             "sunny@jahu.com": "써니",
         };
@@ -353,6 +356,9 @@
         });
         
         function initializeApp() {
+            // 🚨 최우선 방어: 글쓰기 모달이 실수로 뜨는 것을 막기 위해 강제로 숨김 처리
+            document.getElementById('writePostModal').classList.add('hide');
+
             // 초기 로딩 시 무조건 로그인 모달이 뜰 수 있도록 명시적으로 호출
             showLoginModal();
             
