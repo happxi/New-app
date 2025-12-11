@@ -965,6 +965,11 @@
                 <p style="font-size:12px; color:var(--text-main);">총 무드 기록: <span id="dashboardMoodCount"></span>건, 총 게시글: <span id="dashboardPostCount"></span>건</p>
             </div>
             
+            <div id="userStatsSection" style="background:var(--accent-soft); padding:15px; border-radius:15px; margin-bottom:20px;">
+                <h4 style="font-weight:700; color:var(--primary); margin-bottom:10px;">사용자별 통계</h4>
+                <div id="userStats" style="max-height:200px; overflow-y:auto;"></div>
+            </div>
+            
             <h4 style="font-weight:700; margin-bottom:10px;">사용자 활동 로그 (<span id="currentFilterText">전체</span>)</h4>
             <select id="dashboardUserFilter" onchange="filterActivityLog(this.value)">
                 <option value="all">전체 사용자 활동 보기</option>
@@ -1070,13 +1075,13 @@
         
         // ** 관리자 비밀번호 'admin123' 통일 반영 및 사용자 추가 **
         let users = [
-            { id: 'test@example.com', name: '테스트', password: '123' },
-            { id: 'user@example.com', name: '햅삐', password: '123' },
-            { id: 'happxi@jahyu.com', name: '햅씨', password: 'admin123' }, // 슈퍼 관리자
-            { id: 'elly@jahyu.com', name: '엘리', password: 'admin123' }, // 관리자
-            { id: 'gokal@jahyu.com', name: '고칼', password: 'admin123' },  // 관리자
-            { id: 'sunny@jahyu.com', name: '써니', password: 'admin123' },  // 관리자 (추가됨)
-            { id: 'yudan@jahyu.com', name: '유단', password: 'admin123' }   // 관리자 (추가됨)
+            { id: 'test@example.com', name: '테스트', password: '123', joinedDate: '2025-12-01', lastLogin: '2025-12-11T10:00:00Z', averageStay: 120, likes: [], bookmarks: [] },
+            { id: 'user@example.com', name: '햅삐', password: '123', joinedDate: '2025-12-02', lastLogin: '2025-12-11T12:00:00Z', averageStay: 180, likes: [], bookmarks: [] },
+            { id: 'happxi@jahyu.com', name: '햅씨', password: 'admin123', joinedDate: '2025-12-03', lastLogin: '2025-12-11T14:00:00Z', averageStay: 300, likes: [], bookmarks: [] },
+            { id: 'elly@jahyu.com', name: '엘리', password: 'admin123', joinedDate: '2025-12-04', lastLogin: '2025-12-11T15:00:00Z', averageStay: 240, likes: [], bookmarks: [] },
+            { id: 'gokal@jahyu.com', name: '고칼', password: 'admin123', joinedDate: '2025-12-05', lastLogin: '2025-12-11T16:00:00Z', averageStay: 150, likes: [], bookmarks: [] },
+            { id: 'sunny@jahyu.com', name: '써니', password: 'admin123', joinedDate: '2025-12-06', lastLogin: '2025-12-11T17:00:00Z', averageStay: 200, likes: [], bookmarks: [] },
+            { id: 'yudan@jahyu.com', name: '유단', password: 'admin123', joinedDate: '2025-12-07', lastLogin: '2025-12-11T18:00:00Z', averageStay: 90, likes: [], bookmarks: [] }
         ];
 
         let posts = [
@@ -1103,7 +1108,6 @@
                 {id: 3, author: '테스트', content: '저도 댓글 남겨요!', date: '2025-12-11T13:00:00Z', authorId: 'test@example.com', postId: 5}
             ]
         }; // 댓글 저장 {postId: [comments]}
-        let bookmarks = []; // 북마크한 글 ID들
         let myLikes = []; // 내가 좋아요한 글 ID들
         
         // ** 관리자 대시보드 활동 로그 (실시간 기능용 데이터) **
@@ -1234,6 +1238,9 @@
                 userId: currentUser.id 
             });
 
+            // 최근 로그인 업데이트
+            user.lastLogin = new Date().toISOString();
+
 
             document.getElementById('loginModal').style.display = 'none';
             renderTab('home');
@@ -1257,7 +1264,7 @@
             if (users.some(u => u.id === email)) return showToast('이미 가입된 이메일입니다. 로그인해주세요.');
             
             // 임시로 사용자 데이터에 추가
-            const newUser = { id: email, name: nickname, password: password };
+            const newUser = { id: email, name: nickname, password: password, joinedDate: new Date().toISOString().split('T')[0], lastLogin: new Date().toISOString(), averageStay: 0, likes: [], bookmarks: [] };
             users.push(newUser);
 
             currentUser = {
@@ -1301,7 +1308,7 @@
             const tempPassword = 'admin123!'; 
             
             // 실제로는 이메일 발송 API 호출
-            console.log(`[SYSTEM] 임시 비밀번호(${tempPassword})를 ${email}로 발송했습니다.`);
+            console.log(`[SYSTEM] 임시 비밀번호(\( {tempPassword})를 \){email}로 발송했습니다.`);
             
             document.getElementById('forgotPasswordModal').style.display = 'none';
             showToast(`[${email}]로 임시 비밀번호를 발송했습니다. 로그인 후 비밀번호를 변경해주세요!`);
@@ -1371,6 +1378,7 @@
             if (!currentUser.isSuperAdmin) return showToast('슈퍼 관리자만 접근 가능합니다.');
             updateDashboardSummary(); // 요약 정보 업데이트
             populateUserFilter(); // 사용자 필터링 목록 업데이트
+            renderUserStats(); // 사용자별 통계 렌더링
             filterActivityLog('all'); // 전체 활동 로그 렌더링
             document.getElementById('adminDashboardModal').style.display = 'flex';
         }
@@ -1394,10 +1402,10 @@
                 moodContainer.innerHTML = allMoodsSorted.map(mood => `
                     <div class="admin-mood-card">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-                            <h5 style="color:var(--primary);">${mood.emoji} ${mood.title}</h5>
+                            <h5 style="color:var(--primary);">\( {mood.emoji} \){mood.title}</h5>
                             <small style="font-weight:700; color:var(--primary);">${mood.author}</small>
                         </div>
-                        <p>${mood.content.substring(0, 50)}${mood.content.length > 50 ? '...' : ''}</p>
+                        <p>\( {mood.content.substring(0, 50)} \){mood.content.length > 50 ? '...' : ''}</p>
                         <small>${getTimeAgo(mood.date)}</small>
                     </div>
                 `).join('');
@@ -1524,7 +1532,7 @@
                             return `
                                 <div class="content-card" onclick="viewPost(${post.id})">
                                     ${post.id === posts[0].id ? '<span class="badge-new">NEW</span>' : ''}
-                                    <h4 style="font-weight:700; margin-bottom:5px;">${prefix}${post.title}</h4>
+                                    <h4 style="font-weight:700; margin-bottom:5px;">\( {prefix} \){post.title}</h4>
                                     <p style="font-size:12px; color:var(--text-sub);">${post.content}</p>
                                 </div>
                             `;
@@ -1600,7 +1608,7 @@
                     filterHTML = `
                         <div class="editor-filter" id="editorFilter">
                             ${editors.map(editor => `
-                                <span class="filter-chip ${editor === '전체' ? 'active' : ''}" onclick="filterEditor(this, '${editor}')">${editor}</span>
+                                <span class="filter-chip \( {editor === '전체' ? 'active' : ''}" onclick="filterEditor(this, ' \){editor}')">${editor}</span>
                             `).join('')}
                         </div>
                     `;
@@ -1623,7 +1631,7 @@
                 for(let i=1; i<=30; i++) {
                     // 스탬프 색상 변경 적용: active일 때 var(--stamp-active-light) 사용
                     const active = i <= userStamps ? 'active' : '';
-                    stampHTML += `<div class="stamp-circle ${active}">${i}</div>`;
+                    stampHTML += `<div class="stamp-circle \( {active}"> \){i}</div>`;
                 }
 
                 container.innerHTML = `
@@ -1707,11 +1715,11 @@
                 
                 return `
                     <div class="content-card" onclick="viewPost(${post.id})">
-                        <h4 style="font-weight:700; margin-bottom:5px;">${prefix}${post.title}</h4>
+                        <h4 style="font-weight:700; margin-bottom:5px;">\( {prefix} \){post.title}</h4>
                         <p style="font-size:12px; color:var(--text-sub);">${post.content}</p>
                         <div style="margin-top:10px; font-size:11px; color:var(--text-sub); display:flex; justify-content:space-between;">
-                            <span>${post.author} · ${getTimeAgo(post.date)}</span>
-                            <span><i class="fas fa-heart" style="color:${myLikes.includes(post.id) ? 'var(--accent)' : '#ccc'}"></i> ${post.likes + (myLikes.includes(post.id) ? 1 : 0)}</span>
+                            <span>\( {post.author} · \){getTimeAgo(post.date)}</span>
+                            <span><i class="fas fa-heart" style="color:\( {myLikes.includes(post.id) ? 'var(--accent)' : '#ccc'}"></i> \){post.likes + (myLikes.includes(post.id) ? 1 : 0)}</span>
                         </div>
                     </div>
                 `;
@@ -1733,18 +1741,18 @@
                 return `
                     <div class="content-card" onclick="viewEditorTalk(${talk.id})">
                         <div style="display:flex; align-items:center; margin-bottom:15px;">
-                            <div style="width:40px; height:40px; background:${profileColor}; border-radius:50%; display:flex; align-items:center; justify-content: center; color:${textColor}; margin-right:12px; font-weight:700; cursor: pointer; box-shadow:0 2px 8px rgba(0,0,0,0.1);" onclick="filterEditorByName(event, '${talk.author}')">
+                            <div style="width:40px; height:40px; background:\( {profileColor}; border-radius:50%; display:flex; align-items:center; justify-content: center; color: \){textColor}; margin-right:12px; font-weight:700; cursor: pointer; box-shadow:0 2px 8px rgba(0,0,0,0.1);" onclick="filterEditorByName(event, '${talk.author}')">
                                 ${talk.author.charAt(0)}
                             </div>
                             <div>
-                                <span style="font-weight:700; cursor: pointer;" onclick="filterEditorByName(event, '${talk.author}')">${talk.author}</span>
+                                <span style="font-weight:700; cursor: pointer;" onclick="filterEditorByName(event, '\( {talk.author}')"> \){talk.author}</span>
                                 <p style="font-size:11px; color:var(--text-sub); margin:0;">${getTimeAgo(talk.date)}</p>
                             </div>
                         </div>
-                        ${talk.image ? `<img src="${talk.image}" style="width:100%; height:auto; border-radius:10px; margin-bottom:15px; max-height: 150px; object-fit: cover;" alt="첨부 이미지">` : ''}
+                        \( {talk.image ? `<img src=" \){talk.image}" style="width:100%; height:auto; border-radius:10px; margin-bottom:15px; max-height: 150px; object-fit: cover;" alt="첨부 이미지">` : ''}
                         <p style="font-size:14px; line-height:1.5;">${talk.content}</p>
                         <div style="margin-top:15px; padding-top:15px; border-top:1px solid var(--primary-soft); font-size:11px; color:var(--text-sub); display:flex; gap:20px;">
-                            <span><i class="fas fa-heart" style="color:${myLikes.includes(talk.id) ? 'var(--accent)' : '#ccc'}"></i> <span id="talk-likes-${talk.id}">${talk.likes + (myLikes.includes(talk.id) ? 1 : 0)}</span></span>
+                            <span><i class="fas fa-heart" style="color:\( {myLikes.includes(talk.id) ? 'var(--accent)' : '#ccc'}"></i> <span id="talk-likes- \){talk.id}">${talk.likes + (myLikes.includes(talk.id) ? 1 : 0)}</span></span>
                             <span><i class="fas fa-comment"></i> ${comments[talk.id] ? comments[talk.id].length : 0}</span>
                             <span><i class="fas fa-bookmark" style="color:${bookmarks.includes(talk.id) ? 'var(--primary)' : '#ccc'}"></i></span>
                         </div>
@@ -1981,15 +1989,16 @@
         function toggleLike(postId) {
             if (!currentUser) return showToast('로그인이 필요합니다.');
             
-            const index = myLikes.indexOf(postId);
+            const user = users.find(u => u.id === currentUser.id);
+            const index = user.likes.indexOf(postId);
             const post = findPostById(postId);
 
             if (index > -1) {
-                myLikes.splice(index, 1);
+                user.likes.splice(index, 1);
                 showToast('좋아요를 취소했어요.');
                 post.likes--; 
             } else {
-                myLikes.push(postId);
+                user.likes.push(postId);
                 showToast('좋아요! 💜');
                 post.likes++;
                 
@@ -2005,7 +2014,7 @@
 
             // 상세 페이지일 경우 UI 업데이트
             if (currentTab === 'postDetail' || currentTab === 'editorTalkDetail') {
-                 document.querySelector(`.action-btn i.fa-heart`).parentElement.classList.toggle('active', myLikes.includes(postId));
+                 document.querySelector(`.action-btn i.fa-heart`).parentElement.classList.toggle('active', user.likes.includes(postId));
                  document.getElementById(`likes-count-${postId}`).textContent = post.likes;
             } 
             // 목록 페이지일 경우 업데이트 (간단히)
@@ -2017,19 +2026,20 @@
         function toggleBookmark(postId) {
             if (!currentUser) return showToast('로그인이 필요합니다.');
 
-            const index = bookmarks.indexOf(postId);
+            const user = users.find(u => u.id === currentUser.id);
+            const index = user.bookmarks.indexOf(postId);
             
             if (index > -1) {
-                bookmarks.splice(index, 1);
+                user.bookmarks.splice(index, 1);
                 showToast('북마크를 해제했어요.');
             } else {
-                bookmarks.push(postId);
+                user.bookmarks.push(postId);
                 showToast('북마크 저장! 🔖');
             }
             
             // UI 업데이트
             if (currentTab === 'postDetail' || currentTab === 'editorTalkDetail') {
-                document.querySelector(`.action-btn i.fa-bookmark`).parentElement.classList.toggle('active', bookmarks.includes(postId));
+                document.querySelector(`.action-btn i.fa-bookmark`).parentElement.classList.toggle('active', user.bookmarks.includes(postId));
             }
         }
 
@@ -2044,8 +2054,8 @@
                             ${comment.author}
                             ${isAuthorOrAdmin ? 
                                 `<span style="float:right;">
-                                    <i class="fas fa-edit" style="color:var(--text-sub); margin-left:10px; cursor:pointer;" onclick="editComment(${postId}, ${comment.id})"></i>
-                                    <i class="fas fa-trash-alt" style="color:var(--accent); margin-left:10px; cursor:pointer;" onclick="deleteComment(${postId}, ${comment.id})"></i>
+                                    <i class="fas fa-edit" style="color:var(--text-sub); margin-left:10px; cursor:pointer;" onclick="editComment(\( {postId}, \){comment.id})"></i>
+                                    <i class="fas fa-trash-alt" style="color:var(--accent); margin-left:10px; cursor:pointer;" onclick="deleteComment(\( {postId}, \){comment.id})"></i>
                                 </span>` : ''
                             }
                         </div>
@@ -2057,7 +2067,7 @@
 
             return `
                 <div class="comment-section" style="max-height: 300px; overflow-y: auto;">
-                    <h4 style="font-weight:700; margin-bottom:15px; border-bottom:1px solid var(--primary-soft); padding-bottom:10px;">댓글 (<span id="comments-count-${postId}">${postComments.length}</span>)</h4>
+                    <h4 style="font-weight:700; margin-bottom:15px; border-bottom:1px solid var(--primary-soft); padding-bottom:10px;">댓글 (<span id="comments-count-\( {postId}"> \){postComments.length}</span>)</h4>
                     ${commentListHTML || '<p style="text-align:center; color:var(--text-sub);">첫 댓글을 남겨보세요!</p>'}
                 </div>
                 <div class="comment-input">
@@ -2138,349 +2148,4 @@
         
         function editComment(postId, commentId) {
             const postComments = comments[postId];
-            const comment = postComments.find(c => c.id === commentId);
-            
-            if (comment && (comment.authorId === currentUser.id || currentUser.isAdmin)) {
-                const newContent = prompt('댓글을 수정하세요:', comment.content);
-                if (newContent !== null && newContent.trim() !== '') {
-                    comment.content = newContent.trim();
-                    comment.date = new Date().toISOString();
-                    
-                    const commentSectionContainer = document.getElementById('commentSection');
-                    commentSectionContainer.innerHTML = generateCommentSection(postId);
-                    showToast('댓글이 수정되었습니다.');
-                }
-            } else {
-                showToast('댓글을 수정할 권한이 없거나 찾을 수 없습니다.');
-            }
-        }
-        
-        function deletePost(postId, isEditorTalk) {
-             if (!confirm('정말로 이 게시글을 삭제하시겠습니까?')) return;
-             
-             let postList = isEditorTalk ? editorTalks : posts;
-             const index = postList.findIndex(p => p.id === postId);
-
-             if (index !== -1) {
-                 postList.splice(index, 1);
-                 allPosts = allPosts.filter(p => p.id !== postId); // 통합 목록에서도 삭제
-                 delete comments[postId]; // 댓글 삭제
-                 
-                 showToast('게시글이 삭제되었습니다.');
-                 renderTab(isEditorTalk ? 'editorTalk' : 'letter');
-             }
-        }
-        
-        // 게시글 상세 보기 (레터)
-        function viewPost(postId) {
-            const post = posts.find(p => p.id === postId);
-            if (!post) return showToast('게시글을 찾을 수 없습니다.');
-            
-            currentTab = 'postDetail'; // 탭 상태 업데이트
-            const isAuthorOrAdmin = post.authorId === currentUser.id || currentUser.isAdmin;
-            let prefix = post.category === '자휴레터' ? '[자휴레터] ' : (post.category === '자휴랩' ? '[자휴랩] ' : '');
-
-            const container = document.getElementById('appContainer');
-            
-            container.innerHTML = `
-                <div class="post-detail">
-                    <div class="post-header">
-                        <button onclick="renderTab('letter')" style="color:white; background:none; border:none; font-size:18px; position:absolute; left:20px; top:40px; z-index:10;">
-                            <i class="fas fa-arrow-left"></i>
-                        </button>
-                        <h2 style="color:white; text-align:center; margin:20px 0;">${prefix}${post.title}</h2>
-                        <p style="color:white; text-align:center; font-size:12px; opacity:0.8;">${post.author} · ${getTimeAgo(post.date)}</p>
-                        
-                        ${isAuthorOrAdmin ? `
-                            <div style="position:absolute; right:20px; top:40px; font-size:14px; color:white;">
-                                <i class="fas fa-edit" style="margin-left:10px; cursor:pointer;" onclick="showToast('수정 기능 구현 필요')"></i>
-                                <i class="fas fa-trash-alt" style="margin-left:10px; cursor:pointer;" onclick="deletePost(${postId}, false)"></i>
-                            </div>
-                        ` : ''}
-                    </div>
-                    <div class="post-content">
-                         ${post.image ? `<img src="${post.image}" style="width:100%; height:auto; border-radius:15px; margin-bottom:20px; max-height: 250px; object-fit: cover;" alt="첨부 이미지">` : ''}
-                        <p style="font-size:16px; line-height:1.6; color:var(--text-main); white-space: pre-wrap;">${post.content}</p>
-                        <p style="margin-top:30px; font-size:14px; color:var(--text-sub); line-height:1.6;">
-                            이 레터는 당신의 휴식을 위해 준비되었습니다. 잠시 모든 것을 내려놓고 이 글에 집중해보세요. 
-                            당신은 충분히 잘하고 있으며, 휴식은 당신의 권리입니다.
-                        </p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="action-btn ${myLikes.includes(postId) ? 'active' : ''}" onclick="toggleLike(${postId})">
-                            <i class="fas fa-heart"></i> <span id="likes-count-${postId}">${post.likes}</span>
-                        </button>
-                        <button class="action-btn" onclick="showToast('댓글 기능 구현됨')">
-                            <i class="fas fa-comment"></i> 댓글 <span id="comments-count-${postId}">${comments[postId] ? comments[postId].length : 0}</span>
-                        </button>
-                        <button class="action-btn ${bookmarks.includes(postId) ? 'active' : ''}" onclick="toggleBookmark(${postId})">
-                            <i class="fas fa-bookmark"></i> 북마크
-                        </button>
-                    </div>
-                    <div id="commentSection">
-                        ${generateCommentSection(postId)}
-                    </div>
-                </div>
-            `;
-        }
-        
-        // 게시글 상세 보기 (에디터톡)
-        function viewEditorTalk(postId) {
-            const talk = editorTalks.find(t => t.id === postId);
-            if (!talk) return showToast('게시글을 찾을 수 없습니다.');
-            
-            currentTab = 'editorTalkDetail'; // 탭 상태 업데이트
-            const isAuthorOrAdmin = talk.authorId === currentUser.id || currentUser.isAdmin;
-
-            const container = document.getElementById('appContainer');
-            
-            container.innerHTML = `
-                <div class="post-detail">
-                    <div class="post-header">
-                        <button onclick="renderTab('editorTalk')" style="color:white; background:none; border:none; font-size:18px; position:absolute; left:20px; top:40px; z-index:10;">
-                            <i class="fas fa-arrow-left"></i>
-                        </button>
-                        <h2 style="color:white; text-align:center; margin:20px 0;">${talk.author}의 톡</h2>
-                        <p style="color:white; text-align:center; font-size:12px; opacity:0.8;">${getTimeAgo(talk.date)}</p>
-                        
-                        ${isAuthorOrAdmin ? `
-                            <div style="position:absolute; right:20px; top:40px; font-size:14px; color:white;">
-                                <i class="fas fa-edit" style="margin-left:10px; cursor:pointer;" onclick="showToast('수정 기능 구현 필요')"></i>
-                                <i class="fas fa-trash-alt" style="margin-left:10px; cursor:pointer;" onclick="deletePost(${postId}, true)"></i>
-                            </div>
-                        ` : ''}
-                    </div>
-                    <div class="post-content">
-                        ${talk.image ? `<img src="${talk.image}" style="width:100%; height:auto; border-radius:15px; margin-bottom:20px; max-height: 250px; object-fit: cover;" alt="첨부 이미지">` : ''}
-                        <p style="font-size:16px; line-height:1.6; color:var(--text-main); white-space: pre-wrap;">${talk.content}</p>
-                    </div>
-                    <div class="post-actions">
-                        <button class="action-btn ${myLikes.includes(postId) ? 'active' : ''}" onclick="toggleLike(${postId})">
-                            <i class="fas fa-heart"></i> <span id="likes-count-${postId}">${talk.likes}</span>
-                        </button>
-                        <button class="action-btn" onclick="showToast('댓글 기능 구현됨')">
-                            <i class="fas fa-comment"></i> 댓글 <span id="comments-count-${postId}">${comments[postId] ? comments[postId].length : 0}</span>
-                        </button>
-                        <button class="action-btn ${bookmarks.includes(postId) ? 'active' : ''}" onclick="toggleBookmark(${postId})">
-                            <i class="fas fa-bookmark"></i> 북마크
-                        </button>
-                    </div>
-                    <div id="commentSection">
-                        ${generateCommentSection(postId)}
-                    </div>
-                </div>
-            `;
-        }
-        
-        // --- 마이페이지 서브 기능 ---
-        
-        function renderPostList(posts, title, authorIncluded = true) {
-            const container = document.getElementById('appContainer');
-            
-            container.innerHTML = `
-                <div class="header-section">
-                    <button onclick="renderTab('mypage')" style="color:var(--text-main); background:none; border:none; font-size:18px; position:absolute; left:20px; top:40px;">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
-                    <h2 class="header-title">${title}</h2>
-                </div>
-                <div style="padding: 0 20px;">
-                    ${posts.length > 0 ? posts.map(post => {
-                        const authorName = post.author || findUserById(post.authorId)?.name || 'Undefined'; 
-                        const isEditorTalk = post.category === '에디터톡';
-                        let prefix = post.category === '자휴레터' ? '[자휴레터] ' : (post.category === '자휴랩' ? '[자휴랩] ' : '');
-
-                        return `
-                        <div class="content-card" onclick="${isEditorTalk ? `viewEditorTalk(${post.id})` : `viewPost(${post.id})`}">
-                            <h4 style="font-weight:700; margin-bottom:5px;">
-                                ${prefix}${post.title || post.content.substring(0, 30) + '...'}
-                            </h4>
-                            <p style="font-size:12px; color:var(--text-sub); margin-top:5px;">
-                                ${authorIncluded ? `작성자: **${authorName}** | ` : ''} 
-                                ${getTimeAgo(post.date)}
-                            </p>
-                        </div>
-                    `;
-                    }).join('') : `<p style="text-align:center; padding:40px; color:var(--text-sub);">${title}이 없습니다.</p>`}
-                </div>
-            `;
-        }
-        
-        function viewMyPosts() {
-            const myPosts = allPosts.filter(p => p.authorId === currentUser.id);
-            renderPostList(myPosts, '내가 쓴 글', false);
-        }
-        
-        function viewMyComments() {
-            // 내가 쓴 댓글이 있는 게시글 ID 목록
-            const commentedPostIds = Object.keys(comments).filter(postId => 
-                comments[postId].some(c => c.authorId === currentUser.id)
-            ).map(Number);
-            
-            const commentedPosts = allPosts.filter(p => commentedPostIds.includes(p.id));
-
-            renderPostList(commentedPosts, '나의 댓글', true);
-        }
-        
-        function viewMyLikes() {
-            const likedPosts = allPosts.filter(p => myLikes.includes(p.id));
-            renderPostList(likedPosts, '좋아요한 글');
-        }
-        
-        function viewMyBookmarks() {
-            const bookmarkedPosts = allPosts.filter(p => bookmarks.includes(p.id));
-            renderPostList(bookmarkedPosts, '북마크한 글');
-        }
-
-
-        // --- 관리자 대시보드 기능 ---
-
-        function updateDashboardSummary() {
-            document.getElementById('dashboardTotalUsers').textContent = users.length;
-            document.getElementById('dashboardAdminCount').textContent = ADMINS.length;
-            document.getElementById('dashboardMoodCount').textContent = myMoodRecords.length;
-            document.getElementById('dashboardPostCount').textContent = posts.length + editorTalks.length;
-        }
-
-        function populateUserFilter() {
-            const filter = document.getElementById('dashboardUserFilter');
-            filter.innerHTML = '<option value="all">전체 사용자 활동 보기</option>';
-            
-            // 일반 사용자만 추출하여 닉네임 기준으로 옵션 추가
-            const nonAdmins = users.filter(u => !ADMINS.includes(u.id));
-            nonAdmins.forEach(user => {
-                const option = document.createElement('option');
-                option.value = user.id;
-                option.textContent = user.name + ` (${user.id.split('@')[0]})`;
-                filter.appendChild(option);
-            });
-            
-            // 관리자도 별도로 추가 (선택적)
-            const adminUsers = users.filter(u => ADMINS.includes(u.id));
-             adminUsers.forEach(user => {
-                const option = document.createElement('option');
-                option.value = user.id;
-                option.textContent = `${user.name} (관리자)`;
-                filter.appendChild(option);
-            });
-        }
-
-        function filterActivityLog(userId = 'all') {
-            const logContainer = document.getElementById('activityLog');
-            const currentFilterText = document.getElementById('currentFilterText');
-            
-            let filteredLogs = userId === 'all' 
-                ? activityLogs
-                : activityLogs.filter(log => log.userId === userId);
-
-            // 최신순 정렬
-            filteredLogs.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // 필터 텍스트 업데이트
-            if (userId === 'all') {
-                currentFilterText.textContent = '전체 활동';
-            } else {
-                const user = findUserById(userId);
-                currentFilterText.textContent = `${user ? user.name : '알 수 없음'} 활동`;
-            }
-
-            if (filteredLogs.length === 0) {
-                logContainer.innerHTML = '<p style="text-align:center; color:var(--text-sub); padding:20px;">기록된 활동이 없습니다.</p>';
-                return;
-            }
-
-            logContainer.innerHTML = filteredLogs.map(log => {
-                const timeAgo = getTimeAgo(log.date);
-                let logText = '';
-                let typeColor = '';
-                let onClickAction = '';
-
-                switch (log.type) {
-                    case 'login':
-                        logText = `**${log.user}**님이 로그인했습니다.`;
-                        typeColor = 'var(--secondary)';
-                        onClickAction = `showToast('로그인 기록 상세')`;
-                        break;
-                    case 'signup':
-                        logText = `**${log.user}**님이 새로 가입했습니다.`;
-                        typeColor = 'var(--primary)';
-                        onClickAction = `showToast('가입 기록 상세')`;
-                        break;
-                    case 'mood':
-                        const moodRecord = myMoodRecords.find(m => m.id === log.targetId);
-                        logText = `**${log.user}**님이 오늘의 무드 (${moodRecord ? moodRecord.emoji : ''})를 기록했습니다.`;
-                        typeColor = 'var(--accent)';
-                        onClickAction = `viewMoodDetailAdmin('${log.targetId}')`;
-                        break;
-                    case 'post':
-                        const post = findPostById(log.targetId);
-                        logText = `**${log.user}**님이 [${post.category}] 글을 새로 작성했습니다.`;
-                        typeColor = 'var(--primary)';
-                        onClickAction = `viewPostDetailAdmin(${log.targetId})`;
-                        break;
-                    case 'comment':
-                        const commentPost = findPostById(log.targetId);
-                        logText = `**${log.user}**님이 [${commentPost ? commentPost.category.slice(0, 4) : '알 수 없는 글'}]에 댓글을 작성했습니다.`;
-                        typeColor = 'var(--accent)';
-                        onClickAction = `viewCommentDetailAdmin(${log.targetId}, ${log.commentId})`;
-                        break;
-                    case 'like':
-                        const likePost = findPostById(log.targetId);
-                        logText = `**${log.user}**님이 [${likePost ? likePost.category.slice(0, 4) : '알 수 없는 글'}]에 좋아요를 눌렀습니다.`;
-                        typeColor = 'var(--accent)';
-                        onClickAction = `viewPostDetailAdmin(${log.targetId})`;
-                        break;
-                    default:
-                        logText = `${log.user}의 알 수 없는 활동`;
-                        typeColor = 'var(--text-sub)';
-                        onClickAction = `showToast('기타 활동 상세')`;
-                }
-
-                // 닉네임 클릭 시 해당 사용자로 필터링
-                const userElement = ADMINS.includes(log.userId) 
-                    ? `<span class="log-user" style="color:var(--primary);">${log.user}</span>` 
-                    : `<span class="log-user" onclick="document.getElementById('dashboardUserFilter').value='${log.userId}'; filterActivityLog('${log.userId}'); event.stopPropagation();">${log.user}</span>`;
-                
-                return `
-                    <div class="activity-log-item" onclick="${onClickAction}">
-                        <span class="log-type" style="color:${typeColor};">[${log.type.toUpperCase()}]</span> 
-                        ${logText.replace(`**${log.user}**`, userElement)}
-                        <span class="log-time">(${timeAgo})</span>
-                    </div>
-                `;
-            }).join('');
-
-            logContainer.scrollTop = 0; // 필터링 후 맨 위로 이동
-        }
-
-        // 활동 로그 클릭 시 상세 페이지 이동 (햅씨 전용)
-        function viewPostDetailAdmin(postId) {
-            const post = findPostById(postId);
-            if (!post) return showToast('게시글을 찾을 수 없습니다.');
-            
-            closeAdminDashboardModal();
-            if (post.category === '에디터톡') {
-                viewEditorTalk(postId);
-            } else {
-                viewPost(postId);
-            }
-        }
-        
-        function viewCommentDetailAdmin(postId, commentId) {
-            viewPostDetailAdmin(postId); // 일단 게시글로 이동
-            showToast(`댓글 #${commentId}으로 이동 (구현)`);
-        }
-        
-        // 관리자 무드 기록 상세 보기 (추가)
-        function viewMoodDetailAdmin(moodId) {
-            closeAdminDashboardModal();
-            // 모든 무드 기록 모달을 띄웁니다.
-            showAdminMoodDetailModal(); 
-            
-            // 특정 기록으로 스크롤 이동하는 기능은 생략
-            // showToast(`무드 기록 #${moodId} 상세 내용 표시 (미구현)`); 
-        }
-        
-    </script>
-</body>
-</html>
+            const comment
