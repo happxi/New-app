@@ -550,6 +550,40 @@
             box-shadow: 0 6px 25px rgba(107, 70, 193, 0.4);
         }
 
+        /* 파일 첨부 영역 스타일 */
+        .file-upload-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 12px 20px;
+            border: 2px dashed var(--primary-soft);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+        }
+        .file-upload-area:hover {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+        }
+        .file-upload-area i {
+            font-size: 20px;
+            color: var(--primary);
+        }
+        #fileInput {
+            display: none; /* 실제 input 숨김 */
+        }
+        #fileNameDisplay {
+            font-size: 13px;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+
+
         /* 카테고리 탭 */
         .category-tabs {
             display: flex;
@@ -693,6 +727,17 @@
             max-height: 80vh;
             overflow-y: auto;
         }
+        
+        /* 이미지 미리보기 */
+        #imagePreview {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: none;
+            max-height: 200px;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
@@ -789,7 +834,15 @@
                 <span class="emoji-option" onclick="selectEmoji(this, '😡')">😡</span>
                 <span class="emoji-option" onclick="selectEmoji(this, '🥱')">🥱</span>
             </div>
-
+            
+            <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect()">
+            <div class="file-upload-area" onclick="document.getElementById('fileInput').click()" id="fileUploadArea">
+                <i class="fas fa-camera"></i>
+                <span id="fileNameDisplay">사진 첨부 (선택)</span>
+                <i class="fas fa-paperclip"></i>
+            </div>
+            <img id="imagePreview" src="" alt="첨부 이미지 미리보기">
+            
             <input type="text" id="postTitle" class="input-box" placeholder="제목을 입력하세요">
             <textarea id="postContent" class="input-box" style="height: 120px; resize: none;" placeholder="내용을 입력하세요"></textarea>
             
@@ -878,6 +931,8 @@
         let userStamps = 28; // 테스트용
         let selectedMoodEmoji = null;
         let todayMoodSubmitted = false; // 오늘 무드 기록 여부
+        let attachedFile = null; // 첨부 파일 객체 저장
+
         
         // ** 관리자 비밀번호 'admin123' 통일 반영 및 사용자 추가 **
         let users = [
@@ -891,7 +946,7 @@
         ];
 
         let posts = [
-            { id: 1, title: '[32호] 퇴사 후 번아웃, 저만 이런가요?', category: '자휴레터', content: '퇴사 후에도 쉬지 못하는 당신에게...', author: '햅씨', date: '2024-01-10', authorId: 'happxi@jahyu.com', likes: 20, comments: 3 },
+            { id: 1, title: '[32호] 퇴사 후 번아웃, 저만 이런가요?', category: '자휴레터', content: '퇴사 후에도 쉬지 못하는 당신에게...', author: '햅씨', date: '2024-01-10', authorId: 'happxi@jahyu.com', likes: 20, comments: 3, image: 'https://i.imgur.com/exampleImage.png' },
             { id: 2, title: '[31호] 주말 쉼의 기술', category: '자휴레터', content: '완전한 휴식을 위한 팁', author: '햅씨', date: '2024-01-08', authorId: 'happxi@jahyu.com', likes: 15, comments: 2 },
             { id: 3, title: '[자휴랩] 글쓰기 노하우', category: '자휴랩', content: '내 마음을 담는 법 A to Z', author: '엘리', date: '2024-01-05', authorId: 'elly@jahyu.com', likes: 10, comments: 1 }
         ];
@@ -932,6 +987,33 @@
             checkAutoLogin();
         });
 
+        // 파일 선택 처리 (새로 추가)
+        function handleFileSelect() {
+            const fileInput = document.getElementById('fileInput');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            if (fileInput.files.length > 0) {
+                attachedFile = fileInput.files[0];
+                fileNameDisplay.textContent = attachedFile.name;
+                
+                // 이미지 미리보기
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(attachedFile);
+                
+                showToast(`파일 첨부 완료: ${attachedFile.name}`);
+            } else {
+                attachedFile = null;
+                fileNameDisplay.textContent = '사진 첨부 (선택)';
+                imagePreview.style.display = 'none';
+                imagePreview.src = '';
+            }
+        }
+        
         // 로그인 처리
         function handleLogin() {
             const email = document.getElementById('loginEmail').value.trim();
@@ -1404,6 +1486,7 @@
                             <p style="font-size:11px; color:var(--text-sub); margin:0;">${talk.date.substring(0, 16)}</p>
                         </div>
                     </div>
+                    ${talk.image ? `<img src="${talk.image}" style="width:100%; height:auto; border-radius:10px; margin-bottom:15px; max-height: 150px; object-fit: cover;" alt="첨부 이미지">` : ''}
                     <p style="font-size:14px; line-height:1.5;">${talk.content}</p>
                     <div style="margin-top:15px; padding-top:15px; border-top:1px solid var(--primary-soft); font-size:11px; color:var(--text-sub); display:flex; gap:20px;">
                         <span><i class="fas fa-heart" style="color:${myLikes.includes(talk.id) ? 'var(--accent)' : '#ccc'}"></i> <span id="talk-likes-${talk.id}">${talk.likes + (myLikes.includes(talk.id) ? 1 : 0)}</span></span>
@@ -1431,11 +1514,21 @@
             const moodSec = document.getElementById('moodSelector');
             const moodInst = document.getElementById('moodInstruction');
             const letterCat = document.getElementById('letterCategory');
+            const fileUploadArea = document.getElementById('fileUploadArea');
 
             modal.style.display = 'flex';
             moodSec.style.display = 'none';
             moodInst.style.display = 'none';
             letterCat.style.display = 'none';
+            
+            // 파일 첨부 관련 초기화 (새로 추가)
+            attachedFile = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('fileNameDisplay').textContent = '사진 첨부 (선택)';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('imagePreview').src = '';
+            fileUploadArea.style.display = 'flex'; // 기본적으로 표시
+
             document.getElementById('postTitle').placeholder = '제목을 입력하세요';
 
             moodSec.querySelectorAll('.emoji-option').forEach(opt => opt.classList.remove('selected'));
@@ -1448,6 +1541,7 @@
                 moodSec.style.display = 'grid';
                 moodInst.style.display = 'block';
                 document.getElementById('postTitle').placeholder = '오늘의 감정에 대한 한 줄 요약';
+                fileUploadArea.style.display = 'none'; // 무드 기록은 파일 첨부 숨김
                 
                 const today = new Date().toDateString();
                 if (myMoodRecords.some(record => new Date(record.date).toDateString() === today && record.author === currentUser.name)) {
@@ -1503,16 +1597,21 @@
             } else if (currentTab === 'editorTalk' && currentUser.isAdmin) {
                 // 에디터톡 등록 처리
                 const newId = Math.max(...allPosts.map(p => p.id), 0) + 1; // ID 오류 방지
+                
+                // 첨부 파일 처리 (가정: 서버에 업로드 후 URL을 받는다고 가정하고, 여기서는 파일 이름만 저장)
+                const imageUrl = attachedFile ? document.getElementById('imagePreview').src : null; // 미리보기 URL을 이미지 URL로 사용
+                
                 const newTalk = {
                     id: newId,
-                    title: title,
+                    title: title, // 에디터톡은 내용만 보여주지만, 내부적으로는 title 저장
                     category: '에디터톡',
                     content: content,
                     author: currentUser.name,
                     authorId: currentUser.id,
                     date: new Date().toISOString(),
                     likes: 0,
-                    comments: 0
+                    comments: 0,
+                    image: imageUrl // 이미지 URL 추가
                 };
                 editorTalks.unshift(newTalk);
                 allPosts.push(newTalk);
@@ -1773,6 +1872,7 @@
                         ` : ''}
                     </div>
                     <div class="post-content">
+                         ${post.image ? `<img src="${post.image}" style="width:100%; height:auto; border-radius:15px; margin-bottom:20px; max-height: 250px; object-fit: cover;" alt="첨부 이미지">` : ''}
                         <p style="font-size:16px; line-height:1.6; color:var(--text-main); white-space: pre-wrap;">${post.content}</p>
                         <p style="margin-top:30px; font-size:14px; color:var(--text-sub); line-height:1.6;">
                             이 레터는 당신의 휴식을 위해 준비되었습니다. 잠시 모든 것을 내려놓고 이 글에 집중해보세요. 
@@ -1825,6 +1925,7 @@
                         ` : ''}
                     </div>
                     <div class="post-content">
+                        ${talk.image ? `<img src="${talk.image}" style="width:100%; height:auto; border-radius:15px; margin-bottom:20px; max-height: 250px; object-fit: cover;" alt="첨부 이미지">` : ''}
                         <p style="font-size:16px; line-height:1.6; color:var(--text-main); white-space: pre-wrap;">${talk.content}</p>
                     </div>
                     <div class="post-actions">
