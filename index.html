@@ -453,7 +453,7 @@
             box-shadow: 0 0 0 4px rgba(107, 70, 193, 0.1);
         }
 
-        /* 이모티콘 선택기 - 감성적인 무드트래커 스타일로 변경 */
+        /* 이모티콘 선택기 - 감성적인 무드트래커 스타일로 변경 (수정) */
         .emoji-selector {
             display: grid;
             grid-template-columns: repeat(5, 1fr); /* 5x4 배열 */
@@ -464,8 +464,8 @@
             background: var(--primary-soft); /* 선택기 배경을 부드러운 톤으로 변경 */
         }
         .emoji-option {
-            font-size: 35px; /* 이모지 크기 키움 */
-            padding: 8px;
+            font-size: 30px; /* 이모지 크기 키움 (35px -> 30px로 약간 줄여서 모달 컴포넌트 안에 들어오게 함) */
+            padding: 8px 0; /* 세로 패딩 조절 */
             border-radius: 18px; /* 더 둥근 모서리 */
             background: var(--white);
             cursor: pointer;
@@ -473,6 +473,9 @@
             border: 3px solid transparent;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .emoji-option:hover {
             transform: scale(1.05);
@@ -816,6 +819,32 @@
             font-size: 14px; 
             background: rgba(255, 255, 255, 0.9);
         }
+        
+        /* 관리자 무드 기록 상세 모달 (새로 추가) */
+        .admin-mood-card {
+            background: var(--primary-soft);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(107, 70, 193, 0.1);
+        }
+        .admin-mood-card h5 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        .admin-mood-card p {
+            font-size: 13px;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+        .admin-mood-card small {
+            font-size: 10px;
+            color: var(--text-sub);
+            display: block;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -894,9 +923,9 @@
             <button onclick="closePasswordChangeModal()" class="btn-secondary" style="margin-top: 10px;">취소</button>
         </div>
     </div>
-
+    
     <div id="writeModal" class="modal-overlay">
-        <div class="modal-card" style="text-align: left;">
+        <div class="modal-card" style="text-align: left; max-height: 90vh; overflow-y: auto;">
             <h3 id="writeTitle" style="font-size: 20px; margin-bottom: 20px; color: var(--primary);">글쓰기</h3>
             
             <select id="postCategory" class="input-box">
@@ -945,6 +974,18 @@
                 </div>
 
             <button onclick="closeAdminDashboardModal()" class="btn-primary" style="margin-top: 25px;">닫기</button>
+        </div>
+    </div>
+    
+    <div id="adminMoodDetailModal" class="modal-overlay">
+        <div class="modal-card" style="max-width: 450px; text-align: left;">
+            <h2 style="color: var(--primary); font-size: 24px; margin-bottom: 15px; text-align: center;">전체 무드 기록</h2>
+            <p style="color: var(--text-sub); font-size: 14px; margin-bottom: 25px; text-align: center;">모든 사용자의 최근 무드 기록입니다.</p>
+            
+            <div id="allMoodRecords" style="max-height: 400px; overflow-y: auto;">
+                </div>
+
+            <button onclick="closeAdminMoodDetailModal()" class="btn-primary" style="margin-top: 25px;">닫기</button>
         </div>
     </div>
     
@@ -1002,28 +1043,28 @@
             'yudan@jahyu.com': 'var(--admin-yudan)'
         };
         
-        // ** 감성적인 무드 이모지 목록 (20가지 파스텔톤) **
+        // ** 감성적인 무드 이모지 목록 (20가지 표정/감정으로 변경) **
         const MOOD_EMOJIS = [
-            { emoji: '✨', color: 'var(--mood-1)', title: '기쁨' },
-            { emoji: '💖', color: 'var(--mood-2)', title: '사랑' },
+            { emoji: '😊', color: 'var(--mood-1)', title: '기쁨' },
+            { emoji: '🥰', color: 'var(--mood-2)', title: '사랑' },
             { emoji: '😌', color: 'var(--mood-3)', title: '평온' },
             { emoji: '😭', color: 'var(--mood-4)', title: '슬픔' },
             { emoji: '😡', color: 'var(--mood-5)', title: '화남' },
             { emoji: '😴', color: 'var(--mood-6)', title: '피곤' },
-            { emoji: '💡', color: 'var(--mood-7)', title: '영감' },
-            { emoji: '☀️', color: 'var(--mood-8)', title: '활기' },
+            { emoji: '🤩', color: 'var(--mood-7)', title: '신남' },
+            { emoji: '🤔', color: 'var(--mood-8)', title: '고민' },
             { emoji: '🥺', color: 'var(--mood-9)', title: '걱정' },
             { emoji: '😶', color: 'var(--mood-10)', title: '무관심' },
-            { emoji: '🌊', color: 'var(--mood-11)', title: '고요' },
-            { emoji: '💐', color: 'var(--mood-12)', title: '행복' },
+            { emoji: '🥺', color: 'var(--mood-11)', title: '눈물' },
+            { emoji: '😇', color: 'var(--mood-12)', title: '행복' },
             { emoji: '🔥', color: 'var(--mood-13)', title: '열정' },
-            { emoji: '🥶', color: 'var(--mood-14)', title: '좌절' },
+            { emoji: '😩', color: 'var(--mood-14)', title: '좌절' },
             { emoji: '🍀', color: 'var(--mood-15)', title: '희망' },
-            { emoji: '☕', color: 'var(--mood-16)', title: '여유' },
+            { emoji: '🤫', color: 'var(--mood-16)', title: '조용' },
             { emoji: '💫', color: 'var(--mood-17)', title: '설렘' },
             { emoji: '☔', color: 'var(--mood-18)', title: '우울' },
             { emoji: '🌳', color: 'var(--mood-19)', title: '안정' },
-            { emoji: '☁️', color: 'var(--mood-20)', title: '멍함' }
+            { emoji: '🤪', color: 'var(--mood-20)', title: '멍함' }
         ];
 
         
@@ -1051,7 +1092,9 @@
         let allPosts = [...posts, ...editorTalks]; // 통합된 게시글 목록
         let myMoodRecords = [
              { id: 'M1', emoji: '😊', title: '오늘 무사히 마쳤다!', content: '피곤하지만 기분은 좋아~', date: new Date('2025-12-10T20:00:00Z'), author: '테스트', authorId: 'test@example.com' },
-             { id: 'M2', emoji: '🥱', title: '월요일 증후군', content: '쉬는 날만 기다려요...', date: new Date('2025-12-08T19:30:00Z'), author: '햅삐', authorId: 'user@example.com' }
+             { id: 'M2', emoji: '🥱', title: '월요일 증후군', content: '쉬는 날만 기다려요...', date: new Date('2025-12-08T19:30:00Z'), author: '햅삐', authorId: 'user@example.com' },
+             { id: 'M3', emoji: '😌', title: '평온한 주말', content: '온종일 침대와 한 몸', date: new Date('2025-12-06T12:00:00Z'), author: '햅삐', authorId: 'user@example.com' },
+             { id: 'M4', emoji: '😭', title: '실수', content: '발표 망쳤다...', date: new Date('2025-12-07T15:00:00Z'), author: '테스트', authorId: 'test@example.com' }
         ]; 
         let comments = { 
             1: [{id: 1, author: '햅삐', content: '공감돼요ㅠㅠ', date: '2025-12-11T12:00:00Z', authorId: 'user@example.com', postId: 1}],
@@ -1335,6 +1378,39 @@
         function closeAdminDashboardModal() {
             document.getElementById('adminDashboardModal').style.display = 'none';
         }
+        
+        // 관리자 무드 기록 상세 모달 열기 (새로 추가)
+        function showAdminMoodDetailModal() {
+            if (!currentUser.isSuperAdmin) return showToast('슈퍼 관리자만 접근 가능합니다.');
+            
+            const moodContainer = document.getElementById('allMoodRecords');
+            
+            // 모든 무드 기록을 최신순으로 정렬
+            const allMoodsSorted = [...myMoodRecords].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (allMoodsSorted.length === 0) {
+                moodContainer.innerHTML = '<p style="text-align:center; color:var(--text-sub); padding:20px;">기록된 무드 활동이 없습니다.</p>';
+            } else {
+                moodContainer.innerHTML = allMoodsSorted.map(mood => `
+                    <div class="admin-mood-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                            <h5 style="color:var(--primary);">${mood.emoji} ${mood.title}</h5>
+                            <small style="font-weight:700; color:var(--primary);">${mood.author}</small>
+                        </div>
+                        <p>${mood.content.substring(0, 50)}${mood.content.length > 50 ? '...' : ''}</p>
+                        <small>${getTimeAgo(mood.date)}</small>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('adminMoodDetailModal').style.display = 'flex';
+        }
+        
+        // 관리자 무드 기록 상세 모달 닫기 (새로 추가)
+        function closeAdminMoodDetailModal() {
+            document.getElementById('adminMoodDetailModal').style.display = 'none';
+        }
+
 
         // 자동 로그인 체크
         function checkAutoLogin() {
@@ -1489,7 +1565,8 @@
                                 <i class="fas fa-crown"></i> 슈퍼 관리자 모드
                             </h4>
                             <p style="font-size:12px; color:var(--text-sub); margin-bottom:15px;">모든 사용자의 활동 내역을 확인할 수 있습니다.</p>
-                            <button onclick="showAdminDashboardModal()" class="btn-primary" style="font-size:12px;">관리자 대시보드 보기</button>
+                            <button onclick="showAdminMoodDetailModal()" class="btn-primary" style="font-size:12px; margin-bottom:10px;">모든 무드 기록 보기</button>
+                            <button onclick="showAdminDashboardModal()" class="btn-primary btn-secondary" style="font-size:12px;">관리자 대시보드 보기</button>
                         </div>
                     ` : ''}
                     
@@ -1580,7 +1657,7 @@
                                 <strong>🎁 자휴스탬프 이벤트!</strong><br>
                                 스탬프 30개를 모두 모은 화면을 캡쳐해서<br>
                                 자휴레터 카카오톡 채널로 보내주세요!<br>
-                                (어느날 '스폐셜 레터'가 도착할지도 몰라요!)
+                                (어느날 '스폐셜 레터'가 도착할지도 몰로아요!)
                             </div>
                         </div>
 
@@ -1720,7 +1797,7 @@
             // 모달 타입별 설정
             if (type === 'mood') {
                 title.innerText = '오늘의 무드 기록';
-                moodSec.style.display = 'grid';
+                moodSec.style.display = 'grid'; // grid로 표시
                 moodInst.style.display = 'block';
                 postTitleInput.placeholder = '오늘의 감정에 대한 한 줄 요약';
                 postContentInput.placeholder = '오늘 하루를 간단히 기록해주세요.';
@@ -2394,10 +2471,14 @@
             showToast(`댓글 #${commentId}으로 이동 (구현)`);
         }
         
+        // 관리자 무드 기록 상세 보기 (추가)
         function viewMoodDetailAdmin(moodId) {
             closeAdminDashboardModal();
-            renderTab('mood'); // 무드 탭으로 이동 후 상세 내용 표시 (미구현)
-            showToast(`무드 기록 #${moodId} 상세 내용 표시 (미구현)`);
+            // 모든 무드 기록 모달을 띄웁니다.
+            showAdminMoodDetailModal(); 
+            
+            // 특정 기록으로 스크롤 이동하는 기능은 생략
+            // showToast(`무드 기록 #${moodId} 상세 내용 표시 (미구현)`); 
         }
         
     </script>
