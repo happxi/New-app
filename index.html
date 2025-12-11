@@ -7,8 +7,8 @@
     
     <meta property="og:title" content="자휴레터를 앱으로 만나보세요!">
     <meta property="og:description" content="에디터와 햅삐님만을 위한 공간!">
-    <meta property="og:image" content="https://imgur.com/WQgaT6m.png"> 
-    <meta property="og:url" content="https://assets.carat-api.im/files/2907633/97cb17f3-d538-4c40-9705-3f9e517a4d5a/jahyu_letter_app_final.html">
+    <meta property="og:image" content="https://i.imgur.com/WQgaT6m.png">
+    <meta property="og:url" content="https://assets.carat-api.im/files/2907633/97cb17f3-d538-4c40-9705-3f9e517a4d5a/jahyu_letter_app_fixed.html">
     <meta property="og:type" content="website">
     
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Round+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -16,38 +16,35 @@
     
     <style>
         :root {
-            --primary: #6B46C1;
-            --primary-soft: #F3E8FF;
-            --primary-light: #A78BFA;
-            --accent: #FF6B9D;
-            --accent-soft: #FFE4EC;
-            --secondary: #4ECDC4;
-            --secondary-soft: #E6FFF9;
-            --text-main: #2D3748;
-            --text-sub: #718096;
+            /* 이미지 기반 컬러 팔레트 */
+            --primary: #8B5CF6;           /* 주요 보라색 */
+            --primary-light: #A78BFA;     /* 연한 보라색 */
+            --primary-dark: #7C3AED;      /* 진한 보라색 */
+            --accent: #EC4899;            /* 핑크색 액센트 */
+            --bg-gradient-start: #F0F4FF; /* 배경 시작 */
+            --bg-gradient-end: #F5E6FF;   /* 배경 끝 */
+            --text-dark: #1F2937;         /* 주요 텍스트 */
+            --text-light: #6B7280;        /* 서브 텍스트 */
             --white: #FFFFFF;
-            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-bg: rgba(255, 255, 255, 0.9);
             --glass-border: rgba(255, 255, 255, 0.3);
-            --shadow-card: 0 8px 32px rgba(107, 70, 193, 0.12);
-            --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.15);
-            --shadow-hover: 0 12px 40px rgba(107, 70, 193, 0.2);
         }
 
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif; 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', 'Nanum Round Gothic', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #F8F9FA 0%, #E6FFF9 100%);
-            color: var(--text-main);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-dark);
             min-height: 100vh;
             overflow-x: hidden;
-            display: flex; 
-            flex-direction: column; 
+            display: flex;
+            flex-direction: column;
             align-items: center;
             position: relative;
         }
@@ -59,73 +56,36 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 80%, var(--primary-soft) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, var(--accent-soft) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, var(--secondary-soft) 0%, transparent 50%);
-            z-index: -2;
+            background-image: radial-gradient(circle at 30% 60%, var(--primary-light) 0%, transparent 50%),
+                            radial-gradient(circle at 70% 30%, var(--accent) 0%, transparent 40%);
+            z-index: -1;
             opacity: 0.6;
-            animation: backgroundShift 20s ease-in-out infinite;
         }
 
-        @keyframes backgroundShift {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.1) rotate(180deg); }
-        }
-
+        /* 로딩 스크린 */
         .loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--primary-soft) 0%, var(--accent-soft) 100%);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
             display: flex;
-            align-items: center;
             justify-content: center;
-            z-index: 9999;
+            align-items: center;
+            z-index: 10000;
             transition: opacity 0.5s ease;
-        }
-
-        .loading-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-            display: none;
         }
 
         .loading-content {
             text-align: center;
-            color: var(--white);
         }
 
-        .loading-logo {
-            font-size: 60px;
+        .loading-icon {
+            font-size: 48px;
             margin-bottom: 20px;
-            animation: bounce 1.5s ease-in-out infinite;
+            animation: bounce 2s infinite;
         }
-
-        .loading-text {
-            font-size: 24px;
-            font-weight: 700;
-            opacity: 0.9;
-        }
-
-        .loading-dots {
-            margin-top: 10px;
-        }
-
-        .loading-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: var(--white);
-            border-radius: 50%;
-            margin: 0 2px;
-            animation: dotPulse 1.4s ease-in-out infinite both;
-        }
-
-        .loading-dot:nth-child(2) { animation-delay: -0.32s; }
-        .loading-dot:nth-child(3) { animation-delay: -0.16s; }
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -133,84 +93,59 @@
             60% { transform: translateY(-10px); }
         }
 
-        @keyframes dotPulse {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
-            40% { transform: scale(1); opacity: 1; }
+        .loading-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
         }
 
+        /* 앱 컨테이너 */
         .app-container {
-            width: 100%; 
-            max-width: 480px; 
+            width: 100%;
+            max-width: 480px;
             min-height: 100vh;
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 0;
-            margin: 0;
-            box-shadow: var(--shadow-glass);
-            border: none;
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.1);
+            border: 1px solid var(--glass-border);
             padding-bottom: 90px;
             position: relative;
-            overflow-x: hidden;
-            opacity: 0;
-            transition: opacity 0.5s ease;
         }
 
-        .app-container.visible {
-            opacity: 1;
-        }
-
-        @media (min-width: 769px) {
-            .app-container {
-                border-radius: 30px 30px 0 0;
-                margin-top: 20px;
-                border: 1px solid var(--glass-border);
-            }
-        }
-
+        /* 헤더 */
         .header-section {
             padding: 40px 25px 20px;
             text-align: center;
-            background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.9) 100%);
-            border-radius: 0;
-        }
-
-        @media (min-width: 769px) {
-            .header-section {
-                border-radius: 30px 30px 0 0;
-            }
+            background: linear-gradient(180deg, var(--white) 0%, var(--glass-bg) 100%);
+            border-radius: 30px 30px 0 0;
         }
 
         .header-title {
-            font-size: 24px; 
-            font-weight: 800; 
-            color: var(--primary);
-            margin-bottom: 8px; 
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
             letter-spacing: -0.5px;
-            text-shadow: 0 2px 4px rgba(107, 70, 193, 0.1);
         }
+
         .header-sub {
-            font-size: 14px; 
-            color: var(--text-sub); 
+            font-size: 14px;
+            color: var(--text-light);
             font-weight: 500;
         }
 
+        /* 메인 카드 */
         .hero-card {
             background: linear-gradient(180deg, var(--white) 0%, var(--glass-bg) 100%);
-            border-radius: 25px;
-            padding: 40px 30px;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            border-radius: 30px;
+            padding: 30px 20px;
             margin: 0 20px 30px;
             text-align: center;
-            box-shadow: var(--shadow-card);
-            border: 1px solid rgba(255,255,255,0.8);
-            position: relative; 
+            position: relative;
             overflow: hidden;
-            backdrop-filter: blur(20px);
-            transition: all 0.3s ease;
-        }
-
-        .hero-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.12);
         }
 
         .hero-card::before {
@@ -220,8 +155,8 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, var(--primary-soft) 0%, transparent 50%);
-            opacity: 0.4;
+            background: radial-gradient(circle, var(--primary-light) 0%, transparent 50%);
+            opacity: 0.3;
             animation: float 20s ease-in-out infinite;
         }
 
@@ -230,859 +165,1468 @@
             50% { transform: translate(30px, -30px) rotate(180deg); }
         }
 
-        .hero-card h3 { 
-            font-size: 20px; 
-            font-weight: 700; 
-            color: var(--text-main); 
-            margin-bottom: 10px; 
+        .hero-card h3 {
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
             position: relative;
             z-index: 1;
-        }
-        .hero-card p { 
-            font-size: 14px; 
-            color: var(--text-sub); 
-            margin-bottom: 30px; 
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            color: white; 
-            padding: 16px 36px; 
-            border-radius: 28px;
-            font-size: 16px; 
-            font-weight: 700; 
-            border: none;
-            box-shadow: 0 6px 20px rgba(107, 70, 193, 0.3);
-            cursor: pointer; 
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .hero-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(107, 70, 193, 0.4);
-        }
-        .hero-btn:active { 
-            transform: scale(0.98); 
         }
 
+        .hero-card p {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .hero-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 퀵 메뉴 */
         .quick-menu {
-            display: flex; 
-            justify-content: space-between; 
-            padding: 0 20px; 
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
             margin-bottom: 30px;
-            flex-wrap: nowrap; 
-            overflow-x: auto; 
-            gap: 15px;
-            padding-bottom: 10px;
+            overflow-x: auto;
+            gap: 10px;
+            -webkit-overflow-scrolling: touch;
         }
-        
+
         .quick-menu::-webkit-scrollbar {
-            height: 3px;
+            height: 4px;
         }
-        
+
         .quick-menu::-webkit-scrollbar-thumb {
-            background-color: var(--primary-soft);
+            background-color: var(--primary-light);
             border-radius: 2px;
         }
-        
+
         .quick-item {
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            cursor: pointer; 
-            min-width: 80px;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            min-width: 70px;
+            transition: transform 0.3s ease;
         }
-        
+
         .quick-item:hover {
             transform: translateY(-5px);
         }
-        
+
         .quick-icon {
-            width: 70px; 
-            height: 70px; 
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            display: flex; 
-            align-items: center; 
+            display: flex;
+            align-items: center;
             justify-content: center;
-            font-size: 28px; 
-            margin-bottom: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-1 { background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%); }
+        .icon-2 { background: linear-gradient(135deg, #93C5FD 0%, #3B82F6 100%); }
+        .icon-3 { background: linear-gradient(135deg, #FBCFE8 0%, var(--accent) 100%); }
+        .icon-4 { background: linear-gradient(135deg, #99F6E4 0%, #10B981 100%); }
+        .icon-5 { background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 100%); }
+
+        .quick-text {
+            font-size: 11px;
+            color: var(--text-dark);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* 카드 */
+        .content-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            border-radius: 25px;
+            padding: 20px;
+            margin: 0 20px 15px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.12);
+            cursor: pointer;
+        }
+
+        .content-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.15);
+        }
+
+        .badge-new {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 하단 네비게이션 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(139, 92, 246, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            padding-bottom: 10px;
+            box-shadow: 0 -5px 20px rgba(139, 92, 246, 0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-light);
+            text-decoration: none;
+            width: 60px;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item i {
+            font-size: 24px;
+            margin-bottom: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-text {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active i {
+            transform: scale(1.1);
+        }
+
+        /* 중앙 무드 버튼 */
+        .nav-item.central .central-bg {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+            margin-bottom: -20px;
+            border: 4px solid white;
+            transform: translateY(-15px);
             transition: all 0.3s ease;
         }
-        
-        .icon-purple { 
-            background: linear-gradient(135deg, #A78BFA 0%, var(--primary) 100%); 
-            color: white; 
+
+        .nav-item.central:hover .central-bg {
+            transform: translateY(-18px) scale(1.05);
         }
-        .icon-blue { 
-            background: linear-gradient(135deg, #93C5FD 0%, #2196F3 100%); 
-            color: white; 
+
+        .nav-item.central i {
+            color: white;
+            font-size: 26px;
+            margin: 0;
         }
-        .icon-pink { 
-            background: linear-gradient(135deg, #FBCFE8 0%, var(--accent) 100%); 
-            color: white; 
+
+        .nav-item.central .nav-text {
+            margin-top: 25px;
+            font-weight: 700;
+            color: var(--primary);
         }
-        .icon-mint { 
-            background: linear-gradient(135deg, #99F6E4 0%, var(--secondary) 100%); 
-            color: white; 
+
+        /* 모달 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none; /* JS will toggle to flex */
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        .icon-yellow { 
-            background: linear-gradient(135deg, #FDE68A 0%, #FFC107 100%); 
-            color: white; 
+
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
         }
-        
-        .quick-text { 
-            font-size: 12px; 
-            color: var(--text-main); 
-            font-weight: 600; 
+
+        .modal-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            width: 90%;
+            max-width: 380px;
+            border-radius: 30px;
+            padding: 40px 30px;
             text-align: center;
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+            border: 1px solid var(--glass-border);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.show .modal-card {
+            transform: scale(1);
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(139, 92, 246, 0.1);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+        }
+
+        /* 이모지 선택기 */
+        .emoji-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 20px;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .emoji-option {
+            font-size: 35px;
+            padding: 8px;
+            border-radius: 18px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 3px solid transparent;
+            line-height: 1;
+        }
+
+        .emoji-option:hover {
+            transform: scale(1.05);
+        }
+
+        .emoji-option.selected {
+            border-color: var(--primary);
+            background: rgba(236, 72, 153, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* 버튼 */
+        button {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: none;
+            color: var(--text-light);
+            padding: 12px 24px;
+            border: 2px solid rgba(139, 92, 246, 0.1);
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--primary);
+        }
+
+        /* 토스트 */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 13px;
+            z-index: 3000;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+            animation: fadeUp 3s forwards;
             white-space: nowrap;
         }
 
-        .content-area {
-            padding: 0 20px 20px;
+        @keyframes fadeUp {
+            0% { opacity: 0; bottom: 80px; }
+            10% { opacity: 1; bottom: 100px; }
+            90% { opacity: 1; bottom: 100px; }
+            100% { opacity: 0; bottom: 80px; }
         }
 
-        .content-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 25px; 
-            padding: 25px;
-            margin-bottom: 20px; 
-            box-shadow: var(--shadow-card);
-            border: 1px solid rgba(255,255,255,0.8);
-            position: relative;
-            transition: all 0.3s ease;
-            cursor: pointer;
+        /* 유틸리티 */
+        .hide {
+            display: none !important;
         }
-        
-        .content-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-        }
-        
-        .card-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 12px;
+
+        /* 카테고리 탭 */
+        .category-tabs {
             display: flex;
-            align-items: center;
+            justify-content: center;
             gap: 10px;
-        }
-        
-        .card-content {
-            font-size: 14px;
-            color: var(--text-sub);
-            line-height: 1.6;
-            margin-bottom: 14px;
-        }
-        
-        .badge-new {
-            position: absolute; 
-            top: 20px; 
-            right: 20px; 
-            background: var(--accent); 
-            color: white; 
-            font-size: 11px;
-            padding: 5px 12px; 
-            border-radius: 15px; 
-            font-weight: 700;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            animation: pulse 2s ease-in-out infinite;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        .category-tab {
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 2px solid rgba(139, 92, 246, 0.1);
+            background: white;
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .post-actions {
+        .category-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .category-tab:hover:not(.active) {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--primary);
+        }
+
+        /* 에디터 필터 */
+        .editor-filter {
             display: flex;
-            gap: 16px;
-            align-items: center;
-            margin-top: 8px;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding: 0 20px;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .action-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+        .filter-chip {
+            padding: 6px 16px;
+            border-radius: 15px;
+            background: white;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            color: var(--text-light);
+            font-size: 12px;
             font-weight: 600;
-            color: var(--text-sub);
+            white-space: nowrap;
             cursor: pointer;
-            user-select: none;
+            transition: all 0.3s ease;
         }
 
-        .action-btn .fa-heart {
-            transition: transform 0.15s ease;
+        .filter-chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
 
-        .action-btn.liked { color: var(--accent); }
-        .action-btn.bookmarked { color: var(--primary); }
+        /* 스탬프 */
+        .stamp-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            justify-items: center;
+        }
 
-        .bottom-nav {
-            position: fixed; 
-            bottom: 0; 
-            left: 50%; 
-            transform: translateX(-50%);
-            width: 100%; 
-            max-width: 480px; 
-            height: 80px;
+        .stamp-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            border: 2px solid #E5E7EB;
+            background-color: white;
+            color: #9CA3AF;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .stamp-circle.active {
+            background-color: var(--primary-light);
+            color: white;
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* 파일 업로드 */
+        .file-upload-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 12px 20px;
+            border: 2px dashed rgba(139, 92, 246, 0.1);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .file-upload-area i {
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        #fileNameDisplay {
+            font-size: 13px;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+
+        #imagePreview {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: none;
+            max-height: 200px;
+            object-fit: cover;
+        }
+
+        /* 프로필 */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            padding: 25px;
+            border-radius: 25px;
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center;
-            z-index: 1000; 
-            padding-bottom: 10px;
-            box-shadow: 0 -5px 20px rgba(31, 38, 135, 0.1);
+            margin-top: 20px;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.12);
+            backdrop-filter: blur(10px);
         }
-        
-        .nav-item {
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-            color: var(--text-sub); 
-            text-decoration: none; 
+
+        .profile-avatar {
             width: 60px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .nav-item i { 
-            font-size: 24px; 
-            margin-bottom: 4px; 
-            transition: all 0.3s ease;
-        }
-        
-        .nav-text { 
-            font-size: 11px; 
-            font-weight: 600;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+            margin-right: 20px;
         }
 
-        /* Sections */
-        section.app-section {
-            padding: 10px 0 60px;
-        }
-        .section-title {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--text-main);
-            margin: 20px 0 12px;
-        }
-
-        /* Modal / Detail */
-        .modal-backdrop {
+        /* 글쓰기 아이콘 */
+        .write-icon {
             position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
+            bottom: 100px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 50%;
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 2000;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 999;
         }
-        .modal-backdrop.show {
+
+        .write-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        /* 뉴모피즘 메뉴 아이템 */
+        .menu-item {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .modal {
-            width: 92%;
-            max-width: 460px;
-            background: var(--white);
-            border-radius: 18px;
-            padding: 20px;
-            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.2);
+
+        .menu-item:hover {
+            background: rgba(139, 92, 246, 0.05);
         }
-        .modal .modal-title {
-            font-weight: 800;
-            margin-bottom: 10px;
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item i {
             color: var(--primary);
-        }
-        .modal .modal-body {
-            color: var(--text-main);
-            margin-bottom: 16px;
-            line-height: 1.6;
-        }
-        .modal .modal-footer {
-            display:flex;
-            justify-content: flex-end;
-            gap: 8px;
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
         }
 
-        /* EditorTalk compose area */
-        .editor-compose {
-            display:flex;
-            gap:10px;
-            margin: 10px 0 20px;
-        }
-        .editor-compose textarea {
-            flex:1;
-            padding:12px;
-            border-radius:12px;
-            border:1px solid rgba(0,0,0,0.06);
-            min-height:80px;
-            resize:vertical;
-            font-size:14px;
-        }
-        .editor-compose button {
-            background:var(--primary);
-            color:white;
-            border:none;
-            padding:10px 14px;
-            border-radius:10px;
-            cursor:pointer;
-            font-weight:700;
+        .menu-item-text {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
         }
 
-        /* test results panel */
-        #test-results {
-            position: fixed;
-            right: 12px;
-            bottom: 100px;
-            width: 300px;
-            max-width: 40%;
-            background: rgba(0,0,0,0.7);
-            color: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            z-index: 3000;
-            display: none;
-            white-space: pre-wrap;
+        .menu-item-arrow {
+            color: var(--text-light);
         }
 
-        /* small helpers */
-        .view-detail {
-            display:inline-block;
-            margin-top:8px;
-            font-size:13px;
-            color:var(--primary);
-            font-weight:700;
-            cursor:pointer;
+        /* 시간 표시 스타일 */
+        .time-ago {
+            font-size: 11px;
+            color: var(--text-light);
         }
-
+        
+        /* 게시글 상세 이미지 */
+        .post-detail-img {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            max-height: 300px;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
-    <div class="loading-screen" id="loading">
+
+    <div class="loading-screen" id="loadingScreen">
         <div class="loading-content">
-            <div class="loading-logo">자휴</div>
-            <div class="loading-text">로딩 중…</div>
-            <div class="loading-dots">
-                <span class="loading-dot"></span>
-                <span class="loading-dot"></span>
-                <span class="loading-dot"></span>
+            <div class="loading-icon">💜</div>
+            <div class="loading-text">자휴레터</div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="font-size: 32px; margin-bottom: 20px;">💜</div>
+            <h2 style="color: var(--primary); font-size: 24px; margin-bottom: 15px;">자휴레터</h2>
+            <p style="color: var(--primary); font-size: 16px; margin-bottom: 25px; font-weight: 700;">햅삐님 환영해요!</p>
+            
+            <input type="email" id="loginEmail" class="input-box" placeholder="이메일을 입력하세요 (test@example.com)" required>
+            <input type="password" id="loginPassword" class="input-box" placeholder="비밀번호를 입력하세요 (123)" required>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; font-size: 12px; color: var(--text-light);">
+                <div>
+                    <input type="checkbox" id="keepLogin" style="margin-right: 8px; width: 16px; height: 16px;">
+                    <label for="keepLogin">로그인 상태 유지</label>
+                </div>
+                <span onclick="showForgotPasswordModal()" style="color: var(--primary); font-weight: 500; cursor: pointer;">비밀번호를 잊으셨나요?</span>
+            </div>
+
+            <button onclick="handleLogin()" class="btn-primary">로그인하기</button>
+            
+            <p style="margin-top: 20px; font-size: 13px; color: var(--text-light);">
+                계정이 없으신가요? 
+                <span onclick="showSignupModal()" style="color: var(--primary); font-weight: 700; cursor: pointer;">회원가입하기</span>
+            </p>
+        </div>
+    </div>
+
+    <div id="signupModal" class="modal-overlay">
+        <div class="modal-card" style="text-align: left; max-height: 90vh; overflow-y: auto;">
+            <h2 style="color: var(--primary); font-size: 24px; margin-bottom: 15px; text-align: center;">회원가입</h2>
+            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 25px; text-align: center;">자휴레터와 함께 특별한 휴식을 시작해볼까요?</p>
+            
+            <input type="text" id="signupNickname" class="input-box" placeholder="닉네임을 입력하세요" required>
+            <input type="email" id="signupEmail" class="input-box" placeholder="이메일을 입력하세요" required>
+            <input type="password" id="signupPassword" class="input-box" placeholder="비밀번호를 입력하세요" required>
+            <input type="password" id="signupPasswordConfirm" class="input-box" placeholder="비밀번호를 확인하세요" required>
+            
+            <div style="display: flex; align-items: center; margin-bottom: 25px; font-size: 12px; color: var(--text-light);">
+                <input type="checkbox" id="agreeTerms" style="margin-right: 8px; width: 16px; height: 16px;">
+                <label for="agreeTerms">이용약관 및 개인정보처리방침에 동의합니다</label>
+            </div>
+
+            <button onclick="handleSignup()" class="btn-primary">회원가입하기</button>
+            
+            <p style="margin-top: 20px; font-size: 13px; color: var(--text-light); text-align: center;">
+                이미 계정이 있으신가요? 
+                <span onclick="showLoginModal()" style="color: var(--primary); font-weight: 700; cursor: pointer;">로그인하기</span>
+            </p>
+        </div>
+    </div>
+
+    <div id="forgotPasswordModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 style="color: var(--primary); font-size: 24px; margin-bottom: 15px; text-align: center;">비밀번호 찾기</h2>
+            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 25px; text-align: center;">가입하신 이메일을 입력하시면, 임시 비밀번호를 보내드려요.</p>
+            
+            <input type="email" id="forgotEmail" class="input-box" placeholder="가입시 입력한 이메일" required>
+
+            <button onclick="handleForgotPassword()" class="btn-primary" style="margin-top: 15px;">임시 비밀번호 받기</button>
+            <button onclick="closeForgotPasswordModal()" class="btn-secondary" style="margin-top: 10px;">취소</button>
+        </div>
+    </div>
+
+    <div id="writeModal" class="modal-overlay">
+        <div class="modal-card" style="text-align: left;">
+            <h3 id="writeTitle" style="font-size: 20px; margin-bottom: 20px; color: var(--primary);">글쓰기</h3>
+            
+            <select id="postCategory" class="input-box" style="display: none;">
+                <option value="자휴레터">자휴레터</option>
+                <option value="자휴랩">자휴랩</option>
+                <option value="에디터톡">에디터톡</option>
+            </select>
+            
+            <div style="font-size: 12px; color: var(--text-light); margin-bottom: 5px;" id="moodInstruction">오늘의 감정을 선택해주세요.</div>
+            <div id="moodSelector" class="emoji-selector" style="display: none;">
+            </div>
+            
+            <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect()">
+            <div class="file-upload-area" onclick="document.getElementById('fileInput').click()" id="fileUploadArea">
+                <i class="fas fa-camera"></i>
+                <span id="fileNameDisplay">사진 첨부 (선택)</span>
+                <i class="fas fa-paperclip"></i>
+            </div>
+            <img id="imagePreview" src="" alt="첨부 이미지 미리보기">
+            
+            <input type="text" id="postTitle" class="input-box" placeholder="제목을 입력하세요">
+            <textarea id="postContent" class="input-box" style="height: 120px; resize: none;" placeholder="내용을 입력하세요"></textarea>
+            
+            <button onclick="submitPost()" class="btn-primary" style="margin-top: 15px;">등록하기</button>
+            <button onclick="closeModal()" class="btn-secondary" style="margin-top: 10px;">취소</button>
+        </div>
+    </div>
+
+    <div id="postDetailModal" class="modal-overlay">
+        <div class="modal-card" style="text-align: left; max-width: 420px; max-height: 85vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                <span id="detailCategory" style="background: var(--primary-light); color: white; padding: 4px 8px; border-radius: 8px; font-size: 10px; font-weight: 700;">카테고리</span>
+                <button onclick="closeModal()" style="background:none; border:none; font-size: 20px; color: var(--text-light);"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <h3 id="detailTitle" style="color: var(--text-dark); font-size: 20px; margin-bottom: 15px; line-height: 1.4;">제목</h3>
+            
+            <div style="display: flex; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(139,92,246,0.1);">
+                <div id="detailAvatar" style="width: 36px; height: 36px; background: #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; margin-right: 10px;"></div>
+                <div>
+                    <div id="detailAuthor" style="font-weight: 700; font-size: 14px;">작성자</div>
+                    <div id="detailDate" style="font-size: 11px; color: var(--text-light);">날짜</div>
+                </div>
+            </div>
+
+            <img id="detailImage" src="" class="post-detail-img" style="display:none;" alt="게시글 이미지">
+            
+            <div id="detailContent" style="font-size: 14px; color: var(--text-dark); line-height: 1.6; min-height: 100px; white-space: pre-line; margin-bottom: 30px;">
+                내용
+            </div>
+
+            <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(139,92,246,0.1); padding-top: 15px;">
+                <button class="btn-secondary" style="width: 48%;" onclick="toggleLike()"><i class="fas fa-heart"></i> 좋아요</button>
+                <button class="btn-primary" style="width: 48%;" onclick="showToast('댓글 기능은 준비중입니다!')"><i class="fas fa-comment"></i> 댓글달기</button>
             </div>
         </div>
     </div>
 
-    <div class="app-container" id="app">
-        <header class="header-section">
-            <div class="header-title">자휴레터</div>
-            <div class="header-sub">햅삐님을 위한 특별한 공간</div>
-        </header>
-
-        <main class="content-area" id="main-content">
-            <section id="home" class="app-section">
-                <div class="hero-card">
-                    <h3>오늘의 자휴</h3>
-                    <p>잠깐 쉬어도 괜찮아요. 짧은 글과 추천을 만나보세요.</p>
-                    <button class="hero-btn" id="discover-btn"><i class="fa-solid fa-compass"></i> 둘러보기</button>
-                </div>
-
-                <div class="quick-menu" aria-hidden="false">
-                    <div class="quick-item" data-target="home">
-                        <div class="quick-icon icon-purple"><i class="fa-solid fa-house"></i></div>
-                        <div class="quick-text">홈</div>
-                    </div>
-                    <div class="quick-item" data-target="discover">
-                        <div class="quick-icon icon-blue"><i class="fa-solid fa-magnifying-glass"></i></div>
-                        <div class="quick-text">발견</div>
-                    </div>
-                    <div class="quick-item" data-target="editor-talk">
-                        <div class="quick-icon icon-pink"><i class="fa-solid fa-pen"></i></div>
-                        <div class="quick-text">에디터톡</div>
-                    </div>
-                    <div class="quick-item" data-target="notifications">
-                        <div class="quick-icon icon-mint"><i class="fa-solid fa-bell"></i></div>
-                        <div class="quick-text">알림</div>
-                    </div>
-                    <div class="quick-item" data-target="profile">
-                        <div class="quick-icon icon-yellow"><i class="fa-solid fa-user"></i></div>
-                        <div class="quick-text">내정보</div>
-                    </div>
-                </div>
-
-                <div class="section-title">최신 게시물</div>
-
-                <!-- sample posts -->
-                <article class="content-card" data-post-id="p1">
-                    <div class="card-title">따뜻한 오후의 음료</div>
-                    <div class="card-content">오늘은 우유 한 잔과 함께 창밖을 보며 천천히 쉬었어요. 작은 호흡이 큰 도움이 되더군요.</div>
-                    <div class="post-actions">
-                        <div class="action-btn btn-like" data-post-id="p1"><i class="fa-regular fa-heart"></i><span class="count">12</span></div>
-                        <div class="action-btn btn-bookmark" data-post-id="p1"><i class="fa-regular fa-bookmark"></i><span class="count">3</span></div>
-                        <div class="action-btn btn-comment" data-post-id="p1"><i class="fa-regular fa-comment"></i><span class="count">2</span></div>
-                        <div class="view-detail" data-post-id="p1">상세보기</div>
-                    </div>
-                </article>
-
-                <article class="content-card" data-post-id="p2">
-                    <div class="card-title">짧은 산책의 힘</div>
-                    <div class="card-content">10분만 걸어도 생각 정리가 잘 되는 걸 느껴요. 가벼운 스트레칭도 함께 해보세요.</div>
-                    <div class="post-actions">
-                        <div class="action-btn btn-like" data-post-id="p2"><i class="fa-regular fa-heart"></i><span class="count">8</span></div>
-                        <div class="action-btn btn-bookmark" data-post-id="p2"><i class="fa-regular fa-bookmark"></i><span class="count">1</span></div>
-                        <div class="action-btn btn-comment" data-post-id="p2"><i class="fa-regular fa-comment"></i><span class="count">0</span></div>
-                        <div class="view-detail" data-post-id="p2">상세보기</div>
-                    </div>
-                </article>
-            </section>
-
-            <section id="discover" class="app-section">
-                <div class="section-title">발견</div>
-                <div class="content-card" data-post-id="d1">
-                    <div class="card-title">편안한 읽기 추천</div>
-                    <div class="card-content">이번 주 추천 도서: 짧은 묵상집. 1일 1장으로 부담 없이 읽기 좋아요.</div>
-                    <div class="post-actions">
-                        <div class="action-btn btn-like" data-post-id="d1"><i class="fa-regular fa-heart"></i><span class="count">5</span></div>
-                        <div class="action-btn btn-bookmark" data-post-id="d1"><i class="fa-regular fa-bookmark"></i><span class="count">2</span></div>
-                        <div class="action-btn btn-comment" data-post-id="d1"><i class="fa-regular fa-comment"></i><span class="count">1</span></div>
-                        <div class="view-detail" data-post-id="d1">상세보기</div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="editor-talk" class="app-section">
-                <div class="section-title">에디터톡</div>
-
-                <!-- compose area: only visible to editors (controlled by JS) -->
-                <div id="editor-compose-area" class="editor-compose" style="display:none;">
-                    <textarea id="editor-text" placeholder="에디터 전용 글을 작성하세요..."></textarea>
-                    <div>
-                        <button id="editor-post-btn">게시</button>
-                    </div>
-                </div>
-
-                <div id="editor-posts">
-                    <!-- editor posts will be inserted here -->
-                </div>
-
-                <div id="editor-hint" style="color:var(--text-sub); font-size:13px; margin-top:8px;">
-                    에디터 5명만 작성할 수 있는 게시판입니다.
-                </div>
-            </section>
-
-            <section id="notifications" class="app-section">
-                <div class="section-title">알림</div>
-                <div class="content-card">
-                    <div class="card-title">새 알림이 없습니다</div>
-                    <div class="card-content">활동이 생기면 알려드릴게요.</div>
-                </div>
-            </section>
-
-            <section id="profile" class="app-section">
-                <div class="section-title">내정보</div>
-                <div class="content-card">
-                    <div class="card-title" id="profile-name">사용자</div>
-                    <div class="card-content" id="profile-desc">간단한 프로필 설명이 들어갑니다.</div>
-                </div>
-            </section>
-        </main>
-
-        <nav class="bottom-nav" role="navigation" aria-label="하단 메뉴">
-            <div class="nav-item" data-target="home"><i class="fa-solid fa-house"></i><div class="nav-text">홈</div></div>
-            <div class="nav-item" data-target="discover"><i class="fa-solid fa-magnifying-glass"></i><div class="nav-text">발견</div></div>
-            <div class="nav-item" data-target="editor-talk"><i class="fa-solid fa-pen"></i><div class="nav-text">에디터톡</div></div>
-            <div class="nav-item" data-target="notifications"><i class="fa-solid fa-bell"></i><div class="nav-text">알림</div></div>
-            <div class="nav-item" data-target="profile"><i class="fa-solid fa-user"></i><div class="nav-text">내정보</div></div>
-        </nav>
-    </div>
-
-    <!-- Modal for detail / comments -->
-    <div class="modal-backdrop" id="modal-backdrop">
-        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <div class="modal-title" id="modal-title">상세보기</div>
-            <div class="modal-body" id="modal-body">...</div>
-            <div style="margin-bottom:10px;">
-                <input id="comment-input" placeholder="댓글을 입력하세요" style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); margin-bottom:8px;">
-                <div style="display:flex; gap:8px; justify-content:flex-end;">
-                    <button id="btn-add-comment" style="background:var(--primary); color:#fff; padding:8px 12px; border-radius:8px; border:none;">댓글쓰기</button>
-                    <button id="btn-close-modal" style="background:#eee; color:#333; padding:8px 12px; border-radius:8px; border:none;">닫기</button>
-                </div>
+    <div id="adminDashboardModal" class="modal-overlay">
+        <div class="modal-card" style="max-width: 450px; text-align: left;">
+            <h2 style="color: var(--primary); font-size: 24px; margin-bottom: 15px; text-align: center;">관리자 대시보드</h2>
+            <p style="color: var(--text-light); font-size: 14px; margin-bottom: 25px; text-align: center;">사용자 활동 내역 (햅씨 관리자 전용)</p>
+            
+            <div style="background: rgba(139, 92, 246, 0.1); padding: 15px; border-radius: 15px; margin-bottom: 20px;">
+                <h4 style="font-weight: 700; color: var(--primary); margin-bottom: 10px;">접속 현황 및 요약</h4>
+                <p style="font-size: 12px; color: var(--text-dark);">총 사용자: <span id="dashboardTotalUsers">0</span>명, 관리자: <span id="dashboardAdminCount">0</span>명</p>
+                <p style="font-size: 12px; color: var(--text-dark);">총 무드 기록: <span id="dashboardMoodCount">0</span>건, 총 게시글: <span id="dashboardPostCount">0</span>건</p>
             </div>
+            
+            <h4 style="font-weight: 700; margin-bottom: 10px;">사용자 활동 로그 (<span id="currentFilterText">전체</span>)</h4>
+            <div id="activityLog" style="height: 250px; overflow-y: auto; border: 1px solid rgba(139, 92, 246, 0.1); padding: 10px; border-radius: 15px; background: white;">
+                </div>
+
+            <button onclick="closeModal()" class="btn-primary" style="margin-top: 25px;">닫기</button>
         </div>
     </div>
+    
+    <div id="appContainer" class="app-container">
+    </div>
 
-    <pre id="test-results" aria-hidden="true"></pre>
+    <div id="writeIcon" class="write-icon" onclick="openModal('adminWrite')" style="display: none;">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <nav class="bottom-nav">
+        <a class="nav-item active" onclick="renderTab('home')" id="nav-home">
+            <i class="fas fa-home"></i>
+            <span class="nav-text">홈</span>
+        </a>
+        <a class="nav-item" onclick="renderTab('letter')" id="nav-letter">
+            <i class="fas fa-envelope"></i>
+            <span class="nav-text">레터</span>
+        </a>
+        <a class="nav-item central" onclick="renderTab('mood')" id="nav-mood">
+            <div class="central-bg">
+                <i class="fas fa-smile"></i>
+            </div>
+            <span class="nav-text">무드</span>
+        </a>
+        <a class="nav-item" onclick="renderTab('editorTalk')" id="nav-editorTalk">
+            <i class="fas fa-comments"></i>
+            <span class="nav-text">에디터톡</span>
+        </a>
+        <a class="nav-item" onclick="renderTab('mypage')" id="nav-mypage">
+            <i class="fas fa-user"></i>
+            <span class="nav-text">마이</span>
+        </a>
+    </nav>
 
     <script>
-        /**************************************************************************
-         * 가정 및 샘플 데이터
-         * - currentUser: 현재 접속 사용자 시뮬레이션
-         * - editors: 에디터ID 목록(최대 5명). 에디터만 에디터톡 작성 가능
-         * - posts: 클라이언트 측 게시물 상태 관리(간단한 예시)
-         **************************************************************************/
+        // 데이터 정의
+        const ADMINS = ['happxi@jahyu.com', 'elly@jahyu.com', 'gokal@jahyu.com', 'sunny@jahyu.com', 'yudan@jahyu.com'];
+        const SUPER_ADMIN = 'happxi@jahyu.com';
+        
+        let currentUser = null;
+        let currentTab = 'home';
+        let userStamps = 28;
+        let selectedMoodEmoji = null;
+        let todayMoodSubmitted = false;
+        let attachedFile = null;
+        let currentViewingPostId = null;
 
-        const currentUser = { id: 'user_hyeran', name: '혜란' }; // 실제 환경에서는 서버에서 제공
-        const editors = ['editor_a', 'editor_b', 'editor_c', 'editor_d', 'editor_e']; // 정확히 5명
-        // 초기 posts: id, title, content, likes, bookmarks, comments(array)
-        const posts = {
-            p1: { id:'p1', title:'따뜻한 오후의 음료', content:'오늘은 우유 한 잔과 함께 창밖을 보며 천천히 쉬었어요. 작은 호흡이 큰 도움이 되더군요.', likes:12, bookmarks:3, comments: [{user:'guest',text:'좋아요'}] },
-            p2: { id:'p2', title:'짧은 산책의 힘', content:'10분만 걸어도 생각 정리가 잘 되는 걸 느껴요. 가벼운 스트레칭도 함께 해보세요.', likes:8, bookmarks:1, comments: [] },
-            d1: { id:'d1', title:'편안한 읽기 추천', content:'이번 주 추천 도서: 짧은 묵상집. 1일 1장으로 부담 없이 읽기 좋아요.', likes:5, bookmarks:2, comments:[{user:'reader',text:'저도 읽어볼게요'}] }
+        const ADMIN_COLORS = {
+            'happxi@jahyu.com': '#FFE4EC',
+            'elly@jahyu.com': '#E6FFF9',
+            'gokal@jahyu.com': '#E6F7FF',
+            'sunny@jahyu.com': '#FFF4E6',
+            'yudan@jahyu.com': '#F9E6FF'
         };
 
-        // 에디터톡 전용 게시물 저장
-        const editorTalkPosts = [];
+        const MOOD_EMOJIS = [
+            { emoji: '😊', color: '#E0F2FE', title: '기쁨' },
+            { emoji: '🥰', color: '#FCE7F3', title: '사랑' },
+            { emoji: '😌', color: '#E9D5FF', title: '평온' },
+            { emoji: '😢', color: '#DBEAFE', title: '슬픔' },
+            { emoji: '😠', color: '#FEE2E2', title: '화남' },
+            { emoji: '😴', color: '#D1FAE5', title: '피곤' },
+            { emoji: '💡', color: '#FEF3C7', title: '영감' },
+            { emoji: '☀️', color: '#FDE68A', title: '활기' },
+            { emoji: '😰', color: '#FED7AA', title: '걱정' },
+            { emoji: '😐', color: '#F3F4F6', title: '무관심' }
+        ];
 
-        // 간단한 유틸: 포맷 출력
-        function $(sel, root=document) { return root.querySelector(sel); }
-        function $all(sel, root=document) { return Array.from(root.querySelectorAll(sel)); }
+        let users = [
+            { id: 'test@example.com', name: '테스트', password: '123' },
+            { id: 'user@example.com', name: '햅삐', password: '123' },
+            { id: 'happxi@jahyu.com', name: '햅씨', password: 'admin123' },
+            { id: 'elly@jahyu.com', name: '엘리', password: 'admin123' },
+            { id: 'gokal@jahyu.com', name: '고칼', password: 'admin123' },
+            { id: 'sunny@jahyu.com', name: '써니', password: 'admin123' },
+            { id: 'yudan@jahyu.com', name: '유단', password: 'admin123' }
+        ];
 
-        // 페이지 초기화
-        document.addEventListener('DOMContentLoaded', () => {
-            // 프로필 표시
-            $('#profile-name').textContent = currentUser.name;
-            $('#profile-desc').textContent = currentUser.id;
+        let posts = [
+            { id: 1, title: '퇴사 후 번아웃, 저만 이런가요?', category: '자휴레터', content: '퇴사 후에도 쉬지 못하는 당신에게...', author: '햅씨', date: '2025-12-08T10:00:00Z', authorId: 'happxi@jahyu.com', likes: 20, comments: 3, image: 'https://i.imgur.com/exampleImage.png' },
+            { id: 2, title: '주말 쉼의 기술', category: '자휴레터', content: '완전한 휴식을 위한 팁', author: '햅씨', date: '2025-12-05T15:30:00Z', authorId: 'happxi@jahyu.com', likes: 15, comments: 2 },
+            { id: 3, title: '글쓰기 노하우', category: '자휴랩', content: '내 마음을 담는 법 A to Z', author: '엘리', date: '2025-12-04T11:00:00Z', authorId: 'elly@jahyu.com', likes: 10, comments: 1 }
+        ];
 
-            // 로딩 화면 숨기기
-            setTimeout(()=> {
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('app').classList.add('visible');
-            }, 600);
+        let editorTalks = [
+            { id: 4, author: '엘리', content: '오늘 날씨가 너무 좋네요! 🌿', category: '에디터톡', date: '2025-12-11T13:00:00Z', authorId: 'elly@jahyu.com', likes: 12, comments: 5 },
+            { id: 5, author: '햅씨', content: '새로운 레터 발행했어요! 많이 사랑해주세요 💜', category: '에디터톡', date: '2025-12-10T15:22:00Z', authorId: 'happxi@jahyu.com', likes: 24, comments: 8 },
+            { id: 6, author: '고칼', content: '힐링 테스트 결과 어떠셨나요?', category: '에디터톡', date: '2025-12-09T14:15:00Z', authorId: 'gokal@jahyu.com', likes: 18, comments: 12 }
+        ];
 
-            // quick menu, bottom nav 이동 연결
-            $all('.quick-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const target = item.dataset.target;
-                    scrollToSection(target);
-                });
-            });
-            $all('.nav-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const target = item.dataset.target;
-                    scrollToSection(target);
-                });
-            });
-            $('#discover-btn').addEventListener('click', ()=> scrollToSection('discover'));
+        let myMoodRecords = [
+            { id: 'M1', emoji: '😊', title: '오늘 무사히 마쳤다!', content: '피곤하지만 기분은 좋아~', date: new Date('2025-12-10T20:00:00Z'), author: '테스트', authorId: 'test@example.com' },
+            { id: 'M2', emoji: '🥱', title: '월요일 증후군', content: '쉬는 날만 기다려요...', date: new Date('2025-12-08T19:30:00Z'), author: '햅삐', authorId: 'user@example.com' }
+        ];
 
-            // 게시물 액션 연결
-            attachPostActionHandlers();
+        let myLikes = [];
+        let activityLogs = [
+            { type: 'comment', user: '햅삐', date: '2025-12-11T12:30:00Z', targetId: 5, userId: 'user@example.com', commentId: 2 },
+            { type: 'mood', user: '테스트', date: '2025-12-10T20:00:00Z', targetId: 'M1', userId: 'test@example.com' },
+            { type: 'post', user: '엘리', date: '2025-12-04T11:00:00Z', targetId: 3, userId: 'elly@jahyu.com' },
+            { type: 'like', user: '햅삐', date: '2025-12-11T13:05:00Z', targetId: 6, userId: 'user@example.com' }
+        ];
 
-            // 상세보기 열기 연결
-            $all('.view-detail').forEach(btn => {
-                btn.addEventListener('click', (e)=> {
-                    const id = btn.dataset.postId;
-                    openDetailModal(id);
-                });
-            });
+        // 유틸리티 함수
+        function getTimeAgo(dateString) {
+            const now = new Date();
+            const past = new Date(dateString);
+            const diffMs = now.getTime() - past.getTime();
+            const diffMin = Math.floor(diffMs / (1000 * 60));
 
-            // 카드 클릭 시에도 상세보기
-            $all('.content-card').forEach(card => {
-                card.addEventListener('click', (e) => {
-                    // 카드 내부의 버튼 클릭이면 무시
-                    if (e.target.closest('.action-btn') || e.target.classList.contains('view-detail')) return;
-                    const id = card.dataset.postId;
-                    if (id) openDetailModal(id);
-                });
-            });
+            if (diffMin < 60) return `${diffMin}분 전`;
+            const diffHour = Math.floor(diffMin / 60);
+            if (diffHour < 24) return `${diffHour}시간 전`;
+            const diffDay = Math.floor(diffHour / 24);
+            if (diffDay < 7) return `${diffDay}일 전`;
 
-            // 모달 버튼 핸들러
-            $('#btn-close-modal').addEventListener('click', closeModal);
-            $('#btn-add-comment').addEventListener('click', addCommentFromModal);
+            return new Date(dateString).toLocaleDateString('ko-KR', {
+                year: 'numeric', month: '2-digit', day: '2-digit'
+            }).replace(/\. /g, '.').replace(/\.$/, '');
+        }
 
-            // 에디터톡: 표시 여부 결정
-            const editorArea = $('#editor-compose-area');
-            if (editors.includes(currentUser.id)) {
-                editorArea.style.display = 'flex';
-            } else {
-                editorArea.style.display = 'none';
-            }
-            $('#editor-post-btn').addEventListener('click', attemptEditorPost);
+        function showToast(msg) {
+            const existing = document.querySelector('.toast');
+            if(existing) existing.remove();
+            
+            const div = document.createElement('div');
+            div.className = 'toast';
+            div.innerText = msg;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 3000);
+        }
 
-            // 에디터톡 기존 게시물 렌더
-            renderEditorTalkPosts();
-
-            // 자동 점검(10번) 실행
-            runSelfTests(10);
+        // 초기화 로직 (window.load 사용)
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loadingScreen');
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                        checkAutoLogin();
+                    }, 500);
+                }
+            }, 1000); // 1초 정도 로딩 보여줌
         });
 
-        // 스크롤/섹션 이동
-        function scrollToSection(id) {
-            const section = document.getElementById(id);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else {
-                console.warn('해당 섹션을 찾을 수 없습니다:', id);
+        // 자동 로그인 체크
+        function checkAutoLogin() {
+            const savedUser = localStorage.getItem('jahyu_user');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    // 유저 정보 최신화
+                    const fullUser = users.find(u => u.id === currentUser.id);
+                    if (fullUser) {
+                        currentUser.name = fullUser.name;
+                        currentUser.isAdmin = ADMINS.includes(currentUser.id);
+                        currentUser.isSuperAdmin = currentUser.id === SUPER_ADMIN;
+                        renderTab('home');
+                        return;
+                    }
+                } catch(e) {
+                    console.error("Login Parse Error");
+                }
             }
+            // 로그인 정보 없거나 오류시
+            showLoginModal();
         }
 
-        // 게시물 액션 연결 함수
-        function attachPostActionHandlers() {
-            // 좋아요
-            $all('.btn-like').forEach(btn => {
-                btn.addEventListener('click', (e)=> {
-                    e.stopPropagation();
-                    const id = btn.dataset.postId;
-                    toggleLike(btn, id);
-                });
-            });
-            // 북마크
-            $all('.btn-bookmark').forEach(btn => {
-                btn.addEventListener('click', (e)=> {
-                    e.stopPropagation();
-                    const id = btn.dataset.postId;
-                    toggleBookmark(btn, id);
-                });
-            });
-            // 댓글 열기
-            $all('.btn-comment').forEach(btn => {
-                btn.addEventListener('click', (e)=> {
-                    e.stopPropagation();
-                    const id = btn.dataset.postId;
-                    openDetailModal(id, true);
-                });
-            });
+        // 모달 제어
+        function showLoginModal() {
+            closeModal();
+            setTimeout(() => { document.getElementById('loginModal').classList.add('show'); }, 50);
         }
-
-        // 좋아요 토글(모든 사용자 가능)
-        function toggleLike(btn, postId) {
-            const post = posts[postId] || editorTalkPosts.find(p=>p.id===postId);
-            if (!post) return;
-            // 간단히: 짝수/홀수로 Liked 토글 시뮬레이션
-            const liked = btn.classList.toggle('liked');
-            const icon = btn.querySelector('i');
-            if (liked) {
-                // solid heart
-                if (icon) { icon.className = 'fa-solid fa-heart'; }
-                post.likes = (post.likes || 0) + 1;
-            } else {
-                if (icon) { icon.className = 'fa-regular fa-heart'; }
-                post.likes = Math.max(0, (post.likes || 1) - 1);
-            }
-            const count = btn.querySelector('.count');
-            if (count) count.textContent = post.likes;
-            console.log('like toggled', postId, 'liked=', liked, 'likes=', post.likes);
+        function showSignupModal() {
+            closeModal();
+            setTimeout(() => { document.getElementById('signupModal').classList.add('show'); }, 50);
         }
-
-        // 북마크 토글(모든 사용자 가능)
-        function toggleBookmark(btn, postId) {
-            const post = posts[postId] || editorTalkPosts.find(p=>p.id===postId);
-            if (!post) return;
-            const bookmarked = btn.classList.toggle('bookmarked');
-            const icon = btn.querySelector('i');
-            if (bookmarked) {
-                if (icon) { icon.className = 'fa-solid fa-bookmark'; }
-                post.bookmarks = (post.bookmarks || 0) + 1;
-            } else {
-                if (icon) { icon.className = 'fa-regular fa-bookmark'; }
-                post.bookmarks = Math.max(0, (post.bookmarks || 1) - 1);
-            }
-            const count = btn.querySelector('.count');
-            if (count) count.textContent = post.bookmarks;
-            console.log('bookmark toggled', postId, 'bookmarked=', bookmarked, 'bookmarks=', post.bookmarks);
+        function showForgotPasswordModal() {
+            closeModal();
+            setTimeout(() => { document.getElementById('forgotPasswordModal').classList.add('show'); }, 50);
         }
-
-        // 상세 모달 열기. focusComment true면 모달에서 댓글 입력에 포커스
-        function openDetailModal(postId, focusComment=false) {
-            const post = posts[postId] || editorTalkPosts.find(p=>p.id===postId);
-            if (!post) return;
-            $('#modal-title').textContent = post.title;
-            $('#modal-body').textContent = post.content;
-            $('#modal-backdrop').classList.add('show');
-            const commentInput = $('#comment-input');
-            commentInput.value = '';
-            if (focusComment) {
-                setTimeout(()=> commentInput.focus(), 300);
-            }
-            // 실제로는 댓글 목록을 렌더해야 하지만 간단히 유지
-            $('#modal-backdrop').dataset.postId = postId;
+        function closeForgotPasswordModal() {
+            closeModal();
+            setTimeout(() => { document.getElementById('loginModal').classList.add('show'); }, 50);
+        }
+        
+        function openModal(type) {
+            closeModal();
+            setTimeout(() => {
+                if(type === 'adminWrite') {
+                    // 글쓰기 모달 초기화
+                    document.getElementById('writeTitle').innerText = '에디터 글쓰기';
+                    document.getElementById('postCategory').style.display = 'block';
+                    document.getElementById('moodInstruction').style.display = 'none';
+                    document.getElementById('moodSelector').style.display = 'none';
+                    document.getElementById('writeModal').classList.add('show');
+                } else if(type === 'mood') {
+                    // 무드 기록 초기화
+                    document.getElementById('writeTitle').innerText = '오늘의 무드 기록';
+                    document.getElementById('postCategory').style.display = 'none';
+                    document.getElementById('moodInstruction').style.display = 'block';
+                    document.getElementById('moodSelector').style.display = 'grid';
+                    
+                    // 이모지 렌더링
+                    const selector = document.getElementById('moodSelector');
+                    selector.innerHTML = MOOD_EMOJIS.map(e => 
+                        `<div class="emoji-option" onclick="selectEmoji(this, '${e.emoji}')">${e.emoji}</div>`
+                    ).join('');
+                    
+                    document.getElementById('writeModal').classList.add('show');
+                }
+            }, 50);
         }
 
         function closeModal() {
-            $('#modal-backdrop').classList.remove('show');
-            delete $('#modal-backdrop').dataset.postId;
-        }
-
-        // 모달에서 댓글 추가
-        function addCommentFromModal() {
-            const postId = $('#modal-backdrop').dataset.postId;
-            if (!postId) return;
-            const txt = $('#comment-input').value.trim();
-            if (!txt) { alert('댓글 내용을 입력해주세요.'); return; }
-            const post = posts[postId] || editorTalkPosts.find(p=>p.id===postId);
-            if (!post) return;
-            post.comments = post.comments || [];
-            post.comments.push({ user: currentUser.name, text: txt });
-            // 업데이트: 댓글 카운트 표시
-            const commentBtn = document.querySelector(`.btn-comment[data-post-id="${postId}"]`);
-            if (commentBtn) {
-                const cspan = commentBtn.querySelector('.count');
-                if (cspan) cspan.textContent = post.comments.length;
-            }
-            $('#comment-input').value = '';
-            alert('댓글이 등록되었습니다.');
-            console.log('comment added', postId, txt);
-        }
-
-        // 에디터 전용 게시물 작성 시도
-        function attemptEditorPost() {
-            if (!editors.includes(currentUser.id)) {
-                alert('에디터만 작성할 수 있습니다.');
-                return;
-            }
-            const content = $('#editor-text').value.trim();
-            if (!content) { alert('내용을 입력하세요.'); return; }
-            // 새 게시물 객체 생성
-            const id = 'et_' + Date.now();
-            const newPost = { id, title: content.slice(0,20), content, likes:0, bookmarks:0, comments:[] };
-            editorTalkPosts.unshift(newPost); // 최신순
-            $('#editor-text').value = '';
-            renderEditorTalkPosts();
-            attachPostActionHandlers(); // 새로 생긴 버튼들에 이벤트 연결
-            alert('게시되었습니다 (에디터톡).');
-        }
-
-        // 에디터톡 게시물 렌더링
-        function renderEditorTalkPosts() {
-            const container = $('#editor-posts');
-            container.innerHTML = '';
-            if (editorTalkPosts.length === 0) {
-                container.innerHTML = '<div class="content-card"><div class="card-title">에디터의 첫 글을 기다립니다</div><div class="card-content">에디터 5명만 작성 가능한 공간입니다.</div></div>';
-                return;
-            }
-            editorTalkPosts.forEach(p => {
-                const el = document.createElement('article');
-                el.className = 'content-card';
-                el.dataset.postId = p.id;
-                el.innerHTML = `
-                    <div class="card-title">${escapeHtml(p.title)}</div>
-                    <div class="card-content">${escapeHtml(truncate(p.content,120))}</div>
-                    <div class="post-actions">
-                        <div class="action-btn btn-like" data-post-id="${p.id}"><i class="fa-regular fa-heart"></i><span class="count">${p.likes}</span></div>
-                        <div class="action-btn btn-bookmark" data-post-id="${p.id}"><i class="fa-regular fa-bookmark"></i><span class="count">${p.bookmarks}</span></div>
-                        <div class="action-btn btn-comment" data-post-id="${p.id}"><i class="fa-regular fa-comment"></i><span class="count">${(p.comments||[]).length}</span></div>
-                        <div class="view-detail" data-post-id="${p.id}">상세보기</div>
-                    </div>
-                `;
-                container.appendChild(el);
-            });
-            // 세팅 후 이벤트 재연결
-            $all('.view-detail').forEach(btn => {
-                btn.removeEventListener('click', viewDetailHandler);
-                btn.addEventListener('click', viewDetailHandler);
-            });
-            attachPostActionHandlers();
-            // 카드 클릭 시 상세보기
-            $all('#editor-posts .content-card').forEach(card => {
-                card.addEventListener('click', (e)=>{
-                    if (e.target.closest('.action-btn') || e.target.classList.contains('view-detail')) return;
-                    const id = card.dataset.postId;
-                    openDetailModal(id);
-                });
+            const modals = document.querySelectorAll('.modal-overlay');
+            modals.forEach(modal => {
+                modal.classList.remove('show');
             });
         }
-        function viewDetailHandler(e) {
-            const id = e.currentTarget.dataset.postId;
-            openDetailModal(id);
-            e.stopPropagation();
+
+        // 로그인 로직
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            const user = users.find(u => u.id === email && u.password === password);
+            if (!user) return showToast('이메일 또는 비밀번호를 확인해주세요.');
+
+            currentUser = {
+                id: user.id,
+                name: user.name,
+                isAdmin: ADMINS.includes(user.id),
+                isSuperAdmin: user.id === SUPER_ADMIN
+            };
+
+            if (document.getElementById('keepLogin').checked) {
+                localStorage.setItem('jahyu_user', JSON.stringify(currentUser));
+            }
+
+            closeModal();
+            renderTab('home');
+            showToast(`${currentUser.name}님 환영합니다!`);
         }
 
-        // 안전한 텍스트 렌더용
-        function escapeHtml(s) {
-            return (s+'').replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[m]; });
+        function handleSignup() {
+            const name = document.getElementById('signupNickname').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('signupPasswordConfirm').value;
+
+            if(!name || !email || !password) return showToast('모든 정보를 입력해주세요.');
+            if(password !== confirm) return showToast('비밀번호가 일치하지 않습니다.');
+            if(users.find(u => u.id === email)) return showToast('이미 가입된 이메일입니다.');
+
+            users.push({ id: email, name: name, password: password });
+            showToast('회원가입 완료! 로그인해주세요.');
+            closeModal();
+            setTimeout(showLoginModal, 500);
         }
-        function truncate(s, n) {
-            return s.length > n ? s.slice(0,n-1) + '…' : s;
+
+        function handleForgotPassword() {
+            const email = document.getElementById('forgotEmail').value;
+            if(!email) return showToast('이메일을 입력해주세요.');
+            showToast(`임시 비밀번호가 ${email}로 발송되었습니다.`);
+            closeForgotPasswordModal();
         }
 
-        /**************************************************************************
-         * 자동 점검: runSelfTests(n)
-         * - 페이지 동작을 10번(혹은 n번) 시뮬레이션하여 성공/실패 로그 생성
-         * - 결과를 화면과 콘솔에 출력
-         **************************************************************************/
-        function runSelfTests(n=10) {
-            const results = [];
-            // 간단 시뮬레이션 루틴
-            for (let i=0;i<n;i++) {
-                try {
-                    // 1) 네비게이션: 홈->발견->에디터톡
-                    scrollToSection('home');
-                    scrollToSection('discover');
-                    scrollToSection('editor-talk');
-
-                    // 2) 상세보기 열기/닫기 (p1)
-                    openDetailModal('p1');
-                    if (!$('#modal-backdrop').classList.contains('show')) throw 'modal failed to open';
-                    closeModal();
-
-                    // 3) 좋아요 토글 (p1)
-                    const likeBtn = document.querySelector(`.btn-like[data-post-id="p1"]`);
-                    if (!likeBtn) throw 'likeBtn not found';
-                    const beforeLikes = posts.p1.likes;
-                    toggleLike(likeBtn, 'p1');
-                    // 되돌려서 항상 같은 상태 유지
-                    toggleLike(likeBtn, 'p1');
-                    if (posts.p1.likes !== beforeLikes) throw 'like count mismatch after toggles';
-
-                    // 4) 북마크 토글 (p1)
-                    const bmBtn = document.querySelector(`.btn-bookmark[data-post-id="p1"]`);
-                    const beforeB = posts.p1.bookmarks;
-                    toggleBookmark(bmBtn, 'p1');
-                    toggleBookmark(bmBtn, 'p1');
-                    if (posts.p1.bookmarks !== beforeB) throw 'bookmark count mismatch';
-
-                    // 5) 댓글 추가 테스트 (임시)
-                    const prevComments = posts.p1.comments.length;
-                    posts.p1.comments.push({user: 'test', text: 'ok'});
-                    posts.p1.comments.pop();
-                    if (posts.p1.comments.length !== prevComments) throw 'comments mismatch';
-
-                    // 6) 에디터톡 접근: currentUser이 에디터면 작성 시도, 아니면 접근 제한 확인
-                    if (editors.includes(currentUser.id)) {
-                        // 작성 후 삭제 (cleanup)
-                        const tmpId = 'test_e_'+Date.now();
-                        editorTalkPosts.unshift({id: tmpId, title:'t', content:'t', likes:0, bookmarks:0, comments:[]});
-                        editorTalkPosts.shift();
-                    } else {
-                        // 작성 버튼 클릭 시 alert 발생(handled by attemptEditorPost), 여기선 단순 체크
-                        // nothing to do; ensure compose area hidden
-                        if ($('#editor-compose-area').style.display !== 'none') {
-                            throw 'editor area visibility mismatch';
-                        }
-                    }
-
-                    results.push(`Test ${i+1}: OK`);
-                } catch (err) {
-                    results.push(`Test ${i+1}: FAIL - ${String(err)}`);
+        // 파일 선택
+        function handleFileSelect() {
+            const fileInput = document.getElementById('fileInput');
+            const preview = document.getElementById('imagePreview');
+            const nameDisplay = document.getElementById('fileNameDisplay');
+            
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    attachedFile = e.target.result; // Data URL로 저장
                 }
+                reader.readAsDataURL(fileInput.files[0]);
+                nameDisplay.innerText = fileInput.files[0].name;
             }
-
-            // 결과 표시
-            const out = results.join('\\n');
-            console.log('Self tests results:\\n' + out);
-            const panel = document.getElementById('test-results');
-            panel.textContent = '자동 점검 결과\\n' + out;
-            panel.style.display = 'block';
-            // 6초 뒤 사라지게 (사용자 확인용)
-            setTimeout(()=> { panel.style.display = 'none'; }, 6000);
         }
 
-        // 간단한 핸들러 참조 제거/추가 안정화
-        function viewDetailHandlerRef(e) {
-            const id = e.currentTarget.dataset.postId;
-            openDetailModal(id);
-            e.stopPropagation();
+        // 이모지 선택
+        function selectEmoji(el, emoji) {
+            document.querySelectorAll('.emoji-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedMoodEmoji = emoji;
+        }
+
+        // 글 작성 제출
+        function submitPost() {
+            const title = document.getElementById('postTitle').value;
+            const content = document.getElementById('postContent').value;
+            const isMood = document.getElementById('moodSelector').style.display !== 'none';
+            
+            if(!content) return showToast('내용을 입력해주세요.');
+
+            if (isMood) {
+                if (!selectedMoodEmoji) return showToast('오늘의 기분(이모지)을 선택해주세요.');
+                myMoodRecords.push({
+                    id: 'M' + (myMoodRecords.length + 1),
+                    emoji: selectedMoodEmoji,
+                    title: title || '오늘의 무드',
+                    content: content,
+                    date: new Date(),
+                    author: currentUser.name,
+                    authorId: currentUser.id
+                });
+                userStamps++; // 스탬프 증가
+                showToast('무드가 기록되었어요! 스탬프 +1 💜');
+                renderTab('mood');
+            } else {
+                // 에디터 글쓰기
+                const category = document.getElementById('postCategory').value;
+                const newPost = {
+                    id: posts.length + editorTalks.length + 100,
+                    title: title,
+                    category: category,
+                    content: content,
+                    author: currentUser.name,
+                    authorId: currentUser.id,
+                    date: new Date(),
+                    likes: 0,
+                    comments: 0,
+                    image: attachedFile
+                };
+                
+                if (category === '에디터톡') {
+                    editorTalks.unshift(newPost);
+                    renderTab('editorTalk');
+                } else {
+                    posts.unshift(newPost);
+                    renderTab('letter');
+                }
+                showToast('글이 등록되었습니다!');
+            }
+            
+            // 입력창 초기화
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+            document.getElementById('fileInput').value = '';
+            document.getElementById('fileNameDisplay').innerText = '사진 첨부 (선택)';
+            document.getElementById('imagePreview').style.display = 'none';
+            selectedMoodEmoji = null;
+            attachedFile = null;
+            
+            closeModal();
+        }
+
+        // 게시글 상세 보기
+        function viewPost(id) {
+            const all = [...posts, ...editorTalks];
+            const post = all.find(p => p.id === id);
+            if (!post) return;
+
+            currentViewingPostId = id;
+            document.getElementById('detailCategory').innerText = post.category;
+            document.getElementById('detailTitle').innerText = post.title || '제목 없음';
+            document.getElementById('detailAuthor').innerText = post.author;
+            document.getElementById('detailDate').innerText = getTimeAgo(post.date);
+            document.getElementById('detailContent').innerText = post.content;
+            document.getElementById('detailAvatar').innerText = post.author.charAt(0);
+            
+            const img = document.getElementById('detailImage');
+            if (post.image) {
+                img.src = post.image;
+                img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+
+            closeModal(); // 다른 모달 닫기
+            setTimeout(() => {
+                document.getElementById('postDetailModal').classList.add('show');
+            }, 50);
+        }
+
+        // 좋아요 토글
+        function toggleLike() {
+            if(!currentViewingPostId) return;
+            if(myLikes.includes(currentViewingPostId)) {
+                myLikes = myLikes.filter(id => id !== currentViewingPostId);
+                showToast('좋아요를 취소했습니다.');
+            } else {
+                myLikes.push(currentViewingPostId);
+                showToast('이 글을 좋아합니다! 💜');
+            }
+        }
+
+        // 관리자 대시보드
+        function showAdminDashboardModal() {
+            document.getElementById('dashboardTotalUsers').innerText = users.length;
+            document.getElementById('dashboardAdminCount').innerText = users.filter(u => ADMINS.includes(u.id)).length;
+            document.getElementById('dashboardMoodCount').innerText = myMoodRecords.length;
+            document.getElementById('dashboardPostCount').innerText = posts.length + editorTalks.length;
+            
+            const logsDiv = document.getElementById('activityLog');
+            logsDiv.innerHTML = activityLogs.map(log => 
+                `<div style="font-size:12px; padding:8px 0; border-bottom:1px solid #eee;">
+                    <span style="font-weight:bold;">${log.user}</span>님이 
+                    ${log.type === 'login' ? '로그인했습니다.' : 
+                      log.type === 'post' ? '글을 작성했습니다.' : 
+                      log.type === 'mood' ? '무드를 남겼습니다.' : '활동을 했습니다.'}
+                    <span style="color:#999; float:right;">${getTimeAgo(log.date)}</span>
+                </div>`
+            ).join('');
+            
+            closeModal();
+            setTimeout(() => { document.getElementById('adminDashboardModal').classList.add('show'); }, 50);
+        }
+
+        // 탭 렌더링 시스템
+        function renderTab(tabName) {
+            if (!currentUser) return showLoginModal();
+
+            currentTab = tabName;
+            const container = document.getElementById('appContainer');
+            container.innerHTML = '';
+            window.scrollTo(0, 0);
+
+            // 네비게이션 활성화
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const activeNav = document.getElementById(`nav-${tabName}`);
+            if (activeNav) activeNav.classList.add('active');
+
+            // 글쓰기 아이콘 (에디터만)
+            const writeIcon = document.getElementById('writeIcon');
+            if (currentUser && currentUser.isAdmin && (tabName === 'editorTalk' || tabName === 'letter')) {
+                writeIcon.style.display = 'flex';
+            } else {
+                writeIcon.style.display = 'none';
+            }
+
+            if (tabName === 'home') renderHomeTab(container);
+            else if (tabName === 'letter') renderLetterTab(container);
+            else if (tabName === 'mood') renderMoodTab(container);
+            else if (tabName === 'editorTalk') renderEditorTalkTab(container);
+            else if (tabName === 'mypage') renderMypageTab(container);
+        }
+
+        function renderHomeTab(container) {
+            container.innerHTML = `
+                <div class="header-section">
+                    <h1 class="header-title">${currentUser.name}님 오늘도 행복하세요!</h1>
+                    <p class="header-sub">메마른 일상에 휴식 한 방울! 💧</p>
+                </div>
+                <div class="hero-card">
+                    <h3>오늘은 어떤 힐링이 필요하세요?</h3>
+                    <p>자휴레터와 자휴랩을 주제별로 한 눈에!</p>
+                    <button onclick="renderTab('letter')" class="hero-btn">레터 아카이브 바로가기</button>
+                </div>
+                <div style="padding: 0 20px;">
+                    <h4 style="margin-bottom:15px; font-weight:700; color:var(--text-dark); text-align: center;">빠른 메뉴</h4>
+                </div>
+                <div class="quick-menu">
+                    <div class="quick-item" onclick="window.open('https://maily.so/happci/', '_blank')">
+                        <div class="quick-icon icon-1"><i class="fas fa-envelope-open-text"></i></div>
+                        <span class="quick-text">레터 읽기</span>
+                    </div>
+                    <div class="quick-item" onclick="window.open('https://index-html-zak5.vercel.app/', '_blank')">
+                        <div class="quick-icon icon-2"><i class="fas fa-magic"></i></div>
+                        <span class="quick-text">힐링 테스트</span>
+                    </div>
+                    <div class="quick-item" onclick="renderTab('mood')">
+                        <div class="quick-icon icon-3"><i class="fas fa-heart"></i></div>
+                        <span class="quick-text">오늘의 무드</span>
+                    </div>
+                    <div class="quick-item" onclick="window.open('http://pf.kakao.com/_Jfjxgn/111753149', '_blank')">
+                        <div class="quick-icon icon-4"><i class="fas fa-pen-fancy"></i></div>
+                        <span class="quick-text">문장 수집</span>
+                    </div>
+                    <div class="quick-item" onclick="window.open('http://pf.kakao.com/_Jfjxgn', '_blank')">
+                        <div class="quick-icon icon-5"><i class="fas fa-comments"></i></div>
+                        <span class="quick-text">1:1 채팅</span>
+                    </div>
+                </div>
+                <div style="padding: 0 20px;">
+                    <h4 style="margin-bottom:15px; font-weight:700; color:var(--text-dark);">최신 레터</h4>
+                    ${posts.slice(0, 2).map(post => `
+                        <div class="content-card" onclick="viewPost(${post.id})">
+                            ${post.id === posts[0].id ? '<span class="badge-new">NEW</span>' : ''}
+                            <h4 style="font-weight:700; margin-bottom:5px;">${post.title}</h4>
+                            <p style="font-size:12px; color:var(--text-light); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${post.content}</p>
+                            <div style="margin-top:10px; font-size:11px; color:var(--text-light); display:flex; justify-content:space-between;">
+                                <span>${post.author} · ${getTimeAgo(post.date)}</span>
+                                <span><i class="fas fa-heart" style="color:${myLikes.includes(post.id) ? 'var(--accent)' : '#ccc'}"></i> ${post.likes}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderLetterTab(container) {
+            container.innerHTML = `
+                <div class="header-section">
+                    <h2 class="header-title">자휴레터를 한 눈에!</h2>
+                    <div class="category-tabs">
+                        <button class="category-tab active" onclick="filterCategory(this, '전체')">전체</button>
+                        <button class="category-tab" onclick="filterCategory(this, '자휴레터')">자휴레터</button>
+                        <button class="category-tab" onclick="filterCategory(this, '자휴랩')">자휴랩</button>
+                    </div>
+                </div>
+                <div style="padding: 0 20px;" id="letterListArea">
+                    ${posts.map(post => `
+                        <div class="content-card" onclick="viewPost(${post.id})">
+                            <span style="font-size:10px; color:var(--primary); font-weight:bold; display:block; margin-bottom:4px;">${post.category}</span>
+                            <h4 style="font-weight:700; margin-bottom:5px;">${post.title}</h4>
+                            <p style="font-size:12px; color:var(--text-light); margin-bottom:10px;">${post.content}</p>
+                            <div style="font-size:11px; color:var(--text-light);">
+                                ${post.author} · ${getTimeAgo(post.date)}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function filterCategory(btn, cat) {
+            document.querySelectorAll('.category-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const area = document.getElementById('letterListArea');
+            const filtered = cat === '전체' ? posts : posts.filter(p => p.category === cat);
+            
+            area.innerHTML = filtered.map(post => `
+                <div class="content-card" onclick="viewPost(${post.id})">
+                    <span style="font-size:10px; color:var(--primary); font-weight:bold; display:block; margin-bottom:4px;">${post.category}</span>
+                    <h4 style="font-weight:700; margin-bottom:5px;">${post.title}</h4>
+                    <p style="font-size:12px; color:var(--text-light); margin-bottom:10px;">${post.content}</p>
+                    <div style="font-size:11px; color:var(--text-light);">
+                        ${post.author} · ${getTimeAgo(post.date)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderMoodTab(container) {
+            const today = new Date().toDateString();
+            todayMoodSubmitted = myMoodRecords.some(r => new Date(r.date).toDateString() === today && r.authorId === currentUser.id);
+            
+            const myRecords = myMoodRecords.filter(r => r.authorId === currentUser.id).reverse();
+
+            container.innerHTML = `
+                <div class="header-section">
+                    <h2 class="header-title">오늘의 무드</h2>
+                    <p class="header-sub">햅삐님의 감정과 생각을 기록해보세요!</p>
+                </div>
+                
+                <div class="content-card" style="text-align:center; padding: 40px 20px;">
+                    ${todayMoodSubmitted ? 
+                        `<p style="color:var(--primary); font-size:14px; margin-bottom:10px;">✅ 오늘의 무드를 이미 기록하셨어요!</p>
+                         <p style="color:var(--text-light); font-size:12px;">내일 다시 와서 무드를 기록해주세요 💜</p>` :
+                        `<p style="color:var(--text-light); margin-bottom:25px;">아직 무드를 기록하지 않으셨어요.</p>
+                         <button onclick="openModal('mood')" class="hero-btn">무드 기록하기 ✍️</button>`
+                    }
+                </div>
+
+                <div style="padding: 0 20px;">
+                    <h4 style="margin-bottom:15px; font-weight:700; color:var(--text-dark);">나의 무드 기록</h4>
+                    ${myRecords.length > 0 ? myRecords.map(r => `
+                        <div class="content-card">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div style="font-size:32px;">${r.emoji}</div>
+                                <span style="font-size:10px; color:#999;">${getTimeAgo(r.date)}</span>
+                            </div>
+                            <p style="font-weight:bold; margin:10px 0 5px;">${r.title || ''}</p>
+                            <p style="font-size:12px; color:var(--text-dark);">${r.content}</p>
+                        </div>
+                    `).join('') : '<p style="text-align:center; font-size:12px; color:#999; margin-top:20px;">아직 기록된 무드가 없어요.</p>'}
+                </div>
+            `;
+        }
+
+        function renderEditorTalkTab(container) {
+            container.innerHTML = `
+                <div class="header-section">
+                    <h2 class="header-title">에디터 톡</h2>
+                    <p class="header-sub">에디터의 일상을 더 가까이에서 만나보세요!</p>
+                </div>
+                <div style="padding: 0 20px;">
+                    ${editorTalks.map(talk => `
+                        <div class="content-card" onclick="viewPost(${talk.id})">
+                            <div style="display:flex; align-items:center; margin-bottom:10px;">
+                                <div style="width:30px; height:30px; background:${ADMIN_COLORS[talk.authorId] || '#eee'}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; margin-right:10px;">${talk.author.charAt(0)}</div>
+                                <div>
+                                    <div style="font-weight:bold; font-size:13px;">${talk.author}</div>
+                                    <div style="font-size:10px; color:#999;">${getTimeAgo(talk.date)}</div>
+                                </div>
+                            </div>
+                            <p style="font-size:13px; margin-bottom:10px;">${talk.content}</p>
+                            <div style="font-size:11px; color:var(--text-light);">
+                                <i class="fas fa-heart"></i> ${talk.likes} &nbsp; <i class="fas fa-comment"></i> ${talk.comments}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderMypageTab(container) {
+            let stampHTML = '';
+            for(let i=1; i<=30; i++) {
+                const active = i <= userStamps ? 'active' : '';
+                stampHTML += `<div class="stamp-circle ${active}">${i}</div>`;
+            }
+
+            container.innerHTML = `
+                <div class="header-section">
+                    <h2 class="header-title">My Page</h2>
+                    <div class="profile-section">
+                        <div class="profile-avatar">${currentUser.name.charAt(0)}</div>
+                        <div>
+                            <h3 style="font-size:18px; font-weight:700;">${currentUser.name}님</h3>
+                            <p style="font-size:12px; color:var(--text-light);">${currentUser.id}</p>
+                            ${currentUser.isAdmin ? '<span style="font-size:10px; background:rgba(236, 72, 153, 0.1); color:var(--accent); padding:2px 8px; border-radius:10px; margin-top:5px; display:inline-block;">관리자</span>' : ''}
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 0 20px;">
+                    ${currentUser.isSuperAdmin ? `
+                        <button onclick="showAdminDashboardModal()" class="btn-primary" style="font-size:14px; margin-bottom:15px;">
+                            <i class="fas fa-chart-line"></i> 관리자 대시보드
+                        </button>
+                    ` : ''}
+                    
+                    <div class="content-card">
+                        <h4 style="font-weight:700; color:var(--primary); margin-bottom:15px;">자휴스탬프 현황 (${userStamps}개)</h4>
+                        <div class="stamp-grid">
+                            ${stampHTML}
+                        </div>
+                        <div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%); padding:20px; border-radius:20px; margin-top:25px; font-size:12px; color:var(--text-dark); line-height:1.6; text-align:center;">
+                            <strong>🎁 자휴스탬프 이벤트!</strong><br>
+                            스탬프 30개를 모두 모은 화면을 캡쳐해서<br>
+                            자휴레터 카카오톡 채널로 보내주세요!<br>
+                            (어느날 '스폐셜 레터'가 도착할지도 몰라요!)
+                        </div>
+                    </div>
+
+                    <div class="content-card" style="padding:0;">
+                        <div class="menu-item" onclick="viewMyPosts()">
+                            <div><i class="fas fa-edit"></i> <span class="menu-item-text">내가 쓴 글</span></div>
+                            <span class="menu-item-arrow">›</span>
+                        </div>
+                        <div class="menu-item" onclick="viewMyComments()">
+                            <div><i class="fas fa-comment-dots"></i> <span class="menu-item-text">내가 쓴 댓글</span></div>
+                            <span class="menu-item-arrow">›</span>
+                        </div>
+                        <div class="menu-item" onclick="viewMyLikes()">
+                            <div><i class="fas fa-heart"></i> <span class="menu-item-text">좋아요 한 글</span></div>
+                            <span class="menu-item-arrow">›</span>
+                        </div>
+                        <div class="menu-item" onclick="logout()">
+                            <div><i class="fas fa-sign-out-alt"></i> <span class="menu-item-text">로그아웃</span></div>
+                            <span class="menu-item-arrow">›</span>
+                        </div>
+                    </div>
+                    <div style="height:30px;"></div>
+                </div>
+            `;
+        }
+
+        // 마이페이지 기능들
+        function viewMyPosts() { showToast('내가 쓴 글 목록 (준비중)'); }
+        function viewMyComments() { showToast('내가 쓴 댓글 목록 (준비중)'); }
+        function viewMyLikes() { 
+            if(myLikes.length === 0) return showToast('아직 좋아요 한 글이 없습니다.');
+            showToast(`좋아요 한 글이 ${myLikes.length}개 있습니다.`);
+        }
+        function logout() {
+            localStorage.removeItem('jahyu_user');
+            currentUser = null;
+            location.reload();
         }
 
     </script>
