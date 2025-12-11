@@ -9,12 +9,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* CSS 변수 및 기본 스타일 (이전과 동일) */
+        /* 🎨 분석 결과 반영: 연보라색 색감으로 수정된 CSS 변수 */
         :root {
-            --primary: #8B5CF6; --primary-light: #A78BFA; --primary-dark: #7C3AED; --accent: #EC4899;
-            --bg-gradient-start: #F0F4FF; --bg-gradient-end: #F5E6FF; --text-dark: #1F2937;
-            --text-light: #6B7280; --white: #FFFFFF; --glass-bg: rgba(255, 255, 255, 0.9);
-            --like-color: #EF4444; --bookmark-color: #F59E0B;
+            /* 기존: --primary: #8B5CF6; --primary-light: #A78BFA; --primary-dark: #7C3AED; */
+            /* 수정: 부드러운 라벤더 계열로 변경 */
+            --primary: #A78BFA; /* 라벤더 */
+            --primary-light: #C4B5FD; /* 더 연한 라벤더 */
+            --primary-dark: #8B5CF6; /* 진한 라벤더 (포인트) */
+            --accent: #F472B6; /* 핑크 악센트 유지 */
+            
+            /* 배경 그라데이션: 매우 연한 보라색-흰색 조화 */
+            --bg-gradient-start: #F5F3FF; /* 연한 라벤더 */
+            --bg-gradient-end: #FFFFFF; /* 흰색 */
+            
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --white: #FFFFFF;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --like-color: #EF4444;
+            --bookmark-color: #F59E0B;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans KR', 'Nanum Round Gothic', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; position: relative; }
@@ -40,14 +53,14 @@
         .btn-primary { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 12px; width: 100%; font-weight: bold; margin-top: 10px; }
 
         /* 스탬프 판 (8-B) */
-        .stamp-board { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin: 15px 0; padding: 10px; border: 1px dashed #A78BFA; border-radius: 15px; }
+        .stamp-board { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin: 15px 0; padding: 10px; border: 1px dashed var(--primary-light); border-radius: 15px; }
         .stamp-cell { 
             width: 100%; height: 0; padding-bottom: 100%; position: relative; border-radius: 50%; 
             background: #F0F4FF; border: 2px solid #D1D5DB; 
             display: flex; align-items: center; justify-content: center;
         }
         .stamp-cell i { font-size: 18px; color: #D1D5DB; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .stamp-cell.stamped { background: #A78BFA; border-color: var(--primary-dark); }
+        .stamp-cell.stamped { background: var(--primary-light); border-color: var(--primary-dark); }
         .stamp-cell.stamped i { color: white; }
         
         /* 무드 이모지 선택기 */
@@ -789,7 +802,7 @@
                     <div class="editor-filter-tabs">
                         <div class="editor-tab ${authorFilter === 'all' ? 'active' : ''}" onclick="renderTab('editorTalk', 'all')">전체</div>
                         ${Object.values(EDITORS).map(name => `
-                            <div class="editor-tab ${authorFilter === name ? 'active' : ''}" style="background:${authorFilter === name ? '#EC4899' : 'white'}; color:${authorFilter === name ? 'white' : '#6B7280'};" onclick="renderTab('editorTalk', '${name}')">${name}</div>
+                            <div class="editor-tab ${authorFilter === name ? 'active' : ''}" style="background:${authorFilter === name ? 'var(--accent)' : 'white'}; color:${authorFilter === name ? 'white' : '#6B7280'};" onclick="renderTab('editorTalk', '${name}')">${name}</div>
                         `).join('')}
                     </div>
 
