@@ -19,7 +19,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans KR', 'Nanum Round Gothic', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%); color: var(--text-dark); min-height: 100vh; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; position: relative; }
 
-        /* 주요 컴포넌트 스타일 (필요한 부분만 유지) */
+        /* 주요 컴포넌트 스타일 */
         .loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%); display: flex; justify-content: center; align-items: center; z-index: 10000; transition: opacity 0.5s ease; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--glass-bg); backdrop-filter: blur(10px); margin-top: 20px; padding-bottom: 90px; }
@@ -59,6 +59,15 @@
         .comment-item { font-size: 13px; margin-bottom: 12px; padding: 10px; background: #f9fafb; border-radius: 10px; position: relative; }
         .comment-meta { font-size: 11px; color: #888; margin-bottom: 4px; display: flex; justify-content: space-between; }
         
+        /* 체크박스 스타일 */
+        .checkbox-container { display: block; position: relative; padding-left: 25px; margin-bottom: 15px; cursor: pointer; font-size: 13px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; color: var(--text-light); }
+        .checkbox-container input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+        .checkmark { position: absolute; top: 0; left: 0; height: 18px; width: 18px; background-color: #eee; border-radius: 4px; }
+        .checkbox-container:hover input ~ .checkmark { background-color: #ccc; }
+        .checkbox-container input:checked ~ .checkmark { background-color: var(--primary); }
+        .checkmark:after { content: ""; position: absolute; display: none; }
+        .checkbox-container input:checked ~ .checkmark:after { display: block; }
+        .checkbox-container .checkmark:after { left: 6px; top: 2px; width: 5px; height: 10px; border: solid white; border-width: 0 3px 3px 0; -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); }
     </style>
 </head>
 <body>
@@ -72,6 +81,15 @@
             <h2 style="color: var(--primary); margin-bottom: 20px;">자휴레터</h2>
             <input type="email" id="loginEmail" class="input-box" placeholder="이메일을 입력하세요" required>
             <input type="password" id="loginPassword" class="input-box" placeholder="비밀번호를 입력하세요" required>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <label class="checkbox-container">
+                    로그인 정보 저장
+                    <input type="checkbox" id="saveLoginInfo">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            
             <button onclick="handleLogin()" class="btn-primary">로그인</button>
             <p style="margin-top: 15px; font-size: 12px; color: #666; display:flex; justify-content:space-between; align-items:center;">
                 <span onclick="showFindPasswordModal()" style="color: var(--text-light); cursor: pointer;">비밀번호 찾기</span>
@@ -227,11 +245,12 @@
         function initData() {
             // 더미 데이터 초기화
             const initialUsers = {
-                'happxi@jahyu.com': { nickname: '햅씨', password: 'test', stamps: 5 },
-                'elly@jahyu.com': { nickname: '엘리', password: 'test', stamps: 3 },
-                'gokal@jahyu.com': { nickname: '고칼', password: 'test', stamps: 1 },
-                'sunny@jahyu.com': { nickname: '써니', password: 'test', stamps: 0 },
-                'yudan@jahyu.com': { nickname: '유단', password: 'test', stamps: 2 },
+                // 관리자 비밀번호 통일: admin123 (요청사항 반영)
+                'happxi@jahyu.com': { nickname: '햅씨', password: 'admin123', stamps: 5 },
+                'elly@jahyu.com': { nickname: '엘리', password: 'admin123', stamps: 3 },
+                'gokal@jahyu.com': { nickname: '고칼', password: 'admin123', stamps: 1 },
+                'sunny@jahyu.com': { nickname: '써니', password: 'admin123', stamps: 0 },
+                'yudan@jahyu.com': { nickname: '유단', password: 'admin123', stamps: 2 },
                 'user@example.com': { nickname: '햅삐', password: 'test', stamps: 12 }
             };
             
@@ -247,20 +266,19 @@
                 { id: 2, postId: 201, content: '저도 산책갈래요!', author: '햅씨', authorId: 'happxi@jahyu.com', date: '2025-12-10' }
             ];
             
-            // 로컬 스토리지 로드 (저장된 데이터가 없으면 초기 데이터 사용)
             users = JSON.parse(localStorage.getItem('jahyu_users')) || initialUsers;
             posts = JSON.parse(localStorage.getItem('jahyu_posts')) || initialPosts;
             comments = JSON.parse(localStorage.getItem('jahyu_comments')) || initialComments;
             myLikes = JSON.parse(localStorage.getItem('jahyu_myLikes')) || [];
             myBookmarks = JSON.parse(localStorage.getItem('jahyu_myBookmarks')) || [];
             
-            // 닉네임이 없는 사용자에게 닉네임 부여 (구버전 데이터 호환)
             Object.keys(users).forEach(email => {
-                if (!users[email].nickname) {
-                    users[email].nickname = email.split('@')[0];
-                }
-                if (users[email].stamps === undefined) {
-                    users[email].stamps = 0;
+                if (!users[email].nickname) { users[email].nickname = email.split('@')[0]; }
+                if (users[email].stamps === undefined) { users[email].stamps = 0; }
+                
+                // 관리자 비밀번호 강제 통일 (요청사항 재반영)
+                if (ADMINS.includes(email)) {
+                    users[email].password = 'admin123';
                 }
             });
             saveData('users', users);
@@ -270,7 +288,6 @@
         window.addEventListener('load', () => {
             initData();
             
-            // URL 파라미터를 확인하여 개발자 모드 자동 로그인 (디버깅용)
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('dev') === 'true') {
                  currentUser = { 
@@ -280,8 +297,16 @@
                     isAdmin: true
                 };
                 localStorage.setItem('jahyu_currentUser', JSON.stringify(currentUser));
-                checkLogin(true); // 바로 앱 컨테이너 표시
+                checkLogin(true);
                 return;
+            }
+            
+            // '로그인 정보 저장' 기능 확인 및 자동 로그인 시도
+            const savedUser = localStorage.getItem('jahyu_savedUser');
+            if (savedUser) {
+                 currentUser = JSON.parse(savedUser);
+                 checkLogin(true); // 저장된 정보로 자동 로그인
+                 return;
             }
 
             // 일반 로딩
@@ -296,8 +321,9 @@
 
         function checkLogin(skipLoading = false) {
             const saved = localStorage.getItem('jahyu_currentUser');
-            if (saved) {
-                currentUser = JSON.parse(saved);
+            if (saved || currentUser) {
+                if(!currentUser) currentUser = JSON.parse(saved);
+
                 document.getElementById('appContainer').style.display = 'block';
                 renderTab('home');
             } else if (!skipLoading) {
@@ -322,10 +348,11 @@
         function showChangePasswordModal() { closeModal(); document.getElementById('changePasswordModal').classList.add('show'); }
 
 
-        // --- 로그인/회원가입/비밀번호 찾기 (요청사항 1) ---
+        // --- 로그인/회원가입/비밀번호 찾기 (요청사항 1, 자동로그인) ---
         function handleLogin() {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
+            const saveLogin = document.getElementById('saveLoginInfo').checked; // 로그인 정보 저장 체크박스
             
             if (!users[email] || users[email].password !== password) {
                 return alert('이메일 주소 또는 비밀번호가 일치하지 않습니다.');
@@ -340,6 +367,14 @@
             };
 
             localStorage.setItem('jahyu_currentUser', JSON.stringify(currentUser));
+            
+            // 자동 로그인 처리 (요청사항 반영)
+            if (saveLogin) {
+                localStorage.setItem('jahyu_savedUser', JSON.stringify(currentUser));
+            } else {
+                 localStorage.removeItem('jahyu_savedUser');
+            }
+
             closeModal();
             document.getElementById('appContainer').style.display = 'block';
             renderTab('home');
@@ -390,12 +425,19 @@
 
             users[currentUser.id].password = newPw;
             saveData('users', users);
+            
+            // 자동 로그인 정보도 업데이트 (로그인 정보 저장이 되어 있다면)
+            if (localStorage.getItem('jahyu_savedUser')) {
+                 localStorage.setItem('jahyu_savedUser', JSON.stringify(currentUser));
+            }
+            
             alert('✅ 비밀번호가 성공적으로 변경되었습니다.');
             closeModal();
         }
 
         // --- 글쓰기/무드 등록 (요청사항 6) ---
         function submitPost() {
+            // (이전과 동일한 로직)
             const editId = document.getElementById('editPostId').value;
             const title = document.getElementById('postTitle').value;
             const content = document.getElementById('postContent').value;
@@ -456,6 +498,7 @@
 
         // --- 댓글 등록/삭제 (요청사항 4) ---
         function submitComment() {
+             // (이전과 동일한 로직)
             const input = document.getElementById('commentInput');
             const text = input.value;
             if(!text) return;
@@ -473,6 +516,7 @@
         }
 
         function renderComments() {
+             // (이전과 동일한 로직)
             const list = document.getElementById('commentList');
             const postComments = comments.filter(c => c.postId == currentViewingPostId).reverse();
             
@@ -490,6 +534,7 @@
         }
         
         function deleteComment(commentId) {
+             // (이전과 동일한 로직)
             if(confirm('댓글을 삭제할까요?')) {
                 comments = comments.filter(c => c.id != commentId);
                 saveData('comments', comments);
@@ -498,6 +543,7 @@
         }
         
         function viewPost(id) {
+             // (이전과 동일한 로직)
             const post = posts.find(p => p.id == id);
             if (!post) return;
 
@@ -529,7 +575,7 @@
         }
 
         function updateInteractionButtons() {
-            // (좋아요/북마크 버튼 업데이트 로직 - 이전과 동일)
+             // (이전과 동일한 로직)
             const btnLike = document.getElementById('btnLike');
             const btnBookmark = document.getElementById('btnBookmark');
             const likeCount = document.getElementById('likeCount');
@@ -556,6 +602,7 @@
         }
         
         function toggleLike() {
+             // (이전과 동일한 로직)
             if (myLikes.includes(currentViewingPostId)) {
                 myLikes = myLikes.filter(id => id != currentViewingPostId);
             } else {
@@ -566,6 +613,7 @@
         }
 
         function toggleBookmark() {
+             // (이전과 동일한 로직)
             if (myBookmarks.includes(currentViewingPostId)) {
                 myBookmarks = myBookmarks.filter(id => id != currentViewingPostId);
             } else {
@@ -577,6 +625,7 @@
 
         // --- 탭 렌더링 ---
         function renderTab(tab) {
+             // (이전과 동일한 로직)
             if (!currentUser) return showLoginModal();
 
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -680,6 +729,7 @@
         
         // --- 마이페이지 (요청사항 8) ---
         function renderMyPage(container) {
+             // (이전과 동일한 로직)
             const user = users[currentUser.id];
             const currentStamps = user ? user.stamps : 0;
             
@@ -730,8 +780,14 @@
             loadMyContent('posts');
         }
         
+        function switchMyTab(element, type) {
+            document.querySelectorAll('.mypage-tab').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            loadMyContent(type);
+        }
+        
         function loadMyContent(type) {
-             // (마이페이지 콘텐츠 로딩 로직 - 이전과 동일)
+             // (이전과 동일한 로직)
              const area = document.getElementById('mypageContent');
             let content = '';
 
@@ -766,7 +822,7 @@
 
         // --- 관리자 대시보드 (요청사항 8-A) ---
         function renderAdminDashboard() {
-            // (대시보드 렌더링 로직 - 이전과 동일)
+             // (이전과 동일한 로직)
              if (!currentUser.isSuperAdmin) return;
             
             const container = document.getElementById('appContainer');
@@ -790,13 +846,14 @@
         }
         
         function switchDashTab(tab) {
-             document.getElementById('dashTabUsers').classList.remove('active');
-             document.getElementById('dashTabStats').classList.remove('active');
-             document.getElementById(`dashTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
-             loadDashboardContent(tab);
+            document.getElementById('dashTabUsers').classList.remove('active');
+            document.getElementById('dashTabStats').classList.remove('active');
+            document.getElementById(`dashTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+            loadDashboardContent(tab);
         }
 
         function loadDashboardContent(tab) {
+             // (이전과 동일한 로직)
              const contentArea = document.getElementById('dashboardContent');
 
              if (tab === 'users') {
@@ -846,6 +903,7 @@
         
         // 공통 리스트 HTML 생성기
         function getPostListHTML(list) {
+             // (이전과 동일한 로직)
             return list.map(p => {
                 const isMood = p.type === 'mood';
                 return `
