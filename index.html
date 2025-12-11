@@ -74,73 +74,7 @@
             50% { transform: scale(1.1) rotate(180deg); }
         }
 
-        /* 10단계 강제 진입 시스템 */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .loading-overlay.complete {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 1s ease;
-        }
-
-        .loading-content {
-            text-align: center;
-            color: white;
-            max-width: 400px;
-            padding: 40px;
-        }
-
-        .loading-logo {
-            font-size: 80px;
-            margin-bottom: 30px;
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
-
-        .loading-title {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-
-        .loading-step {
-            font-size: 18px;
-            margin-bottom: 10px;
-            opacity: 0.9;
-        }
-
-        .loading-progress {
-            width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 4px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .loading-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #FF6B9D 0%, #6B46C1 100%);
-            width: 0%;
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
+        /* 로딩 관련 CSS는 제거됨 */
 
         .app-container {
             width: 100%; 
@@ -155,7 +89,7 @@
             padding-bottom: 90px;
             position: relative;
             overflow-x: hidden;
-            display: none;
+            display: none; /* 초기에는 숨김 */
         }
 
         .app-container.visible {
@@ -1113,18 +1047,7 @@
     </style>
 </head>
 <body>
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-content">
-            <div class="loading-logo">❤️</div>
-            <div class="loading-title">자휴레터</div>
-            <div class="loading-step" id="loadingStep">시스템을 확인하는 중...</div>
-            <div class="loading-progress">
-                <div class="loading-bar" id="loadingBar"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="app-container" id="appContainer">
+    <div class="app-container visible" id="appContainer">
         <div class="tab-content" id="homeTab">
             <div class="header-section">
                 <h1 class="header-title">자휴레터</h1>
@@ -1458,41 +1381,6 @@
         let isAdmin = false;
         let currentCommentReplyTarget = null;
 
-        // 10단계 강제 진입 시스템
-        const loadingSteps = [
-            { message: '시스템을 확인하는 중...', duration: 500 },
-            { message: '데이터베이스 연결 중...', duration: 800 },
-            { message: '사용자 정보 로딩...', duration: 600 },
-            { message: '무드 데이터 동기화...', duration: 700 },
-            { message: '댓글 시스템 초기화...', duration: 900 },
-            { message: '북마크 기능 활성화...', duration: 500 },
-            { message: '알림 서비스 시작...', duration: 400 },
-            { message: '보안 검사 진행...', duration: 800 },
-            { message: '최종 설정 완료...', duration: 600 },
-            { message: '환영합니다! 😊', duration: 500 }
-        ];
-
-        let currentStep = 0;
-
-        function loadNextStep() {
-            if (currentStep >= loadingSteps.length) {
-                document.getElementById('loadingOverlay').classList.add('complete');
-                showTab('home');
-                setTimeout(() => {
-                    document.getElementById('appContainer').classList.add('visible');
-                }, 300);
-                initializeData();
-                return;
-            }
-
-            const step = loadingSteps[currentStep];
-            document.getElementById('loadingStep').textContent = step.message;
-            document.getElementById('loadingBar').style.width = `${((currentStep + 1) / loadingSteps.length) * 100}%`;
-
-            currentStep++;
-            setTimeout(loadNextStep, step.duration);
-        }
-
         // 데이터 초기화
         function initializeData() {
             // 기본 게시물 데이터
@@ -1557,6 +1445,8 @@
             bookmarks = [1, 2]; // 게시물 ID
 
             // 첫 페이지 렌더링
+            document.getElementById('appContainer').classList.add('visible'); // 바로 보이도록 추가
+            showTab('home');
             renderFeed();
             renderExplore();
             renderBookmarks();
@@ -1571,12 +1461,22 @@
             tabs.forEach(tab => tab.style.display = 'none');
             navItems.forEach(item => item.classList.remove('active'));
             
-            document.getElementById(tabName + 'Tab').style.display = 'block';
-            document.querySelectorAll('.nav-item')[tabName === 'home' ? 0 : tabName === 'explore' ? 1 : tabName === 'bookmark' ? 2 : 3].classList.add('active');
+            const targetTab = document.getElementById(tabName + 'Tab');
+            if (targetTab) {
+                targetTab.style.display = 'block';
+            }
+            
+            const navIndex = tabName === 'home' ? 0 : tabName === 'explore' ? 1 : tabName === 'bookmark' ? 2 : 3;
+            const targetNavItem = document.querySelectorAll('.nav-item')[navIndex];
+            if (targetNavItem) {
+                targetNavItem.classList.add('active');
+            }
             
             // 특정 탭의 경우 추가 작업
             if (tabName === 'bookmark') {
                 renderBookmarks();
+            } else if (tabName === 'admin') {
+                renderAdminDashboard();
             }
         }
 
@@ -1984,9 +1884,6 @@
         }
 
         function viewMyLikes() {
-            const likedPosts = posts.filter(post =>
-// 이 부분이 잘려있어서 임시로 닫고 아래 함수 추가
-
             // 임시 함수
             showToast('좋아요 한 글 보기 기능 준비 중!');
         }
@@ -2138,8 +2035,8 @@
             }, 2500);
         }
 
-        // 🚨 이 부분이 로딩 시작을 담당합니다.
-        window.onload = loadNextStep;
+        // 🚨 로딩 시스템을 제거하고, 바로 초기화 함수를 실행합니다.
+        window.onload = initializeData;
     </script>
 </body>
 </html>
