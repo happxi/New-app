@@ -1010,7 +1010,7 @@
         // ** 관리자 대시보드 활동 로그 (실시간 기능용 데이터) **
         let activityLogs = [
             // { type: 'login', user: '테스트', date: new Date('2025-12-11T10:00:00Z'), userId: 'test@example.com' },
-            { type: 'comment', user: '햅삐', date: new Date('2025-12-11T12:30:00Z'), targetId: 5, userId: 'user@example.com' },
+            { type: 'comment', user: '햅삐', date: new Date('2025-12-11T12:30:00Z'), targetId: 5, userId: 'user@example.com', commentId: 2 },
             { type: 'mood', user: '테스트', date: new Date('2025-12-10T20:00:00Z'), targetId: 'M1', userId: 'test@example.com' },
             { type: 'post', user: '엘리', date: new Date('2025-12-04T11:00:00Z'), targetId: 3, userId: 'elly@jahyu.com' },
             { type: 'like', user: '햅삐', date: new Date('2025-12-11T13:05:00Z'), targetId: 6, userId: 'user@example.com' }
@@ -1035,7 +1035,7 @@
         }
 
         /**
-         * 시간 차이를 '분전', '시간전', '일전' 등으로 계산합니다.
+         * 시간 차이를 '분전', '시간전', '일전' 등으로 계산합니다. (수정된 로직)
          * @param {string | Date} dateString ISO 형식 문자열 또는 Date 객체
          * @returns {string} 예: 5분 전, 2시간 전, 3일 전
          */
@@ -1043,18 +1043,31 @@
             const now = new Date();
             const past = new Date(dateString);
             const diffMs = now.getTime() - past.getTime();
-            const diffSec = Math.floor(diffMs / 1000);
+            const diffMin = Math.floor(diffMs / (1000 * 60)); // 분 단위
 
-            if (diffSec < 60) return `${diffSec}초 전`;
-
-            const diffMin = Math.floor(diffSec / 60);
-            if (diffMin < 60) return `${diffMin}분 전`;
+            if (diffMin < 60) {
+                // 1시간 미만은 '분 전'
+                return `${diffMin}분 전`;
+            }
 
             const diffHour = Math.floor(diffMin / 60);
-            if (diffHour < 24) return `${diffHour}시간 전`;
+            if (diffHour < 24) {
+                // 24시간 미만은 '시간 전'
+                return `${diffHour}시간 전`;
+            }
 
             const diffDay = Math.floor(diffHour / 24);
-            return `${diffDay}일 전`;
+            if (diffDay < 7) {
+                // 7일 미만은 '일 전'
+                return `${diffDay}일 전`;
+            }
+
+            // 7일 이상은 YYYY.MM.DD 포맷으로 변경
+            return new Date(dateString).toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).replace(/\. /g, '.').replace(/\.$/, ''); // 예: 2025.12.11
         }
         
         // --- 기능 ---
@@ -1437,7 +1450,7 @@
                                 <div class="content-card">
                                     <div style="font-size:24px; margin-bottom:10px;">${record.emoji}</div>
                                     <p style="font-size:13px; margin-bottom:5px;">${record.title || '무제'}</p>
-                                    <p style="font-size:11px; color:var(--text-sub);">${new Date(record.date).toLocaleDateString()}</p>
+                                    <p style="font-size:11px; color:var(--text-sub);">${getTimeAgo(record.date)}</p>
                                 </div>
                             `).join('')}
                         </div>
@@ -1557,7 +1570,7 @@
                     <h4 style="font-weight:700; margin-bottom:5px;">${post.title}</h4>
                     <p style="font-size:12px; color:var(--text-sub);">${post.content}</p>
                     <div style="margin-top:10px; font-size:11px; color:var(--text-sub); display:flex; justify-content:space-between;">
-                        <span>${post.author} · ${new Date(post.date).toLocaleDateString()}</span>
+                        <span>${post.author} · ${getTimeAgo(post.date)}</span>
                         <span><i class="fas fa-heart" style="color:${myLikes.includes(post.id) ? 'var(--accent)' : '#ccc'}"></i> ${post.likes + (myLikes.includes(post.id) ? 1 : 0)}</span>
                     </div>
                 </div>
@@ -1690,7 +1703,7 @@
                     emoji: selectedMoodEmoji,
                     title: title,
                     content: content,
-                    date: new Date(),
+                    date: new Date().toISOString(), // ISO String으로 저장
                     author: currentUser.name,
                     authorId: currentUser.id
                 };
@@ -2015,7 +2028,7 @@
                             <i class="fas fa-arrow-left"></i>
                         </button>
                         <h2 style="color:white; text-align:center; margin:20px 0;">${post.title}</h2>
-                        <p style="color:white; text-align:center; font-size:12px; opacity:0.8;">${post.author} · ${new Date(post.date).toLocaleDateString()}</p>
+                        <p style="color:white; text-align:center; font-size:12px; opacity:0.8;">${post.author} · ${getTimeAgo(post.date)}</p>
                         
                         ${isAuthorOrAdmin ? `
                             <div style="position:absolute; right:20px; top:40px; font-size:14px; color:white;">
@@ -2122,7 +2135,7 @@
                             </h4>
                             <p style="font-size:12px; color:var(--text-sub); margin-top:5px;">
                                 ${authorIncluded ? `작성자: **${authorName}** | ` : ''} 
-                                ${new Date(post.date).toLocaleDateString()}
+                                ${getTimeAgo(post.date)}
                             </p>
                         </div>
                     `;
