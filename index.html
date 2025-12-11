@@ -1,2117 +1,1497 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>자휴레터 - 햅삐님 오늘도 행복하세요!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Round+Gothic:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            /* 💙 클리어 스타일 크리스탈 컬러 시스템 */
-            --color-primary: #4A90E2;
-            --color-primary-light: #87CEEB;
-            --color-primary-lighter: #B6E3F7;
-            --color-secondary: #E8F4F8;
-            --color-accent: #6BB6FF;
-            --color-white: rgba(255, 255, 255, 0.85);
-            --color-glass: rgba(255, 255, 255, 0.7);
-            --color-shadow: rgba(74, 144, 226, 0.15);
-            --color-text: #2C5282;
-            --color-text-light: #4A7FC7;
-            --color-black: #1A365D;
-            --color-glass-border: rgba(255, 255, 255, 0.5);
-        }
+<!DOCTYPE html>  
+<html lang="ko">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
+    <title>자휴레터 - 햅삐님 오늘도 행복하세요!</title>  
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Round+Gothic:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">  
+    <style>  
+        :root {  
+            /* 💙 파스텔 블루 시리즈 */  
+            --color-primary-blue: #5B9BD5;  
+            --color-light-blue: #BDD7EE;  
+            --color-sky-blue: #87CEEB;  
+              
+            /* 💖 핑크/퍼플 감성 시리즈 */  
+            --color-primary-pink: #FF6B9D;  
+            --color-light-pink: #FFB6C1;  
+            --color-lavender: #E6E6FA;  
+            --color-peach: #FFDAB9;  
+            --color-mint: #98FB98;  
+              
+            /* ✨ 투명 유리질감 */  
+            --color-glass-white: rgba(255, 255, 255, 0.88);  
+            --color-shadow-blue: rgba(91, 155, 213, 0.15);  
+            --color-shadow-pink: rgba(255, 107, 157, 0.15);  
+              
+            /* 📝 텍스트 */  
+            --color-text-dark: #2C3E50;  
+            --color-text-medium: #546E7A;  
+            --color-text-light: #90A4AE;  
+            --color-white: #FFFFFF;  
+        }  
   
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif;
-        }
+        * {  
+            box-sizing: border-box;  
+            margin: 0;  
+            padding: 0;  
+            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif;  
+        }  
   
-        body {
-            background: linear-gradient(135deg, var(--color-secondary) 0%, #F0F8FF 100%);
-            color: var(--color-text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
+        body {  
+            background: linear-gradient(135deg, #F0F8FF 0%, #E6F3FF 50%, #FFF0F5 100%);  
+            color: var(--color-text-dark);  
+            min-height: 100vh;  
+            overflow-x: hidden;  
+        }  
   
-        /* 📱 완벽한 모바일 최적화 */
-        .main-container {
-            width: 100%;
-            max-width: 100vw;
-            min-height: calc(100vh - 80px);
-            max-height: 85vh;
-            padding: 0 16px 20px;
-            padding-bottom: 100px;
-            overflow-y: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            display: none;
-        }
+        /* 📱 메인 컨테이너 */  
+        .main-container {  
+            width: 100%;  
+            max-width: 100vw;  
+            min-height: calc(100vh - 80px);  
+            max-height: 85vh;  
+            padding: 0 16px 20px;  
+            padding-bottom: 100px;  
+            overflow-y: auto;  
+            scrollbar-width: none;  
+            display: none;  
+        }  
   
-        .main-container.show {
-            display: block;
-        }
+        .main-container.show {  
+            display: block;  
+        }  
   
-        .main-container::-webkit-scrollbar {
-            display: none;
-        }
+        /* 🌸 핑크라벤더 로그인 모달 */  
+        .auth-modal {  
+            position: fixed;  
+            top: 0;  
+            left: 0;  
+            width: 100%;  
+            height: 100%;  
+            background: rgba(0, 0, 0, 0.6);  
+            backdrop-filter: blur(8px);  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            z-index: 1000;  
+        }  
   
-        /* 로그인 모달 - 투명 유리 스타일 */
-        .auth-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-  
-        .auth-content {
+        .auth-content {  
             background: linear-gradient(135deg,   
-                rgba(255, 255, 255, 0.95) 0%,   
-                rgba(240, 249, 255, 0.9) 50%,   
-                rgba(224, 242, 254, 0.85) 100%);
-            border-radius: 28px;
-            padding: 40px;
-            width: 90%;
-            max-width: 380px;
-            box-shadow:   
-                0 20px 40px rgba(74, 144, 226, 0.2),
-                0 8px 25px rgba(255, 255, 255, 0.8) inset,
-                0 2px 10px rgba(135, 206, 235, 0.3) inset;
-            border: 1px solid var(--color-glass-border);
-            animation: bubbleFloat 0.5s ease-out;
-        }
+                rgba(255, 182, 193, 0.95) 0%,    
+                rgba(230, 230, 250, 0.98) 50%,   
+                rgba(255, 218, 185, 0.95) 100%);  
+            border-radius: 30px;  
+            padding: 45px;  
+            width: 90%;  
+            max-width: 400px;  
+            box-shadow: 0 20px 50px rgba(255, 107, 157, 0.3);  
+            border: 1px solid rgba(255, 255, 255, 0.6);  
+            animation: bubbleFloat 0.5s ease-out;  
+        }  
   
-        @keyframes bubbleFloat {
-            from {
-                transform: translateY(30px) scale(0.95);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-        }
+        @keyframes bubbleFloat {  
+            from {  
+                transform: translateY(30px) scale(0.95);  
+                opacity: 0;  
+            }  
+            to {  
+                transform: translateY(0) scale(1);  
+                opacity: 1;  
+            }  
+        }  
   
-        .auth-content h2 {
-            color: var(--color-primary);
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
-            font-weight: 600;
-            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
-        }
+        .auth-content h2 {  
+            color: var(--color-primary-pink);  
+            text-align: center;  
+            margin-bottom: 35px;  
+            font-size: 30px;  
+            font-weight: 600;  
+        }  
   
-        .auth-input {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid var(--color-primary-lighter);
-            border-radius: 24px;
-            margin-bottom: 20px;
-            font-size: 16px;
-            transition: all 0.3s;
-            background: rgba(255, 255, 255, 0.8);
-            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif;
-        }
+        .auth-input {  
+            width: 100%;  
+            padding: 16px 20px;  
+            border: 2px solid var(--color-light-pink);  
+            border-radius: 25px;  
+            margin-bottom: 20px;  
+            font-size: 16px;  
+            background: rgba(255, 255, 255, 0.9);  
+            transition: all 0.3s;  
+        }  
   
-        .auth-input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            transform: translateY(-2px);
-            box-shadow:   
-                0 8px 25px rgba(74, 144, 226, 0.2),
-                0 2px 10px rgba(255, 255, 255, 0.6) inset;
-        }
+        .auth-input:focus {  
+            outline: none;  
+            border-color: var(--color-primary-pink);  
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.2);  
+        }  
   
-        .auth-button {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
-            color: white;
-            border: none;
-            border-radius: 24px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 15px;
-            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif;
-            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
-        }
+        .auth-button {  
+            width: 100%;  
+            padding: 16px;  
+            background: linear-gradient(135deg, var(--color-primary-pink) 0%, var(--color-lavender) 100%);  
+            color: white;  
+            border: none;  
+            border-radius: 25px;  
+            font-size: 16px;  
+            font-weight: 600;  
+            cursor: pointer;  
+            transition: all 0.3s;  
+            margin-bottom: 15px;  
+        }  
   
-        .auth-button:hover {
-            transform: translateY(-3px);
-            box-shadow:   
-                0 10px 30px rgba(74, 144, 226, 0.4),
-                0 4px 15px rgba(255, 255, 255, 0.6) inset;
-        }
+        .auth-button:hover {  
+            transform: translateY(-3px);  
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);  
+        }  
   
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+        .checkbox-container {  
+            display: flex;  
+            align-items: center;  
+            margin-bottom: 20px;  
+        }  
   
-        .checkbox-container input[type="checkbox"] {
-            margin-right: 10px;
-            transform: scale(1.2);
-            accent-color: var(--color-primary);
-        }
+        .checkbox-container input[type="checkbox"] {  
+            margin-right: 10px;  
+            transform: scale(1.2);  
+            accent-color: var(--color-primary-pink);  
+        }  
   
-        .checkbox-container label {
-            font-size: 14px;
-            color: var(--color-text);
-            font-weight: 400;
-        }
+        .auth-link {  
+            text-align: center;  
+            margin-top: 20px;  
+        }  
   
-        .auth-link {
-            text-align: center;
-            margin-top: 20px;
-        }
+        .auth-link button {  
+            background: none;  
+            border: none;  
+            color: var(--color-primary-pink);  
+            font-weight: 600;  
+            cursor: pointer;  
+            font-size: 14px;  
+        }  
   
-        .auth-link button {
-            background: none;
-            border: none;
-            color: var(--color-primary);
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 14px;
-            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif;
-        }
+        .auth-link button:hover {  
+            text-decoration: underline;  
+        }  
   
-        .auth-link button:hover {
-            text-decoration: underline;
-        }
+        /* 홈 헤더 */  
+        .home-header {  
+            text-align: center;  
+            padding: 35px 0 25px;  
+        }  
   
-        /* 🎯 헤더 레디자인 (텍스트 잘림 방지 패딩/마진 조정) */
-        .main-header {
-            text-align: center;
-            padding: 35px 0 25px;
-        }
+        .home-header h1 {  
+            font-size: 24px;  
+            font-weight: 600;  
+            margin-bottom: 8px;  
+            color: var(--color-primary-pink);  
+            background: linear-gradient(135deg, var(--color-primary-pink), var(--color-lavender));  
+            -webkit-background-clip: text;  
+            -webkit-text-fill-color: transparent;  
+            display: inline-block;  
+            padding: 20px 25px;  
+            border-radius: 24px;  
+        }  
   
-        .main-header h1 {
-            font-size: 24px; /* 크기 축소 */
-            font-weight: 600; /* 약간 굵게 */
-            margin-bottom: 8px;
-            color: var(--color-black);
-            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif; /* 둥글고 부드러운 서체 */
-            border-radius: 24px;
-            padding: 20px 25px; /* 넉넉한 세로 패딩 */
-            background: linear-gradient(135deg,   
-                rgba(135, 206, 235, 0.9) 0%,   
-                rgba(107, 182, 255, 0.85) 100%);
-            box-shadow:   
-                0 8px 25px rgba(74, 144, 226, 0.25),
-                0 4px 15px rgba(255, 255, 255, 0.8) inset;
-            border: 1px solid var(--color-glass-border);
-            letter-spacing: -0.5px; /* 자간 조정 */
-            display: inline-block;
-            max-width: 100%; /* 너비 확보 */
-        }
-        
-        /* 서브 헤더 타이틀 텍스트 잘림 방지 추가 패딩 */
-        .main-header h2 {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--color-black);
-            margin-bottom: 8px;
-            padding: 0 10px; /* 좌우 패딩 추가 */
-        }
+        .home-header p {  
+            font-size: 14px;  
+            color: var(--color-text-medium);  
+            margin-top: 10px;  
+        }  
   
-        .main-header p {
-            font-size: 14px;
-            color: var(--color-text-light);
-            font-weight: 300;
-            margin-top: 10px;
-            padding: 0 10px; /* 좌우 패딩 추가 */
-        }
+        /* 🎯 메뉴 아이콘 다양한 색상 */  
+        .menu-container {  
+            display: flex;  
+            justify-content: space-between;  
+            margin: 25px 0;  
+            gap: 12px;  
+        }  
   
-        /* ⬅️ 백버튼 */
-        .back-button {
-            position: absolute;
-            top: 20px;
-            left: 16px;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg,   
-                rgba(255, 255, 255, 0.9) 0%,   
-                rgba(240, 249, 255, 0.85) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow:   
-                0 6px 20px rgba(74, 144, 226, 0.2),
-                0 2px 10px rgba(255, 255, 255, 0.8) inset;
-            border: 1px solid var(--color-glass-border);
-        }
+        .menu-item {  
+            text-decoration: none;  
+            text-align: center;  
+            flex: 1;  
+            transition: all 0.3s;  
+        }  
   
-        .back-button:hover {
-            transform: translateY(-2px);
-            box-shadow:   
-                0 8px 25px rgba(74, 144, 226, 0.3),
-                0 4px 15px rgba(255, 255, 255, 0.9) inset;
-        }
+        .menu-icon {  
+            width: 60px;  
+            height: 60px;  
+            margin: 0 auto 6px;  
+            border-radius: 50%;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            transition: all 0.4s;  
+        }  
   
-        .back-button svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--color-primary);
-        }
+        /* 각 메뉴별 색상 */  
+        .menu-item:nth-child(1) .menu-icon {  
+            background: linear-gradient(135deg, var(--color-sky-blue) 0%, var(--color-primary-blue) 100%);  
+        }  
+        .menu-item:nth-child(2) .menu-icon {  
+            background: linear-gradient(135deg, var(--color-mint) 0%, #4CAF50 100%);  
+        }  
+        .menu-item:nth-child(3) .menu-icon {  
+            background: linear-gradient(135deg, var(--color-primary-pink) 0%, var(--color-light-pink) 100%);  
+        }  
+        .menu-item:nth-child(4) .menu-icon {  
+            background: linear-gradient(135deg, var(--color-lavender) 0%, #9370DB 100%);  
+        }  
+        .menu-item:nth-child(5) .menu-icon {  
+            background: linear-gradient(135deg, var(--color-peach) 0%, #FFA07A 100%);  
+        }  
   
-        /* 💎 투명 유리구슬 카드 */
-        .glass-card {
-            background: linear-gradient(135deg,   
-                rgba(255, 255, 255, 0.9) 0%,   
-                rgba(240, 249, 255, 0.85) 50%,   
-                rgba(224, 242, 254, 0.8) 100%);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-radius: 24px;
-            border: 1px solid var(--color-glass-border);
-            box-shadow:   
-                0 12px 35px rgba(74, 144, 226, 0.12),
-                0 4px 15px rgba(255, 255, 255, 0.8) inset,
-                0 1px 8px rgba(135, 206, 235, 0.3) inset;
-            padding: 25px 20px; /* 좌우 패딩 넉넉하게 수정 */
-            margin-bottom: 20px;
-            width: 100%;
-            min-height: 200px; /* 최소 높이 제한 */
-            max-height: 250px; /* 최대 높이 제한 */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        .menu-icon:hover {  
+            transform: translateY(-5px) scale(1.08);  
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);  
+        }  
   
-        /* 🎯 아이콘 원 - 투명 유리 느낌 */
-        .icon-circle {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 8px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg,   
-                rgba(135, 206, 235, 0.8) 0%,   
-                rgba(74, 144, 226, 1) 100%);
-            box-shadow:   
-                0 10px 30px rgba(74, 144, 226, 0.3),
-                0 4px 15px rgba(255, 255, 255, 0.6) inset,
-                0 2px 8px rgba(107, 182, 255, 0.4) inset;
-            transition: all 0.4s;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-        }
+        .menu-icon svg {  
+            width: 28px;  
+            height: 28px;  
+            fill: white;  
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));  
+        }  
   
-        .icon-circle:hover {
-            transform: translateY(-6px) scale(1.08);
-            box-shadow:   
-                0 15px 40px rgba(74, 144, 226, 0.4),
-                0 6px 20px rgba(255, 255, 255, 0.8) inset;
-        }
+        .menu-item p {  
+            color: var(--color-text-medium);  
+            font-size: 12px;  
+            font-weight: 500;  
+        }  
   
-        .icon-circle svg {
-            width: 32px;
-            height: 32px;
-            fill: white;
-            filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
-        }
+        /* 💎 투명 유리구슬 카드 */  
+        .glass-card {  
+            background: linear-gradient(135deg,     
+                rgba(255, 255, 255, 0.9) 0%,     
+                rgba(240, 249, 255, 0.85) 50%,     
+                rgba(224, 242, 254, 0.8) 100%);  
+            backdrop-filter: blur(20px) saturate(180%);  
+            -webkit-backdrop-filter: blur(20px) saturate(180%);  
+            border-radius: 24px;  
+            border: 1px solid rgba(255, 255, 255, 0.5);  
+            box-shadow:     
+                0 12px 35px rgba(91, 155, 213, 0.12),  
+                0 4px 15px rgba(255, 255, 255, 0.8) inset,  
+                0 1px 8px rgba(135, 206, 235, 0.3) inset;  
+            padding: 25px 20px;  
+            margin-bottom: 20px;  
+            width: 100%;  
+            min-height: 120px;  
+            max-height: 200px;  
+            display: flex;  
+            flex-direction: column;  
+            justify-content: center;  
+            position: relative;  
+        }  
   
-        /* ✨ 액션 버튼 */
-        .action-button {
-            display: inline-block;
-            padding: 14px 28px;
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
-            color: white;
-            border: none;
-            border-radius: 28px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.4s;
-            text-decoration: none;
-            text-align: center;
-            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif;
-            box-shadow:   
-                0 6px 20px rgba(74, 144, 226, 0.3),
-                0 2px 10px rgba(255, 255, 255, 0.6) inset;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
+        .glass-card.bubble-animation {  
+            animation: bubbleFloat 3s ease-in-out infinite;  
+        }  
   
-        .action-button:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow:   
-                0 10px 30px rgba(74, 144, 226, 0.4),
-                0 4px 15px rgba(255, 255, 255, 0.8) inset;
-        }
+        /* 📝 레터 아카이브 게시물 */  
+        .letter-item {  
+            background: linear-gradient(135deg,     
+                rgba(255, 255, 255, 0.95) 0%,     
+                rgba(240, 249, 255, 0.9) 100%);  
+            border-radius: 20px;  
+            padding: 20px;  
+            margin-bottom: 16px;  
+            box-shadow:     
+                0 8px 25px rgba(91, 155, 213, 0.1),  
+                0 2px 10px rgba(255, 255, 255, 0.8) inset;  
+            transition: all 0.4s;  
+            cursor: pointer;  
+            border: 1px solid rgba(255, 255, 255, 0.5);  
+        }  
   
-        .action-button:disabled {
-            background: #ccc;
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
+        .letter-item:hover {  
+            transform: translateY(-3px);  
+            box-shadow:     
+                0 12px 35px rgba(91, 155, 213, 0.2),  
+                0 4px 15px rgba(255, 255, 255, 0.9) inset;  
+        }  
   
-        /* 🌟 액션 그룹 */
-        .action-group {
-            display: flex;
-            justify-content: space-around;
-            margin: 25px 0;
-            gap: 15px;
-        }
+        .letter-header {  
+            display: flex;  
+            align-items: center;  
+            margin-bottom: 15px;  
+        }  
   
-        .action-item {
-            text-decoration: none;
-            color: var(--color-text);
-            font-size: 13px;
-            text-align: center;
-            flex: 1;
-        }
+        .letter-avatar {  
+            width: 42px;  
+            height: 42px;  
+            border-radius: 50%;  
+            color: white;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            font-weight: 700;  
+            margin-right: 15px;  
+            box-shadow: 0 4px 12px rgba(91, 155, 213, 0.3);  
+        }  
   
-        .action-item:hover {
-            transform: translateY(-3px);
-        }
+        .letter-info h4 {  
+            font-size: 16px;  
+            font-weight: 600;  
+            color: var(--color-text-dark);  
+        }  
   
-        /* 📝 게시물 */
-        .post-item {
-            background: linear-gradient(135deg,   
-                rgba(255, 255, 255, 0.95) 0%,   
-                rgba(240, 249, 255, 0.9) 100%);
-            border-radius: 20px;
-            padding: 18px;
-            margin-bottom: 16px;
-            box-shadow:   
-                0 8px 25px rgba(74, 144, 226, 0.1),
-                0 2px 10px rgba(255, 255, 255, 0.8) inset;
-            transition: all 0.4s;
-            cursor: pointer;
-            border: 1px solid var(--color-glass-border);
-        }
+        .letter-info p {  
+            font-size: 12px;  
+            color: var(--color-text-light);  
+        }  
   
-        .post-item:hover {
-            transform: translateY(-3px);
-            box-shadow:   
-                0 12px 35px rgba(74, 144, 226, 0.2),
-                0 4px 15px rgba(255, 255, 255, 0.9) inset;
-        }
+        .letter-content {  
+            margin-bottom: 15px;  
+            line-height: 1.6;  
+            color: var(--color-text-dark);  
+        }  
   
-        .post-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+        .letter-image {  
+            width: 100%;  
+            height: 200px;  
+            object-fit: cover;  
+            border-radius: 12px;  
+            margin-bottom: 15px;  
+            box-shadow: 0 4px 15px rgba(91, 155, 213, 0.2);  
+        }  
   
-        .post-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            margin-right: 15px;
-            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
-        }
+        .letter-actions {  
+            display: flex;  
+            justify-content: space-around;  
+            align-items: center;  
+            padding: 12px;  
+            background: linear-gradient(135deg,     
+                rgba(240, 249, 255, 0.8) 0%,     
+                rgba(224, 242, 254, 0.7) 100%);  
+            border-radius: 16px;  
+        }  
   
-        .post-info h4 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--color-text);
-        }
+        .action-btn {  
+            display: flex;  
+            align-items: center;  
+            gap: 6px;  
+            padding: 10px 14px;  
+            border: none;  
+            background: transparent;  
+            color: var(--color-text-medium);  
+            border-radius: 16px;  
+            cursor: pointer;  
+            transition: all 0.3s;  
+            font-size: 14px;  
+            font-weight: 500;  
+        }  
   
-        .post-info p {
-            font-size: 12px;
-            color: var(--color-text-light);
-        }
+        .action-btn:hover {  
+            background: var(--color-light-blue);  
+            color: var(--color-primary-blue);  
+            transform: translateY(-2px);  
+        }  
   
-        .post-content {
-            margin-bottom: 15px;
-            line-height: 1.6;
-            color: var(--color-text);
-        }
+        .action-btn.active {  
+            color: var(--color-primary-blue);  
+            background: var(--color-light-blue);  
+        }  
   
-        .post-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);
-        }
+        /* 카테고리 필터 */  
+        .category-filter {  
+            display: flex;  
+            gap: 12px;  
+            margin-bottom: 20px;  
+        }  
   
-        .post-actions {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 12px;
-            background: linear-gradient(135deg,   
-                rgba(240, 249, 255, 0.8) 0%,   
-                rgba(224, 242, 254, 0.7) 100%);
-            border-radius: 16px;
-        }
+        .category-btn {  
+            flex: 1;  
+            padding: 12px;  
+            border: 2px solid var(--color-primary-blue);  
+            background: transparent;  
+            color: var(--color-primary-blue);  
+            font-weight: 600;  
+            border-radius: 20px;  
+            cursor: pointer;  
+            transition: all 0.3s;  
+        }  
   
-        .action-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 14px;
-            border: none;
-            background: transparent;
-            color: var(--color-text-light);
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif;
-            font-weight: 500;
-        }
+        .category-btn:hover {  
+            background: var(--color-light-blue);  
+            transform: translateY(-2px);  
+        }  
   
-        .action-btn:hover {
-            background: var(--color-primary-lighter);
-            color: var(--color-primary);
-            transform: translateY(-2px);
-        }
+        .category-btn.active {  
+            background: var(--color-primary-blue);  
+            color: white;  
+            border: none;  
+        }  
   
-        .action-btn.active {
-            color: var(--color-primary);
-            background: var(--color-primary-lighter);
-        }
+        /* 💎 스탬프 시스템 */  
+        .stamp-container {  
+            display: grid;  
+            grid-template-columns: repeat(6, 1fr);  
+            gap: 8px;  
+            padding: 15px;  
+            justify-items: center;  
+        }  
   
-        /* 📋 마이페이지 */
-        .mypage-menu {
-            list-style: none;
-            padding: 0;
-        }
+        .stamp-item {  
+            width: 28px;  
+            height: 28px;  
+            border-radius: 50%;  
+            position: relative;  
+            transition: all 0.3s ease;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+        }  
   
-        .mypage-menu li {
-            margin-bottom: 14px;
-        }
+        .stamp-number {  
+            font-size: 10px;  
+            font-weight: 600;  
+            color: var(--color-text-medium);  
+            position: absolute;  
+            top: 50%;  
+            left: 50%;  
+            transform: translate(-50%, -50%);  
+        }  
   
-        .mypage-button {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 16px;
-            border: none;
-            background: linear-gradient(135deg,   
-                rgba(255, 255, 255, 0.95) 0%,   
-                rgba(240, 249, 255, 0.9) 100%);
-            border-radius: 20px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-            font-size: 15px;
-            color: var(--color-text);
-            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.08);
-            border: 1px solid var(--color-glass-border);
-        }
+        .stamp-item.empty {  
+            background: rgba(240, 248, 255, 0.6);  
+            border: 1px solid rgba(176, 224, 230, 0.8);  
+        }  
   
-        .mypage-button:hover {
-            background: var(--color-secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.15);
-        }
-  
-        .mypage-button::after {
-            content: '›';
-            font-size: 18px;
-            color: var(--color-primary);
-            font-weight: 700;
-        }
-  
-        /* 💎 예쁜 스탬프 리뉴얼 (30개에 맞게 수정) */
-        .stamp-grid {
-            /* 50개 -> 30개로 변경 (5열 배치) */
-            display: grid;
-            grid-template-columns: repeat(5, 1fr); /* 5열로 조정 */
-            gap: 12px; /* 간격 늘림 */
-            margin-top: 20px;
-            justify-items: center;
-        }
-  
-        .stamp-icon {
-            /* 크기 조정 */
-            width: 35px; /* 크기 키움 */
-            height: 35px; /* 크기 키움 */
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.4s;
-            position: relative;
-        }
-        
-        /* 스탬프 번호 스타일 */
-        .stamp-number {
-            position: absolute;
-            font-size: 12px; /* 글씨 크기 조정 */
-            font-weight: 700;
-            color: var(--color-text); /* 기본 텍스트 색상 */
-            text-align: center;
-            line-height: 1;
-            z-index: 10;
-        }
-        
-        .stamped .stamp-number {
-            color: white; /* 찍힌 스탬프는 흰색 */
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-        }
-  
-        .unstamped {
-            background: rgba(241, 245, 249, 0.6);
-            border: 1px solid rgba(224, 242, 254, 0.8);
-            box-shadow: inset 0 1px 3px rgba(74, 144, 226, 0.1);
-        }
-  
-        .stamped {
+        .stamp-item.filled {  
             background: radial-gradient(circle,   
-                rgba(59, 130, 246, 0.8) 0%,   
-                rgba(96, 165, 250, 0.6) 70%,   
-                rgba(147, 197, 253, 0.4) 100%);
-            border: 2px solid rgba(219, 234, 254, 0.9);
-            box-shadow:   
-                0 4px 12px rgba(59, 130, 246, 0.3),
-                inset 0 1px 3px rgba(255, 255, 255, 0.6);
-            animation: stampGlow 2s ease-in-out infinite alternate;
-        }
+                rgba(255, 107, 157, 0.8) 0%,   
+                rgba(255, 182, 193, 0.6) 70%);  
+            border: 2px solid rgba(255, 218, 185, 0.9);  
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);  
+        }  
   
-        @keyframes stampGlow {
-            from {
-                box-shadow:   
-                    0 4px 12px rgba(59, 130, 246, 0.3),
-                    inset 0 1px 3px rgba(255, 255, 255, 0.6);
-            }
-            to {
-                box-shadow:   
-                    0 6px 18px rgba(59, 130, 246, 0.5),
-                    inset 0 2px 5px rgba(255, 255, 255, 0.8);
-            }
-        }
+        .stamp-item.filled .stamp-number {  
+            color: white;  
+        }  
   
-        /* 🧭 하단 네비게이션 */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 100vw;
-            height: 80px;
+        /* 🧭 네비게이션 */  
+        .back-button {  
+            position: absolute;  
+            top: 20px;  
+            left: 16px;  
+            width: 44px;  
+            height: 44px;  
+            border-radius: 50%;  
+            background: linear-gradient(135deg,     
+                rgba(255, 255, 255, 0.9) 0%,     
+                rgba(240, 249, 255, 0.85) 100%);  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            cursor: pointer;  
+            transition: all 0.3s;  
+            box-shadow:     
+                0 6px 20px rgba(91, 155, 213, 0.2),  
+                0 2px 10px rgba(255, 255, 255, 0.8) inset;  
+            border: 1px solid rgba(255, 255, 255, 0.5);  
+        }  
+  
+        .back-button:hover {  
+            transform: translateY(-2px);  
+        }  
+  
+        .back-button svg {  
+            width: 24px;  
+            height: 24px;  
+            fill: var(--color-primary-blue);  
+        }  
+  
+        /* 하단 네비게이션 */  
+        .bottom-nav {  
+            position: fixed;  
+            bottom: 0;  
+            width: 100%;  
+            height: 80px;  
             background: linear-gradient(135deg,   
                 rgba(255, 255, 255, 0.98) 0%,   
-                rgba(240, 249, 255, 0.95) 100%);
-            backdrop-filter: blur(15px);
-            border-top: 1px solid var(--color-glass-border);
-            display: none;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 100;
-            box-shadow:   
-                0 -8px 30px rgba(74, 144, 226, 0.15),
-                0 -2px 10px rgba(255, 255, 255, 0.8);
-        }
-  
-        .bottom-nav.show {
-            display: flex;
-        }
-  
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--color-text-light);
-            font-size: 11px;
-            padding: 6px;
-            transition: all 0.3s;
-            flex: 1;
-            position: relative;
-        }
-  
-        .nav-item.active {
-            color: var(--color-primary);
-        }
-  
-        .nav-icon {
-            width: 30px;
-            height: 30px;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s;
-        }
-  
-        .nav-icon svg {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
-            transition: all 0.3s;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-        }
-  
-        .nav-item.active .nav-icon {
-            background: linear-gradient(135deg,   
-                rgba(135, 206, 235, 0.3) 0%,   
-                rgba(74, 144, 226, 0.2) 100%);
-            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
-        }
-  
-        .central-button {
-            background: linear-gradient(135deg,   
-                var(--color-primary) 0%,   
-                var(--color-accent) 100%) !important;
-            color: white !important;
-            border-radius: 20px;
-            padding: 8px 6px;
-            margin: -10px 3px;
-            box-shadow:   
-                0 8px 25px rgba(74, 144, 226, 0.4),
-                0 2px 10px rgba(255, 255, 255, 0.6) inset !important;
-            animation: centralPulse 3s ease-in-out infinite;
-        }
-  
-        @keyframes centralPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-  
-        .central-button .nav-icon svg {
-            fill: white !important;
-        }
-  
-        /* 🔄 필터 */
-        .filter-buttons {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-  
-        .filter-buttons button {
-            flex: 1;
-            padding: 14px;
-            border: 2px solid var(--color-primary);
-            background: transparent;
-            color: var(--color-primary);
-            font-weight: 600;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif;
-        }
-  
-        .filter-buttons button:hover {
-            background: var(--color-primary-lighter);
-            transform: translateY(-2px);
-        }
-  
-        .filter-buttons button.active {
-            background: linear-gradient(135deg,   
-                var(--color-primary) 0%,   
-                var(--color-accent) 100%);
-            color: white;
-            border: none;
-            transform: scale(1.02);
-            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
-        }
-  
-        /* 🎭 모달 */
-        .other-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1001;
-        }
-  
-        .other-modal.hide {
-            display: none;
-        }
-  
-        .modal-content {
-            background: linear-gradient(135deg,   
-                rgba(255, 255, 255, 0.98) 0%,   
-                rgba(240, 249, 255, 0.95) 100%);
-            border-radius: 24px;
-            padding: 30px;
-            width: 90%;
-            max-width: 420px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow:   
-                0 20px 50px rgba(74, 144, 226, 0.25),
-                0 8px 25px rgba(255, 255, 255, 0.9) inset,
-                0 2px 10px rgba(135, 206, 235, 0.3) inset;
-            border: 1px solid var(--color-glass-border);
-        }
-  
-        .modal-content h3 {
-            color: var(--color-primary);
-            margin-bottom: 25px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: 600;
-            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
-        }
-  
-        .textarea-input {
-            width: 100%;
-            min-height: 150px;
-            padding: 14px;
-            border: 2px solid var(--color-primary-lighter);
-            border-radius: 20px;
-            resize: none;
-            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif;
-            margin-bottom: 15px;
-            background: rgba(255, 255, 255, 0.8);
-        }
-  
-        .textarea-input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
-        }
-  
-        .image-area {
-            border: 2px dashed var(--color-primary-lighter);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: linear-gradient(135deg,   
-                rgba(255, 255, 255, 0.8) 0%,   
-                rgba(240, 249, 255, 0.7) 100%);
-        }
-  
-        .image-area:hover {
-            border-color: var(--color-primary);
-            background: var(--color-primary-lighter);
-            transform: translateY(-2px);
-        }
-  
-        /* 💡 메시지 */
-        .toast-message {
-            position: fixed;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg,   
-                var(--color-primary) 0%,   
-                var(--color-accent) 100%);
-            color: white;
-            padding: 18px 35px;
-            border-radius: 25px;
-            z-index: 2000;
-            box-shadow:   
-                0 10px 30px rgba(74, 144, 226, 0.3),
-                0 4px 15px rgba(255, 255, 255, 0.6) inset;
-            font-size: 14px;
-            font-weight: 500;
-            font-family: 'Nanum Round Gothic', 'Noto Sans KR', sans-serif;
-            animation: fadeInOut 3s ease-out forwards;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-  
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-            20% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            80% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-        }
-  
-        /* 👑 에디터 대시보드 */
-        .admin-header {
-            background: linear-gradient(135deg,   
-                var(--color-primary-light) 0%,   
-                var(--color-secondary) 100%);
-            border-radius: 24px;
-            padding: 35px;
-            margin-bottom: 20px;
-            text-align: center;
-            box-shadow:   
-                0 8px 25px rgba(74, 144, 226, 0.15),
-                0 4px 15px rgba(255, 255, 255, 0.8) inset;
-        }
-  
-        .admin-header h2 {
-            color: var(--color-black);
-            font-size: 26px;
-            margin-bottom: 12px;
-            font-weight: 600;
-            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.8);
-        }
-  
-        /* 🎠 애니메이션 */
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-  
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(25px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-  
-        /* 👻 숨김 */
-        .hide {
-            display: none !important;
-        }
-    </style>
-</head>
-<body>
-    <div id="loginModal" class="auth-modal">
-        <div class="auth-content">
-            <h2>로그인</h2>
-            <input type="email" id="loginEmail" class="auth-input" placeholder="이메일">
-            <input type="password" id="loginPassword" class="auth-input" placeholder="비밀번호">
-            <div class="checkbox-container">
-                <input type="checkbox" id="rememberMe">
-                <label for="rememberMe">로그인 정보 기억하기</label>
-            </div>
-            <button onclick="handleLogin()" class="auth-button">로그인</button>
-            <div class="auth-link">
-                <p style="color: var(--color-text-light); font-size: 12px; margin-bottom: 8px;">계정이 없으신가요?</p>
-                <button onclick="showSignup()">회원가입</button>
-            </div>
-        </div>
-    </div>
-  
-    <div id="signupModal" class="other-modal hide">
-        <div class="modal-content">
-            <h3>회원가입</h3>
-            <input type="email" id="signupEmail" class="auth-input" placeholder="이메일">
-            <input type="password" id="signupPassword" class="auth-input" placeholder="비밀번호 (8자 이상)">
-            <input type="password" id="signupPasswordConfirm" class="auth-input" placeholder="비밀번호 확인">
-            <button onclick="handleSignup()" class="auth-button">가입하기</button>
-            <button onclick="showLogin()" class="auth-button" style="background: transparent; border: 2px solid var(--color-primary); color: var(--color-primary); margin-top: 15px;">로그인으로 돌아가기</button>
-        </div>
-    </div>
-  
-    <div id="passwordModal" class="other-modal hide">
-        <div class="modal-content">
-            <h3>비밀번호 변경</h3>
-            <input type="password" id="currentPassword" class="auth-input" placeholder="현재 비밀번호">
-            <input type="password" id="newPassword" class="auth-input" placeholder="새 비밀번호 (8자 이상)">
-            <input type="password" id="newPasswordConfirm" class="auth-input" placeholder="새 비밀번호 확인">
-            <button onclick="handleChangePassword()" class="auth-button">비밀번호 변경</button>
-            <button onclick="closePasswordModal()" class="auth-button" style="background: transparent; border: 2px solid var(--color-primary); color: var(--color-primary); margin-top: 15px;">취소</button>
-        </div>
-    </div>
-  
-    <div id="writeModal" class="other-modal hide">
-        <div class="modal-content">
-            <h3>에디터톡 글쓰기</h3>
-            <textarea id="writeText" class="textarea-input" placeholder="내용을 입력하세요"></textarea>
-            <div class="image-area" onclick="document.getElementById('imageFile').click()">
-                <div style="font-size: 36px; margin-bottom: 12px;">📷</div>
-                <p>사진 추가하기</p>
-                <input type="file" id="imageFile" accept="image/*" style="display: none;" onchange="handleImageSelect(event)">
-            </div>
-            <button onclick="submitPost()" class="auth-button">게시하기</button>
-            <button onclick="closeWriteModal()" class="auth-button" style="background: transparent; border: 2px solid var(--color-primary); color: var(--color-primary); margin-top: 15px;">취소</button>
-        </div>
-    </div>
-
-    <div id="moodModal" class="other-modal hide">
-        <div class="modal-content">
-            <h3>오늘의 무드 기록</h3>
-            <div style="text-align: center; margin-bottom: 20px; font-size: 14px; color: var(--color-text-light);">
-                ${new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\./g, '-').trim()}
-            </div>
-            <textarea id="moodText" class="textarea-input" placeholder="오늘의 감정과 이유를 기록해보세요." style="min-height: 100px;"></textarea>
-            <div style="text-align: center; margin-bottom: 20px;">
-                <label for="moodEmoji" style="display: block; margin-bottom: 10px; font-weight: 600;">오늘의 기분 이모지 선택:</label>
-                <select id="moodEmoji" class="auth-input" style="width: auto; display: inline-block; padding: 10px 15px;">
-                    <option value="😊">😊 (행복)</option>
-                    <option value="😩">😩 (지침)</option>
-                    <option value="😭">😭 (슬픔)</option>
-                    <option value="😡">😡 (화남)</option>
-                    <option value="😌">😌 (평온)</option>
-                    <option value="🤔">🤔 (고민)</option>
-                </select>
-            </div>
-            <button onclick="submitMood()" class="auth-button">기록 완료 (스탬프 적립)</button>
-            <button onclick="closeMoodModal()" class="auth-button" style="background: transparent; border: 2px solid var(--color-primary); color: var(--color-primary); margin-top: 15px;">취소</button>
-        </div>
-    </div>
-  
-    <div id="appContainer" class="main-container">
-        </div>
-  
-    <nav id="bottomNav" class="bottom-nav">
-        <a href="#" class="nav-item active" data-tab="home">
-            <div class="nav-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-                </svg>
-            </div>
-            <span>홈</span>
-        </a>
-        <a href="#" class="nav-item" data-tab="letter">
-            <div class="nav-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                </svg>
-            </div>
-            <span>레터</span>
-        </a>
-        <a href="#" class="nav-item central-button" data-tab="mood">
-            <div class="nav-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-            </div>
-            <span>무드</span>
-        </a>
-        <a href="#" class="nav-item" data-tab="editor-talk">
-            <div class="nav-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
-                </svg>
-            </div>
-            <span>에디터톡</span>
-        </a>
-        <a href="#" class="nav-item" data-tab="mypage">
-            <div class="nav-icon">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-            </div>
-            <span>마이</span>
-        </a>
-    </nav>
-  
-    <script>
-        // 사용자 데이터
-        const users = [
-            { id: 'happxi@jahyu.com', name: '햅씨', password: 'admin123', role: 'super_admin', avatar: '햅' },
-            { id: 'elly@jahyu.com', name: '엘리', password: 'admin123', role: 'admin', avatar: '엘' },
-            { id: 'gokal@jahyu.com', name: '고칼', password: 'admin123', role: 'admin', avatar: '고' },
-            { id: 'yudan@jahyu.com', name: '유단', password: 'admin123', role: 'admin', avatar: '유' },
-            { id: 'sunny@jahyu.com', name: '써니', password: 'admin123', role: 'admin', avatar: '써' },
-            { id: 'hyeran@example.com', name: '혜란', password: 'user123', role: 'user', avatar: '혜' }
-        ];
-  
-        // 전역 변수
-        let currentUser = null;
-        let currentTab = 'home';
-        let userStamps = 45; // 사용자의 스탬프 수 (초기값) 
-        let selectedImage = null;
-        let letterFilter = '자휴레터';
-        let isLoggedIn = false;
-        
-        const MAX_STAMPS = 30; // 스탬프 최대 개수 (요청 반영)
-  
-        // 게시물 데이터
-        const posts = [
-            {
-                id: 1,
-                author: '엘리',
-                content: '새해 목표를 세워봤어요. 일주일에 3번 요가하기!',
-                date: '2025.12.10',
-                likes: 12,
-                comments: 3,
-                likedBy: [],
-                bookmarkedBy: [],
-                commentsData: [
-                    { id: 101, author: '혜란', content: '멋진 목표네요! 응원합니다!', date: '2025.12.10' },
-                    { id: 102, author: '햅씨', content: '엘리님 화이팅!💪', date: '2025.12.10' }
-                ]
-            },
-            {
-                id: 2,
-                author: '고칼',
-                content: '겨울 한정판 트렌디 카페 추천 리스트 정리 중!',
-                date: '2025.12.09',
-                likes: 8,
-                comments: 1,
-                likedBy: [],
-                bookmarkedBy: [],
-                commentsData: [
-                    { id: 201, author: '유단', content: '기대됩니다! 얼른 발행해주세요!', date: '2025.12.09' }
-                ]
-            },
-            {
-                id: 3,
-                author: '써니',
-                content: '오늘은 창문을 열고 햇살을 받으며 차 한잔~',
-                date: '2025.12.08',
-                likes: 15,
-                comments: 5,
-                likedBy: [],
-                bookmarkedBy: [],
-                commentsData: []
-            }
-        ];
-  
-        // 무드 데이터 (사용자 무드)
-        const moods = [
-            { id: 1, user: '혜란', content: '오늘 하루 너무 지쳤어요... 😭', mood: '😩', date: '2025.12.10', time: '14:30' },
-            { id: 2, user: '혜란', content: '햇살이 너무 좋았던 하루 😊', mood: '😊', date: '2025.12.09', time: '11:00' },
-            { id: 3, user: '엘리', content: '주말에 푹 쉬어야겠어요', mood: '😌', date: '2025.12.10', time: '17:00' }
-        ];
-  
-        // 날짜 관련 유틸리티
-        function getTodayDateString() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            return `${year}.${month}.${day}`;
-        }
-  
-        function getTimeString() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            return `${hours}:${minutes}`;
-        }
-  
-        // 페이지 초기화 - 자동 로그인 체크
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAutoLogin();
-            // 홈 화면 '레터 아카이브 바로가기' 버튼 클릭 이벤트 리스너 추가 (요청 반영)
-            document.getElementById('appContainer').addEventListener('click', function(e) {
-                const target = e.target.closest('.action-button[data-tab="letter"]');
-                if (target) {
-                    e.preventDefault();
-                    if (isLoggedIn) {
-                        renderTab('letter');
-                    } else {
-                        showToast('로그인이 필요합니다.');
-                        showLoginModal();
-                    }
-                }
-            });
-        });
-  
-        // 자동 로그인 체크
-        function checkAutoLogin() {
-            const savedEmail = localStorage.getItem('rememberedEmail');
-            const autoLogin = localStorage.getItem('autoLogin') === 'true';
-              
-            if (savedEmail && autoLogin) {
-                const user = users.find(u => u.id === savedEmail);
-                if (user) {
-                    currentUser = user;
-                    isLoggedIn = true;
-                    hideLoginModal();
-                    showMainApp();
-                    renderTab('home');
-                    showToast('자동 로그인 되었습니다! 안녕하세요 ' + user.name + '님!');
-                    document.getElementById('rememberMe').checked = true;
-                    return;
-                }
-            }
-              
-            showLoginModal();
-        }
-  
-        // 로그인 처리 (자동 로그인 기능 추가)
-        function handleLogin() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-            const rememberMe = document.getElementById('rememberMe').checked;
-              
-            if (!email || !password) {
-                showToast('이메일과 비밀번호를 입력해주세요.');
-                return;
-            }
-              
-            const user = users.find(u => u.id === email && u.password === password);
-            if (user) {
-                currentUser = user;
-                isLoggedIn = true;
-                  
-                // 자동 로그인 정보 저장
-                if (rememberMe) {
-                    localStorage.setItem('rememberedEmail', email);
-                    localStorage.setItem('autoLogin', 'true');
-                } else {
-                    localStorage.removeItem('rememberedEmail');
-                    localStorage.removeItem('autoLogin');
-                }
-                  
-                hideLoginModal();
-                showMainApp();
-                renderTab('home');
-                showToast('로그인 성공! 안녕하세요 ' + user.name + '님!');
-            } else {
-                showToast('이메일 또는 비밀번호가 올바르지 않습니다.');
-            }
-        }
-  
-        // 회원가입 처리
-        function handleSignup() {
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value.trim();
-            const confirm = document.getElementById('signupPasswordConfirm').value.trim();
-              
-            if (!email || !password || !confirm) {
-                showToast('모든 항목을 입력해주세요.');
-                return;
-            }
-              
-            if (password !== confirm) {
-                showToast('비밀번호가 일치하지 않습니다.');
-                return;
-            }
-              
-            if (password.length < 8) {
-                showToast('비밀번호는 8자 이상이어야 합니다.');
-                return;
-            }
-              
-            if (users.find(u => u.id === email)) {
-                showToast('이미 가입된 이메일입니다.');
-                return;
-            }
-              
-            const newUser = {
-                id: email,
-                name: email.split('@')[0],
-                password: password,
-                role: 'user',
-                avatar: email[0].toUpperCase()
-            };
-              
-            users.push(newUser);
-            showToast('회원가입이 완료되었습니다. 로그인해주세요.');
-            showLogin();
-        }
-  
-        // 비밀번호 변경 처리
-        function handleChangePassword() {
-            const current = document.getElementById('currentPassword').value.trim();
-            const newPass = document.getElementById('newPassword').value.trim();
-            const confirm = document.getElementById('newPasswordConfirm').value.trim();
-              
-            if (!current || !newPass || !confirm) {
-                showToast('모든 항목을 입력해주세요.');
-                return;
-            }
-              
-            if (current !== currentUser.password) {
-                showToast('현재 비밀번호가 올바르지 않습니다.');
-                return;
-            }
-              
-            if (newPass !== confirm) {
-                showToast('새 비밀번호가 일치하지 않습니다.');
-                return;
-            }
-              
-            if (newPass.length < 8) {
-                showToast('새 비밀번호는 8자 이상이어야 합니다.');
-                return;
-            }
-              
-            if (newPass === current) {
-                showToast('이전 비밀번호와 다른 비밀번호를 입력해주세요.');
-                return;
-            }
-              
-            // 비밀번호 변경
-            const userIndex = users.findIndex(u => u.id === currentUser.id);
-            users[userIndex].password = newPass;
-            currentUser.password = newPass;
-              
-            closePasswordModal();
-            showToast('비밀번호가 성공적으로 변경되었습니다!');
-        }
-  
-        // 모달 제어 함수
-        function showLoginModal() {
-            const savedEmail = localStorage.getItem('rememberedEmail');
-            if (savedEmail) {
-                document.getElementById('loginEmail').value = savedEmail;
-                document.getElementById('rememberMe').checked = true;
-            }
-            document.getElementById('loginModal').classList.remove('hide');
-        }
-  
-        function hideLoginModal() {
-            document.getElementById('loginModal').classList.add('hide');
-        }
-  
-        function showMainApp() {
-            document.getElementById('appContainer').classList.add('show');
-            document.getElementById('bottomNav').classList.add('show');
-        }
-  
-        function showSignup() {
-            document.getElementById('signupModal').classList.remove('hide');
-        }
-  
-        function showLogin() {
-            document.getElementById('signupModal').classList.add('hide');
-            document.getElementById('loginModal').classList.remove('hide');
-        }
-  
-        function openPasswordModal() {
-            document.getElementById('passwordModal').classList.remove('hide');
-        }
-  
-        function closePasswordModal() {
-            document.getElementById('passwordModal').classList.add('hide');
-            // 입력값 초기화
-            document.getElementById('currentPassword').value = '';
-            document.getElementById('newPassword').value = '';
-            document.getElementById('newPasswordConfirm').value = '';
-        }
-  
-        function openWriteModal() {
-            if (!currentUser || currentUser.role === 'user') {
-                showToast('글쓰기 권한이 없습니다.');
-                return;
-            }
-            document.getElementById('writeModal').classList.remove('hide');
-        }
-  
-        function closeWriteModal() {
-            document.getElementById('writeModal').classList.add('hide');
-            selectedImage = null;
-            document.getElementById('writeText').value = '';
-        }
-
-        function openWriteMoodModal() {
-            if (!currentUser) {
-                showToast('로그인이 필요합니다.');
-                return;
-            }
-  
-            // 오늘 이미 작성했는지 확인
-            const today = getTodayDateString();
-            const hasMoodToday = moods.some(m => m.user === currentUser.name && m.date === today);
-  
-            // 에디터도 스탬프 적립을 하므로, 모두 당일 1회 제한
-            if (hasMoodToday) {
-                showToast('오늘은 이미 무드를 기록했어요! 내일 다시 만나요 😊');
-                return;
-            }
-            
-            document.getElementById('moodModal').classList.remove('hide');
-        }
-  
-        function closeMoodModal() {
-            document.getElementById('moodModal').classList.add('hide');
-            document.getElementById('moodText').value = '';
-            document.getElementById('moodEmoji').value = '😊';
-        }
-  
-        function handleImageSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    selectedImage = e.target.result;
-                    const imageArea = event.target.parentElement;
-                    imageArea.innerHTML = `
-                        <img src="${selectedImage}" style="max-width: 100%; max-height: 200px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);">
-                        <p>사진 변경하기</p>
-                    `;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-  
-        function submitPost() {
-            const content = document.getElementById('writeText').value.trim();
-            if (!content) {
-                showToast('내용을 입력해주세요.');
-                return;
-            }
-  
-            const newPost = {
-                id: posts.length + 1,
-                author: currentUser.name,
-                content: content,
-                date: getTodayDateString(),
-                likes: 0,
-                comments: 0,
-                likedBy: [],
-                bookmarkedBy: [],
-                image: selectedImage,
-                commentsData: []
-            };
-  
-            posts.unshift(newPost);
-            closeWriteModal();
-            renderTab('editor-talk');
-            showToast('게시물이 작성되었습니다.');
-        }
-  
-        function submitMood() {
-            const content = document.getElementById('moodText').value.trim();
-            const emoji = document.getElementById('moodEmoji').value;
-  
-            if (!content) {
-                showToast('감정 기록 내용을 입력해주세요.');
-                return;
-            }
-  
-            // 오늘의 무드 작성 제한 다시 확인
-            const today = getTodayDateString();
-            const hasMoodToday = moods.some(m => m.user === currentUser.name && m.date === today);
-  
-            if (hasMoodToday) {
-                showToast('오늘은 이미 무드를 기록했어요! 내일 다시 만나요 😊');
-                return;
-            }
-  
-            const newMood = {
-                id: moods.length + 1,
-                user: currentUser.name,
-                content: content,
-                mood: emoji,
-                date: today,
-                time: getTimeString()
-            };
-  
-            moods.unshift(newMood);
-            closeMoodModal();
-  
-            // 스탬프 적립 (에디터도 적립되도록 수정)
-            if (userStamps < MAX_STAMPS) {
-                userStamps++;
-                showStampToast('스탬프가 적립되었습니다!');
-            } else {
-                showToast('무드가 기록되었습니다.');
-            }
-            
-            renderTab('mood');
-            updateUserStats();
-        }
-  
-        function submitComment(postId) {
-            const commentInput = document.getElementById(`commentInput-${postId}`);
-            const content = commentInput.value.trim();
-  
-            if (!content) {
-                showToast('댓글 내용을 입력해주세요.');
-                return;
-            }
-  
-            const post = posts.find(p => p.id === postId);
-            if (!post) return;
-  
-            const newComment = {
-                id: Date.now(),
-                author: currentUser.name,
-                content: content,
-                date: getTodayDateString()
-            };
-  
-            post.commentsData.unshift(newComment);
-            post.comments = post.commentsData.length;
-            
-            // 입력값 초기화
-            commentInput.value = '';
-  
-            // 스탬프 적립 (에디터도 적립되도록 수정)
-            if (userStamps < MAX_STAMPS) {
-                userStamps++;
-                showStampToast('스탬프가 적립되었습니다!');
-            } else {
-                showToast('댓글이 작성되었습니다.');
-            }
-  
-            // 상세 페이지 새로고침
-            renderTab('detail', postId);
-            updateUserStats();
-        }
-  
-        function handleLogout() {
-            if (confirm('로그아웃 하시겠습니까?')) {
-                // 자동 로그인 정보도 삭제
-                localStorage.removeItem('rememberedEmail');
-                localStorage.removeItem('autoLogin');
-                  
-                currentUser = null;
-                isLoggedIn = false;
-                document.getElementById('appContainer').classList.remove('show');
-                document.getElementById('bottomNav').classList.remove('show');
-                  
-                // 로그인 입력값 초기화
-                document.getElementById('loginEmail').value = '';
-                document.getElementById('loginPassword').value = '';
-                document.getElementById('rememberMe').checked = false;
-                  
-                showLoginModal();
-            }
-        }
-  
-        function showToast(message) {
-            const existingToast = document.querySelector('.toast-message');
-            if (existingToast) {
-                existingToast.remove();
-            }
-  
-            const toast = document.createElement('div');
-            toast.className = 'toast-message';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-              
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-  
-        function showStampToast(message) {
-            const existingToast = document.querySelector('.toast-message');
-            if (existingToast) {
-                existingToast.remove();
-            }
-  
-            const toast = document.createElement('div');
-            toast.className = 'toast-message';
-            toast.innerHTML = `<span style="font-size: 24px;">💎</span> ${message}`;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-  
-        // 버튼 클릭 이벤트 핸들러 (상세페이지 적용)
-        document.addEventListener('click', function handleButtonClicks(event) {
-            const target = event.target.closest('.action-btn');
-            if (!target) return;
-  
-            event.stopPropagation();
-              
-            // 하트 버튼일 경우
-            if (target.innerHTML.includes('❤️')) {
-                const postContainer = target.closest('.post-item, .glass-card');
-                const postId = parseInt(postContainer.getAttribute('data-post-id'));
-                if (postId) {
-                    const post = posts.find(p => p.id === postId);
-                    if (post) {
-                        // 현재 좋아요 상태
-                        const isLiked = post.likedBy.includes(currentUser.id);
-                          
-                        if (isLiked) {
-                            post.likes--;
-                            post.likedBy = post.likedBy.filter(id => id !== currentUser.id);
-                        } else {
-                            post.likes++;
-                            post.likedBy.push(currentUser.id);
-                        }
-                          
-                        // 즉시 화면 업데이트
-                        target.innerHTML = `❤️ ${post.likes}`;
-                        target.classList.toggle('active', !isLiked);
-                          
-                        // 업데이트 함수 호출
-                        updateUserStats();
-                    }
-                }
-            }
-        });
-  
-        // 기존 토글 함수들
-        function toggleLike(event, postId) {
-            event.stopPropagation();
-            const post = posts.find(p => p.id === postId);
-            if (!post) return;
-  
-            if (!currentUser) {
-                showToast('로그인이 필요합니다.');
-                return;
-            }
-  
-            const userIndex = post.likedBy.indexOf(currentUser.id);
-            if (userIndex > -1) {
-                post.likedBy.splice(userIndex, 1);
-                post.likes--;
-            } else {
-                post.likedBy.push(currentUser.id);
-                post.likes++;
-            }
-  
-            renderTab('editor-talk');
-            updateUserStats();
-        }
-  
-        function toggleBookmark(event, postId) {
-            event.stopPropagation();
-            const post = posts.find(p => p.id === postId);
-            if (!post) return;
-  
-            if (!currentUser) {
-                showToast('로그인이 필요합니다.');
-                return;
-            }
-  
-            const userIndex = post.bookmarkedBy.indexOf(currentUser.id);
-            if (userIndex > -1) {
-                post.bookmarkedBy.splice(userIndex, 1);
-            } else {
-                post.bookmarkedBy.push(currentUser.id);
-            }
-  
-            renderTab('editor-talk');
-            updateUserStats();
-        }
-  
-        // 사용자 통계 업데이트 함수
-        function updateUserStats() {
-            // 마이페이지 데이터 연동용 함수
-            // 실제로는 API 호출이나 상태 관리가 필요함
-            console.log('사용자 데이터 업데이트 완료');
-            // 스탬프 수 업데이트를 위해 마이페이지 다시 렌더링 (현재 탭이 마이페이지일 경우)
-            if (currentTab === 'mypage') {
-                renderTab('mypage');
-            }
-        }
-  
-        function filterLetters(category) {
-            letterFilter = category;
-            renderTab('letter');
-        }
-  
-        // 백버튼 기능
-        function goBack() {
-            if (currentTab === 'home') return;
-            renderTab('home');
-        }
-  
-        // 템플릿 함수들
-        function getHomeTemplate() {
-            return `
-                <div class="fade-in">
-                    <div class="main-header">
-                        <h1>햅삐님 오늘도 행복하세요!</h1>
-                        <p>메마른 일상에 휴식 한 방울!</p>
-                    </div>
-  
-                    <div class="glass-card bubble-animation">
-                        <div style="text-align: center; padding: 25px 0;">
-                            <h2 style="color: var(--color-primary); font-size: 22px; margin-bottom: 15px; font-weight: 600;">
-                                오늘은 어떤 힐링이 필요하세요?
-                            </h2>
-                            <p style="color: var(--color-text-light); margin-bottom: 25px; font-weight: 400;">
-                                자휴레터와 자휴랩을 주제별로 한 눈에!
-                            </p>
-                            <a href="#" class="action-button" data-tab="letter">레터 아카이브 바로가기</a>
-                        </div>
-                    </div>
-  
-                    <div class="action-group">
-                        <a href="http://pf.kakao.com/_Jfjxgn" class="action-item" target="_blank">
-                            <div class="icon-circle bubble-animation">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
-                                </svg>
-                            </div>
-                            <p>1:1 채팅</p>
-                        </a>
-                        <a href="http://pf.kakao.com/_Jfjxgn/111753149" class="action-item" target="_blank">
-                            <div class="icon-circle bubble-animation">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                                </svg>
-                            </div>
-                            <p>문장 수집</p>
-                        </a>
-                        <a href="https://index-html-zak5.vercel.app/" class="action-item" target="_blank">
-                            <div class="icon-circle bubble-animation">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-                                </svg>
-                            </div>
-                            <p>힐링테스트</p>
-                        </a>
-                        <a href="https://maily.so/happci/posts/2nzn7qegrp5" class="action-item" target="_blank">
-                            <div class="icon-circle bubble-animation">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                </svg>
-                            </div>
-                            <p>레터읽기</p>
-                        </a>
-                    </div>
-                </div>
-            `;
-        }
-  
-        function getLetterTemplate() {
-            const letterPosts = [
-                { title: '[자휴레터] 힐링 에세이 12월호', date: '2025.12.10', category: '자휴레터' },
-                { title: '[자휴랩] 주말 쉼의 기술', date: '2025.12.09', category: '자휴랩' },
-                { title: '[자휴레터] 일상의 작은 행복 찾기', date: '2025.12.08', category: '자휴레터' },
-                { title: '[자휴랩] 감성적인 카페 추천', date: '2025.12.07', category: '자휴랩' }
-            ];
-  
-            const filteredPosts = letterPosts.filter(post => post.category === letterFilter);
-  
-            return `
-                <div class="fade-in">
-                    <div class="back-button" onclick="goBack()">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                        </svg>
-                    </div>
-  
-                    <div class="main-header">
-                        <h2>레터 아카이브</h2>
-                    </div>
-  
-                    <div class="filter-buttons">
-                        <button class="${letterFilter === '자휴레터' ? 'active' : ''}" onclick="filterLetters('자휴레터')">자휴레터</button>
-                        <button class="${letterFilter === '자휴랩' ? 'active' : ''}" onclick="filterLetters('자휴랩')">자휴랩</button>
-                    </div>
-  
-                    <div>
-                        ${filteredPosts.map(post => `
-                            <div class="post-item">
-                                <div class="post-header">
-                                    <div class="post-avatar">자</div>
-                                    <div class="post-info">
-                                        <h4>${post.title}</h4>
-                                        <p>${post.date}</p>
-                                    </div>
-                                </div>
-                                <div class="post-actions">
-                                    <button class="action-btn">❤️ 좋아요</button>
-                                    <button class="action-btn">💬 댓글</button>
-                                    <button class="action-btn">🔖 북마크</button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-  
-        function getEditorTalkTemplate() {
-            const isAdmin = currentUser && currentUser.role !== 'user';
-              
-            return `
-                <div class="fade-in">
-                    <div class="back-button" onclick="goBack()">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                        </svg>
-                    </div>
-  
-                    <div class="main-header">
-                        <h2>에디터톡</h2>
-                        <p>에디터의 일상을 더 가까이에서 만나보세요!</p>
-                    </div>
-  
-                    ${isAdmin ? `
-                        <button onclick="openWriteModal()" class="action-button" style="width: 100%; margin-bottom: 20px;">
-                            ✍️ 글쓰기
-                        </button>
-                    ` : ''}
-  
-                    <div>
-                        ${posts.map(post => {
-                            const userColor = getUserColor(post.author);
-                            const authorProfile = users.find(u => u.name === post.author);
-                            const avatar = authorProfile ? authorProfile.avatar : '자';
-                            return `
-                                <div class="post-item" onclick="showPostDetail(${post.id})">
-                                    <div class="post-header">
-                                        <div class="post-avatar" style="background: ${userColor}">${avatar}</div>
-                                        <div class="post-info">
-                                            <h4>${post.author}</h4>
-                                            <p>${post.date}</p>
-                                        </div>
-                                    </div>
-                                    <div class="post-content">${post.content}</div>
-                                    ${post.image ? `<img src="${post.image}" alt="게시물 이미지" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 12px;">` : ''}
-                                    <div class="post-actions">
-                                        <button class="action-btn ${post.likedBy.includes(currentUser?.id) ? 'active' : ''}" onclick="toggleLike(event, ${post.id})">
-                                            ❤️ ${post.likes}
-                                        </button>
-                                        <button class="action-btn">
-                                            💬 ${post.comments}
-                                        </button>
-                                        <button class="action-btn ${post.bookmarkedBy.includes(currentUser?.id) ? 'active' : ''}" onclick="toggleBookmark(event, ${post.id})">
-                                            🔖
-                                        </button>
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                </div>
-            `;
-        }
-  
-        function getMoodTemplate() {
-            if (currentUser && currentUser.role === 'super_admin') {
-                return getAdminMoodTemplate();
-            }
-  
-            const today = getTodayDateString();
-            const hasMoodToday = currentUser && moods.some(m => m.user === currentUser.name && m.date === today);
-            const buttonText = hasMoodToday ? '오늘의 무드 기록 완료 ✅' : '무드 기록 작성';
-            const buttonDisabled = hasMoodToday; // 에디터도 스탬프 적립하므로 당일 1회만 허용
-  
-            return `
-                <div class="fade-in">
-                    <div class="back-button" onclick="goBack()">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                        </svg>
-                    </div>
-  
-                    <div class="main-header">
-                        <h2>오늘의 무드</h2>
-                        <p>당신의 감정을 기록해보세요</p>
-                    </div>
-  
-                    <div class="glass-card bubble-animation" style="text-align: center; padding: 60px 20px; min-height: 300px;">
-                        <p style="font-size: 18px; color: var(--color-text-light); margin-bottom: 30px; font-weight: 400;">
-                            여기에 월간/주간 무드 트래커가 시각화됩니다
-                        </p>
-                        <div style="font-size: 64px; margin-bottom: 30px;">📊</div>
-                        <button onclick="openWriteMoodModal()" class="action-button" ${buttonDisabled ? 'disabled' : ''}>
-                            ${buttonText}
-                        </button>
-                        ${buttonDisabled ? '<p style="font-size: 12px; color: red; margin-top: 10px;">오늘은 이미 스탬프가 적립되었어요!</p>' : ''}
-                    </div>
-                </div>
-            `;
-        }
-  
-        function getAdminMoodTemplate() {
-            const adminMoods = [...moods].sort((a, b) => new Date(b.date) - new Date(a.date));
-  
-            return `
-                <div class="fade-in">
-                    <div class="back-button" onclick="goBack()">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                        </svg>
-                    </div>
-  
-                    <div class="admin-header">
-                        <h2>👑 관리자 대시보드</h2>
-                        <p>모든 햅삐님들의 감정을 살펴보세요</p>
-                    </div>
-  
-                    ${adminMoods.map(mood => {
-                        const userColor = getUserColor(mood.user);
-                        const avatar = users.find(u => u.name === mood.user)?.avatar || '사';
-                        return `
-                            <div class="glass-card bubble-animation" style="max-height: none; min-height: 150px;">
-                                <div class="post-header">
-                                    <div class="post-avatar" style="background: ${userColor}">${avatar}</div>
-                                    <div class="post-info">
-                                        <h4>${mood.user}</h4>
-                                        <p>${mood.date} ${mood.time}</p>
-                                    </div>
-                                </div>
-                                <div style="margin-top: 10px;">
-                                    <p style="margin-bottom: 10px; font-size: 16px;"><strong>${mood.mood} ${mood.content}</strong></p>
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
-        }
-  
-        function getMyPageTemplate() {
-            const isVIP = userStamps >= MAX_STAMPS;
-              
-            return `
-                <div class="fade-in">
-                    <div class="back-button" onclick="goBack()">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                        </svg>
-                    </div>
-  
-                    <div class="main-header">
-                        <h2>${isVIP ? '⭐ VIP 햅삐님!' : 'My Space'}</h2>
-                        <p style="font-weight: 400;">${isVIP ? '특별한 혜택을 즐겨보세요!' : '오늘도 자휴레터와 함께해요'}</p>
-                    </div>
-  
-                    <ul class="mypage-menu">
-                        <li><button class="mypage-button" onclick="showContentList('mypost')">내가 쓴 글</button></li>
-                        <li><button class="mypage-button" onclick="showContentList('mycomment')">나의 댓글</button></li>
-                        <li><button class="mypage-button" onclick="showContentList('mylike')">좋아요한 글</button></li>
-                        <li><button class="mypage-button" onclick="showContentList('mybookmark')">북마크한 글</button></li>
-                        <li><button class="mypage-button" onclick="showContentList('mystamp')">자휴스탬프 현황 (${userStamps}개)</button></li>
-                        ${currentUser && currentUser.role !== 'user' ? `
-                            <li><button class="mypage-button" onclick="showAdminPanel()">관리자 패널</button></li>
-                        ` : ''}
-                        <li><button class="mypage-button" onclick="openPasswordModal()">비밀번호 변경</button></li>
-                        <li><button class="mypage-button" onclick="handleLogout()">로그아웃</button></li>
-                    </ul>
-  
-                    <div class="glass-card bubble-animation">
-                        <h3 style="color: var(--color-primary); margin-bottom: 25px; text-align: center;">나의 자휴 스탬프</h3>
-                        <div class="stamp-grid">
-                            ${Array(MAX_STAMPS).fill(0).map((_, index) => `
-                                <div class="stamp-icon ${index < userStamps ? 'stamped' : 'unstamped'}">
-                                    <span class="stamp-number">${index + 1}</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <p style="text-align: center; margin-top: 25px; font-size: 12px; color: var(--color-text)">
-                            *오늘의 무드 또는 에디터톡 댓글 작성시 스탬프가 적립됩니다! ${MAX_STAMPS}개 모으신 화면을 캡쳐해서 자휴레터 카카오톡채널로 보내주세요! 어느날 스폐셜레터가 도착할지도 몰로요!❤️
-                        </p>
-                    </div>
-                </div>
-            `;
-        }
-  
-        // --- 상세 페이지 및 보조 템플릿 함수 ---
-  
-        // 포스트 상세 페이지 템플릿
-        function getPostDetailTemplate(post) {
-            const userColor = getUserColor(post.author);
-            const authorProfile = users.find(u => u.name === post.author);
-            const avatar = authorProfile ? authorProfile.avatar : '자';
-  
-            // 댓글 목록 렌더링
-            const commentsHtml = post.commentsData.map(comment => {
-                const commentUser = users.find(u => u.name === comment.author);
-                const commentAvatar = commentUser ? commentUser.avatar : '사';
-                const commentUserColor = getUserColor(comment.author);
-                return `
-                    <div style="display: flex; gap: 10px; margin-bottom: 15px; padding: 10px; border-radius: 12px; background: rgba(240, 249, 255, 0.7);">
-                        <div class="post-avatar" style="width: 32px; height: 32px; font-size: 14px; background: ${commentUserColor}">${commentAvatar}</div>
-                        <div style="flex-grow: 1;">
-                            <p style="font-size: 14px; font-weight: 600; color: var(--color-text);">${comment.author}</p>
-                            <p style="font-size: 13px; color: var(--color-text); line-height: 1.4; margin-top: 3px;">${comment.content}</p>
-                            <p style="font-size: 11px; color: var(--color-text-light); margin-top: 5px;">${comment.date}</p>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-  
-  
-            return `
-                <div class="fade-in">
-                    <div class="back-button" onclick="renderTab('editor-talk')">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                        </svg>
-                    </div>
-  
-                    <div class="main-header" style="padding-top: 70px;">
-                        <h2>에디터톡 상세</h2>
-                        <p>${post.author}님의 일상</p>
-                    </div>
-  
-                    <div class="glass-card bubble-animation" data-post-id="${post.id}" style="min-height: auto; max-height: none;">
-                        <div class="post-header" style="margin-bottom: 20px;">
-                            <div class="post-avatar" style="background: ${userColor}">${avatar}</div>
-                            <div class="post-info">
-                                <h4>${post.author}</h4>
-                                <p>${post.date}</p>
-                            </div>
-                        </div>
-                        
-                        ${post.image ? `<img src="${post.image}" alt="게시물 이미지" class="post-image" style="height: auto; max-height: 400px; margin-bottom: 20px;">` : ''}
-  
-                        <div class="post-content" style="font-size: 16px; margin-bottom: 25px;">
-                            ${post.content.split('\n').map(p => `<p>${p}</p>`).join('')}
-                        </div>
-  
-                        <div class="post-actions" style="margin-top: 10px;">
-                            <button class="action-btn ${post.likedBy.includes(currentUser?.id) ? 'active' : ''}" onclick="toggleLike(event, ${post.id})">
-                                ❤️ ${post.likes}
-                            </button>
-                            <button class="action-btn">
-                                💬 ${post.comments}
-                            </button>
-                            <button class="action-btn ${post.bookmarkedBy.includes(currentUser?.id) ? 'active' : ''}" onclick="toggleBookmark(event, ${post.id})">
-                                🔖
-                            </button>
-                        </div>
-                    </div>
-  
-                    <div class="glass-card bubble-animation" style="min-height: 100px; max-height: none;">
-                        <h3 style="color: var(--color-text); font-size: 18px; margin-bottom: 15px;">댓글 (${post.comments})</h3>
-                        
-                        ${commentsHtml}
-  
-                        <textarea id="commentInput-${post.id}" class="textarea-input" placeholder="댓글을 입력하세요..." style="min-height: 80px; margin-top: 15px;"></textarea>
-                        <button onclick="submitComment(${post.id})" class="action-button" style="padding: 10px 20px; font-size: 14px; width: 100%;">댓글 등록 (스탬프 적립)</button>
-                    </div>
-                </div>
-            `;
-        }
-  
-        // 마이페이지 서브 콘텐츠 목록 템플릿
-        function getContentListTemplate(type) {
-            const titles = {
-                'mypost': '내가 쓴 글',
-                'mycomment': '나의 댓글',
-                'mylike': '좋아요한 글',
-                'mybookmark': '북마크한 글',
-                'mystamp': '자휴 스탬프 상세'
-            };
-            const title = titles[type] || '콘텐츠 목록';
-  
-            return `
-                <div class="fade-in">
-                    <div class="back-button" onclick="renderTab('mypage')">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                        </svg>
-                    </div>
-  
-                    <div class="main-header" style="padding-top: 70px;">
-                        <h2>${title}</h2>
-                        <p>${currentUser.name}님의 활동 내역</p>
-                    </div>
-  
-                    <div class="glass-card bubble-animation" style="min-height: 300px; max-height: none;">
-                        <p style="color: var(--color-text-light); font-weight: 500; margin-bottom: 15px;">
-                            ${type === 'mystamp' ? `현재 스탬프: ${userStamps}개 / 최대 ${MAX_STAMPS}개` : '[데이터 연동 영역]'} ${title} 목록이 여기에 표시됩니다.
-                        </p>
-                        <div style="border-top: 1px solid var(--color-primary-lighter); padding-top: 15px;">
-                            <p style="font-size: 14px; margin-bottom: 8px;">- 2025.12.10: 테스트 게시물 제목</p>
-                            <p style="font-size: 14px; margin-bottom: 8px;">- 2025.12.09: 감성적인 하루</p>
-                            <p style="font-size: 14px;">- 2025.12.08: 자휴랩 기획 회의</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-  
-        // --- 유틸리티 함수 ---
-  
-        // 사용자 이름에 따른 색상 (임시)
-        function getUserColor(name) {
-            switch (name) {
-                case '햅씨': return '#4A90E2';
-                case '엘리': return '#87CEEB';
-                case '고칼': return '#6BB6FF';
-                case '유단': return '#4A7FC7';
-                case '써니': return '#B6E3F7';
-                case '혜란': return '#E8F4F8';
-                default: return '#D3D3D3';
-            }
-        }
-  
-        // --- 메인 렌더링 및 이벤트 핸들러 ---
-  
-        const appContainer = document.getElementById('appContainer');
-        const bottomNav = document.getElementById('bottomNav');
-  
-        function renderTab(tabName, postId = null) {
-            currentTab = tabName;
-            appContainer.innerHTML = '';
-            
-            // 네비게이션 활성화 상태 업데이트
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            const activeNav = document.querySelector(`.nav-item[data-tab="${tabName}"]`);
-            if (activeNav) activeNav.classList.add('active');
-  
-            if (postId) {
-                const post = posts.find(p => p.id === postId);
-                if (post) {
-                    appContainer.innerHTML = getPostDetailTemplate(post);
-                    appContainer.classList.add('show');
-                    bottomNav.classList.add('show');
-                    return;
-                }
-            }
-  
-            switch (tabName) {
-                case 'home':
-                    appContainer.innerHTML = getHomeTemplate();
-                    break;
-                case 'letter':
-                    appContainer.innerHTML = getLetterTemplate();
-                    break;
-                case 'editor-talk':
-                    appContainer.innerHTML = getEditorTalkTemplate();
-                    break;
-                case 'mood':
-                    appContainer.innerHTML = getMoodTemplate();
-                    break;
-                case 'mypage':
-                    appContainer.innerHTML = getMyPageTemplate();
-                    break;
-                default:
-                    appContainer.innerHTML = `<div class="main-header"><h2>페이지를 찾을 수 없습니다.</h2></div>`;
-            }
-  
-            appContainer.classList.add('show');
-            bottomNav.classList.add('show');
-            window.scrollTo(0, 0); // 페이지 상단으로 스크롤
-        }
-  
-        function showPostDetail(postId) {
-             if (!isLoggedIn) {
-                showToast('로그인이 필요합니다.');
-                return;
-            }
-            // 에디터톡 상세 페이지 렌더링
-            renderTab('detail', postId);
-        }
-  
-        function showContentList(type) {
-            // 마이페이지 서브 콘텐츠 목록 렌더링
-            appContainer.innerHTML = getContentListTemplate(type);
-            window.scrollTo(0, 0);
-        }
-  
-        // 네비게이션 이벤트 리스너
-        bottomNav.addEventListener('click', function(e) {
-            const navItem = e.target.closest('.nav-item');
-            if (navItem && navItem.hasAttribute('data-tab')) {
-                e.preventDefault();
-                const tabName = navItem.getAttribute('data-tab');
+                rgba(240, 248, 255, 0.95) 100%);  
+            backdrop-filter: blur(15px);  
+            border-top: 1px solid rgba(255, 255, 255, 0.6);  
+            display: none;  
+            justify-content: space-around;  
+            align-items: center;  
+            z-index: 100;  
+            box-shadow: 0 -8px 30px rgba(91, 155, 213, 0.15);  
+        }  
+  
+        .bottom-nav.show {  
+            display: flex;  
+        }  
+  
+        .nav-item {  
+            display: flex;  
+            flex-direction: column;  
+            align-items: center;  
+            text-decoration: none;  
+            color: var(--color-text-medium);  
+            font-size: 11px;  
+            padding: 6px;  
+            transition: all 0.3s;  
+            flex: 1;  
+            position: relative;  
+        }  
+  
+        .nav-item.active {  
+            color: var(--color-primary-blue);  
+        }  
+  
+        .nav-icon {  
+            width: 30px;  
+            height: 30px;  
+            margin-bottom: 4px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            border-radius: 50%;  
+            transition: all 0.3s;  
+        }  
+  
+        .nav-icon svg {  
+            width: 24px;  
+            height: 24px;  
+            fill: currentColor;  
+            transition: all 0.3s;  
+        }  
+  
+        .central-button {  
+            background: linear-gradient(135deg,     
+                var(--color-primary-pink) 0%,     
+                var(--color-lavender) 100%) !important;  
+            color: white !important;  
+            border-radius: 20px;  
+            padding: 8px 6px;  
+            margin: -10px 3px;  
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);  
+        }  
+  
+        /* 모달 */  
+        .other-modal {  
+            position: fixed;  
+            top: 0;  
+            left: 0;  
+            width: 100%;  
+            height: 100%;  
+            background: rgba(0, 0, 0, 0.6);  
+            backdrop-filter: blur(8px);  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            z-index: 1001;  
+        }  
+  
+        .other-modal.hide {  
+            display: none;  
+        }  
+  
+        .modal-content {  
+            background: linear-gradient(135deg,     
+                rgba(255, 255, 255, 0.98) 0%,     
+                rgba(240, 249, 255, 0.95) 100%);  
+            border-radius: 24px;  
+            padding: 30px;  
+            width: 90%;  
+            max-width: 420px;  
+            max-height: 90vh;  
+            overflow-y: auto;  
+            box-shadow: 0 20px 50px rgba(91, 155, 213, 0.25);  
+        }  
+  
+        .modal-content h3 {  
+            color: var(--color-primary-blue);  
+            margin-bottom: 25px;  
+            text-align: center;  
+            font-size: 24px;  
+            font-weight: 600;  
+        }  
+  
+        /* 메시지 */  
+        .toast-message {  
+            position: fixed;  
+            top: 30px;  
+            left: 50%;  
+            transform: translateX(-50%);  
+            background: linear-gradient(135deg,     
+                var(--color-primary-pink) 0%,     
+                var(--color-lavender) 100%);  
+            color: white;  
+            padding: 18px 35px;  
+            border-radius: 25px;  
+            z-index: 2000;  
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);  
+            font-size: 14px;  
+            font-weight: 500;  
+            animation: fadeInOut 3s ease-out forwards;  
+        }  
+  
+        @keyframes fadeInOut {  
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }  
+            20% { opacity: 1; transform: translateX(-50%) translateY(0); }  
+            80% { opacity: 1; transform: translateX(-50%) translateY(0); }  
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }  
+        }  
+  
+        .fade-in {  
+            animation: fadeIn 0.6s ease-out;  
+        }  
+  
+        @keyframes fadeIn {  
+            from { opacity: 0; transform: translateY(25px); }  
+            to { opacity: 1; transform: translateY(0); }  
+        }  
+  
+        .hide {  
+            display: none !important;  
+        }  
+  
+        /* 마이페이지 */  
+        .mypage-menu {  
+            list-style: none;  
+            padding: 0;  
+        }  
+  
+        .mypage-menu li {  
+            margin-bottom: 14px;  
+        }  
+  
+        .mypage-button {  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+            width: 100%;  
+            padding: 16px;  
+            border: none;  
+            background: linear-gradient(135deg,     
+                rgba(255, 255, 255, 0.95) 0%,     
+                rgba(240, 249, 255, 0.9) 100%);  
+            border-radius: 20px;  
+            font-weight: 500;  
+            cursor: pointer;  
+            transition: all 0.3s;  
+            text-align: left;  
+            font-size: 15px;  
+            color: var(--color-text-dark);  
+            box-shadow: 0 4px 15px rgba(91, 155, 213, 0.08);  
+        }  
+  
+        .mypage-button:hover {  
+            background: var(--color-light-blue);  
+            transform: translateY(-2px);  
+        }  
+  
+        .mypage-button::after {  
+            content: '›';  
+            font-size: 18px;  
+            color: var(--color-primary-blue);  
+            font-weight: 700;  
+        }  
+  
+        /* 카테고리 색상 */  
+        .category-letter { background: linear-gradient(135deg, var(--color-sky-blue) 0%, var(--color-primary-blue) 100%); }  
+        .category-lab { background: linear-gradient(135deg, var(--color-primary-pink) 0%, var(--color-light-pink) 100%); }  
+    </style>  
+</head>  
+<body>  
+    <!-- 핑크라벤더 로그인 모달 -->  
+    <div id="loginModal" class="auth-modal">  
+        <div class="auth-content">  
+            <h2>로그인</h2>  
+            <input type="email" id="loginEmail" class="auth-input" placeholder="이메일">  
+            <input type="password" id="loginPassword" class="auth-input" placeholder="비밀번호">  
+            <div class="checkbox-container">  
+                <input type="checkbox" id="rememberMe">  
+                <label for="rememberMe">로그인 정보 기억하기</label>  
+            </div>  
+            <button onclick="handleLogin()" class="auth-button">로그인</button>  
+            <div class="auth-link">  
+                <p style="color: var(--color-text-medium); font-size: 12px; margin-bottom: 8px;">계정이 없으신가요?</p>  
+                <button onclick="showSignup()">회원가입</button>  
+            </div>  
+        </div>  
+    </div>  
+  
+    <!-- 회원가입 모달 -->  
+    <div id="signupModal" class="other-modal hide">  
+        <div class="modal-content">  
+            <h3>회원가입</h3>  
+            <input type="email" id="signupEmail" class="auth-input" placeholder="이메일">  
+            <input type="password" id="signupPassword" class="auth-input" placeholder="비밀번호 (8자 이상)">  
+            <input type="password" id="signupPasswordConfirm" class="auth-input" placeholder="비밀번호 확인">  
+            <button onclick="handleSignup()" class="auth-button">가입하기</button>  
+            <button onclick="showLogin()" class="auth-button" style="background: transparent; border: 2px solid var(--color-primary-pink); color: var(--color-primary-pink); margin-top: 15px;">로그인으로 돌아가기</button>  
+        </div>  
+    </div>  
+  
+    <!-- 글쓰기 모달 -->  
+    <div id="writeModal" class="other-modal hide">  
+        <div class="modal-content">  
+            <h3>레터 아카이브 글쓰기</h3>  
+            <div class="category-filter">  
+                <button class="category-btn active" data-category="letter">자휴레터</button>  
+                <button class="category-btn" data-category="lab">자휴랩</button>  
+            </div>  
+            <textarea id="writeText" class="auth-input" placeholder="내용을 입력하세요" style="height: 120px; resize: none;"></textarea>  
+            <div onclick="document.getElementById('imageFile').click()" style="border: 2px dashed var(--color-light-blue); border-radius: 20px; padding: 30px; text-align: center; margin: 20px 0; cursor: pointer; background: rgba(240, 249, 255, 0.5);">  
+                <div style="font-size: 36px; margin-bottom: 12px;">📷</div>  
+                <p style="color: var(--color-text-medium);">사진 추가하기</p>  
+                <input type="file" id="imageFile" accept="image/*" style="display: none;" onchange="handleImageSelect(event)">  
+            </div>  
+            <button onclick="submitLetter()" class="auth-button">게시하기</button>  
+            <button onclick="closeWriteModal()" class="auth-button" style="background: transparent; border: 2px solid var(--color-primary-pink); color: var(--color-primary-pink); margin-top: 15px;">취소</button>  
+        </div>  
+    </div>  
+  
+    <!-- 상세 페이지 모달 -->  
+    <div id="detailModal" class="other-modal hide">  
+        <div class="modal-content" style="max-width: 90%;">  
+            <div id="detailContent"></div>  
+        </div>  
+    </div>  
+  
+    <!-- 메인 컨테이너 -->  
+    <div id="appContainer" class="main-container">  
+    </div>  
+  
+    <!-- 하단 네비게이션 -->  
+    <nav id="bottomNav" class="bottom-nav">  
+        <a href="#" class="nav-item active" data-tab="home">  
+            <div class="nav-icon">  
+                <svg viewBox="0 0 24 24">  
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>  
+                </svg>  
+            </div>  
+            <span>홈</span>  
+        </a>  
+        <a href="#" class="nav-item" data-tab="letter">  
+            <div class="nav-icon">  
+                <svg viewBox="0 0 24 24">  
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>  
+                </svg>  
+            </div>  
+            <span>레터</span>  
+        </a>  
+        <a href="#" class="nav-item central-button" data-tab="mood">  
+            <div class="nav-icon">  
+                <svg viewBox="0 0 24 24">  
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>  
+                </svg>  
+            </div>  
+            <span>무드</span>  
+        </a>  
+        <a href="#" class="nav-item" data-tab="mypage">  
+            <div class="nav-icon">  
+                <svg viewBox="0 0 24 24">  
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>  
+                </svg>  
+            </div>  
+            <span>마이</span>  
+        </a>  
+    </nav>  
+  
+    <script>  
+        // 사용자 데이터  
+        const users = [  
+            { id: 'happxi@jahyu.com', name: '햅씨', password: 'admin123', role: 'super_admin', avatar: '햅' },  
+            { id: 'elly@jahyu.com', name: '엘리', password: 'admin123', role: 'admin', avatar: '엘' },  
+            { id: 'gokal@jahyu.com', name: '고칼', password: 'admin123', role: 'admin', avatar: '고' },  
+            { id: 'yudan@jahyu.com', name: '유단', password: 'admin123', role: 'admin', avatar: '유' },  
+            { id: 'sunny@jahyu.com', name: '써니', password: 'admin123', role: 'admin', avatar: '써' },  
+            { id: 'hyeran@example.com', name: '혜란', password: 'user123', role: 'user', avatar: '혜' }  
+        ];  
+  
+        // 전역 변수  
+        let currentUser = null;  
+        let currentTab = 'home';  
+        let userStamps = 0;  
+        let selectedImage = null;  
+        let letterFilter = 'all';  
+        let isLoggedIn = false;  
+        const MAX_STAMPS = 30;  
+  
+        // 레터 데이터  
+        const letters = [  
+            {  
+                id: 1,  
+                author: '햅씨',  
+                category: 'letter',  
+                title: '12월 첫 번째 자휴레터',  
+                content: '겨울이 되면 창밖을 보며 따뜻한 차 한잔의 여유를 즐겁니다. 여러분의 오늘은 어떤가요? 작은 행복을 찾아보시는 시간을 가져보길 추천합니다.',  
+                date: '2025.12.10',  
+                image: null,  
+                likes: 25,  
+                comments: 8,  
+                likedBy: [],  
+                bookmarkedBy: [],  
+                commentsData: [  
+                    { id: 101, author: '혜란', content: '정말 공감돼요! 오늘도 차 한잔 하며 쉬었어요!', date: '2025.12.10' },  
+                    { id: 102, author: '엘리', content: '햅씨님의 글은 항상 마음을 안정시켜줘요❤️', date: '2025.12.10' }  
+                ]  
+            },  
+            {  
+                id: 2,  
+                author: '엘리',  
+                category: 'lab',  
+                title: '주말의 가장 완벽한 휴식 방법',  
+                content: '주말을 알차게 보내는 것도 중요하지만, 때로는 아무것도 하지 않는 것도 휴식이 될 수 있습니다. 소파에 누워 멍 때리는 시간의 소중함!',  
+                date: '2025.12.09',  
+                image: null,  
+                likes: 18,  
+                comments: 5,  
+                likedBy: [],  
+                bookmarkedBy: [],  
+                commentsData: []  
+            },  
+            {  
+                id: 3,  
+                author: '고칼',  
+                category: 'letter',  
+                title: '계절의 끝자락에서 느끼는 따스함',  
+                content: '가을과 겨울의 경계에 서서 느끼는 온도가 특별합니다. 바람이 스치는 순간마다 계절의 이야기가 담겨있죠.',  
+                date: '2025.12.08',  
+                image: null,  
+                likes: 32,  
+                comments: 12,  
+                likedBy: [],  
+                bookmarkedBy: [],  
+                commentsData: []  
+            }  
+        ];  
+  
+        // 날짜 유틸리티  
+        function getTodayDateString() {  
+            const now = new Date();  
+            const year = now.getFullYear();  
+            const month = String(now.getMonth() + 1).padStart(2, '0');  
+            const day = String(now.getDate()).padStart(2, '0');  
+            return `${year}.${month}.${day}`;  
+        }  
+  
+        // 초기화  
+        document.addEventListener('DOMContentLoaded', function() {  
+            checkAutoLogin();  
+        });  
+  
+        // 자동 로그인 체크  
+        function checkAutoLogin() {  
+            const savedEmail = localStorage.getItem('rememberedEmail');  
+            const autoLogin = localStorage.getItem('autoLogin') === 'true';  
                 
-                // 로그인 필요 시 체크
-                if (!isLoggedIn && tabName !== 'home') {
-                    showToast('로그인이 필요합니다.');
-                    showLoginModal();
-                    return;
-                }
+            if (savedEmail && autoLogin) {  
+                const user = users.find(u => u.id === savedEmail);  
+                if (user) {  
+                    currentUser = user;  
+                    isLoggedIn = true;  
+                    hideLoginModal();  
+                    showMainApp();  
+                    renderTab('home');  
+                    showToast('자동 로그인 되었습니다! 안녕하세요 ' + user.name + '님!');  
+                    document.getElementById('rememberMe').checked = true;  
+                    return;  
+                }  
+            }  
                 
-                renderTab(tabName);
-            }
-        });
-        
-        // 햅씨 관리자 패널 (임시)
-        function showAdminPanel() {
-            if (currentUser && currentUser.role !== 'user') {
-                showToast('관리자 패널로 이동합니다.');
-                // 실제 관리자 페이지로 이동 (여기서는 임시로 Mood 탭으로 이동)
-                renderTab('mood');
-            } else {
-                showToast('관리자 권한이 없습니다.');
-            }
-        }
-    </script>
-</body>
-</html>
+            showLoginModal();  
+        }  
+  
+        // 로그인 처리  
+        function handleLogin() {  
+            const email = document.getElementById('loginEmail').value.trim();  
+            const password = document.getElementById('loginPassword').value.trim();  
+            const rememberMe = document.getElementById('rememberMe').checked;  
+                
+            if (!email || !password) {  
+                showToast('이메일과 비밀번호를 입력해주세요.');  
+                return;  
+            }  
+                
+            const user = users.find(u => u.id === email && u.password === password);  
+            if (user) {  
+                currentUser = user;  
+                isLoggedIn = true;  
+                    
+                if (rememberMe) {  
+                    localStorage.setItem('rememberedEmail', email);  
+                    localStorage.setItem('autoLogin', 'true');  
+                } else {  
+                    localStorage.removeItem('rememberedEmail');  
+                    localStorage.removeItem('autoLogin');  
+                }  
+                    
+                hideLoginModal();  
+                showMainApp();  
+                renderTab('home');  
+                showToast('로그인 성공! 안녕하세요 ' + user.name + '님!');  
+            } else {  
+                showToast('이메일 또는 비밀번호가 올바르지 않습니다.');  
+            }  
+        }  
+  
+        // 회원가입 처리  
+        function handleSignup() {  
+            const email = document.getElementById('signupEmail').value.trim();  
+            const password = document.getElementById('signupPassword').value.trim();  
+            const confirm = document.getElementById('signupPasswordConfirm').value.trim();  
+                
+            if (!email || !password || !confirm) {  
+                showToast('모든 항목을 입력해주세요.');  
+                return;  
+            }  
+                
+            if (password !== confirm) {  
+                showToast('비밀번호가 일치하지 않습니다.');  
+                return;  
+            }  
+                
+            if (password.length < 8) {  
+                showToast('비밀번호는 8자 이상이어야 합니다.');  
+                return;  
+            }  
+                
+            if (users.find(u => u.id === email)) {  
+                showToast('이미 가입된 이메일입니다.');  
+                return;  
+            }  
+                
+            const newUser = {  
+                id: email,  
+                name: email.split('@')[0],  
+                password: password,  
+                role: 'user',  
+                avatar: email[0].toUpperCase()  
+            };  
+                
+            users.push(newUser);  
+            showToast('회원가입이 완료되었습니다. 로그인해주세요.');  
+            showLogin();  
+        }  
+  
+        // 모달 제어  
+        function showLoginModal() {  
+            const savedEmail = localStorage.getItem('rememberedEmail');  
+            if (savedEmail) {  
+                document.getElementById('loginEmail').value = savedEmail;  
+                document.getElementById('rememberMe').checked = true;  
+            }  
+            document.getElementById('loginModal').classList.remove('hide');  
+        }  
+  
+        function hideLoginModal() {  
+            document.getElementById('loginModal').classList.add('hide');  
+        }  
+  
+        function showMainApp() {  
+            document.getElementById('appContainer').classList.add('show');  
+            document.getElementById('bottomNav').classList.add('show');  
+        }  
+  
+        function showSignup() {  
+            document.getElementById('signupModal').classList.remove('hide');  
+        }  
+  
+        function showLogin() {  
+            document.getElementById('signupModal').classList.add('hide');  
+            document.getElementById('loginModal').classList.remove('hide');  
+        }  
+  
+        function openWriteModal() {  
+            // 관리자만 작성 가능  
+            if (!currentUser || currentUser.role === 'user') {  
+                showToast('레터 작성은 관리자만 가능합니다.');  
+                return;  
+            }  
+            document.getElementById('writeModal').classList.remove('hide');  
+        }  
+  
+        function closeWriteModal() {  
+            document.getElementById('writeModal').classList.add('hide');  
+            selectedImage = null;  
+            document.getElementById('writeText').value = '';  
+            // 카테고리 초기화  
+            document.querySelectorAll('.category-btn').forEach(btn => {  
+                btn.classList.remove('active');  
+                if (btn.dataset.category === 'letter') {  
+                    btn.classList.add('active');  
+                }  
+            });  
+        }  
+  
+        function handleImageSelect(event) {  
+            const file = event.target.files[0];  
+            if (file) {  
+                const reader = new FileReader();  
+                reader.onload = function(e) {  
+                    selectedImage = e.target.result;  
+                    const imageArea = event.target.parentElement;  
+                    imageArea.innerHTML = `  
+                        <img src="${selectedImage}" style="max-width: 100%; max-height: 200px; border-radius: 12px; margin-bottom: 10px;">  
+                        <p style="color: var(--color-text-medium);">사진 변경하기</p>  
+                    `;  
+                };  
+                reader.readAsDataURL(file);  
+            }  
+        }  
+  
+        function submitLetter() {  
+            const content = document.getElementById('writeText').value.trim();  
+            const activeCategory = document.querySelector('.category-btn.active').dataset.category;  
+              
+            if (!content) {  
+                showToast('내용을 입력해주세요.');  
+                return;  
+            }  
+  
+            const newLetter = {  
+                id: letters.length + 1,  
+                author: currentUser.name,  
+                category: activeCategory,  
+                title: content.substring(0, 30) + (content.length > 30 ? '...' : ''),  
+                content: content,  
+                date: getTodayDateString(),  
+                image: selectedImage,  
+                likes: 0,  
+                comments: 0,  
+                likedBy: [],  
+                bookmarkedBy: [],  
+                commentsData: []  
+            };  
+  
+            letters.unshift(newLetter);  
+            closeWriteModal();  
+            renderTab('letter');  
+            showToast('레터가 작성되었습니다.');  
+        }  
+  
+        function handleLogout() {  
+            if (confirm('로그아웃 하시겠습니까?')) {  
+                localStorage.removeItem('rememberedEmail');  
+                localStorage.removeItem('autoLogin');  
+                  
+                currentUser = null;  
+                isLoggedIn = false;  
+                document.getElementById('appContainer').classList.remove('show');  
+                document.getElementById('bottomNav').classList.remove('show');  
+                  
+                document.getElementById('loginEmail').value = '';  
+                document.getElementById('loginPassword').value = '';  
+                document.getElementById('rememberMe').checked = false;  
+                  
+                showLoginModal();  
+            }  
+        }  
+  
+        function showToast(message) {  
+            const existingToast = document.querySelector('.toast-message');  
+            if (existingToast) {  
+                existingToast.remove();  
+            }  
+  
+            const toast = document.createElement('div');  
+            toast.className = 'toast-message';  
+            toast.textContent = message;  
+            document.body.appendChild(toast);  
+                
+            setTimeout(() => {  
+                toast.remove();  
+            }, 3000);  
+        }  
+  
+        function filterLetters(category) {  
+            letterFilter = category;  
+            renderTab('letter');  
+        }  
+  
+        function toggleLike(event, letterId) {  
+            event.stopPropagation();  
+            const letter = letters.find(l => l.id === letterId);  
+            if (!letter || !currentUser) return;  
+  
+            const userIndex = letter.likedBy.indexOf(currentUser.id);  
+            if (userIndex > -1) {  
+                letter.likedBy.splice(userIndex, 1);  
+                letter.likes--;  
+            } else {  
+                letter.likedBy.push(currentUser.id);  
+                letter.likes++;  
+            }  
+  
+            renderTab('letter');  
+        }  
+  
+        function toggleBookmark(event, letterId) {  
+            event.stopPropagation();  
+            const letter = letters.find(l => l.id === letterId);  
+            if (!letter || !currentUser) return;  
+  
+            const userIndex = letter.bookmarkedBy.indexOf(currentUser.id);  
+            if (userIndex > -1) {  
+                letter.bookmarkedBy.splice(userIndex, 1);  
+            } else {  
+                letter.bookmarkedBy.push(currentUser.id);  
+            }  
+  
+            renderTab('letter');  
+        }  
+  
+        function showLetterDetail(letterId) {  
+            const letter = letters.find(l => l.id === letterId);  
+            if (!letter) return;  
+  
+            const modal = document.getElementById('detailModal');  
+            const content = document.getElementById('detailContent');  
+              
+            const userProfile = users.find(u => u.name === letter.author);  
+            const avatar = userProfile ? userProfile.avatar : letter.author[0];  
+            const categoryClass = letter.category === 'letter' ? 'category-letter' : 'category-lab';  
+            const isLiked = letter.likedBy.includes(currentUser?.id);  
+            const isBookmarked = letter.bookmarkedBy.includes(currentUser?.id);  
+  
+            content.innerHTML = `  
+                <div style="max-width: 600px; margin: 0 auto;">  
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;">  
+                        <div style="display: flex; align-items: center;">  
+                            <div class="letter-avatar ${categoryClass}" style="width: 50px; height: 50px; font-size: 18px;">${avatar}</div>  
+                            <div style="margin-left: 15px;">  
+                                <h3 style="color: var(--color-text-dark); margin: 0;">${letter.author}</h3>  
+                                <p style="color: var(--color-text-light); margin: 0; font-size: 14px;">${letter.date}</p>  
+                            </div>  
+                        </div>  
+                        <span class="auth-input" style="padding: 8px 16px; font-size: 14px; background: ${letter.category === 'letter' ? 'var(--color-sky-blue)' : 'var(--color-light-pink)'}; border: none; color: white;">  
+                            ${letter.category === 'letter' ? '자휴레터' : '자휴랩'}  
+                        </span>  
+                    </div>  
+  
+                    <h2 style="color: var(--color-text-dark); margin-bottom: 20px;">${letter.title}</h2>  
+  
+                    ${letter.image ? `<img src="${letter.image}" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 16px; margin-bottom: 20px;">` : ''}  
+  
+                    <div style="font-size: 16px; line-height: 1.8; color: var(--color-text-medium); margin-bottom: 30px; white-space: pre-wrap;">${letter.content}</div>  
+  
+                    <div style="display: flex; gap: 15px; justify-content: center;">  
+                        <button class="action-btn ${isLiked ? 'active' : ''}" onclick="toggleLike(event, ${letter.id})">  
+                            ❤️ ${letter.likes}  
+                        </button>  
+                        <button class="action-btn">  
+                            💬 ${letter.comments}  
+                        </button>  
+                        <button class="action-btn ${isBookmarked ? 'active' : ''}" onclick="toggleBookmark(event, ${letter.id})">  
+                            🔖  
+                        </button>  
+                    </div>  
+  
+                    ${letter.commentsData.length > 0 ? `  
+                        <div style="margin-top: 30px; padding-top: 30px; border-top: 1px solid var(--color-light-blue);">  
+                            <h4 style="color: var(--color-text-dark); margin-bottom: 20px;">댓글 (${letter.commentsData.length})</h4>  
+                            ${letter.commentsData.map(comment => {  
+                                const commentUser = users.find(u => u.name === comment.author);  
+                                const commentAvatar = commentUser ? commentUser.avatar : comment.author[0];  
+                                return `  
+                                    <div style="margin-bottom: 15px;">  
+                                        <div style="display: flex; align-items: center; margin-bottom: 8px;">  
+                                            <div class="letter-avatar" style="width: 32px; height: 32px; font-size: 14px; background: linear-gradient(135deg, var(--color-sky-blue) 0%, var(--color-primary-blue) 100%);">${commentAvatar}</div>  
+                                            <div style="margin-left: 10px;">  
+                                                <strong style="color: var(--color-text-dark);">${comment.author}</strong>  
+                                                <span style="color: var(--color-text-light); font-size: 12px; margin-left: 8px;">${comment.date}</span>  
+                                            </div>  
+                                        </div>  
+                                        <p style="color: var(--color-text-medium); margin-left: 42px; font-size: 14px;">${comment.content}</p>  
+                                    </div>  
+                                `;  
+                            }).join('')}  
+                        </div>  
+                    ` : ''}  
+                </div>  
+                <button onclick="closeDetailModal()" class="auth-button" style="margin-top: 30px; background: transparent; border: 2px solid var(--color-primary-pink); color: var(--color-primary-pink);">닫기</button>  
+            `;  
+              
+            modal.classList.remove('hide');  
+        }  
+  
+        function closeDetailModal() {  
+            document.getElementById('detailModal').classList.add('hide');  
+        }  
+  
+        function getUserColor(name) {  
+            switch (name) {  
+                case '햅씨': return 'linear-gradient(135deg, var(--color-sky-blue) 0%, var(--color-primary-blue) 100%)';  
+                case '엘리': return 'linear-gradient(135deg, var(--color-primary-pink) 0%, var(--color-light-pink) 100%)';  
+                case '고칼': return 'linear-gradient(135deg, var(--color-mint) 0%, #4CAF50 100%)';  
+                case '유단': return 'linear-gradient(135deg, var(--color-lavender) 0%, #9370DB 100%)';  
+                case '써니': return 'linear-gradient(135deg, var(--color-peach) 0%, #FFA07A 100%)';  
+                default: return 'linear-gradient(135deg, var(--color-sky-blue) 0%, var(--color-primary-blue) 100%)';  
+            }  
+        }  
+  
+        // 템플릿 함수들  
+        function getHomeTemplate() {  
+            return `  
+                <div class="fade-in">  
+                    <div class="home-header">  
+                        <h1>햅삐님 오늘도 행복하세요!</h1>  
+                        <p>메마른 일상에 휴식 한 방울!</p>  
+                    </div>  
+  
+                    <div class="glass-card bubble-animation">  
+                        <div style="text-align: center; padding: 20px 0;">  
+                            <h2 style="color: var(--color-primary-blue); font-size: 20px; margin-bottom: 10px; font-weight: 600;">  
+                                오늘은 어떤 힐링이 필요하세요?  
+                            </h2>  
+                            <p style="color: var(--color-text-medium); margin-bottom: 20px; font-size: 14px;">  
+                                레터 아카이브를 주제별로 한 눈에!  
+                            </p>  
+                        </div>  
+                    </div>  
+  
+                    <div class="menu-container">  
+                        <a href="https://maily.so/happci/" class="menu-item" target="_blank">  
+                            <div class="menu-icon">  
+                                <svg viewBox="0 0 24 24">  
+                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>  
+                                </svg>  
+                            </div>  
+                            <p>레터 읽기</p>  
+                        </a>  
+                        <a href="https://index-html-zak5.vercel.app/" class="menu-item" target="_blank">  
+                            <div class="menu-icon">  
+                                <svg viewBox="0 0 24 24">  
+                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>  
+                                </svg>  
+                            </div>  
+                            <p>힐링 테스트</p>  
+                        </a>  
+                        <a href="#" class="menu-item" data-tab="mood">  
+                            <div class="menu-icon">  
+                                <svg viewBox="0 0 24 24">  
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>  
+                                </svg>  
+                            </div>  
+                            <p>오늘의 무드</p>  
+                        </a>  
+                        <a href="http://pf.kakao.com/_Jfjxgn/111753149" class="menu-item" target="_blank">  
+                            <div class="menu-icon">  
+                                <svg viewBox="0 0 24 24">  
+                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>  
+                                </svg>  
+                            </div>  
+                            <p>문장 수집</p>  
+                        </a>  
+                        <a href="http://pf.kakao.com/_Jfjxgn" class="menu-item" target="_blank">  
+                            <div class="menu-icon">  
+                                <svg viewBox="0 0 24 24">  
+                                    <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>  
+                                </svg>  
+                            </div>  
+                            <p>1:1 채팅</p>  
+                        </a>  
+                    </div>  
+                </div>  
+            `;  
+        }  
+  
+        function getLetterTemplate() {  
+            const filteredLetters = letterFilter === 'all' ? letters : letters.filter(l => l.category === letterFilter);  
+            const isAdmin = currentUser && currentUser.role !== 'user';  
+  
+            return `  
+                <div class="fade-in">  
+                    <div class="back-button" onclick="renderTab('home')">  
+                        <svg viewBox="0 0 24 24">  
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>  
+                        </svg>  
+                    </div>  
+  
+                    <div class="home-header">  
+                        <h2>레터 아카이브</h2>  
+                        <p>에디터의 소중한 글을 읽어보세요</p>  
+                    </div>  
+  
+                    ${isAdmin ? `  
+                        <button onclick="openWriteModal()" class="auth-button" style="width: 100%; margin-bottom: 20px;">  
+                            ✍️ 글쓰기  
+                        </button>  
+                    ` : ''}  
+  
+                    <div class="category-filter">  
+                        <button class="category-btn ${letterFilter === 'all' ? 'active' : ''}" onclick="filterLetters('all')">전체</button>  
+                        <button class="category-btn ${letterFilter === 'letter' ? 'active' : ''}" onclick="filterLetters('letter')">자휴레터</button>  
+                        <button class="category-btn ${letterFilter === 'lab' ? 'active' : ''}" onclick="filterLetters('lab')">자휴랩</button>  
+                    </div>  
+  
+                    <div>  
+                        ${filteredLetters.map(letter => {  
+                            const userProfile = users.find(u => u.name === letter.author);  
+                            const avatar = userProfile ? userProfile.avatar : letter.author[0];  
+                            const categoryClass = letter.category === 'letter' ? 'category-letter' : 'category-lab';  
+                            const isLiked = letter.likedBy.includes(currentUser?.id);  
+                            const isBookmarked = letter.bookmarkedBy.includes(currentUser?.id);  
+  
+                            return `  
+                                <div class="letter-item" onclick="showLetterDetail(${letter.id})">  
+                                    <div class="letter-header">  
+                                        <div class="letter-avatar ${categoryClass}">${avatar}</div>  
+                                        <div class="letter-info">  
+                                            <h4>${letter.author} · ${letter.category === 'letter' ? '자휴레터' : '자휴랩'}</h4>  
+                                            <p>${letter.date}</p>  
+                                        </div>  
+                                    </div>  
+                                    <h3 style="color: var(--color-text-dark); margin-bottom: 10px; font-size: 18px;">${letter.title}</h3>  
+                                    <p class="letter-content" style="font-size: 14px; margin-bottom: 10px;">${letter.content.substring(0, 100)}${letter.content.length > 100 ? '...' : ''}</p>  
+                                    ${letter.image ? `<img src="${letter.image}" class="letter-image">` : ''}  
+                                    <div class="letter-actions">  
+                                        <button class="action-btn ${isLiked ? 'active' : ''}" onclick="toggleLike(event, ${letter.id})">  
+                                            ❤️ ${letter.likes}  
+                                        </button>  
+                                        <button class="action-btn">  
+                                            💬 ${letter.comments}  
+                                        </button>  
+                                        <button class="action-btn ${isBookmarked ? 'active' : ''}" onclick="toggleBookmark(event, ${letter.id})">  
+                                            🔖  
+                                        </button>  
+                                    </div>  
+                                </div>  
+                            `;  
+                        }).join('')}  
+                    </div>  
+                </div>  
+            `;  
+        }  
+  
+        function getMoodTemplate() {  
+            return `  
+                <div class="fade-in">  
+                    <div class="back-button" onclick="renderTab('home')">  
+                        <svg viewBox="0 0 24 24">  
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>  
+                        </svg>  
+                    </div>  
+  
+                    <div class="home-header">  
+                        <h2>오늘의 무드</h2>  
+                        <p>당신의 감정을 기록해보세요</p>  
+                    </div>  
+  
+                    <div class="glass-card bubble-animation" style="text-align: center; padding: 60px 20px; min-height: 300px;">  
+                        <p style="font-size: 18px; color: var(--color-text-medium); margin-bottom: 30px;">  
+                            여기에 월간/주간 무드 트래커가 시각화됩니다  
+                        </p>  
+                        <div style="font-size: 64px; margin-bottom: 30px;">📊</div>  
+                        <div style="font-size: 14px; color: var(--color-text-light); line-height: 1.6;">  
+                            무드 기록 기능은 내일 오픈될 예정입니다<br>  
+                            <span style="font-size: 12px; color: var(--color-primary-pink); font-weight: 600;">*준비 중인 서비스입니다*</span>  
+                        </div>  
+                    </div>  
+                </div>  
+            `;  
+        }  
+  
+        function getMyPageTemplate() {  
+            const isVIP = userStamps >= MAX_STAMPS;  
+  
+            return `  
+                <div class="fade-in">  
+                    <div class="back-button" onclick="renderTab('home')">  
+                        <svg viewBox="0 0 24 24">  
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>  
+                        </svg>  
+                    </div>  
+  
+                    <div class="home-header">  
+                        <h2>${isVIP ? '⭐ VIP 햅삐님!' : 'My Space'}</h2>  
+                        <p style="font-weight: 400;">${isVIP ? '특별한 혜택을 즐겨보세요!' : '오늘도 자휴레터와 함께해요'}</p>  
+                    </div>  
+  
+                    <ul class="mypage-menu">  
+                        ${currentUser && currentUser.role !== 'user' ? `  
+                            <li><button class="mypage-button" onclick="openWriteModal()">레터 작성</button></li>  
+                        ` : ''}  
+                        <li><button class="mypage-button" onclick="filterLetters('letter'); renderTab('letter');">좋아요한 글</button></li>  
+                        <li><button class="mypage-button" onclick="filterLetters('lab'); renderTab('letter');">북마크한 글</button></li>  
+                        <li><button class="mypage-button" onclick="renderTab('mood')">자휴 스탬프 (${userStamps}개)</button></li>  
+                        <li><button class="mypage-button" onclick="handleLogout()">로그아웃</button></li>  
+                    </ul>  
+  
+                    <div class="glass-card">  
+                        <h3 style="color: var(--color-primary-blue); margin-bottom: 20px; text-align: center;">나의 자휴 스탬프</h3>  
+                        <div class="stamp-container">  
+                            ${Array(MAX_STAMPS).fill(0).map((_, index) => `  
+                                <div class="stamp-item ${index < userStamps ? 'filled' : 'empty'}">  
+                                    <span class="stamp-number">${index + 1}</span>  
+                                </div>  
+                            `).join('')}  
+                        </div>  
+                        <p style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--color-text-medium);">  
+                            *레터 좋아요/북마크 시 스탬프 적립! ${MAX_STAMPS}개 모으시면 VIP 특별 레터가 도착해요!❤️  
+                        </p>  
+                    </div>  
+                </div>  
+            `;  
+        }  
+  
+        function renderTab(tabName) {  
+            if (!isLoggedIn && tabName !== 'home') {  
+                showToast('로그인이 필요합니다.');  
+                showLoginModal();  
+                return;  
+            }  
+  
+            currentTab = tabName;  
+            const container = document.getElementById('appContainer');  
+              
+            // 네비게이션 업데이트  
+            document.querySelectorAll('.nav-item').forEach(item => {  
+                item.classList.remove('active');  
+                if (item.getAttribute('data-tab') === tabName) {  
+                    item.classList.add('active');  
+                }  
+            });  
+  
+            switch (tabName) {  
+                case 'home':  
+                    container.innerHTML = getHomeTemplate();  
+                    break;  
+                case 'letter':  
+                    container.innerHTML = getLetterTemplate();  
+                    break;  
+                case 'mood':  
+                    container.innerHTML = getMoodTemplate();  
+                    break;  
+                case 'mypage':  
+                    container.innerHTML = getMyPageTemplate();  
+                    break;  
+                default:  
+                    container.innerHTML = '<div class="glass-card"><p>페이지를 찾을 수 없습니다.</p></div>';  
+            }  
+  
+            window.scrollTo(0, 0);  
+        }  
+  
+        // 네비게이션 이벤트  
+        document.getElementById('bottomNav').addEventListener('click', function(e) {  
+            const navItem = e.target.closest('.nav-item');  
+            if (navItem && navItem.hasAttribute('data-tab')) {  
+                e.preventDefault();  
+                const tabName = navItem.getAttribute('data-tab');  
+                renderTab(tabName);  
+            }  
+        });  
+  
+        // 카테고리 버튼 이벤트  
+        document.addEventListener('click', function(e) {  
+            if (e.target.classList.contains('category-btn')) {  
+                e.preventDefault();  
+                document.querySelectorAll('.category-btn').forEach(btn => {  
+                    btn.classList.remove('active');  
+                });  
+                e.target.classList.add('active');  
+            }  
+        });  
+    </script>  
+</body>  
+</html>  
