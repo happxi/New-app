@@ -6,19 +6,20 @@
     <title>자휴레터 - Letter from JAHU</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* 🎨 기존 디자인 톤앤매너 복구: 따뜻하고 부드러운 햅씨의 색감 적용 */
         :root {
-            --primary: #6b46c1; /* 보라색 계열 */
-            --primary-soft: #ede9fe;
-            --accent: #4ecdc4; /* 민트색 계열 */
-            --accent-soft: #d4f7f6;
-            --secondary: #4edcc4;
-            --bg: #f7f9fc;
+            --primary: #9b72cf; /* 부드러운 라벤더 (핵심) */
+            --primary-soft: #f3effe; /* 매우 밝은 라벤더 */
+            --accent: #a8dadc; /* 차분한 민트 (포인트) */
+            --accent-soft: #f1faee; /* 매우 밝은 민트 */
+            --secondary: #d6b384; /* 따뜻한 베이지/브라운 */
+            --bg: #f9f9f9; /* 깨끗하고 밝은 배경 */
             --text-main: #333;
             --text-sub: #777;
-            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.9);
             --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
-            --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.05);
-            --border-radius: 20px;
+            --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.04);
+            --border-radius: 25px;
         }
 
         * {
@@ -32,25 +33,23 @@
             background-color: var(--bg);
             color: var(--text-main);
             line-height: 1.6;
-            padding-bottom: 70px; /* 네비게이션 바 공간 */
+            padding-bottom: 70px;
         }
         
-        /* 🎨 기존 디자인 유지: Header Section (Simplified) */
         .header-section {
-            background-color: var(--bg); /* 배경색을 본문과 유사하게 유지 */
-            color: var(--text-main);
-            padding: 20px 20px 10px;
-            margin-bottom: 10px;
+            background-color: transparent; 
+            padding: 30px 20px 20px;
+            margin-bottom: 0;
         }
 
         .header-title {
-            font-size: 26px;
-            font-weight: 800;
+            font-size: 30px;
+            font-weight: 900;
             color: var(--primary);
         }
         
         .header-subtitle {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-sub);
             margin-top: 5px;
         }
@@ -61,22 +60,22 @@
             min-height: 100vh;
         }
 
-        /* Nav Bar */
+        /* Nav Bar - '레터'로 명칭 원복 */
         .nav-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 60px;
+            height: 65px;
             display: flex;
             justify-content: space-around;
             align-items: center;
             background-color: var(--glass-bg);
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(15px);
             z-index: 1000;
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
+            border-top-left-radius: var(--border-radius);
+            border-top-right-radius: var(--border-radius);
         }
 
         .nav-item {
@@ -86,457 +85,149 @@
             justify-content: center;
             flex: 1;
             color: var(--text-sub);
-            font-size: 10px;
+            font-size: 11px;
             cursor: pointer;
-            transition: color 0.3s;
+            transition: color 0.3s, transform 0.1s;
             height: 100%;
         }
 
         .nav-item i {
-            font-size: 18px;
+            font-size: 20px;
             margin-bottom: 3px;
         }
 
         .nav-item.active {
             color: var(--primary);
             font-weight: 700;
+            transform: scale(1.05);
         }
         
         /* Floating Write Icon */
         #writeIcon {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
+            bottom: 85px;
+            right: 25px;
+            width: 55px;
+            height: 55px;
             background: var(--accent);
-            color: white;
-            border-radius: 50%;
-            display: none; /* 초기에는 숨김 */
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.5);
-            z-index: 999;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        #writeIcon:hover {
-            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(168, 218, 220, 0.7);
         }
 
         /* Common Elements */
         .content-card {
             background-color: var(--glass-bg);
-            padding: 20px;
+            padding: 25px;
             border-radius: var(--border-radius);
             margin: 0 20px 20px 20px;
             box-shadow: var(--shadow-card);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(10px);
         }
 
         .btn-primary {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 15px;
+            /* 기존 스타일 유지 */
             background: var(--primary);
-            color: white;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.1s;
-            box-shadow: 0 4px 15px rgba(107, 70, 193, 0.3);
+            box-shadow: 0 4px 15px rgba(155, 114, 207, 0.4);
         }
 
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        input[type="text"], input[type="password"], textarea, select {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid var(--primary-soft);
-            border-radius: 10px;
-            background-color: white;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background-color: var(--glass-bg);
-            padding: 30px;
-            border-radius: var(--border-radius);
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            position: relative;
-            animation: fadeIn 0.3s ease-out;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .modal-content h2 {
-            margin-bottom: 25px;
-            font-size: 22px;
-            color: var(--primary);
-            text-align: center;
-            font-weight: 800;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            color: var(--text-sub);
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        
-        /* Letter/EditorTalk Card Styles */
-        .post-card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            box-shadow: var(--shadow-light);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .post-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .post-meta {
-            font-size: 12px;
-            color: var(--text-sub);
-            margin-top: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .post-card h4 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: var(--text-main);
-        }
-        
-        .post-card p {
-            font-size: 14px;
-            color: var(--text-sub);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            margin-bottom: 10px;
-        }
-        
-        .category-tag {
-            font-size: 10px;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        .tag-letter { background-color: var(--primary-soft); color: var(--primary); }
-        .tag-lab { background-color: var(--accent-soft); color: var(--accent); }
-        .tag-editor { background-color: #ffe0b2; color: #ff9800; } /* 주황색 계열 */
-        .tag-mood { background-color: #e3f2fd; color: #2196f3; } /* 파란색 계열 */
-        
-        /* Mood Specific */
-        .mood-grid {
+        /* 🏠 홈 탭 복구: 동그라미 버튼 디자인 (핵심) */
+        .archive-grid {
+            padding: 20px 20px 0;
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
-        .emoji-option {
-            font-size: 30px;
-            background: white;
-            padding: 10px;
-            border-radius: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.2s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .emoji-option.selected {
-            transform: scale(1.1);
-            box-shadow: 0 0 0 3px var(--accent);
-        }
-        
-        .mood-instruction {
-            font-size: 12px;
-            color: var(--text-sub);
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .mood-record {
-            text-align: center;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 15px;
+        .archive-button {
             background: var(--glass-bg);
-            box-shadow: var(--shadow-card);
-        }
-        
-        .mood-record .emoji {
-            font-size: 40px;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .mood-record .date {
-            font-size: 10px;
-            color: var(--text-sub);
-            margin-bottom: 5px;
-        }
-        
-        .mood-record .title {
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        /* MyPage Stamp */
-        .stamp-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 5px;
-        }
-
-        .stamp-circle {
-            width: 100%;
-            padding-top: 100%; /* 1:1 비율 */
-            position: relative;
             border-radius: 50%;
-            background-color: var(--primary-soft);
-            color: var(--primary);
+            padding-top: 100%; /* 1:1 원형 */
+            position: relative;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-size: 10px;
-            font-weight: 700;
-            transition: background 0.3s;
+            border: 2px solid var(--primary-soft);
+        }
+
+        .archive-button:hover {
+            transform: translateY(-5px);
         }
         
-        .stamp-circle span {
+        .archive-button-content {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            width: 100%;
+            padding: 10px;
+        }
+
+        .archive-button i {
+            font-size: 35px;
+            color: var(--secondary);
+            margin-bottom: 8px;
+        }
+        
+        .archive-button span {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: block;
+        }
+        
+        /* 홈 아카이브 색상 */
+        #btn-letter i { color: var(--primary); }
+        #btn-mood i { color: var(--accent); }
+        #btn-editor i { color: var(--secondary); }
+        #btn-mypage i { color: var(--text-sub); }
+
+
+        /* Letter/EditorTalk Card Styles */
+        .post-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 20px; /* 더 부드러운 모서리 */
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* 부드러운 그림자 */
+            border: 1px solid var(--primary-soft);
+        }
+        
+        .category-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+        }
+
+        .tag-letter { background-color: var(--primary-soft); color: var(--primary); }
+        .tag-lab { background-color: var(--accent-soft); color: var(--accent); }
+        .tag-editor { background-color: #fce4ec; color: #e91e63; } /* 핑크 계열 */
+        
+        /* Filter Dropdown */
+        .filter-section select {
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%239b72cf" d="M7 10l5 5 5-5z"/></svg>');
+        }
+        
+        /* MyPage Stamp - Warm color scheme */
+        .stamp-circle {
+            background-color: var(--accent-soft);
+            color: var(--accent);
         }
 
         .stamp-circle.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
             color: white;
-            box-shadow: 0 4px 10px rgba(107, 70, 193, 0.3);
-        }
-
-        /* Toast Message */
-        #toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 10px;
-            padding: 16px;
-            position: fixed;
-            z-index: 2001;
-            left: 50%;
-            bottom: 70px;
-            transform: translateX(-50%);
-            font-size: 14px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        #toast.show {
-            visibility: visible;
-            animation: fadein 0.5s, fadeout 0.5s 2.5s;
-        }
-
-        @keyframes fadein {
-            from {bottom: 0; opacity: 0;}
-            to {bottom: 70px; opacity: 1;}
-        }
-
-        @keyframes fadeout {
-            from {bottom: 70px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
+            box-shadow: 0 4px 10px rgba(214, 179, 132, 0.5);
         }
         
-        /* New Post Modal Styles */
-        .file-upload-area {
-            display: flex;
-            align-items: center;
-            border: 2px dashed var(--primary-soft);
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            background-color: white;
-        }
-
-        .file-upload-area input[type="file"] {
-            display: none;
-        }
-
-        .file-upload-area i {
+        /* Modal Style refinement */
+        .modal-content h2 {
             color: var(--primary);
-            margin-right: 10px;
-            font-size: 20px;
-        }
-
-        #imagePreview {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            display: none;
-        }
-
-        /* Filter Dropdown */
-        .filter-section {
-            padding: 0 20px 15px;
-        }
-        
-        .filter-section select {
-            width: 100%;
-            padding: 10px 15px;
-            border-radius: 10px;
-            border: 1px solid var(--primary-soft);
-            background-color: white;
-            font-size: 14px;
-            color: var(--text-main);
-            appearance: none; /* 기본 화살표 제거 */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%236b46c1" d="M7 10l5 5 5-5z"/></svg>');
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            box-shadow: var(--shadow-light);
-        }
-        
-        /* Post View Modal */
-        #postViewModal .post-content {
-            white-space: pre-wrap;
-            margin-top: 15px;
-            padding: 15px;
-            background: var(--primary-soft);
-            border-radius: 10px;
-            font-size: 15px;
-        }
-
-        #postViewModal .post-actions {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px solid var(--primary-soft);
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
-            color: var(--text-sub);
-            font-size: 14px;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .action-btn.liked i, .action-btn.bookmarked i {
-            color: var(--primary);
-        }
-        
-        #commentsSection {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid var(--primary-soft);
-        }
-        
-        .comment-item {
-            padding: 10px 0;
-            border-bottom: 1px dashed var(--accent-soft);
-        }
-        
-        .comment-meta {
-            font-size: 12px;
-            color: var(--text-sub);
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .comment-text {
-            font-size: 14px;
-        }
-
-        /* Admin Dashboard */
-        .admin-stat {
-            background-color: var(--primary-soft);
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        .admin-stat h4 {
-            font-size: 14px;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-        
-        .admin-stat p {
-            font-size: 24px;
-            font-weight: 700;
-        }
-        
-        /* 홈 탭 아카이브 카드 스타일 복구 */
-        .archive-card {
-            background-color: var(--glass-bg);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-card);
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .archive-card:hover {
-            transform: translateY(-2px);
         }
 
     </style>
@@ -559,8 +250,8 @@
                 <span>홈</span>
             </div>
             <div class="nav-item" id="nav-letter" onclick="renderTab('letter')">
-                <i class="fas fa-archive"></i>
-                <span>레터 아카이브</span>
+                <i class="fas fa-envelope-open-text"></i>
+                <span>레터</span>
             </div>
             <div class="nav-item" id="nav-mood" onclick="renderTab('mood')">
                 <i class="fas fa-sun"></i>
@@ -659,7 +350,7 @@
             <p style="text-align:center; color:var(--text-sub); margin-bottom:20px;">자휴레터 관리 현황</p>
 
             <div class="admin-stat-grid" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:15px;">
-                <div class="admin-stat">
+                <div class="admin-stat" style="background-color: var(--primary-soft);">
                     <h4>전체 회원</h4>
                     <p id="statUsers">0</p>
                 </div>
@@ -667,7 +358,7 @@
                     <h4>전체 글</h4>
                     <p id="statPosts">0</p>
                 </div>
-                <div class="admin-stat">
+                <div class="admin-stat" style="background-color: var(--primary-soft);">
                     <h4>무드 기록</h4>
                     <p id="statMoods">0</p>
                 </div>
@@ -721,7 +412,7 @@
         ];
 
         let myMoodRecords = [ // 무드 기록
-            { id: 30, emoji: '😎', title: '완벽한 하루의 마무리', content: '새로운 프로젝트를 성공적으로 끝내고 홀가분한 기분! 역시 보람찹니다.', date: new Date(2025, 11, 9).toISOString(), authorId: 1 },
+            { id: 30, emoji: '✨', title: '완벽한 하루의 마무리', content: '새로운 프로젝트를 성공적으로 끝내고 홀가분한 기분! 역시 보람찹니다.', date: new Date(2025, 11, 9).toISOString(), authorId: 1 },
             { id: 31, emoji: '💻', title: '코드 버그와의 싸움에서 이김', content: '밤새도록 괴롭히던 버그를 드디어 잡았다. 커피 3잔의 승리!', date: new Date(2025, 11, 7).toISOString(), authorId: 2 },
         ];
         
@@ -747,7 +438,7 @@
             { emoji: '😎', name: '만족' }
         ];
         
-        // --- 유틸리티 함수 ---
+        // --- 유틸리티 함수 (생략) ---
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -774,7 +465,7 @@
                 userStamps = Math.min(30, myMoodRecords.filter(r => r.authorId === currentUser.id).length);
                 renderTab('home');
             } else {
-                renderTab('home'); // 로그인이 안 되어 있으면 홈 탭만 보여줌
+                renderTab('home'); 
             }
         }
         
@@ -782,7 +473,7 @@
             return allPosts.find(p => p.id === id);
         }
 
-        // --- 인증 및 계정 관리 (기존과 동일) ---
+        // --- 인증 및 계정 관리 (생략) ---
         function handleLogin() {
             const id = document.getElementById('loginId').value;
             const pw = document.getElementById('loginPw').value;
@@ -805,7 +496,7 @@
             document.getElementById('loginTitle').textContent = '회원가입';
             document.getElementById('loginSubmitBtn').textContent = '가입 완료';
             document.getElementById('loginSubmitBtn').setAttribute('onclick', 'handleSignup()');
-            document.querySelector('#loginModal .btn-primary:last-child').style.display = 'none'; // 회원가입 버튼 숨김
+            document.querySelector('#loginModal .btn-primary:last-child').style.display = 'none'; 
         }
         
         function handleSignup() {
@@ -863,18 +554,18 @@
             const userIndex = users.findIndex(u => u.id === currentUser.id);
             if (userIndex !== -1) {
                 users[userIndex].pw = newPw;
-                localStorage.setItem('currentUser', JSON.stringify(currentUser)); // 로컬 저장소 업데이트
+                localStorage.setItem('currentUser', JSON.stringify(currentUser)); 
                 showToast('비밀번호가 성공적으로 변경되었습니다.');
                 closeModal('changePasswordModal');
             }
         }
 
-        // --- 모달 제어 ---
+        // --- 모달 제어 (생략) ---
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // --- 글 작성 모달 (기능 로직 유지) ---
+        // --- 글 작성 모달 (기존 로직 유지) ---
         function openModal(type) {
             if (!currentUser) {
                 document.getElementById('loginModal').style.display = 'flex';
@@ -975,7 +666,7 @@
             }
         }
 
-        // --- 글 등록 (기능 로직 유지) ---
+        // --- 글 등록 (기존 로직 유지) ---
         function submitPost() {
             const title = document.getElementById('postTitle').value.trim();
             const content = document.getElementById('postContent').value.trim();
@@ -1027,7 +718,7 @@
                 
                 const newPost = {
                     id: newId,
-                    title: title || content.substring(0, 30) + (content.length > 30 ? '...' : ''), // 에디터톡 제목 선택적
+                    title: title || content.substring(0, 30) + (content.length > 30 ? '...' : ''), 
                     category: selectedCategory,
                     content: content,
                     author: currentUser.name,
@@ -1038,14 +729,14 @@
                     image: imageUrl 
                 };
 
-                allPosts.unshift(newPost); // 전체 배열에 추가
+                allPosts.unshift(newPost);
                 
                 if (isLetter) {
-                    posts.unshift(newPost); // 레터 배열에도 추가
+                    posts.unshift(newPost);
                     showToast(`${selectedCategory}가 등록되었습니다!`);
                     renderTab('letter');
-                } else { // 에디터톡
-                    editorTalks.unshift(newPost); // 에디터톡 배열에도 추가
+                } else { 
+                    editorTalks.unshift(newPost); 
                     showToast("에디터톡이 등록되었습니다!");
                     renderTab('editorTalk');
                 }
@@ -1064,8 +755,14 @@
             closeModal('writeModal');
         }
 
-        // --- 포스트 뷰 및 액션 (기존과 동일) ---
+        // --- 포스트 뷰 및 액션 (기존 로직 유지) ---
         function viewPost(postId) {
+            if (!currentUser) {
+                document.getElementById('loginModal').style.display = 'flex';
+                showToast('로그인이 필요합니다.');
+                return;
+            }
+            
             const post = getPostById(postId);
             if (!post) return showToast('글을 찾을 수 없습니다.');
             
@@ -1145,10 +842,10 @@
             comments.push(newComment);
             input.value = '';
             
-            post.comments += 1; // 댓글 수 업데이트 (UI 반영용)
+            post.comments += 1; 
             
             showToast('댓글이 등록되었습니다.');
-            renderComments(postId); // 댓글 리스트 새로고침
+            renderComments(postId); 
         }
         
         function toggleLike(postId) {
@@ -1158,18 +855,15 @@
             const post = getPostById(postId);
 
             if (index === -1) {
-                // 좋아요 추가
                 likes.push({ postId: postId, userId: currentUser.id });
                 post.likes += 1;
                 showToast('좋아요!');
             } else {
-                // 좋아요 제거
                 likes.splice(index, 1);
                 post.likes -= 1;
                 showToast('좋아요 취소');
             }
             
-            // UI 업데이트
             const isLiked = index === -1;
             document.getElementById('likeBtn').classList.toggle('liked', isLiked);
             document.querySelector('#likeBtn i').className = isLiked ? 'fas fa-heart' : 'far fa-heart';
@@ -1182,36 +876,33 @@
             const index = bookmarks.findIndex(b => b.postId === postId && b.userId === currentUser.id);
 
             if (index === -1) {
-                // 북마크 추가
                 bookmarks.push({ postId: postId, userId: currentUser.id });
                 showToast('북마크 저장!');
             } else {
-                // 북마크 제거
                 bookmarks.splice(index, 1);
                 showToast('북마크 해제');
             }
             
-            // UI 업데이트
             const isBookmarked = index === -1;
             document.getElementById('bookmarkBtn').classList.toggle('bookmarked', isBookmarked);
             document.querySelector('#bookmarkBtn i').className = isBookmarked ? 'fas fa-bookmark' : 'far fa-bookmark';
         }
         
-        // --- 관리자 대시보드 (기능 로직 유지) ---
+        // --- 관리자 대시보드 (기존 로직 유지) ---
         function showAdminDashboardModal() {
             if (!currentUser || !currentUser.isSuperAdmin) {
                 return showToast('접근 권한이 없습니다.');
             }
             
-            // 통계 업데이트
+            // 통계 업데이트 (기존 로직)
             document.getElementById('statUsers').textContent = users.length;
             document.getElementById('statPosts').textContent = allPosts.length;
             document.getElementById('statMoods').textContent = myMoodRecords.length;
             document.getElementById('statLogs').textContent = activityLogs.length;
 
-            // 로그 렌더링
+            // 로그 렌더링 (기존 로직)
             const logListEl = document.getElementById('activityLogList');
-            logListEl.innerHTML = activityLogs.slice().reverse().map(log => { // 최신순 정렬
+            logListEl.innerHTML = activityLogs.slice().reverse().map(log => { 
                 let logText = '';
                 let icon = '';
                 if (log.type === 'login') {
@@ -1281,7 +972,7 @@
             const activeNav = document.getElementById(`nav-${tabName}`);
             if (activeNav) activeNav.classList.add('active');
 
-            // 관리자 글쓰기 아이콘 제어 (레터 아카이브 / 에디터톡 / 무드 탭에서 활성화)
+            // 관리자 글쓰기 아이콘 제어
             const writeIcon = document.getElementById('writeIcon');
             if (currentUser && currentUser.isAdmin && (tabName === 'editorTalk' || tabName === 'letter')) {
                 writeIcon.style.display = 'flex';
@@ -1294,17 +985,45 @@
             }
 
             if (tabName === 'home') {
+                // **[복구] 홈 탭: 동그라미 아카이브 버튼 복원**
                 container.innerHTML = `
                     <div class="header-section">
                         <h1 class="header-title">자휴레터</h1>
                         <p class="header-subtitle">${currentUser ? `${currentUser.name}님, 오늘 하루도 편안하게 시작하세요.` : '자유롭고 휴식하는 삶을 위한 영감의 레터'}</p>
                     </div>
                     
+                    <div class="archive-grid">
+                        <div class="archive-button" id="btn-letter" onclick="renderTab('letter')">
+                            <div class="archive-button-content">
+                                <i class="fas fa-envelope-open-text"></i>
+                                <span>레터 아카이브</span>
+                            </div>
+                        </div>
+                        <div class="archive-button" id="btn-mood" onclick="renderTab('mood')">
+                            <div class="archive-button-content">
+                                <i class="fas fa-sun"></i>
+                                <span>오늘의 무드</span>
+                            </div>
+                        </div>
+                        <div class="archive-button" id="btn-editor" onclick="renderTab('editorTalk')">
+                            <div class="archive-button-content">
+                                <i class="fas fa-comment"></i>
+                                <span>에디터톡</span>
+                            </div>
+                        </div>
+                        <div class="archive-button" id="btn-mypage" onclick="renderTab('mypage')">
+                            <div class="archive-button-content">
+                                <i class="fas fa-user"></i>
+                                <span>My Page</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div style="padding: 0 20px;">
                         <div class="content-card" style="margin: 0 0 20px 0; background:linear-gradient(135deg, var(--primary-soft) 0%, #fff 100%);">
-                            <h3 style="font-weight: 700; color: var(--primary); margin-bottom: 15px;">Today's Letter</h3>
+                            <h3 style="font-weight: 700; color: var(--primary); margin-bottom: 15px;"><i class="fas fa-feather-alt"></i> 최신 레터</h3>
                             ${posts.slice(0, 1).map(post => `
-                                <div class="archive-card" onclick="viewPost(${post.id})">
+                                <div class="post-card" onclick="viewPost(${post.id})" style="box-shadow: none; border:none; padding:15px; background:white;">
                                     <h4 style="font-size:18px; color: var(--text-main);">${post.title}</h4>
                                     <p style="font-size:14px; color:var(--text-sub); margin-top:5px;">${post.content.substring(0, 50)}...</p>
                                     <div class="post-meta" style="margin-top:10px;">
@@ -1313,18 +1032,6 @@
                                     </div>
                                 </div>
                             `).join('') || '<p style="font-size:14px; color:var(--text-sub);">최신 레터가 없습니다.</p>'}
-                            
-                            <h3 style="font-weight: 700; color: var(--accent); margin-top: 25px; margin-bottom: 15px;">Editor's Pick</h3>
-                            ${editorTalks.slice(0, 1).map(post => `
-                                <div class="archive-card" onclick="viewPost(${post.id})" style="border:1px solid var(--accent-soft);">
-                                    <h4 style="font-size:18px; color: var(--text-main);">${post.title}</h4>
-                                    <p style="font-size:14px; color:var(--text-sub); margin-top:5px;">${post.content.substring(0, 50)}...</p>
-                                    <div class="post-meta" style="margin-top:10px;">
-                                        <span class="category-tag tag-editor">${post.category}</span>
-                                        <span>${formatDate(post.date)}</span>
-                                    </div>
-                                </div>
-                            `).join('') || '<p style="font-size:14px; color:var(--text-sub);">최신 에디터톡이 없습니다.</p>'}
                         </div>
                         
                         ${currentUser ? `
@@ -1354,7 +1061,7 @@
                         </div>
                 `;
                 
-                let filteredPosts = posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date)); // 최신순 정렬
+                let filteredPosts = posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date)); 
                 if (filterCategory !== 'all') {
                     filteredPosts = filteredPosts.filter(p => p.category === filterCategory);
                 }
@@ -1388,7 +1095,7 @@
                     <div id="postList" style="padding: 0 20px;">
                         </div>
                 `;
-                renderPostList(editorTalks.slice().sort((a, b) => new Date(b.date) - new Date(a.date)), document.getElementById('postList')); // 최신순 정렬
+                renderPostList(editorTalks.slice().sort((a, b) => new Date(b.date) - new Date(a.date)), document.getElementById('postList')); 
 
             } else if (tabName === 'mypage') {
                 let stampHTML = '';
@@ -1401,7 +1108,7 @@
                     <div class="header-section">
                         <h2 class="header-title">My Page</h2>
                         <div style="background:var(--glass-bg); padding:25px; border-radius:25px; display:flex; align-items:center; margin-top:20px; box-shadow:var(--shadow-card); backdrop-filter: blur(10px);">
-                            <div style="width:60px; height:60px; background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); border-radius:50%; margin-right:20px; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:24px; box-shadow:0 4px 15px rgba(107, 70, 193, 0.3);">
+                            <div style="width:60px; height:60px; background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); border-radius:50%; margin-right:20px; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:24px; box-shadow:0 4px 15px rgba(155, 114, 207, 0.3);">
                                 ${currentUser.name.charAt(0)}
                             </div>
                             <div>
@@ -1415,7 +1122,7 @@
 
                     <div style="padding: 0 20px;">
                         ${currentUser.isSuperAdmin ? `
-                            <button onclick="showAdminDashboardModal()" class="btn-primary" style="font-size:14px; margin-bottom:15px; background:var(--secondary); box-shadow:0 4px 15px rgba(78, 205, 196, 0.5);">
+                            <button onclick="showAdminDashboardModal()" class="btn-primary" style="font-size:14px; margin-bottom:15px; background:var(--secondary); box-shadow:0 4px 15px rgba(214, 179, 132, 0.5);">
                                 <i class="fas fa-chart-line"></i> 관리자 대시보드
                             </button>
                         ` : ''}
