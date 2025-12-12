@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>자휴레터 - 햅삐님을 위한 특별한 공간!</title>
-    
-    <!-- 🔥 Firebase SDK 추가 (이 위치가 정확함) -->
+    <!-- ✅ Firebase SDK 추가 (head 안 첫 번째에 추가) -->
     <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-auth-compat.js"></script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>자휴레터 - 햅삐님을 위한 특별한 공간!</title>
     
     <meta property="og:title" content="자휴레터를 앱으로 만나보세요!">
     <meta property="og:description" content=" 무드트래커 기록하세요!">
@@ -20,7 +20,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* ✅ 기존 스타일 모두 유지 */
         :root {
             /* 🎨 트렌디한 2030 여성 대상 컬러 팔레트 */
             --primary: #6B46C1;       /* 보라색 - 메인 */
@@ -620,7 +619,6 @@
             margin: 0 10px;
         }
 
-
         /* 카테고리 탭 */
         .category-tabs {
             display: flex;
@@ -854,7 +852,7 @@
     </style>
 </head>
 <body>
-    <!-- 🔥 Firebase 초기화 코드 (이 위치가 정확함) -->
+    <!-- ✅ Firebase 초기화 코드 (body 시작 부분에 추가) -->
     <script>
         // Firebase 설정
         const firebaseConfig = {
@@ -878,6 +876,7 @@
         console.log("Firebase 연결 성공! ✨");
     </script>
 
+    <!-- 모달들 -->
     <div id="loginModal" class="modal-overlay" style="display: none;">
         <div class="modal-card">
             <div style="font-size: 32px; margin-bottom: 20px;">💜</div>
@@ -1018,13 +1017,16 @@
         </div>
     </div>
     
+    <!-- 메인 앱 컨테이너 -->
     <div id="appContainer" class="app-container">
     </div>
 
+    <!-- 글쓰기 아이콘 -->
     <div id="writeIcon" class="write-icon" onclick="openModal('adminWrite')" style="display: none;">
         <i class="fas fa-plus"></i>
     </div>
 
+    <!-- 하단 네비게이션 -->
     <nav class="bottom-nav">
         <a class="nav-item active" onclick="renderTab('home')" id="nav-home">
             <i class="fas fa-home"></i>
@@ -1050,6 +1052,7 @@
         </a>
     </nav>
 
+    <!-- 메인 JavaScript -->
     <script>
         // --- 데이터 ---
         // 5명 관리자 통일 (햅씨, 엘리, 고칼, 써니, 유단)
@@ -1137,7 +1140,6 @@
         
         // ** 관리자 대시보드 활동 로그 (실시간 기능용 데이터) **
         let activityLogs = [
-            // { type: 'login', user: '테스트', date: new Date('2025-12-11T10:00:00Z'), userId: 'test@example.com' },
             { type: 'comment', user: '햅삐', date: new Date('2025-12-11T12:30:00Z'), targetId: 5, userId: 'user@example.com', commentId: 2 },
             { type: 'mood', user: '테스트', date: new Date('2025-12-10T20:00:00Z'), targetId: 'M1', userId: 'test@example.com' },
             { type: 'post', user: '엘리', date: new Date('2025-12-04T11:00:00Z'), targetId: 3, userId: 'elly@jahyu.com' },
@@ -1263,7 +1265,6 @@
                 userId: currentUser.id 
             });
 
-
             document.getElementById('loginModal').style.display = 'none';
             renderTab('home');
             showToast(`${currentUser.name}님 환영합니다!`);
@@ -1326,4 +1327,49 @@
             const user = users.find(u => u.id === email);
             if (!user) return showToast('등록되지 않은 이메일입니다.');
             
-            // 임시 비밀번호 생성 (관리자/일반 사용자 구분 없이 '
+            // 임시 비밀번호 생성 (관리자/일반 사용자 구분 없이 'admin123!' 사용)
+            const tempPassword = 'admin123!'; 
+            
+            // 실제로는 이메일 발송 API 호출
+            console.log(`[SYSTEM] 임시 비밀번호(${tempPassword})를 ${email}로 발송했습니다.`);
+            
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+            showToast(`[${email}]로 임시 비밀번호를 발송했습니다. 로그인 후 비밀번호를 변경해주세요!`);
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+        
+        // 비밀번호 찾기 모달 닫기
+        function closeForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        // 비밀번호 변경
+        function handleChangePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const newPasswordConfirm = document.getElementById('newPasswordConfirm').value;
+
+            if (!currentPassword || !newPassword || !newPasswordConfirm) return showToast('모든 필드를 입력해주세요.');
+            if (newPassword !== newPasswordConfirm) return showToast('새로운 비밀번호가 일치하지 않습니다.');
+            if (newPassword.length < 6) return showToast('새로운 비밀번호는 6자 이상이어야 합니다.');
+            if (currentPassword !== currentUser.password) return showToast('현재 비밀번호가 올바르지 않습니다.');
+
+            // 비밀번호 변경
+            currentUser.password = newPassword;
+            // users 데이터도 업데이트 (임시)
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) users[userIndex].password = newPassword;
+            
+            localStorage.setItem('jahyu_user', JSON.stringify(currentUser));
+            
+            document.getElementById('passwordChangeModal').style.display = 'none';
+            showToast('비밀번호가 성공적으로 변경되었습니다.');
+        }
+
+        // 모달 전환
+        function showSignupModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+            document.getElementById('signupModal').style.display = 'flex';
+            document.getElementById('loginEmail').value =
