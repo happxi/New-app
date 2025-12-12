@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Jahyu Letter</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     
@@ -20,36 +20,31 @@
             --shadow: 0 4px 15px rgba(0,0,0,0.08);
             --pink-popup: #FFF0F5;
             --pink-input: #FFEFF2;
+            --accent-pink: #FFB7B2;
         }
 
-        /* ⚡ 핵심: 드래그 방지 & 터치감 개선 */
         * { 
             box-sizing: border-box; margin: 0; padding: 0; 
             font-family: 'Pretendard', sans-serif; 
             -webkit-tap-highlight-color: transparent;
-            user-select: none; /* 글자 드래그 원천 차단 */
+            user-select: none; 
         }
         
         body { 
             background: var(--bg-body); color: var(--text-main); 
             min-height: 100vh; display: flex; flex-direction: column; 
-            align-items: center; 
-            overflow-x: hidden; /* 가로 스크롤 방지 */
+            align-items: center; overflow-x: hidden; 
         }
         
-        /* 상단 여백 확보 */
         .app-container { 
-            width: 100%; max-width: 480px; min-height: calc(100vh - 75px); /* 하단바 높이 제외 */
+            width: 100%; max-width: 480px; min-height: calc(100vh - 75px); 
             background: var(--bg-body); padding-bottom: 100px; 
-            padding-top: 80px; /* 헤더 공간 확보 */
-            position: relative; 
+            padding-top: 80px; position: relative; 
         }
 
-        /* 버튼 눌리는 효과 */
         .clickable { cursor: pointer; transition: transform 0.1s, opacity 0.1s; }
         .clickable:active { transform: scale(0.96); opacity: 0.8; }
 
-        /* 헤더 */
         .header { 
             position: fixed; top: 0; width: 100%; max-width: 480px; height: 70px; 
             background: rgba(249, 249, 249, 0.95); backdrop-filter: blur(10px);
@@ -58,180 +53,231 @@
         }
         .logo { font-family: 'Dancing Script', cursive; font-size: 32px; color: var(--primary); font-weight: 700; }
 
-        /* 🏠 홈 */
+        /* 홈 스타일 */
         .hero-card { 
             margin: 0 20px 30px; padding: 30px; 
             background: linear-gradient(135deg, #E0C3FC 0%, #8EC5FC 100%);
             border-radius: 20px; color: var(--white); text-align: center; 
             box-shadow: var(--shadow); 
         }
-        .quick-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px; margin-bottom: 30px; }
+        .quick-menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px 10px; padding: 0 20px; margin-bottom: 30px; }
         .quick-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .quick-icon { 
-            width: 55px; height: 55px; border-radius: 18px; 
+            width: 50px; height: 50px; border-radius: 18px; 
             display: flex; align-items: center; justify-content: center; 
-            font-size: 24px; color: var(--white); box-shadow: var(--shadow); 
+            font-size: 20px; color: var(--white); box-shadow: var(--shadow); 
         }
-        .ic-1 { background: #FFB7B2; } .ic-2 { background: #B5EAD7; } 
-        .ic-3 { background: #FFDAC1; } .ic-4 { background: #A18CD1; }
-        .quick-text { font-size: 12px; font-weight: 600; color: var(--text-sub); }
+        /* 퀵메뉴 색상 */
+        .ic-1 { background: #FF9A9E; } .ic-2 { background: #FECFEF; } 
+        .ic-3 { background: #A18CD1; } .ic-4 { background: #84FAB0; }
+        .ic-5 { background: #FFD1FF; } .ic-6 { background: #FBC2EB; }
+        .quick-text { font-size: 11px; font-weight: 600; color: var(--text-sub); }
 
-        /* 탭 버튼 (박스형) */
-        .tab-bar { 
-            display: flex; gap: 10px; padding: 0 20px; margin-bottom: 20px; 
-        }
+        /* 공통 탭/카드 */
+        .tab-bar { display: flex; gap: 8px; padding: 0 20px; margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; }
         .tab-btn { 
-            flex: 1; padding: 12px; border-radius: 12px; 
+            flex: 0 0 auto; padding: 10px 18px; border-radius: 20px; 
             background: var(--white); border: 1px solid #eee; 
-            color: #aaa; font-weight: 700; font-size: 13px; text-align: center;
+            color: #888; font-weight: 600; font-size: 13px; text-align: center;
         }
-        .tab-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); box-shadow: var(--shadow); }
+        .tab-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); box-shadow: 0 4px 10px rgba(157, 118, 193, 0.3); }
 
-        /* 카드 리스트 */
         .card-list { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; }
         .card { 
             background: var(--white); border-radius: 20px; padding: 20px; 
-            box-shadow: var(--shadow); position: relative;
+            box-shadow: var(--shadow); position: relative; overflow: hidden;
         }
-        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 5px; color: #333; }
-        .card-meta { font-size: 12px; color: #aaa; display: flex; justify-content: space-between; margin-top: 10px; }
+        .card-title { font-size: 16px; font-weight: 800; margin-bottom: 8px; color: #333; }
+        .card-content { font-size: 14px; color: #666; line-height: 1.5; }
+        .card-meta { font-size: 11px; color: #aaa; display: flex; justify-content: space-between; margin-top: 15px; align-items: center; }
         
         /* 챌린지 카드 */
-        .ch-card { background: var(--white); border-radius: 20px; overflow: hidden; margin-bottom: 15px; box-shadow: var(--shadow); }
-        .ch-img { width: 100%; height: 160px; background: #eee; object-fit: cover; }
+        .ch-card { background: var(--white); border-radius: 20px; overflow: hidden; margin-bottom: 20px; box-shadow: var(--shadow); }
+        .ch-img-area { width: 100%; height: 180px; background: #eee; position: relative; }
+        .ch-img { width: 100%; height: 100%; object-fit: cover; }
+        .ch-badge { position: absolute; top: 15px; left: 15px; background: rgba(0,0,0,0.6); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 11px; }
         .ch-content { padding: 20px; }
-        .ch-title { font-size: 18px; font-weight: 800; margin: 5px 0 10px; }
-        .ch-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: linear-gradient(135deg, #FFB7B2, #FF9A9E); color: var(--white); font-weight: 700; margin-top: 15px; }
+        .ch-date { font-size: 12px; color: var(--primary); font-weight: 700; margin-bottom: 5px; }
+        .ch-btn { width: 100%; padding: 14px; border-radius: 15px; border: none; background: linear-gradient(135deg, #FFB7B2, #FF9A9E); color: var(--white); font-weight: 700; margin-top: 15px; font-size: 14px; }
+        .ch-stamp-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 15px; }
+        .ch-stamp { aspect-ratio: 1/1; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #ddd; }
+        .ch-stamp.checked { background: var(--primary); color: #fff; }
 
-        /* 🗓️ 캘린더 (완전 복구) */
-        .cal-wrap { background: var(--primary-light); border-radius: 20px; padding: 20px; margin: 0 20px 20px; box-shadow: var(--shadow); }
-        .cal-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 800; padding: 0 10px; }
-        .week-row { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 10px; font-size: 12px; color: #888; }
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+        /* 캘린더 */
+        .cal-wrapper-bg { background: var(--primary-light); border-radius: 25px; padding: 25px; margin: 0 20px 20px; box-shadow: var(--shadow); position: relative; }
+        .cal-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 800; font-size: 18px; color: #555; padding: 0 5px; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+        .week-head { font-size: 12px; color: #888; margin-bottom: 10px; font-weight: 600; }
         .day-cell { 
-            aspect-ratio: 1/1; border-radius: 10px; background: rgba(255,255,255,0.6); 
+            aspect-ratio: 1/1; border-radius: 12px; background: rgba(255,255,255,0.7); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            font-size: 12px; color: #555; position: relative; 
+            font-size: 11px; color: #777; position: relative; 
         }
-        .day-cell.today { border: 2px solid var(--primary); background: var(--white); font-weight: 700; color: var(--primary); }
-        .day-emoji { font-size: 18px; margin-top: 2px; }
-
-        /* 👤 마이페이지 */
-        .mypage-header { text-align: center; padding: 20px; margin-bottom: 20px; }
-        .menu-list { background: var(--white); border-radius: 20px; margin: 0 20px 20px; padding: 10px; box-shadow: var(--shadow); }
-        .menu-item { padding: 15px; border-bottom: 1px solid #f5f5f5; display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; }
+        .day-cell.filled { background: var(--white); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .day-emoji { font-size: 22px; margin-top: -2px; line-height: 1; }
+        
+        /* 마이페이지 */
+        .mypage-header { text-align: center; padding: 30px 20px; }
+        .profile-circle { width: 80px; height: 80px; background: #E0C3FC; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; }
+        .menu-list { background: var(--white); border-radius: 20px; margin: 0 20px 20px; overflow: hidden; box-shadow: var(--shadow); }
+        .menu-item { padding: 18px 20px; border-bottom: 1px solid #f9f9f9; display: flex; justify-content: space-between; font-size: 15px; font-weight: 500; color: #444; }
         .menu-item:last-child { border-bottom: none; }
         
-        /* 스탬프 */
-        .stamp-board { background: var(--white); margin: 0 20px 20px; padding: 25px; border-radius: 20px; box-shadow: var(--shadow); text-align: center; }
-        .stamp-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 20px; }
-        .stamp { aspect-ratio: 1/1; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 12px; color: #C4B5FD; font-weight: 700; }
-        .stamp.active { background: var(--primary); color: var(--white); box-shadow: 0 3px 8px rgba(157, 118, 193, 0.4); }
+        .stamp-board { background: var(--white); margin: 0 20px 25px; padding: 30px 20px; border-radius: 25px; box-shadow: var(--shadow); text-align: center; position: relative; overflow: hidden; }
+        .stamp-board::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, #FF9A9E, #FECFEF); }
+        .stamp-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 25px; }
+        .stamp { aspect-ratio: 1/1; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #bbb; font-weight: 700; transition: 0.3s; }
+        .stamp.active { background: linear-gradient(135deg, #A18CD1, #FBC2EB); color: var(--white); transform: scale(1.1); box-shadow: 0 3px 6px rgba(161, 140, 209, 0.4); }
 
         /* 하단바 & FAB */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 75px; background: var(--white); border-top: 1px solid #eee; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-item { color: #ccc; width: 60px; text-align: center; font-size: 10px; }
-        .nav-item i { font-size: 24px; margin-bottom: 4px; display: block; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 75px; background: var(--white); border-top: 1px solid #f5f5f5; display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: 5px; }
+        .nav-item { color: #ddd; width: 20%; text-align: center; font-size: 10px; font-weight: 500; }
+        .nav-item i { font-size: 22px; margin-bottom: 6px; display: block; transition: 0.2s; }
         .nav-item.active { color: var(--primary); }
+        .nav-item.active i { transform: translateY(-3px); }
         
-        .fab { position: fixed; bottom: 90px; right: 20px; width: 55px; height: 55px; background: #333; border-radius: 50%; color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 900; }
+        .fab { position: fixed; bottom: 95px; right: 25px; width: 56px; height: 56px; background: #333; border-radius: 50%; color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 8px 25px rgba(0,0,0,0.25); z-index: 900; transform: scale(0); transition: 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
+        .fab.show { transform: scale(1); }
 
-        /* 팝업 (연핑크) */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .pink-box { background: var(--white); width: 85%; max-width: 380px; padding: 30px; border-radius: 30px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.2); border: 4px solid var(--pink-popup); }
-        .pink-input { width: 100%; padding: 15px; background: var(--pink-input); border: 1px solid #FFE0E6; border-radius: 15px; margin-bottom: 10px; font-size: 14px; outline: none; }
-        .btn-pretty { width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: 700; margin-top: 10px; font-size: 14px; }
-        .btn-ok { background: linear-gradient(135deg, #FFB7B2, #FF9A9E); color: var(--white); }
-        .btn-no { background: #f5f5f5; color: #888; }
+        /* 모달 공통 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+        .pink-box { background: var(--white); width: 88%; max-width: 380px; padding: 35px 25px; border-radius: 30px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.15); border: 3px solid var(--pink-popup); position: relative; animation: popUp 0.3s ease-out; }
+        @keyframes popUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         
-        /* 이모지 선택 박스 */
-        #emojiList {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 15px;
-        }
-        .emoji-item {
-            font-size: 30px;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 10px;
-            transition: background 0.1s;
-        }
-        .emoji-item.selected {
-            background: var(--primary-light);
-            box-shadow: 0 0 0 3px var(--primary);
-        }
+        .pink-input { width: 100%; padding: 16px; background: var(--pink-input); border: 1px solid #FFE0E6; border-radius: 16px; margin-bottom: 12px; font-size: 15px; outline: none; transition: 0.2s; }
+        .pink-input:focus { border-color: var(--accent-pink); background: #fff; }
+        .btn-pretty { width: 100%; padding: 16px; border-radius: 16px; border: none; font-weight: 700; margin-top: 10px; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn-ok { background: linear-gradient(135deg, #FFB7B2, #FF9A9E); color: var(--white); box-shadow: 0 5px 15px rgba(255, 154, 158, 0.3); }
+        .btn-no { background: #f7f7f7; color: #999; }
+        
+        /* 이모지 그리드 */
+        #emojiList { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
+        .emoji-item { font-size: 28px; padding: 8px; border-radius: 15px; cursor: pointer; transition: 0.2s; }
+        .emoji-item.selected { background: var(--primary-light); transform: scale(1.1); box-shadow: 0 0 0 2px var(--primary); }
 
         .hidden { display: none !important; }
-        .empty-state { text-align: center; padding: 50px 20px; color: #aaa; font-size: 14px; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #bbb; font-size: 14px; line-height: 1.6; }
+        
+        /* 관리자 대시보드 테이블 */
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; text-align: left; }
+        .admin-table th { padding: 8px; background: #f5f5f5; color: #555; }
+        .admin-table td { padding: 8px; border-bottom: 1px solid #eee; color: #666; }
+        .badge-admin { background: #333; color: #fff; padding: 2px 5px; border-radius: 4px; font-size: 10px; }
     </style>
 </head>
 <body>
 
+    <!-- 🌸 알림 팝업 -->
     <div id="customAlert" class="modal-overlay" style="z-index: 3000;">
         <div class="pink-box">
-            <div style="font-size:35px; margin-bottom:15px;">🌸</div>
-            <div id="alertMsg" style="margin-bottom:20px; font-weight:700; color:#555; word-break: keep-all; line-height:1.5;">알림 메시지</div>
+            <div style="font-size:40px; margin-bottom:15px; animation: bounce 1s infinite;">🌸</div>
+            <div id="alertMsg" style="margin-bottom:25px; font-weight:600; color:#555; word-break: keep-all; line-height:1.5;">알림 메시지</div>
             <button onclick="window.closeAlert()" class="btn-pretty btn-ok clickable">확인</button>
         </div>
     </div>
 
+    <!-- 🔑 비밀번호 변경 팝업 -->
+    <div id="pwResetModal" class="modal-overlay">
+        <div class="pink-box">
+            <h3 style="margin-bottom:20px; color:var(--primary);">비밀번호 재설정 🔒</h3>
+            <p style="font-size:13px; color:#999; margin-bottom:20px;">가입하신 이메일 주소를 입력해주세요.<br>재설정 링크를 보내드립니다.</p>
+            <input type="email" id="resetEmailInput" class="pink-input" placeholder="example@email.com">
+            <button onclick="window.sendResetEmail()" class="btn-pretty btn-ok clickable">전송하기</button>
+            <button onclick="document.getElementById('pwResetModal').style.display='none'" class="btn-pretty btn-no clickable">취소</button>
+        </div>
+    </div>
+
+    <!-- 헤더 -->
     <header class="header">
         <div class="logo">Jahyu Letter</div>
     </header>
 
+    <!-- 메인 컨텐츠 영역 -->
     <div id="appContainer" class="app-container"></div>
 
+    <!-- 하단 네비게이션 -->
     <nav class="bottom-nav">
         <div class="nav-item clickable" onclick="window.renderTab('home')"><i class="fas fa-home"></i>홈</div>
         <div class="nav-item clickable" onclick="window.renderTab('letter')"><i class="fas fa-envelope-open-text"></i>레터</div>
-        <div class="nav-item clickable" onclick="window.renderTab('mood')"><i class="fas fa-calendar-alt"></i>무드</div>
-        <div class="nav-item clickable" onclick="window.renderTab('challenge')"><i class="fas fa-running"></i>챌린지</div>
-        <div class="nav-item clickable" onclick="window.renderTab('mypage')"><i class="fas fa-user-circle"></i>마이</div>
+        <div class="nav-item clickable" onclick="window.renderTab('mood')"><i class="fas fa-calendar-check"></i>무드</div>
+        <div class="nav-item clickable" onclick="window.renderTab('challenge')"><i class="fas fa-crown"></i>챌린지</div>
+        <div class="nav-item clickable" onclick="window.renderTab('mypage')"><i class="fas fa-user"></i>마이</div>
     </nav>
 
-    <div id="fab" class="fab clickable hidden" onclick="window.openWriteModal()"><i class="fas fa-pen"></i></div>
+    <!-- 글쓰기 버튼 -->
+    <div id="fab" class="fab clickable" onclick="window.openWriteModal()"><i class="fas fa-pen"></i></div>
 
+    <!-- 로그인 모달 -->
     <div id="authModal" class="modal-overlay" style="display:flex;">
         <div class="pink-box">
-            <div style="font-family:'Dancing Script'; font-size:40px; color:var(--primary); margin-bottom:10px;">Jahyu Letter</div>
-            <p style="color:#aaa; margin-bottom:30px;">당신을 위한 쉼표 🌿</p>
+            <div style="font-family:'Dancing Script'; font-size:45px; color:var(--primary); margin-bottom:10px;">Jahyu</div>
+            <p style="color:#aaa; margin-bottom:30px; font-size:14px;">당신을 위한 쉼표, 자휴레터 🌿</p>
             <input type="email" id="authEmail" class="pink-input" placeholder="이메일">
             <input type="password" id="authPw" class="pink-input" placeholder="비밀번호">
             <div id="signupFields" class="hidden">
-                <input type="text" id="authNick" class="pink-input" placeholder="닉네임">
+                <input type="text" id="authNick" class="pink-input" placeholder="닉네임 (활동명)">
             </div>
             <button id="loginBtn" onclick="window.doLogin()" class="btn-pretty btn-ok clickable">로그인</button>
-            <button id="signupBtn" onclick="window.toggleSignup()" class="btn-pretty btn-no clickable">회원가입 하기</button>
-            <p onclick="window.resetPw()" style="font-size:12px; color:#aaa; margin-top:20px; cursor:pointer; text-decoration:underline;">비밀번호를 잊으셨나요?</p>
+            <button id="signupBtn" onclick="window.toggleSignup()" class="btn-pretty btn-no clickable">3초만에 회원가입</button>
+            <p onclick="document.getElementById('pwResetModal').style.display='flex'" style="font-size:12px; color:#bbb; margin-top:20px; cursor:pointer; text-decoration:underline;">비밀번호를 잊으셨나요?</p>
         </div>
     </div>
 
+    <!-- ✏️ 글쓰기/추가 모달 (통합) -->
     <div id="writeModal" class="modal-overlay">
-        <div class="pink-box" style="text-align:left;">
-            <h3 style="text-align:center; color:var(--primary); margin-bottom:20px;">기록하기 ✏️</h3>
+        <div class="pink-box" style="text-align:left; max-width:400px; max-height:80vh; overflow-y:auto;">
+            <h3 id="modalTitle" style="text-align:center; color:var(--primary); margin-bottom:20px;">기록하기</h3>
             
-            <div id="moodOptions" style="margin-bottom:15px;">
-                <h4 style="text-align:center; margin-bottom:10px; color:#888;">오늘의 무드</h4>
-                <div id="emojiList" style="text-align:center;"></div>
+            <!-- 무드 입력 폼 -->
+            <div id="moodForm" class="hidden">
+                <h4 style="text-align:center; margin-bottom:15px; color:#888;">오늘 하루는 어땠나요?</h4>
+                <div id="emojiList"></div>
+                <textarea id="moodContent" class="pink-input" style="height:80px; resize:none; margin-top:10px;" placeholder="짧은 감정 기록..."></textarea>
             </div>
 
-            <input type="text" id="postTitle" class="pink-input" placeholder="제목">
-            <textarea id="postContent" class="pink-input" style="height:100px; resize:none;" placeholder="내용을 입력하세요..."></textarea>
-            
+            <!-- 레터(관리자) 입력 폼 -->
+            <div id="letterForm" class="hidden">
+                <select id="letterCategory" class="pink-input">
+                    <option value="letter">💌 자휴레터</option>
+                    <option value="lab">🧪 자휴랩</option>
+                    <option value="notice">📢 공지사항</option>
+                </select>
+                <input type="text" id="letterTitle" class="pink-input" placeholder="레터 제목">
+                <textarea id="letterContent" class="pink-input" style="height:120px; resize:none;" placeholder="내용을 작성하세요..."></textarea>
+                <input type="text" id="letterUrl" class="pink-input" placeholder="연결할 URL (선택사항)">
+                <input type="text" id="letterBtnText" class="pink-input" placeholder="버튼 이름 (예: 보러가기)">
+            </div>
+
+            <!-- 챌린지(관리자) 입력 폼 -->
+            <div id="challengeForm" class="hidden">
+                <input type="text" id="chTitle" class="pink-input" placeholder="챌린지 제목">
+                <textarea id="chContent" class="pink-input" style="height:80px;" placeholder="챌린지 설명"></textarea>
+                <div style="font-size:12px; color:#888; margin-bottom:5px;">오픈 예정일</div>
+                <input type="date" id="chOpenDate" class="pink-input">
+                <div style="display:flex; gap:10px;">
+                    <div style="flex:1;">
+                        <span style="font-size:12px; color:#888;">시작일</span>
+                        <input type="date" id="chStartDate" class="pink-input">
+                    </div>
+                    <div style="flex:1;">
+                        <span style="font-size:12px; color:#888;">종료일</span>
+                        <input type="date" id="chEndDate" class="pink-input">
+                    </div>
+                </div>
+                <input type="text" id="chImgUrl" class="pink-input" placeholder="이미지 URL (직접 입력)">
+            </div>
+
             <button onclick="window.submitPost()" class="btn-pretty btn-ok clickable">등록하기</button>
-            <button onclick="window.closeModal()" class="btn-pretty btn-no clickable">취소</button>
+            <button onclick="window.closeModal()" class="btn-pretty btn-no clickable">닫기</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail, deleteUser } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // 🔴 햅삐님 키값 (복붙 필수!) 🔴
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyDq2eT8H6tNcsrT8dhZWsEyyMZbpCZIZZQ",
             authDomain: "jahyu-e24cd.firebaseapp.com",
@@ -239,35 +285,545 @@
             projectId: "jahyu-e24cd",
             storageBucket: "jahyu-e24cd.firebasestorage.app",
             messagingSenderId: "955637836464",
-            appId: "1:955637836464:web:096ed0c28e0070f4fca975",
-            measurementId: "G-CTDZFNYJV7"
+            appId: "1:955637836464:web:096ed0c28e0070f4fca975"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // --- 전역 변수 및 관리자 설정 ---
         let currentUser = null;
         let currentTab = 'home';
-        const MOODS = ['😊','🥰','😌','😭','😡','😴','🤩','🤔','🥺','🔥','☔','🍀'];
+        let isAdmin = false;
+        let isSuperAdmin = false;
+        let selectedEmoji = null;
 
-        let selectedEmoji = null; // 선택된 이모지 상태 관리
+        // 20개의 트렌디한 이모지 리스트
+        const MOOD_EMOJIS = ['😊','🥰','😌','😭','😡','😴','🤩','🥺','🔥','☔','🍀','☁️','☕','🎧','🏠','💸','💪','👻','🍷','🧶'];
+        
+        // 관리자 이메일 목록 (5명 + 슈퍼관리자) - 실제 운영시 DB 관리 권장
+        const ADMIN_EMAILS = [
+            'happci@test.com', // 슈퍼 관리자
+            'admin1@test.com', 'admin2@test.com', 'admin3@test.com', 'admin4@test.com'
+        ];
+        const SUPER_ADMIN = 'happci@test.com';
 
-        // --- 전역 함수 연결 (드래그 방지 및 클릭 보장) ---
+        // --- 유틸리티 함수 ---
         window.showAlert = (msg) => {
             document.getElementById('alertMsg').innerHTML = msg;
             document.getElementById('customAlert').style.display = 'flex';
         };
         window.closeAlert = () => document.getElementById('customAlert').style.display = 'none';
-        
-        // FAB 재표시 로직 추가
-        window.closeModal = () => {
-            document.getElementById('writeModal').style.display = 'none';
-            if(currentTab === 'mood' || currentTab === 'letter') {
-                 document.getElementById('fab').classList.remove('hidden');
+
+        // 탭 렌더링 시스템
+        window.renderTab = (tab) => {
+            currentTab = tab;
+            const container = document.getElementById('appContainer');
+            const fab = document.getElementById('fab');
+            container.innerHTML = '';
+            
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            const activeNav = document.querySelector(`.nav-item[onclick*="${tab}"]`);
+            if (activeNav) activeNav.classList.add('active');
+
+            fab.classList.remove('show');
+
+            if (tab === 'home') renderHome(container);
+            else if (tab === 'letter') renderLetter(container);
+            else if (tab === 'mood') renderMood(container);
+            else if (tab === 'challenge') renderChallenge(container);
+            else if (tab === 'mypage') renderMyPage(container);
+        };
+
+        // 🏠 홈 화면
+        function renderHome(container) {
+            container.innerHTML = `
+                <div class="hero-card clickable" onclick="window.open('https://index-html-zak5.vercel.app/', '_blank')">
+                    <h3 style="margin-bottom:5px;">나의 쉼 유형 테스트 🌿</h3>
+                    <p style="font-size:13px; opacity:0.9;">나는 어떤 쉼이 필요할까? Click! 👉</p>
+                </div>
+                <div class="quick-menu">
+                    <div class="quick-item clickable" onclick="window.open('https://maily.so/happci', '_blank')"><div class="quick-icon ic-1"><i class="fas fa-envelope-open-text"></i></div><span class="quick-text">레터구독</span></div>
+                    <div class="quick-item clickable" onclick="window.renderTab('challenge')"><div class="quick-icon ic-2"><i class="fas fa-crown"></i></div><span class="quick-text">챌린지</span></div>
+                    <div class="quick-item clickable" onclick="window.renderTab('mood')"><div class="quick-icon ic-3"><i class="fas fa-calendar-check"></i></div><span class="quick-text">무드기록</span></div>
+                    <div class="quick-item clickable" onclick="window.open('http://pf.kakao.com/_Jfjxgn/111753149', '_blank')"><div class="quick-icon ic-4"><i class="fas fa-quote-right"></i></div><span class="quick-text">문장수집</span></div>
+                    <div class="quick-item clickable" onclick="window.open('http://pf.kakao.com/_Jfjxgn', '_blank')"><div class="quick-icon ic-5"><i class="fas fa-comments"></i></div><span class="quick-text">1:1 채팅</span></div>
+                    <div class="quick-item clickable" onclick="window.renderTab('mypage')"><div class="quick-icon ic-6"><i class="fas fa-user-circle"></i></div><span class="quick-text">마이페이지</span></div>
+                </div>
+            `;
+        }
+
+        // 💌 레터 화면 (관리자는 글쓰기 가능)
+        function renderLetter(container) {
+            if(isAdmin) document.getElementById('fab').classList.add('show');
+            
+            container.innerHTML = `
+                <div class="tab-bar">
+                    <button class="tab-btn active clickable" onclick="window.filterLetters('all', this)">전체</button>
+                    <button class="tab-btn clickable" onclick="window.filterLetters('letter', this)">자휴레터</button>
+                    <button class="tab-btn clickable" onclick="window.filterLetters('lab', this)">자휴랩</button>
+                    <button class="tab-btn clickable" onclick="window.filterLetters('notice', this)">공지</button>
+                </div>
+                <div id="letterList" class="card-list" style="padding-bottom:20px;">
+                    <div class="empty-state">로딩중... 📨</div>
+                </div>
+            `;
+            window.fetchLetters('all');
+        }
+
+        window.fetchLetters = async (category) => {
+            const list = document.getElementById('letterList');
+            let q = query(collection(db, "posts"), where("type", "in", ["letter", "lab", "notice"]), orderBy("date", "desc"));
+            
+            if(category !== 'all') {
+                q = query(collection(db, "posts"), where("type", "==", category), orderBy("date", "desc"));
+            }
+
+            const snap = await getDocs(q);
+            list.innerHTML = '';
+            
+            if (snap.empty) {
+                list.innerHTML = `<div class="empty-state">등록된 글이 없어요.</div>`;
+                return;
+            }
+
+            snap.forEach(d => {
+                const p = d.data();
+                const date = new Date(p.date).toLocaleDateString();
+                const tagMap = { 'letter': '💌 레터', 'lab': '🧪 랩', 'notice': '📢 공지' };
+                
+                let btnHtml = '';
+                if(p.url) btnHtml = `<button onclick="window.open('${p.url}', '_blank')" class="ch-btn" style="margin-top:10px; padding:10px;">${p.btnText || '보러가기'}</button>`;
+
+                list.innerHTML += `
+                    <div class="card">
+                        <span style="font-size:11px; color:var(--primary); font-weight:700;">${tagMap[p.type] || '글'}</span>
+                        <div class="card-title" style="margin-top:5px;">${p.title}</div>
+                        <div class="card-content" style="white-space:pre-wrap;">${p.content}</div>
+                        ${btnHtml}
+                        <div class="card-meta"><span>관리자</span><span>${date}</span></div>
+                    </div>
+                `;
+            });
+        };
+        window.filterLetters = (cat, btn) => {
+            document.querySelectorAll('.tab-bar .tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            window.fetchLetters(cat);
+        }
+
+        // 📅 무드 화면
+        function renderMood(container) {
+            document.getElementById('fab').classList.add('show');
+            
+            container.innerHTML = `
+                <div style="padding:0 20px;">
+                    <div class="card" style="margin-bottom:20px; text-align:center; background:#FFF0F5; border:none;">
+                        <div style="font-size:14px; color:#555; line-height:1.4;">
+                            오늘은 어떤 하루였나요?<br>
+                            <span style="font-weight:700; color:var(--primary);">나의 감정을 기록해 보세요! ✍️</span>
+                        </div>
+                    </div>
+
+                    <div id="captureArea" class="cal-wrapper-bg">
+                        <div class="cal-header">
+                            <span>My Mood Log</span>
+                            <span>${new Date().getMonth()+1}월</span>
+                        </div>
+                        <div class="cal-grid" style="margin-bottom:5px;">
+                            <div class="week-head">일</div><div class="week-head">월</div><div class="week-head">화</div><div class="week-head">수</div><div class="week-head">목</div><div class="week-head">금</div><div class="week-head">토</div>
+                        </div>
+                        <div id="calGrid" class="cal-grid"></div>
+                    </div>
+                    
+                    <button onclick="window.saveCalendarImage()" class="btn-pretty btn-ok clickable" style="margin-bottom:30px;">
+                        <i class="fas fa-download"></i> 이미지로 저장하기
+                    </button>
+                    
+                    <h4 style="margin-bottom:15px; padding-left:5px;">나의 무드 히스토리</h4>
+                    <div id="moodList" class="card-list" style="padding:0;"></div>
+                    
+                    <!-- 무드 히스토리 모두 보기 기능 -->
+                     <button onclick="window.toggleMoodHistory()" class="btn-pretty btn-no clickable" style="margin-top:10px;">
+                        이전 내역 더보기
+                    </button>
+                </div>
+            `;
+            window.loadCalendar();
+            window.fetchMoods(5); // 최근 5개만 먼저 로드
+        }
+
+        // 캘린더 이미지 저장 (html2canvas 사용)
+        window.saveCalendarImage = () => {
+            const element = document.getElementById("captureArea");
+            html2canvas(element, { scale: 2, backgroundColor: "#F3E5F5", borderRadius:25 }).then(canvas => {
+                const link = document.createElement("a");
+                link.download = `my_mood_log_${new Date().toLocaleDateString()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        };
+
+        window.loadCalendar = async () => {
+            const grid = document.getElementById('calGrid');
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+            
+            grid.innerHTML = '';
+            for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
+
+            // 모든 무드 기록 가져오기 (삭제 없이)
+            const q = query(collection(db, "posts"), where("type", "==", "mood"), where("authorId", "==", currentUser.uid));
+            const snap = await getDocs(q);
+            const records = {};
+            snap.forEach(d => {
+                const date = new Date(d.data().date);
+                if(date.getMonth() === month && date.getFullYear() === year) {
+                    records[date.getDate()] = d.data().emoji; // 가장 최근(마지막) 기록이 덮어씌워짐
+                }
+            });
+
+            for(let i=1; i<=lastDate; i++) {
+                const hasMood = records[i];
+                grid.innerHTML += `
+                    <div class="day-cell ${hasMood ? 'filled' : ''}">
+                        <span style="position:absolute; top:4px; left:6px; font-size:9px;">${i}</span>
+                        <span class="day-emoji">${hasMood || ''}</span>
+                    </div>
+                `;
             }
         };
 
+        window.fetchMoods = async (limitNum = 1000) => {
+            const list = document.getElementById('moodList');
+            const q = query(
+                collection(db, "posts"), 
+                where("type", "==", "mood"), 
+                where("authorId", "==", currentUser.uid),
+                orderBy("date", "desc")
+            );
+            
+            const snap = await getDocs(q);
+            list.innerHTML = '';
+
+            if(snap.empty) {
+                list.innerHTML = '<div class="empty-state">아직 기록이 없어요.</div>'; return;
+            }
+
+            let count = 0;
+            snap.forEach(d => {
+                if(limitNum && count >= limitNum) return;
+                const p = d.data();
+                const date = new Date(p.date).toLocaleDateString();
+                list.innerHTML += `
+                    <div class="card clickable" style="display:flex; align-items:center; padding:15px; margin-bottom:10px;">
+                        <div style="font-size:28px; margin-right:15px;">${p.emoji}</div>
+                        <div style="flex:1;">
+                            <div style="font-size:12px; color:#aaa;">${date}</div>
+                            <div style="font-size:14px; margin-top:3px;">${p.content}</div>
+                        </div>
+                    </div>`;
+                count++;
+            });
+        };
+        
+        window.toggleMoodHistory = () => {
+            window.fetchMoods(null); // 전체 로드
+        }
+
+        // 🏆 챌린지 화면
+        function renderChallenge(container) {
+            // 관리자면 추가 버튼 표시
+            if(isAdmin) document.getElementById('fab').classList.add('show');
+
+            container.innerHTML = `
+                <div class="card" style="margin:0 20px 20px; background:#f9f9f9; border:none; box-shadow:none; padding:15px;">
+                    <p style="font-size:13px; text-align:center; color:#777;">
+                        원하는 챌린지가 있나요? 🙋‍♀️<br>
+                        <a href="http://pf.kakao.com/_Jfjxgn" target="_blank" style="color:var(--primary); font-weight:700;">카톡 채널로 제안해주세요!</a>
+                    </p>
+                </div>
+                <div id="challengeList" style="padding:0 20px;">
+                    <!-- 챌린지 로드 -->
+                </div>
+            `;
+            window.loadChallenges();
+        }
+
+        window.loadChallenges = async () => {
+            const list = document.getElementById('challengeList');
+            const today = new Date().toISOString().split('T')[0];
+            
+            // 관리자는 모든 챌린지, 유저는 openDate 이후의 챌린지만
+            let q = query(collection(db, "challenges"), orderBy("startDate", "desc"));
+            const snap = await getDocs(q);
+            
+            list.innerHTML = '';
+            if(snap.empty) {
+                list.innerHTML = `<div class="empty-state">진행 중인 챌린지가 없어요.<br>곧 새로운 챌린지로 찾아올게요!</div>`;
+                return;
+            }
+
+            snap.forEach(d => {
+                const c = d.data();
+                if(!isAdmin && c.openDate > today) return; // 유저는 오픈일 전에는 안보임
+
+                const isOngoing = (today >= c.startDate && today <= c.endDate);
+                const statusBadge = isOngoing ? '<span class="ch-badge" style="background:var(--primary);">진행중 🔥</span>' : (today < c.startDate ? '<span class="ch-badge">예정 ⏳</span>' : '<span class="ch-badge" style="background:#aaa;">종료</span>');
+
+                list.innerHTML += `
+                    <div class="ch-card">
+                        <div class="ch-img-area">
+                            <img src="${c.imgUrl || 'https://via.placeholder.com/400x200?text=Challenge'}" class="ch-img" alt="challenge">
+                            ${statusBadge}
+                        </div>
+                        <div class="ch-content">
+                            <div class="ch-date">${c.startDate} ~ ${c.endDate}</div>
+                            <div class="ch-title" style="font-size:18px; font-weight:700; margin-bottom:5px;">${c.title}</div>
+                            <p style="font-size:13px; color:#666; margin-bottom:15px;">${c.content}</p>
+                            
+                            <!-- 인증 도장판 (예시 UI) -->
+                            <div style="font-size:12px; font-weight:700; color:#555;">나의 인증 현황</div>
+                            <div class="ch-stamp-grid">
+                                ${Array(7).fill(0).map((_, i) => `<div class="ch-stamp ${i< (c.myCount||0) ? 'checked' : ''}"><i class="fas fa-check"></i></div>`).join('')}
+                            </div>
+
+                            ${isOngoing ? `<button onclick="window.certifyChallenge('${d.id}')" class="ch-btn clickable">📸 오늘 인증하기</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+        };
+
+        window.certifyChallenge = (chId) => {
+            // 인증 로직 (DB 저장 및 팝업)
+            window.showAlert(`
+                <span style="color:var(--primary); font-size:18px;">축하합니다! 🎉</span><br><br>
+                오늘의 챌린지 인증 완료!<br>
+                꾸준함이 빛나는 당신, 멋져요 ✨
+            `);
+            // 실제로는 user_challenge_log 컬렉션에 저장하는 로직 필요
+        };
+
+        // 👤 마이페이지
+        function renderMyPage(container) {
+            container.innerHTML = `
+                <div class="mypage-header">
+                    <div class="profile-circle"><i class="fas fa-user"></i></div>
+                    <h3 style="margin-bottom:5px;">${currentUser.displayName}님</h3>
+                    <p style="font-size:13px; color:#aaa;">${currentUser.email}</p>
+                    ${isAdmin ? `<span class="badge-admin">Admin 계정</span>` : ''}
+                </div>
+                
+                <div class="stamp-board">
+                    <h4 style="margin-bottom:5px;">나의 스탬프 🐾</h4>
+                    <p style="font-size:12px; color:#666; line-height:1.4;">
+                        30개 스탬프를 완성하고 카톡으로 인증하면?<br>
+                        <b style="color:var(--primary);">힙한 다꾸 스티커팩 & 응원 짤</b>을 드려요 🎁
+                    </p>
+                    <div id="stampGrid" class="stamp-grid"></div>
+                </div>
+
+                <div class="menu-list">
+                    <div class="menu-item clickable" onclick="window.showMyPosts()">📝 내가 쓴 글 <i class="fas fa-chevron-right"></i></div>
+                    <div class="menu-item clickable">💬 내가 쓴 댓글 <i class="fas fa-chevron-right"></i></div>
+                    <div class="menu-item clickable">🔖 북마크 <i class="fas fa-chevron-right"></i></div>
+                    ${isAdmin ? `<div class="menu-item clickable" onclick="window.renderAdminDashboard()" style="color:var(--primary); font-weight:700;">⚙️ 관리자 대시보드 <i class="fas fa-chevron-right"></i></div>` : ''}
+                    <div class="menu-item clickable" onclick="document.getElementById('pwResetModal').style.display='flex'">🔒 비밀번호 변경 <i class="fas fa-chevron-right"></i></div>
+                    <div class="menu-item clickable" onclick="window.handleLogout()" style="color:#FF6B6B;">👋 로그아웃</div>
+                </div>
+            `;
+            window.loadStamps();
+        }
+
+        window.showMyPosts = () => {
+            // 간단하게 무드 리스트와 동일한 UI를 재활용하여 필터링
+            window.renderTab('mood'); 
+            // 실제 구현시에는 '내 글 모아보기' 전용 뷰를 만들거나 탭 이동
+            setTimeout(() => window.showAlert("최근 작성한 무드/레터 기록 화면으로 이동합니다."), 100);
+        };
+
+        window.loadStamps = async () => {
+            const userSnap = await getDoc(doc(db, "users", currentUser.uid));
+            const count = userSnap.data()?.stamps || 0;
+            const grid = document.getElementById('stampGrid');
+            grid.innerHTML = '';
+            for(let i=1; i<=30; i++) {
+                grid.innerHTML += `<div class="stamp ${i<=count?'active':''}">${i}</div>`;
+            }
+        };
+
+        // ⚙️ 관리자 대시보드 (슈퍼/일반)
+        window.renderAdminDashboard = async () => {
+            if(!isAdmin) return;
+            const container = document.getElementById('appContainer');
+            
+            let adminHtml = '';
+            if(isSuperAdmin) {
+                adminHtml = `
+                    <div class="card" style="margin-bottom:20px;">
+                        <h4 style="margin-bottom:10px;">👑 슈퍼 관리자 기능</h4>
+                        <input type="email" id="newAdminEmail" class="pink-input" placeholder="관리자 권한 부여/삭제할 이메일">
+                        <div style="display:flex; gap:10px;">
+                            <button onclick="window.manageAdmin('add')" class="btn-pretty btn-ok" style="flex:1;">관리자 등록</button>
+                            <button onclick="window.manageAdmin('remove')" class="btn-pretty btn-no" style="flex:1;">권한 해제</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div style="padding:20px;">
+                    <h2 style="margin-bottom:20px;">관리자 대시보드</h2>
+                    ${adminHtml}
+                    
+                    <div class="card">
+                        <h4>📊 회원 현황</h4>
+                        <div id="userStats" style="margin-top:10px; font-size:13px;">로딩중...</div>
+                        <table class="admin-table">
+                            <thead><tr><th>닉네임</th><th>이메일</th><th>스탬프</th><th>관리</th></tr></thead>
+                            <tbody id="userTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            
+            // 사용자 목록 로드 (실제로는 Pagination 필요)
+            const snap = await getDocs(collection(db, "users"));
+            const tbody = document.getElementById('userTableBody');
+            let totalUsers = 0;
+            
+            snap.forEach(d => {
+                totalUsers++;
+                const u = d.data();
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${u.name}</td>
+                        <td>${u.email}</td>
+                        <td>${u.stamps}</td>
+                        <td><span onclick="window.deleteUserFunc('${d.id}')" style="color:red; cursor:pointer;">삭제</span></td>
+                    </tr>
+                `;
+            });
+            document.getElementById('userStats').innerText = `총 회원수: ${totalUsers}명`;
+        };
+
+        window.manageAdmin = (action) => {
+            const targetEmail = document.getElementById('newAdminEmail').value;
+            if(!targetEmail) return window.showAlert("이메일을 입력하세요.");
+            window.showAlert(`${targetEmail} 계정을 ${action === 'add' ? '관리자로 등록' : '관리자 해제'} 처리했습니다.<br>(DB 연동 필요)`);
+        };
+        
+        window.deleteUserFunc = (uid) => {
+            if(confirm("정말 이 사용자를 삭제하시겠습니까? (복구 불가)")) {
+                // Firestore delete logic
+                deleteDoc(doc(db, "users", uid)).then(() => {
+                    window.showAlert("사용자가 삭제되었습니다.");
+                    window.renderAdminDashboard();
+                });
+            }
+        };
+
+        // --- 공통 기능 ---
+        window.openWriteModal = () => {
+            const modal = document.getElementById('writeModal');
+            const title = document.getElementById('modalTitle');
+            
+            // 폼 초기화
+            document.getElementById('moodForm').classList.add('hidden');
+            document.getElementById('letterForm').classList.add('hidden');
+            document.getElementById('challengeForm').classList.add('hidden');
+            
+            modal.style.display = 'flex';
+            document.getElementById('fab').classList.remove('show');
+
+            if(currentTab === 'mood') {
+                title.innerText = "오늘의 무드 기록 🎨";
+                document.getElementById('moodForm').classList.remove('hidden');
+                
+                const emojiListEl = document.getElementById('emojiList');
+                emojiListEl.innerHTML = MOOD_EMOJIS.map(m => 
+                    `<div class="emoji-item" onclick="window.selectEmoji('${m}', this)">${m}</div>`
+                ).join('');
+                
+            } else if(currentTab === 'letter' && isAdmin) {
+                title.innerText = "새로운 글 작성 ✍️";
+                document.getElementById('letterForm').classList.remove('hidden');
+            } else if(currentTab === 'challenge' && isAdmin) {
+                title.innerText = "새 챌린지 등록 🏆";
+                document.getElementById('challengeForm').classList.remove('hidden');
+            }
+        };
+
+        window.selectEmoji = (m, el) => { 
+            selectedEmoji = m; 
+            document.querySelectorAll('.emoji-item').forEach(item => item.classList.remove('selected'));
+            el.classList.add('selected');
+        };
+
+        window.submitPost = async () => {
+            try {
+                let data = {
+                    date: new Date().toISOString(),
+                    authorId: currentUser.uid,
+                };
+                let collectionName = "posts";
+
+                if (currentTab === 'mood') {
+                    if(!selectedEmoji) return window.showAlert("무드 이모지를 선택해주세요!");
+                    data.type = 'mood';
+                    data.emoji = selectedEmoji;
+                    data.content = document.getElementById('moodContent').value;
+                    
+                    // 스탬프 적립
+                    const userRef = doc(db, "users", currentUser.uid);
+                    const userSnap = await getDoc(userRef);
+                    await setDoc(userRef, { stamps: (userSnap.data()?.stamps || 0) + 1 }, { merge: true });
+                    window.showAlert("기록 완료!<br>스탬프가 하나 적립되었어요 🐾");
+
+                } else if (currentTab === 'letter') {
+                    data.type = document.getElementById('letterCategory').value;
+                    data.title = document.getElementById('letterTitle').value;
+                    data.content = document.getElementById('letterContent').value;
+                    data.url = document.getElementById('letterUrl').value;
+                    data.btnText = document.getElementById('letterBtnText').value;
+                    if(!data.title || !data.content) return window.showAlert("제목과 내용을 입력하세요.");
+                    window.showAlert("글이 등록되었습니다.");
+
+                } else if (currentTab === 'challenge') {
+                    collectionName = "challenges";
+                    data.title = document.getElementById('chTitle').value;
+                    data.content = document.getElementById('chContent').value;
+                    data.openDate = document.getElementById('chOpenDate').value;
+                    data.startDate = document.getElementById('chStartDate').value;
+                    data.endDate = document.getElementById('chEndDate').value;
+                    data.imgUrl = document.getElementById('chImgUrl').value;
+                    if(!data.title) return window.showAlert("정보를 모두 입력해주세요.");
+                    window.showAlert("챌린지가 예약되었습니다.");
+                }
+
+                await addDoc(collection(db, collectionName), data);
+                window.closeModal();
+                window.renderTab(currentTab);
+
+            } catch(e) {
+                console.error(e);
+                window.showAlert("오류가 발생했습니다: " + e.message);
+            }
+        };
+
+        window.closeModal = () => {
+            document.getElementById('writeModal').style.display = 'none';
+            if((currentTab === 'mood') || (isAdmin && (currentTab === 'letter' || currentTab === 'challenge'))) {
+                document.getElementById('fab').classList.add('show');
+            }
+        };
+
+        // --- 인증 관련 ---
         window.toggleSignup = () => {
             const fields = document.getElementById('signupFields');
             const logBtn = document.getElementById('loginBtn');
@@ -282,13 +838,15 @@
                 fields.classList.add('hidden');
                 logBtn.innerText = "로그인";
                 logBtn.onclick = window.doLogin;
-                signBtn.innerText = "회원가입 하기";
+                signBtn.innerText = "3초만에 회원가입";
             }
         };
 
         window.doLogin = async () => {
-            try { await signInWithEmailAndPassword(auth, document.getElementById('authEmail').value, document.getElementById('authPw').value); }
-            catch(e) { window.showAlert("로그인 실패!<br>이메일과 비밀번호를 확인해주세요."); }
+            const email = document.getElementById('authEmail').value;
+            const pw = document.getElementById('authPw').value;
+            try { await signInWithEmailAndPassword(auth, email, pw); }
+            catch(e) { window.showAlert("로그인 정보를 확인해주세요."); }
         };
 
         window.doSignup = async () => {
@@ -300,315 +858,4 @@
             try {
                 const cred = await createUserWithEmailAndPassword(auth, email, pw);
                 await updateProfile(cred.user, { displayName: nick });
-                await setDoc(doc(db, "users", cred.user.uid), { email: email, name: nick, stamps: 0 });
-                window.showAlert("가입을 환영합니다! 🌸");
-            } catch(e) { window.showAlert("이미 가입된 이메일이거나 비밀번호가 약합니다."); }
-        };
-
-        window.handleLogout = async () => {
-            await signOut(auth);
-            window.location.reload();
-        };
-
-        window.resetPw = async () => {
-            const email = prompt("가입한 이메일을 입력하세요:");
-            if(email) {
-                try { await sendPasswordResetEmail(auth, email); window.showAlert("재설정 메일을 보냈어요!"); }
-                catch(e) { window.showAlert("이메일 형식을 확인해주세요."); }
-            }
-        };
-
-        // --- 탭 렌더링 ---
-        window.renderTab = (tab) => {
-            currentTab = tab;
-            const container = document.getElementById('appContainer');
-            container.innerHTML = '';
-            
-            // 모든 네비 아이템의 active 클래스 제거
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            // 현재 탭에 active 클래스 추가 (수정됨)
-            const activeNav = document.querySelector(`.nav-item[onclick*="${tab}"]`);
-            if (activeNav) activeNav.classList.add('active');
-
-            document.getElementById('fab').classList.add('hidden');
-
-            if (tab === 'home') {
-                container.innerHTML = `
-                    <div class="hero-card clickable">
-                        <h3>나에게 맞는 쉼 유형은?</h3>
-                        <p style="font-size:13px; opacity:0.9; margin-top:5px;">테스트 하러가기 👉</p>
-                    </div>
-                    <div class="quick-menu">
-                        <div class="quick-item clickable" onclick="window.renderTab('letter')"><div class="quick-icon ic-1"><i class="fas fa-envelope-open-text"></i></div><span class="quick-text">레터</span></div>
-                        <div class="quick-item clickable" onclick="window.renderTab('challenge')"><div class="quick-icon ic-2"><i class="fas fa-running"></i></div><span class="quick-text">챌린지</span></div>
-                        <div class="quick-item clickable"><div class="quick-icon ic-3"><i class="fas fa-pen"></i></div><span class="quick-text">문장</span></div>
-                        <div class="quick-item clickable"><div class="quick-icon ic-4"><i class="fas fa-comments"></i></div><span class="quick-text">채팅</span></div>
-                    </div>
-                `;
-            }
-            else if (tab === 'letter') {
-                document.getElementById('fab').classList.remove('hidden'); // 글쓰기 버튼 보임
-                container.innerHTML = `
-                    <div style="padding:0 20px;">
-                        <h2 style="margin-bottom:20px;">💌 나에게 온 편지</h2>
-                        <div id="letterList">
-                            <div class="empty-state">
-                                <i class="fas fa-envelope" style="font-size:40px; margin-bottom:10px;"></i><br>
-                                아직 도착한 레터가 없어요.<br>오늘의 무드를 기록하고 레터를 기다려보세요!
-                            </div>
-                        </div>
-                    </div>
-                `;
-                 // 실제 레터 데이터 로딩 함수 호출
-                 window.fetchList('letter', 'letterList');
-            }
-            else if (tab === 'challenge') {
-                container.innerHTML = `
-                    <div class="tab-bar">
-                        <button class="tab-btn active clickable" onclick="window.fetchChallenges('ongoing', this)">진행중</button>
-                        <button class="tab-btn clickable" onclick="window.fetchChallenges('upcoming', this)">예정</button>
-                        <button class="tab-btn clickable" onclick="window.fetchChallenges('ended', this)">종료</button>
-                    </div>
-                    <div id="challengeList" class="card-list">
-                        <div class="empty-state">
-                            <i class="fas fa-cloud" style="font-size:40px; margin-bottom:10px;"></i><br>
-                            진행 중인 챌린지가 없어요.<br>카톡 채널로 의견을 보내주세요!
-                        </div>
-                    </div>
-                `;
-                // 실제 데이터 로딩 함수 호출
-                window.fetchChallenges('ongoing');
-            }
-            else if (tab === 'mood') {
-                document.getElementById('fab').classList.remove('hidden'); // 글쓰기 버튼 보임
-                container.innerHTML = `
-                    <div style="padding:20px; text-align:center;">
-                        <h2>My Mood Log</h2>
-                        <div class="cal-wrap">
-                            <div class="cal-header">
-                                <span>${new Date().getMonth()+1}월</span>
-                            </div>
-                            <div class="week-row"><div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div></div>
-                            <div id="calGrid" class="cal-grid"></div>
-                        </div>
-                        <button class="btn-pretty btn-ok clickable" style="width:auto; padding:10px 20px; margin-top:20px;">🎨 이미지로 저장</button>
-                    </div>
-                    <div style="padding:0 20px;">
-                        <h4 style="margin-bottom:10px;">최근 기록</h4>
-                        <div id="moodList"></div>
-                    </div>
-                `;
-                window.loadCalendar();
-                window.fetchList('mood', 'moodList');
-            }
-            else if (tab === 'mypage') {
-                container.innerHTML = `
-                    <div class="mypage-header">
-                        <h3>${currentUser.displayName}님</h3>
-                        <p style="font-size:13px; color:#aaa;">${currentUser.email}</p>
-                    </div>
-                    <div class="stamp-board">
-                        <h4>나의 스탬프 🐾</h4>
-                        <p style="font-size:12px; color:#888; margin-bottom:15px;">30개를 모으면 스페셜 레터가 도착해요!</p>
-                        <div id="stampGrid" class="stamp-grid"></div>
-                    </div>
-                    <div class="menu-list">
-                        <div class="menu-item clickable">📝 내가 쓴 글 <i class="fas fa-chevron-right"></i></div>
-                        <div class="menu-item clickable">💬 내가 쓴 댓글 <i class="fas fa-chevron-right"></i></div>
-                        <div class="menu-item clickable">🔖 북마크 <i class="fas fa-chevron-right"></i></div>
-                        <div class="menu-item clickable" onclick="window.resetPw()">🔒 비밀번호 변경 <i class="fas fa-chevron-right"></i></div>
-                        <div class="menu-item clickable" onclick="window.handleLogout()" style="color:#FF6B6B;">👋 로그아웃</div>
-                    </div>
-                `;
-                window.loadStamps();
-            }
-        };
-
-        // --- 기능 함수들 (window에 부착) ---
-        window.fetchChallenges = async (status, btnEl) => {
-            if(btnEl) {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btnEl.classList.add('active');
-            }
-            const list = document.getElementById('challengeList');
-            // TODO: 실제 챌린지 데이터를 가져와 list.innerHTML을 채우는 로직 구현
-        };
-
-        window.loadCalendar = async () => {
-            const grid = document.getElementById('calGrid');
-            const today = new Date();
-            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
-            const lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-            
-            grid.innerHTML = '';
-            for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
-
-            // DB에서 내 무드 가져오기
-            const q = query(collection(db, "posts"), where("type", "==", "mood"), where("authorId", "==", currentUser.uid));
-            const snap = await getDocs(q);
-            const records = {};
-            snap.forEach(d => {
-                const date = new Date(d.data().date);
-                if(date.getMonth() === today.getMonth()) records[date.getDate()] = d.data().emoji;
-            });
-
-            for(let i=1; i<=lastDate; i++) {
-                grid.innerHTML += `
-                    <div class="day-cell ${i===today.getDate()?'today':''}">
-                        <span style="position:absolute; top:3px; left:5px;">${i}</span>
-                        <span class="day-emoji">${records[i] || ''}</span>
-                    </div>
-                `;
-            }
-        };
-
-        window.loadStamps = async () => {
-            const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-            const count = userSnap.data()?.stamps || 0;
-            const grid = document.getElementById('stampGrid');
-            grid.innerHTML = '';
-            for(let i=1; i<=30; i++) {
-                grid.innerHTML += `<div class="stamp ${i<=count?'active':''}">${i}</div>`;
-            }
-        };
-
-        window.fetchList = async (type, targetId) => {
-            const target = document.getElementById(targetId);
-            // 최신 순으로 정렬 추가 (수정됨)
-            const q = query(
-                collection(db, "posts"), 
-                where("type", "==", type), 
-                where("authorId", "==", currentUser.uid),
-                orderBy("date", "desc")
-            );
-            
-            const snap = await getDocs(q);
-            target.innerHTML = '';
-
-            if (snap.empty) {
-                 target.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-book-open" style="font-size:40px; margin-bottom:10px;"></i><br>
-                        작성한 ${type === 'mood' ? '무드 기록' : '레터'}가 없어요.
-                    </div>
-                `;
-                return;
-            }
-
-            snap.forEach(d => {
-                const p = d.data();
-                const date = new Date(p.date).toLocaleDateString('ko-KR');
-
-                if (type === 'mood') {
-                    target.innerHTML += `
-                        <div class="card clickable" style="display:flex; align-items:center; padding:15px 20px;">
-                            <div style="font-size:30px; margin-right:15px;">${p.emoji}</div>
-                            <div style="flex-grow:1;">
-                                <div style="font-size:14px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.content}</div>
-                                <div style="font-size:11px; color:#aaa; margin-top:5px;">${date}</div>
-                            </div>
-                        </div>`;
-                } else if (type === 'letter') {
-                    // 레터는 제목이 필요할 수 있으나, 현재는 무드와 동일하게 내용만 표시
-                    target.innerHTML += `
-                        <div class="card clickable" style="padding:20px;">
-                            <div class="card-title">${p.title || '제목 없음'}</div>
-                            <p style="font-size:14px; color:#555;">${p.content.substring(0, 50)}...</p>
-                            <div class="card-meta"><span>레터가 도착했어요!</span><span>${date}</span></div>
-                        </div>
-                    `;
-                }
-            });
-        };
-
-        // 이모지 선택 시 스타일 및 상태 업데이트 (수정됨)
-        window.selectEmoji = (m, el) => { 
-            selectedEmoji = m; 
-            document.querySelectorAll('.emoji-item').forEach(item => item.classList.remove('selected'));
-            el.classList.add('selected');
-            // window.showAlert(`${m} 선택됨`); // 알림창은 주석처리
-        };
-
-        // 글쓰기 모달 열기 (수정됨)
-        window.openWriteModal = () => {
-            document.getElementById('fab').classList.add('hidden'); // FAB 숨기기
-            document.getElementById('writeModal').style.display = 'flex';
-            
-            // 상태 초기화
-            selectedEmoji = null;
-            document.getElementById('postContent').value = '';
-            document.getElementById('postTitle').value = '';
-            document.getElementById('postTitle').classList.add('hidden'); // 무드 기록 시 제목 숨김
-
-            // 무드 탭에서만 이모지 선택 창 표시
-            if (currentTab === 'mood') {
-                document.getElementById('moodOptions').classList.remove('hidden');
-                document.getElementById('postTitle').classList.add('hidden');
-                
-                // 이모지 리스트 동적 생성 (selectEmoji 함수와 연결)
-                const emojiListEl = document.getElementById('emojiList');
-                emojiListEl.innerHTML = MOODS.map(m => 
-                    `<span class="emoji-item" onclick="window.selectEmoji('${m}', this)">${m}</span>`
-                ).join('');
-            } else if (currentTab === 'letter') {
-                document.getElementById('moodOptions').classList.add('hidden');
-                document.getElementById('postTitle').classList.remove('hidden'); // 레터는 제목 표시
-            }
-        };
-        
-        // 글 등록 (수정됨)
-        window.submitPost = async () => {
-            const content = document.getElementById('postContent').value;
-            const type = currentTab;
-            
-            if(!content) return window.showAlert("내용을 입력해주세요!");
-
-            // 무드 기록인데 이모지를 선택하지 않았을 경우
-            if(type === 'mood' && !selectedEmoji) {
-                return window.showAlert("무드를 선택해주세요! 🌸");
-            }
-            
-            const postData = {
-                content: content,
-                date: new Date().toISOString(),
-                authorId: currentUser.uid,
-                type: type,
-            };
-
-            if (type === 'mood') {
-                postData.emoji = selectedEmoji;
-            } else if (type === 'letter') {
-                postData.title = document.getElementById('postTitle').value || '제목 없음';
-            }
-            
-            await addDoc(collection(db, "posts"), postData);
-            
-            // 무드 기록 시에만 스탬프 +1
-            if (type === 'mood') {
-                const userRef = doc(db, "users", currentUser.uid);
-                const userSnap = await getDoc(userRef);
-                await setDoc(userRef, { stamps: (userSnap.data()?.stamps || 0) + 1 }, { merge: true });
-                window.showAlert("기록 완료! 스탬프가 적립되었어요 🐾");
-            } else {
-                window.showAlert("등록 완료!");
-            }
-
-            window.closeModal();
-            window.renderTab(type); // 해당 탭을 다시 렌더링하여 리스트 업데이트
-        };
-
-        // 앱 시작
-        onAuthStateChanged(auth, (user) => {
-            if(user) {
-                currentUser = user;
-                document.getElementById('authModal').style.display = 'none';
-                window.renderTab('home'); // 로그인 성공 시 홈 화면으로 이동
-            } else {
-                document.getElementById('authModal').style.display = 'flex';
-                // 로그아웃 후 다시 로그인 모달에서 시작할 때를 대비해 초기 탭 상태 설정
-                document.querySelector('.nav-item[onclick*="home"]').classList.add('active');
-            }
-        });
-    </script>
-</body>
-</html>
+                await setDoc(doc(db, "users", cred.user.uid), { email: email, name: nick, stamps: 0, role: 'u
