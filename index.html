@@ -277,7 +277,7 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail, deleteUser } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Firebase Config
+        // 🔴🔴🔴 제공해주신 파이어베이스 설정값 (수정 완료) 🔴🔴🔴
         const firebaseConfig = {
             apiKey: "AIzaSyDq2eT8H6tNcsrT8dhZWsEyyMZbpCZIZZQ",
             authDomain: "jahyu-e24cd.firebaseapp.com",
@@ -285,7 +285,8 @@
             projectId: "jahyu-e24cd",
             storageBucket: "jahyu-e24cd.firebasestorage.app",
             messagingSenderId: "955637836464",
-            appId: "1:955637836464:web:096ed0c28e0070f4fca975"
+            appId: "1:955637836464:web:096ed0c28e0070f4fca975",
+            measurementId: "G-CTDZFNYJV7"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -302,7 +303,7 @@
         // 20개의 트렌디한 이모지 리스트
         const MOOD_EMOJIS = ['😊','🥰','😌','😭','😡','😴','🤩','🥺','🔥','☔','🍀','☁️','☕','🎧','🏠','💸','💪','👻','🍷','🧶'];
         
-        // 관리자 이메일 목록 (5명 + 슈퍼관리자) - 실제 운영시 DB 관리 권장
+        // 관리자 이메일 목록
         const ADMIN_EMAILS = [
             'happci@test.com', // 슈퍼 관리자
             'admin1@test.com', 'admin2@test.com', 'admin3@test.com', 'admin4@test.com'
@@ -354,7 +355,7 @@
             `;
         }
 
-        // 💌 레터 화면 (관리자는 글쓰기 가능)
+        // 💌 레터 화면
         function renderLetter(container) {
             if(isAdmin) document.getElementById('fab').classList.add('show');
             
@@ -444,17 +445,16 @@
                     <h4 style="margin-bottom:15px; padding-left:5px;">나의 무드 히스토리</h4>
                     <div id="moodList" class="card-list" style="padding:0;"></div>
                     
-                    <!-- 무드 히스토리 모두 보기 기능 -->
                      <button onclick="window.toggleMoodHistory()" class="btn-pretty btn-no clickable" style="margin-top:10px;">
                         이전 내역 더보기
                     </button>
                 </div>
             `;
             window.loadCalendar();
-            window.fetchMoods(5); // 최근 5개만 먼저 로드
+            window.fetchMoods(5);
         }
 
-        // 캘린더 이미지 저장 (html2canvas 사용)
+        // 캘린더 이미지 저장
         window.saveCalendarImage = () => {
             const element = document.getElementById("captureArea");
             html2canvas(element, { scale: 2, backgroundColor: "#F3E5F5", borderRadius:25 }).then(canvas => {
@@ -476,14 +476,13 @@
             grid.innerHTML = '';
             for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
 
-            // 모든 무드 기록 가져오기 (삭제 없이)
             const q = query(collection(db, "posts"), where("type", "==", "mood"), where("authorId", "==", currentUser.uid));
             const snap = await getDocs(q);
             const records = {};
             snap.forEach(d => {
                 const date = new Date(d.data().date);
                 if(date.getMonth() === month && date.getFullYear() === year) {
-                    records[date.getDate()] = d.data().emoji; // 가장 최근(마지막) 기록이 덮어씌워짐
+                    records[date.getDate()] = d.data().emoji;
                 }
             });
 
@@ -532,12 +531,11 @@
         };
         
         window.toggleMoodHistory = () => {
-            window.fetchMoods(null); // 전체 로드
+            window.fetchMoods(null);
         }
 
         // 🏆 챌린지 화면
         function renderChallenge(container) {
-            // 관리자면 추가 버튼 표시
             if(isAdmin) document.getElementById('fab').classList.add('show');
 
             container.innerHTML = `
@@ -547,9 +545,7 @@
                         <a href="http://pf.kakao.com/_Jfjxgn" target="_blank" style="color:var(--primary); font-weight:700;">카톡 채널로 제안해주세요!</a>
                     </p>
                 </div>
-                <div id="challengeList" style="padding:0 20px;">
-                    <!-- 챌린지 로드 -->
-                </div>
+                <div id="challengeList" style="padding:0 20px;"></div>
             `;
             window.loadChallenges();
         }
@@ -558,7 +554,6 @@
             const list = document.getElementById('challengeList');
             const today = new Date().toISOString().split('T')[0];
             
-            // 관리자는 모든 챌린지, 유저는 openDate 이후의 챌린지만
             let q = query(collection(db, "challenges"), orderBy("startDate", "desc"));
             const snap = await getDocs(q);
             
@@ -570,7 +565,7 @@
 
             snap.forEach(d => {
                 const c = d.data();
-                if(!isAdmin && c.openDate > today) return; // 유저는 오픈일 전에는 안보임
+                if(!isAdmin && c.openDate > today) return;
 
                 const isOngoing = (today >= c.startDate && today <= c.endDate);
                 const statusBadge = isOngoing ? '<span class="ch-badge" style="background:var(--primary);">진행중 🔥</span>' : (today < c.startDate ? '<span class="ch-badge">예정 ⏳</span>' : '<span class="ch-badge" style="background:#aaa;">종료</span>');
@@ -586,7 +581,6 @@
                             <div class="ch-title" style="font-size:18px; font-weight:700; margin-bottom:5px;">${c.title}</div>
                             <p style="font-size:13px; color:#666; margin-bottom:15px;">${c.content}</p>
                             
-                            <!-- 인증 도장판 (예시 UI) -->
                             <div style="font-size:12px; font-weight:700; color:#555;">나의 인증 현황</div>
                             <div class="ch-stamp-grid">
                                 ${Array(7).fill(0).map((_, i) => `<div class="ch-stamp ${i< (c.myCount||0) ? 'checked' : ''}"><i class="fas fa-check"></i></div>`).join('')}
@@ -600,13 +594,11 @@
         };
 
         window.certifyChallenge = (chId) => {
-            // 인증 로직 (DB 저장 및 팝업)
             window.showAlert(`
                 <span style="color:var(--primary); font-size:18px;">축하합니다! 🎉</span><br><br>
                 오늘의 챌린지 인증 완료!<br>
                 꾸준함이 빛나는 당신, 멋져요 ✨
             `);
-            // 실제로는 user_challenge_log 컬렉션에 저장하는 로직 필요
         };
 
         // 👤 마이페이지
@@ -641,9 +633,7 @@
         }
 
         window.showMyPosts = () => {
-            // 간단하게 무드 리스트와 동일한 UI를 재활용하여 필터링
             window.renderTab('mood'); 
-            // 실제 구현시에는 '내 글 모아보기' 전용 뷰를 만들거나 탭 이동
             setTimeout(() => window.showAlert("최근 작성한 무드/레터 기록 화면으로 이동합니다."), 100);
         };
 
@@ -657,7 +647,7 @@
             }
         };
 
-        // ⚙️ 관리자 대시보드 (슈퍼/일반)
+        // ⚙️ 관리자 대시보드
         window.renderAdminDashboard = async () => {
             if(!isAdmin) return;
             const container = document.getElementById('appContainer');
@@ -692,7 +682,6 @@
                 </div>
             `;
             
-            // 사용자 목록 로드 (실제로는 Pagination 필요)
             const snap = await getDocs(collection(db, "users"));
             const tbody = document.getElementById('userTableBody');
             let totalUsers = 0;
@@ -720,7 +709,6 @@
         
         window.deleteUserFunc = (uid) => {
             if(confirm("정말 이 사용자를 삭제하시겠습니까? (복구 불가)")) {
-                // Firestore delete logic
                 deleteDoc(doc(db, "users", uid)).then(() => {
                     window.showAlert("사용자가 삭제되었습니다.");
                     window.renderAdminDashboard();
@@ -733,7 +721,6 @@
             const modal = document.getElementById('writeModal');
             const title = document.getElementById('modalTitle');
             
-            // 폼 초기화
             document.getElementById('moodForm').classList.add('hidden');
             document.getElementById('letterForm').classList.add('hidden');
             document.getElementById('challengeForm').classList.add('hidden');
@@ -779,7 +766,6 @@
                     data.emoji = selectedEmoji;
                     data.content = document.getElementById('moodContent').value;
                     
-                    // 스탬프 적립
                     const userRef = doc(db, "users", currentUser.uid);
                     const userSnap = await getDoc(userRef);
                     await setDoc(userRef, { stamps: (userSnap.data()?.stamps || 0) + 1 }, { merge: true });
@@ -807,55 +793,3 @@
                 }
 
                 await addDoc(collection(db, collectionName), data);
-                window.closeModal();
-                window.renderTab(currentTab);
-
-            } catch(e) {
-                console.error(e);
-                window.showAlert("오류가 발생했습니다: " + e.message);
-            }
-        };
-
-        window.closeModal = () => {
-            document.getElementById('writeModal').style.display = 'none';
-            if((currentTab === 'mood') || (isAdmin && (currentTab === 'letter' || currentTab === 'challenge'))) {
-                document.getElementById('fab').classList.add('show');
-            }
-        };
-
-        // --- 인증 관련 ---
-        window.toggleSignup = () => {
-            const fields = document.getElementById('signupFields');
-            const logBtn = document.getElementById('loginBtn');
-            const signBtn = document.getElementById('signupBtn');
-            
-            if(fields.classList.contains('hidden')) {
-                fields.classList.remove('hidden');
-                logBtn.innerText = "가입 완료";
-                logBtn.onclick = window.doSignup;
-                signBtn.innerText = "로그인으로 돌아가기";
-            } else {
-                fields.classList.add('hidden');
-                logBtn.innerText = "로그인";
-                logBtn.onclick = window.doLogin;
-                signBtn.innerText = "3초만에 회원가입";
-            }
-        };
-
-        window.doLogin = async () => {
-            const email = document.getElementById('authEmail').value;
-            const pw = document.getElementById('authPw').value;
-            try { await signInWithEmailAndPassword(auth, email, pw); }
-            catch(e) { window.showAlert("로그인 정보를 확인해주세요."); }
-        };
-
-        window.doSignup = async () => {
-            const email = document.getElementById('authEmail').value;
-            const pw = document.getElementById('authPw').value;
-            const nick = document.getElementById('authNick').value;
-            if(!nick) return window.showAlert("닉네임을 입력해주세요!");
-            
-            try {
-                const cred = await createUserWithEmailAndPassword(auth, email, pw);
-                await updateProfile(cred.user, { displayName: nick });
-                await setDoc(doc(db, "users", cred.user.uid), { email: email, name: nick, stamps: 0, role: 'u
