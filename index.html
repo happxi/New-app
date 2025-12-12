@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>자휴레터 - 햅삐님을 위한 특별한 공간!</title>
     
-    <!-- 🔥 Firebase SDK 추가 (사용자가 요청한 대로) -->
-    <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-auth-compat.js"></script>
-    
     <meta property="og:title" content="자휴레터를 앱으로 만나보세요!">
     <meta property="og:description" content=" 무드트래커 기록하세요!">
     <meta property="og:image" content="https://i.imgur.com/exampleImage.png"> 
@@ -19,7 +14,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Round+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- ✅ Firebase SDK 추가 (HEAD 태그 첫 부분에 위치) -->
+    <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-auth-compat.js"></script>
+    
     <style>
+        /* 🎨 트렌디한 2030 여성 대상 컬러 팔레트 */
         :root {
             /* 🎨 트렌디한 2030 여성 대상 컬러 팔레트 */
             --primary: #6B46C1;       /* 보라색 - 메인 */
@@ -702,7 +703,7 @@
         }
         .action-btn {
             display: flex;
-            align-items: center;
+            align-items: center,
             gap: 8px;
             padding: 8px 16px;
             border-radius: 20px;
@@ -1027,7 +1028,7 @@
     </nav>
 
     <script>
-        // 🔥 Firebase 초기화 (사용자가 제공한 데이터)
+        // ✅ Firebase 초기화 및 설정
         const firebaseConfig = {
             apiKey: "AIzaSyDq2eT8H6tNcsrT8dhZWsEyyMZbpCZIZZQ",
             authDomain: "jahyu-e24cd.firebaseapp.com",
@@ -1041,6 +1042,8 @@
 
         // Firebase 초기화
         firebase.initializeApp(firebaseConfig);
+
+        // Firestore 사용 준비
         const db = firebase.firestore();
         const auth = firebase.auth();
 
@@ -1195,7 +1198,23 @@
         
         // --- 기능 ---
         document.addEventListener('DOMContentLoaded', () => {
-            checkAutoLogin();
+            // ✅ 자동 로그인 체크로 로그인 창이 반드시 나오도록 수정
+            const savedUser = localStorage.getItem('jahyu_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                // users 데이터에서 비밀번호 가져와서 업데이트
+                const fullUser = users.find(u => u.id === currentUser.id);
+                if (fullUser) {
+                    currentUser.password = fullUser.password;
+                    currentUser.isAdmin = ADMINS.includes(currentUser.id);
+                    currentUser.isSuperAdmin = currentUser.id === SUPER_ADMIN;
+                }
+                
+                renderTab('home');
+            } else {
+                // ✅ 로그인 창이 반드시 나오도록 강제 설정
+                document.getElementById('loginModal').style.display = 'flex';
+            }
         });
 
         // 파일 선택 처리 (새로 추가)
@@ -1319,30 +1338,4 @@
             if (!email) return showToast('이메일을 입력해주세요.');
             
             const user = users.find(u => u.id === email);
-            if (!user) return showToast('등록되지 않은 이메일입니다.');
-            
-            // 임시 비밀번호 생성 (관리자/일반 사용자 구분 없이 'admin123!' 사용)
-            const tempPassword = 'admin123!'; 
-            
-            // 실제로는 이메일 발송 API 호출
-            console.log(`[SYSTEM] 임시 비밀번호(${tempPassword})를 ${email}로 발송했습니다.`);
-            
-            document.getElementById('forgotPasswordModal').style.display = 'none';
-            showToast(`[${email}]로 임시 비밀번호를 발송했습니다. 로그인 후 비밀번호를 변경해주세요!`);
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-        
-        // 비밀번호 찾기 모달 닫기
-        function closeForgotPasswordModal() {
-            document.getElementById('forgotPasswordModal').style.display = 'none';
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-
-        // 비밀번호 변경
-        function handleChangePassword() {
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const newPasswordConfirm = document.getElementById('newPasswordConfirm').value;
-
-            if (!currentPassword || !newPassword || !newPasswordConfirm) return showToast('모든 필드를 입력해주세요.');
-            if (newPassword !== newPasswordConfirm) return showToast('새로운 비밀번호가 일치하지
+            if (!user) return showToast('등록되지
