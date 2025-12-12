@@ -2481,103 +2481,239 @@
             // showToast(`무드 기록 #${moodId} 상세 내용 표시 (미구현)`); 
         }
         
-    </script>
-<script type="module">
-    // 1. 필요한 Firebase 함수 Import
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
+   <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자휴레터 콘텐츠 관리 시스템</title>
+    <style>
+        .editable-content { position: relative; padding: 15px; border: 1px solid transparent; }
+        .action-buttons { display: none; position: absolute; top: 5px; right: 5px; background: #fff; border: 1px solid #ccc; box-shadow: 0 2px 5px rgba(0,0,0,0.2); padding: 5px; z-index: 10; }
+        .action-buttons.visible { display: flex; }
+    </style>
+</head>
+<body>
     
-    // 데이터 저장을 위해 Realtime Database 및 Firestore 함수 Import (추가 필요)
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-
-
-    // 2. Firebase Config (사용자님의 고유 정보) - 수정 없음
-    const firebaseConfig = {
-        apiKey: "AIzaSyDq2eT8H6tNcsrT8dhZWsEyyMZbpCZIZZQ",
-        authDomain: "jahyu-e24cd.firebaseapp.com",
-        databaseURL: "https://jahyu-e24cd-default-rtdb.firebaseio.com",
-        projectId: "jahyu-e24cd",
-        storageBucket: "jahyu-e24cd.firebasestorage.app",
-        messagingSenderId: "955637836464",
-        appId: "1:955637836464:web:096ed0c28e0070f4fca975",
-        measurementId: "G-CTDZFNYJV7"
-    };
-
-    // 3. Firebase 초기화 및 인스턴스 생성
-    const app = initializeApp(firebaseConfig);
-    // const analytics = getAnalytics(app); // 분석은 선택 사항
+    <h1>📝 콘텐츠 작성 및 관리</h1>
     
-    const rtdb = getDatabase(app); // Realtime Database 인스턴스
-    const firestore = getFirestore(app); // Firestore 인스턴스
-
-
-    // 4. 데이터 저장 로직 함수 (수정 반영: Firestore 컬렉션 이름 변경)
+    <h2>작성 중인 게시물 (임시 저장)</h2>
+    <ul id="draft-posts">
+        </ul>
+    <hr>
     
-    // HTML 요소 정의 (ID가 postTitle, postContent인 요소가 있다고 가정)
-    const postTitleElement = document.getElementById('postTitle');
-    const postContentElement = document.getElementById('postContent');
-    const outputElement = document.getElementById('dataOutput');
-    const saveRTDBButton = document.getElementById('saveRTDB');
-    const saveFirestoreButton = document.getElementById('saveFirestore');
+    <div id="editor-area">
+        <input type="text" id="postTitle" placeholder="게시물 제목 입력">
+        <textarea id="postContent" placeholder="내용 입력"></textarea>
+        
+        <button id="temp-save-btn">임시 저장</button>
+        <button id="publish-btn">발행</button>
+    </div>
+    <hr>
 
-    // A. Realtime Database에 임시 저장 (컬렉션명: drafts 유지)
-    if (saveRTDBButton) {
-        saveRTDBButton.addEventListener('click', () => {
-            const title = postTitleElement ? postTitleElement.value : '';
-            const content = postContentElement ? postContentElement.value : '';
-            const postId = Date.now(); 
+    <h2>발행된 게시물 목록</h2>
+    <div id="published-posts">
+        <div class="post-item" data-post-id="1">
+            <h3>테스트 게시물 제목</h3>
+            <div class="post-meta">
+                <span class="post-date" data-created-at="2025-12-11T16:05:00"></span> 
+            </div>
+            <div class="editable-content">
+                <p>게시물 내용 블록 1입니다. (길게 누르기 테스트)</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="dataOutput"></div>
 
-            if (!title || !content) {
-                alert("제목과 내용을 모두 입력해 주세요.");
-                return;
+
+    <script type="module">
+        // 1. 필요한 Firebase 함수 Import
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+        // 데이터 저장 모듈 추가
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+
+        // 2. Firebase Config (사용자님의 고유 정보)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDq2eT8H6tNcsrT8dhZWsEyyMZbpCZIZZQ",
+            authDomain: "jahyu-e24cd.firebaseapp.com",
+            databaseURL: "https://jahyu-e24cd-default-rtdb.firebaseio.com",
+            projectId: "jahyu-e24cd",
+            storageBucket: "jahyu-e24cd.firebasestorage.app",
+            messagingSenderId: "955637836464",
+            appId: "1:955637836464:web:096ed0c28e0070f4fca975",
+            measurementId: "G-CTDZFNYJV7"
+        };
+
+        // 3. Firebase 초기화 및 인스턴스 생성
+        const app = initializeApp(firebaseConfig);
+        const rtdb = getDatabase(app); 
+        const firestore = getFirestore(app); 
+
+        // 4. HTML 요소 참조 (오류 방지를 위해 null 체크를 위한 변수 할당)
+        const outputEl = document.getElementById('dataOutput');
+        const postTitleEl = document.getElementById('postTitle');
+        const postContentEl = document.getElementById('postContent');
+        const tempSaveBtn = document.getElementById('temp-save-btn');
+        const publishBtn = document.getElementById('publish-btn');
+        const draftPostsEl = document.getElementById('draft-posts');
+
+
+        // =========================================================
+        // A. 시간 표시 로직 및 임시 저장 데이터 렌더링
+        // =========================================================
+        
+        /**
+         * 작성일과 현재 시점의 차이를 계산하여 '방금 전', 'X시간 전', 'X일 전'으로 표시
+         */
+        function getTimeAgo(dateString) {
+            // ... (기존 getTimeAgo 로직 유지)
+            const now = new Date();
+            const createdDate = new Date(dateString);
+            const diffInMilliseconds = now - createdDate;
+            const diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
+            const diffInHours = Math.floor(diffInMinutes / 60);
+            const diffInDays = Math.floor(diffInHours / 24);
+
+            if (diffInDays >= 1) { return `${diffInDays}일 전`; } 
+            if (diffInHours >= 1) { return `${diffInHours}시간 전`; } 
+            if (diffInMinutes >= 1 && diffInMinutes <= 59) { return `방금 전`; } 
+            return `방금 전`;
+        }
+
+        // 모든 게시물 작성 날짜 노출 및 포맷 적용
+        document.querySelectorAll('.post-date').forEach(el => {
+            const dateString = el.getAttribute('data-created-at');
+            if (dateString) {
+                el.textContent = getTimeAgo(dateString);
             }
+        });
 
-            set(ref(rtdb, 'drafts/' + postId), {
-                title: title,
-                content: content,
-                savedAt: postId // 임시 저장 시간
-            })
-            .then(() => {
-                if (outputElement) outputElement.innerHTML = `RTDB에 **${title}** 임시 저장 완료!`;
-            })
-            .catch((error) => {
-                alert("RTDB 저장 오류: " + error.message);
+        // (Realtime DB에서 임시 저장 목록을 불러와 draftPostsEl에 렌더링하는 로직이 여기에 필요합니다.)
+        
+        // =========================================================
+        // B. 임시 저장 및 발행 (DB 연동) 로직
+        // =========================================================
+        
+        // 1. 임시 저장 버튼 클릭 (Realtime DB 사용)
+        if (tempSaveBtn && postTitleEl && postContentEl) {
+            tempSaveBtn.addEventListener('click', () => {
+                const title = postTitleEl.value;
+                const content = postContentEl.value;
+                const postId = Date.now(); // 고유 키
+
+                if (!title || !content) {
+                    alert("제목과 내용을 모두 입력해 주세요.");
+                    return;
+                }
+
+                set(ref(rtdb, 'drafts/' + postId), {
+                    title: title,
+                    content: content,
+                    savedAt: postId // Realtime DB 저장
+                })
+                .then(() => {
+                    if (outputEl) outputEl.innerHTML = `RTDB에 **${title}** 임시 저장 완료! (이어 작성 가능)`;
+                    // 이어 작성 목록 업데이트 로직 추가 필요
+                })
+                .catch((error) => {
+                    alert("임시 저장 오류: " + error.message);
+                });
+            });
+        }
+
+        // 2. 발행 버튼 클릭 (Firestore - 'posts' 컬렉션 사용)
+        if (publishBtn && postTitleEl && postContentEl) {
+            publishBtn.addEventListener('click', async () => {
+                const title = postTitleEl.value;
+                const content = postContentEl.value;
+
+                if (!title || !content) {
+                    alert("제목과 내용을 모두 입력해 주세요.");
+                    return;
+                }
+                
+                try {
+                    // 스크린샷에 따른 'posts' 컬렉션에 저장
+                    const docRef = await addDoc(collection(firestore, "posts"), { 
+                        content: content,
+                        title: title,
+                        isPublished: true,
+                        createdAt: serverTimestamp(),
+                        userId: "혜란_관리자_ID" 
+                    });
+
+                    if (outputEl) outputEl.innerHTML = `Firestore 'posts' 컬렉션에 **${title}** 발행 완료! (ID: ${docRef.id})`;
+
+                } catch (e) {
+                    alert("발행(Firestore) 오류: " + e.message);
+                }
+            });
+        }
+
+        
+        // =========================================================
+        // C. 게시물 컴포넌트 수정/삭제 (Long Press) 로직
+        // =========================================================
+        
+        // 길게 누르기 지속 시간 정의
+        const PRESS_DURATION = 500; 
+
+        document.querySelectorAll('.editable-content').forEach(component => {
+            let pressTimer;
+
+            // 수정/삭제 버튼 DOM 생성
+            const actionButtons = document.createElement('div');
+            actionButtons.className = 'action-buttons';
+            actionButtons.innerHTML = `
+                <button class="edit-btn">수정</button>
+                <button class="delete-btn">삭제</button>
+            `;
+            component.appendChild(actionButtons);
+
+            const startPress = () => {
+                if (actionButtons.classList.contains('visible')) return; 
+                
+                pressTimer = setTimeout(() => {
+                    // Long Press 감지 시 UI 노출
+                    actionButtons.classList.add('visible');
+                    console.log('Long Press 감지: 수정/삭제 UI 노출');
+                }, PRESS_DURATION);
+            };
+
+            const endPress = () => {
+                clearTimeout(pressTimer);
+            };
+
+            // 이벤트 리스너 추가 (데스크톱 및 모바일)
+            component.addEventListener('mousedown', startPress);
+            component.addEventListener('mouseup', endPress);
+            component.addEventListener('mouseleave', endPress);
+            component.addEventListener('touchstart', startPress);
+            component.addEventListener('touchend', endPress);
+            component.addEventListener('touchcancel', endPress);
+
+            // 버튼 클릭 이벤트 처리
+            actionButtons.querySelector('.edit-btn').addEventListener('click', () => {
+                alert('수정 기능을 실행합니다. (데이터 로드 필요)');
+                actionButtons.classList.remove('visible');
+            });
+
+            actionButtons.querySelector('.delete-btn').addEventListener('click', () => {
+                if(confirm('정말로 삭제하시겠습니까? (DB에서 삭제 로직 필요)')) {
+                    // Firestore에서 문서 삭제 로직이 여기에 추가되어야 함
+                    alert('삭제되었습니다.');
+                    component.closest('.post-item').remove();
+                }
+                actionButtons.classList.remove('visible');
             });
         });
-    }
 
-
-    // B. Firestore에 게시물 저장 (컬렉션명: 스크린샷에 보이는 'posts'로 변경)
-    if (saveFirestoreButton) {
-        saveFirestoreButton.addEventListener('click', async () => {
-            const title = postTitleElement ? postTitleElement.value : '';
-            const content = postContentElement ? postContentElement.value : '';
-
-            if (!title || !content) {
-                alert("제목과 내용을 모두 입력해 주세요.");
-                return;
-            }
-            
-            try {
-                // *** 수정된 부분: 'published_posts' -> 'posts' ***
-                const docRef = await addDoc(collection(firestore, "posts"), { 
-                    content: content,
-                    title: title,
-                    isPublished: true, // 발행 상태
-                    createdAt: serverTimestamp(), // Firebase 서버 시간
-                    userId: "혜란_관리자_ID" // 작성자 ID (로그인 기능 연동 시 실제 ID 사용)
-                });
-
-                if (outputElement) outputElement.innerHTML = `Firestore의 'posts' 컬렉션에 **${title}** 발행/저장 완료! (ID: ${docRef.id})`;
-
-            } catch (e) {
-                alert("Firestore 저장 오류: " + e.message);
-            }
-        });
-    }
-
-</script>
+    </script>
+</body>
+</html>
 
 
 
