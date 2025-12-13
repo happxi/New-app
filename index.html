@@ -793,3 +793,110 @@
                 }
 
                 await addDoc(collection(db, collectionName), data);
+                window.closeModal();
+                window.renderTab(currentTab);
+
+            } catch(e) {
+                console.error(e);
+                window.showAlert("오류가 발생했습니다: " + e.message);
+            }
+        };
+
+        window.closeModal = () => {
+            document.getElementById('writeModal').style.display = 'none';
+            if((currentTab === 'mood') || (isAdmin && (currentTab === 'letter' || currentTab === 'challenge'))) {
+                document.getElementById('fab').classList.add('show');
+            }
+        };
+
+        // --- 인증 관련 ---
+        window.toggleSignup = () => {
+            const fields = document.getElementById('signupFields');
+            const logBtn = document.getElementById('loginBtn');
+            const signBtn = document.getElementById('signupBtn');
+            
+            if(fields.classList.contains('hidden')) {
+                fields.classList.remove('hidden');
+                logBtn.innerText = "가입 완료";
+                logBtn.onclick = window.doSignup;
+                signBtn.innerText = "로그인으로 돌아가기";
+            } else {
+                fields.classList.add('hidden');
+                logBtn.innerText = "로그인";
+                logBtn.onclick = window.doLogin;
+                signBtn.innerText = "3초만에 회원가입";
+            }
+        };
+
+        // 로그인 함수 (수정됨: window 객체에 확실히 바인딩)
+        window.doLogin = async () => {
+            const email = document.getElementById('authEmail').value;
+            const pw = document.getElementById('authPw').value;
+            
+            if(!email || !pw) {
+                return window.showAlert("이메일과 비밀번호를 모두 입력해주세요.");
+            }
+
+            try { 
+                await signInWithEmailAndPassword(auth, email, pw); 
+            } catch(e) { 
+                console.error(e);
+                let msg = "로그인에 실패했습니다.";
+                if(e.code === 'auth/invalid-credential' || e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password') {
+                    msg = "이메일 또는 비밀번호가 일치하지 않습니다.";
+                } else if (e.code === 'auth/invalid-email') {
+                    msg = "유효하지 않은 이메일 형식입니다.";
+                }
+                window.showAlert(msg); 
+            }
+        };
+
+        window.doSignup = async () => {
+            const email = document.getElementById('authEmail').value;
+            const pw = document.getElementById('authPw').value;
+            const nick = document.getElementById('authNick').value;
+            if(!nick) return window.showAlert("닉네임을 입력해주세요!");
+            
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, pw);
+                await updateProfile(cred.user, { displayName: nick });
+                await setDoc(doc(db, "users", cred.user.uid), { email: email, name: nick, stamps: 0, role: 'user' });
+                window.showAlert(`반가워요, ${nick}님! 🌸`);
+            } catch(e) { 
+                console.error(e);
+                window.showAlert("가입 실패: " + e.message); 
+            }
+        };
+
+        window.sendResetEmail = async () => {
+            const email = document.getElementById('resetEmailInput').value;
+            if(!email) return window.showAlert("이메일을 입력해주세요.");
+            try {
+                await sendPasswordResetEmail(auth, email);
+                window.showAlert("재설정 메일을 발송했어요!<br>메일함을 확인해주세요.");
+                document.getElementById('pwResetModal').style.display='none';
+            } catch(e) { window.showAlert("이메일을 확인해주세요."); }
+        };
+
+        window.handleLogout = async () => {
+            await signOut(auth);
+            window.location.reload();
+        };
+
+        // 앱 초기화 및 상태 변화 감지
+        onAuthStateChanged(auth, (user) => {
+            if(user) {
+                currentUser = user;
+                // 관리자 체크
+                isAdmin = ADMIN_EMAILS.includes(user.email);
+                isSuperAdmin = (user.email === SUPER_ADMIN);
+
+                document.getElementById('authModal').style.display = 'none';
+                window.renderTab('home');
+            } else {
+                document.getElementById('authModal').style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>
