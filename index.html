@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- 🖼️ 카톡 공유시 뜨는 썸네일 -->
-    <meta property="og:title" content="자휴레터">
-    <meta property="og:description" content="메마른 일상 속 휴식 한 방울 💧">
-    <meta property="og:image" content="https://i.imgur.com/RsKTUur.png">
-    
     <title>Jahyu Letter</title>
     
+    <!-- 폰트 및 아이콘 -->
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -18,14 +13,12 @@
     <style>
         :root {
             --primary: #9D76C1; 
-            --primary-dark: #6A4C93;
             --primary-light: #F3E5F5;
             --bg-body: #FFFEF5;
             --white: #ffffff;
             --text-main: #333333;
             --text-sub: #666666;
             --border: #EAEAEA; 
-            --shadow: 0 4px 15px rgba(157, 118, 193, 0.15);
             --pink-popup: #FFF0F5;
             --badge-editor: #9D76C1;
             --badge-new: #FF8A80;
@@ -34,20 +27,31 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
         body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         
-        /* 앱 컨테이너 */
-        .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg-body); padding-bottom: 90px; padding-top: 60px; position: relative; }
+        /* 레이아웃 */
+        .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg-body); padding-bottom: 100px; padding-top: 60px; position: relative; }
         .clickable { cursor: pointer; transition: transform 0.1s, opacity 0.1s; }
         .clickable:active { transform: scale(0.96); opacity: 0.8; }
 
         /* 헤더 */
-        .header { position: fixed; top: 0; width: 100%; max-width: 480px; height: 60px; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 100; border-bottom: 1px solid var(--border); }
+        .header { position: fixed; top: 0; width: 100%; max-width: 480px; height: 60px; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 9000; border-bottom: 1px solid var(--border); }
         .logo { font-family: 'Dancing Script', cursive; font-size: 26px; color: var(--primary); font-weight: 700; cursor: pointer; }
         .home-btn { position: absolute; right: 20px; font-size: 20px; color: #888; cursor: pointer; }
 
+        /* 글쓰기 버튼 (최상단 배치) */
+        .fab { 
+            position: fixed; bottom: 100px; right: 20px; width: 55px; height: 55px; 
+            background: #333; border-radius: 50%; color: white; 
+            display: none; align-items: center; justify-content: center; 
+            font-size: 22px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
+            z-index: 10000; /* 무조건 맨 위 */
+            cursor: pointer;
+        }
+        .fab.show { display: flex !important; }
+
         /* 벤토 그리드 */
         .bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px; }
-        .bento-item { background: var(--white); border-radius: 20px; padding: 20px; box-shadow: var(--shadow); border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; min-height: 120px; }
-        .bento-full { grid-column: span 2; background: linear-gradient(135deg, #B39CD0 0%, #9FA8DA 100%); color: white; border: none; }
+        .bento-item { background: var(--white); border-radius: 20px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; min-height: 120px; }
+        .bento-full { grid-column: span 2; background: linear-gradient(135deg, #B39CD0 0%, #E6E6FA 100%); color: white; border: none; }
         .bento-title { font-size: 16px; font-weight: 700; margin-bottom: 5px; color: var(--text-main); }
         .bento-full .bento-title { color: white; }
         .bento-desc { font-size: 12px; color: var(--text-sub); line-height: 1.4; }
@@ -57,45 +61,38 @@
         /* 카드 & 버튼 */
         .card { background: var(--white); border-radius: 18px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid var(--border); margin-bottom: 15px; }
         .section-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; padding: 0 20px; color: #444; }
-        
         .pill-container { display: flex; gap: 8px; margin: 15px 0; justify-content: center; }
         .pill-btn { flex: 1; padding: 12px 5px; border-radius: 50px; border: 1px solid var(--primary-light); background: white; color: var(--primary); font-size: 12px; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 4px; }
         .pill-btn:hover { background: var(--primary-light); transform: translateY(-2px); }
-
         .btn-main { width: 100%; padding: 14px; border-radius: 15px; border: none; font-weight: 700; font-size: 15px; margin-top: 10px; cursor: pointer; background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(157, 118, 193, 0.4); }
         .btn-sub { background: #f5f5f5; color: #666; width: 100%; padding: 12px; border-radius: 15px; border: 1px solid #eee; font-weight: 600; margin-top: 5px; cursor: pointer; }
 
         /* 캘린더 */
-        .cal-container { background: var(--white); border-radius: 20px; padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .cal-container { background: var(--white); border-radius: 20px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .cal-header { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 15px; color: #555; }
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
         .day-cell { aspect-ratio: 1/1; border-radius: 12px; background: #f8f8f8; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #ccc; position: relative; }
         .day-cell.today { border: 2px solid var(--primary); background: #fff; color: var(--primary); font-weight: 700; }
         .day-emoji { font-size: 24px; position: absolute; margin-top:-2px; }
 
-        /* 에디터 (5명 한 줄 배치) */
+        /* 에디터 (5명 한 줄) */
         .editor-container { display: flex; justify-content: space-between; padding: 0 10px; margin-bottom: 20px; }
-        .editor-item { display: flex; flex-direction: column; align-items: center; width: 18%; cursor: pointer; }
-        .editor-circle { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid transparent; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 8px; transition: 0.2s; background-size: cover; background-position: center; background-color: #fff; }
+        .editor-item { display: flex; flex-direction: column; align-items: center; width: 19%; cursor: pointer; }
+        .editor-circle { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 8px; transition: 0.2s; background-size: cover; background-position: center; background-color: #fff; }
         .editor-circle.active { border-color: var(--primary); transform: scale(1.1); }
         .editor-name { font-size: 11px; font-weight: 600; text-align: center; color: #555; }
 
-        /* 뱃지 */
-        .badge-editor { background: var(--badge-editor); color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; margin-left: 5px; vertical-align: middle; font-weight: 400; }
-        .badge-new { background: var(--badge-new); color: white; font-size: 9px; padding: 2px 5px; border-radius: 4px; margin-left: 5px; font-weight: 700; animation: blink 2s infinite; }
-        @keyframes blink { 0% {opacity:1;} 50% {opacity:0.7;} 100% {opacity:1;} }
-
         /* 팝업 */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 11000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
         .popup-box { background: var(--pink-popup); width: 85%; max-width: 340px; padding: 30px 25px; border-radius: 30px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.15); border: 4px solid #fff; position: relative; }
 
         /* 네비게이션 */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 80px; background: rgba(255,255,255,0.98); border-top: 1px solid #eee; display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.02); }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 80px; background: rgba(255,255,255,0.98); border-top: 1px solid #eee; display: flex; justify-content: space-around; align-items: center; z-index: 9000; padding-bottom: 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.02); }
         .nav-item { color: #bbb; text-align: center; font-size: 10px; font-weight: 500; width: 20%; display: flex; flex-direction: column; align-items: center; }
         .nav-item i { font-size: 22px; margin-bottom: 5px; }
         .nav-item.active { color: var(--primary); font-weight: 700; transform: translateY(-3px); }
 
-        /* 스탬프 Grid (강제 적용) */
+        /* 스탬프 Grid */
         .stamp-grid { display: grid !important; grid-template-columns: repeat(5, 1fr) !important; gap: 10px; margin: 20px 0; }
         .stamp-slot { aspect-ratio: 1/1; background: #F0F0F0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #bbb; position: relative; border: 1px solid #eee; }
         .stamp-slot.active { background: var(--primary); color: white; box-shadow: 0 3px 8px rgba(157, 118, 193, 0.4); font-weight: 700; border: none; }
@@ -108,19 +105,19 @@
         .reward-sub { font-size: 11px; color: #888; font-weight: 400; margin-top: 2px; }
 
         .hidden { display: none !important; }
-        .fab { position: fixed; bottom: 100px; right: 20px; width: 55px; height: 55px; background: #333; border-radius: 50%; color: white; display: none; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 900; }
-        .fab.show { display: flex; }
+        .badge-editor { background: var(--badge-editor); color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; margin-left: 5px; vertical-align: middle; font-weight: 400; }
+        .badge-notice { background: #FF8A80; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-right: 5px; }
+        
+        .admin-list-item { background:white; padding:10px; margin-bottom:5px; border-radius:10px; border:1px solid #eee; display:flex; justify-content:space-between; align-items:center; text-align:left; font-size:13px; }
+        .input-popup { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 10px; outline: none; }
         .empathy-bar { display: flex; gap: 8px; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
         .empathy-btn { flex: 1; padding: 8px; border-radius: 12px; background: #fafafa; border: 1px solid #eee; font-size: 11px; color: #666; }
-        .input-popup { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 10px; outline: none; }
-        .admin-list-item { background:white; padding:10px; margin-bottom:5px; border-radius:10px; border:1px solid #eee; display:flex; justify-content:space-between; align-items:center; text-align:left; font-size:13px; }
-        .admin-delete-btn { color:#ff6b6b; font-weight:bold; cursor:pointer; font-size:18px; }
     </style>
 </head>
 <body>
 
     <!-- 🌸 알림 팝업 -->
-    <div id="customAlert" class="modal-overlay" style="z-index: 3000;">
+    <div id="customAlert" class="modal-overlay" style="z-index: 12000;">
         <div class="popup-box">
             <div style="font-size:40px; margin-bottom:15px;">🌸</div>
             <div id="alertMsg" style="margin-bottom:20px; font-weight:600; color:#555; line-height:1.5; word-break:keep-all;">알림 내용</div>
@@ -129,7 +126,7 @@
     </div>
 
     <!-- 🔑 입력 팝업 -->
-    <div id="inputModal" class="modal-overlay" style="z-index: 2900;">
+    <div id="inputModal" class="modal-overlay" style="z-index: 11500;">
         <div class="popup-box">
             <h3 id="inputTitle" style="margin-bottom:15px; color:var(--primary);">입력해주세요</h3>
             <input type="text" id="popupInput" class="input-popup">
@@ -154,7 +151,7 @@
         <div class="nav-item clickable" onclick="window.renderTab('mypage')"><i class="fas fa-user"></i>마이</div>
     </nav>
 
-    <!-- 글쓰기 버튼 -->
+    <!-- ✏️ 글쓰기 버튼 (z-index 최상위) -->
     <div id="fab" class="fab clickable" onclick="window.openWriteModal()"><i class="fas fa-pen"></i></div>
 
     <!-- 로그인/회원가입 -->
@@ -196,7 +193,6 @@
                 <select id="postType" class="btn-sub" style="background:white;">
                     <option value="editor">☕️ 에디터톡</option>
                     <option value="letter">💌 레터</option>
-                    <option value="lab">🧪 자휴랩</option>
                     <option value="notice">📢 공지사항</option>
                 </select>
                 <input type="text" id="postTitle" class="btn-sub" style="background:white; text-align:left;" placeholder="제목 (에디터톡은 에디터 닉네임)">
@@ -229,8 +225,8 @@
             <div style="margin-bottom:20px;">
                 <h4 style="margin-bottom:10px;">휴식밸런스 / 자휴쿠키 관리</h4>
                 <select id="manageContentType" class="btn-sub" style="background:white; margin-bottom:10px;" onchange="window.loadContentList()">
-                    <option value="balance">⚖️ 휴식 밸런스 (주간)</option>
-                    <option value="cookie">🥠 자휴 쿠키 (랜덤)</option>
+                    <option value="balance">⚖️ 휴식 밸런스</option>
+                    <option value="cookie">🥠 자휴 쿠키</option>
                 </select>
                 
                 <div id="balanceInputArea">
@@ -240,8 +236,8 @@
                         <input type="text" id="mBalB" class="btn-sub" style="background:white;" placeholder="선택 B">
                     </div>
                     <div style="display:flex; gap:5px; margin-top:5px;">
-                        <input type="text" id="mBalAMsg" class="btn-sub" style="background:white;" placeholder="A 선택시 멘트">
-                        <input type="text" id="mBalBMsg" class="btn-sub" style="background:white;" placeholder="B 선택시 멘트">
+                        <input type="text" id="mBalAMsg" class="btn-sub" style="background:white;" placeholder="A 멘트">
+                        <input type="text" id="mBalBMsg" class="btn-sub" style="background:white;" placeholder="B 멘트">
                     </div>
                 </div>
                 <div id="cookieInputArea" class="hidden">
@@ -288,17 +284,17 @@
         let ADMIN_EMAILS = ['hyeran5382@naver.com', 'happci@test.com', 'gocal@test.com', 'yudan@test.com', 'sunny@test.com', 'elly@test.com'];
         const SUPER_ADMIN = 'hyeran5382@naver.com';
 
-        // 에디터 캐릭터 (요청하신 순서 및 매칭)
+        // 에디터 캐릭터 (DiceBear - 귀여운 여성 캐릭터 5종)
         const EDITORS = [
-            { id: 'happci', name: '햅씨', img: 'https://notion-avatar.vercel.app/api/svg/eyJmYWNlIjo5LCJub3NlIjozLCJtb3V0aCI6OSwiZXllcyI6MCwiZXllYnJvd3MiOjksImdsYXNzZXMiOjAsImhhaXIiOjE2LCJhY2Nlc3NvcmllcyI6MCwiZGV0YWlscyI6MCwiYmVhcmQiOjAsImZsaXAiOjAsImNvbG9yIjoicmVkIiwic2hhcGUiOiJjaXJjbGUifQ==' },
-            { id: 'gocal', name: '고칼', img: 'https://notion-avatar.vercel.app/api/svg/eyJmYWNlIjoxMCwibm9zZSI6OCwibW91dGgiOjEwLCJleWVzIjo5LCJleWVicm93cyI6MCwiZ2xhc3NlcyI6MCwiaGFpciI6NDksImFjY2Vzc29yaWVzIjowLCJkZXRhaWxzIjowLCJiZWFyZCI6MCwiZGlwIjowLCJjb2xvciI6InJlZCIsInNoYXBlIjoiY2lyY2xlIn0=' },
-            { id: 'elly', name: '엘리', img: 'https://notion-avatar.vercel.app/api/svg/eyJmYWNlIjo4LCJub3NlIjo5LCJtb3V0aCI6NSwiZXllcyI6MywiZXllYnJvd3MiOjMsImdsYXNzZXMiOjAsImhhaXIiOjMwLCJhY2Nlc3NvcmllcyI6MCwiZGV0YWlscyI6MCwiYmVhcmQiOjAsImZsaXAiOjAsImNvbG9yIjoicmVkIiwic2hhcGUiOiJjaXJjbGUifQ==' },
-            { id: 'yudan', name: '유단', img: 'https://notion-avatar.vercel.app/api/svg/eyJmYWNlIjoxMSwibm9zZSI6NywibW91dGgiOjQsImV5ZXMiOjcsImV5ZWJyb3dzIjo2LCJnbGFzc2VzIjowLCJoYWlyIjo2LCJhY2Nlc3NvcmllcyI6MCwiZGV0YWlscyI6MCwiYmVhcmQiOjAsImZsaXAiOjAsImNvbG9yIjoicmVkIiwic2hhcGUiOiJjaXJjbGUifQ==' },
-            { id: 'sunny', name: '써니', img: 'https://notion-avatar.vercel.app/api/svg/eyJmYWNlIjo2LCJub3NlIjoxMiwibW91dGgiOjYsImV5ZXMiOjExLCJleWVicm93cyI6MTEsImdsYXNzZXMiOjAsImhhaXIiOjIyLCJhY2Nlc3NvcmllcyI6MCwiZGV0YWlscyI6MCwiYmVhcmQiOjAsImZsaXAiOjAsImNvbG9yIjoicmVkIiwic2hhcGUiOiJjaXJjbGUifQ==' }
+            { id: 'happci', name: '햅씨', img: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&gender=female&hairColor=fdd835&clothing=collarAndSweater' }, // 금발
+            { id: 'gocal', name: '고칼', img: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka&gender=female&accessories=glasses&clothing=blazerAndShirt' }, // 안경, 지적
+            { id: 'elly', name: '엘리', img: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bella&gender=female&top=bun&clothing=overall' }, // 똥머리
+            { id: 'yudan', name: '유단', img: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Zoey&gender=female&top=shortHair&clothing=hoodie' }, // 단발, 스포티
+            { id: 'sunny', name: '써니', img: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Molly&gender=female&top=longHair&clothing=graphicShirt' } // 긴머리, 밝음
         ];
 
         // 기본 데이터
-        let COOKIE_MSGS = ["잠시 멈춰도 괜찮아요."];
+        let COOKIE_MSGS = ["잠시 멈춰도 괜찮아요.", "당신의 속도는 틀리지 않았어요."];
         let BALANCE_GAMES = [{ q: "주말엔?", a: "집콕", b: "외출", aMsg: "집이 최고죠!", bMsg: "나가서 놀아요!" }];
         const MOODS = ['☁️','😊','🥰','😭','😡','🔥','☔','🍀','🍷','🧸','🎧','💸','🥑','🧁','🧘‍♀️','👻','🤧','🧶','🌙','🍰'];
 
@@ -325,14 +321,29 @@
 
         window.closeModal = () => {
             document.getElementById('writeModal').style.display = 'none';
-            const fab = document.getElementById('fab');
-            if(currentTab === 'mood' || (isAdmin && ['editor','letter','mypage'].includes(currentTab))) fab.classList.add('show');
+            // 닫을 때 버튼 다시 표시 체크
+            checkFabVisibility();
         };
+
+        function checkFabVisibility() {
+            const fab = document.getElementById('fab');
+            fab.classList.remove('show'); // 일단 숨김
+            
+            // 무드 탭이거나, 관리자가 에디터/레터/마이페이지(공지)에 있을 때만 표시
+            if (currentTab === 'mood') {
+                fab.classList.add('show');
+            } else if (isAdmin && (currentTab === 'editor' || currentTab === 'letter' || currentTab === 'mypage')) {
+                fab.classList.add('show');
+            }
+        }
 
         // --- 탭 렌더링 ---
         window.renderTab = (tab, filter = null) => {
             currentTab = tab;
-            currentEditorFilter = filter;
+            if(tab === 'editor') currentEditorFilter = filter;
+            if(tab === 'letter' && filter) currentLetterFilter = filter; // 공지사항 필터링용
+            else if(tab === 'letter') currentLetterFilter = 'all';
+
             window.scrollTo(0, 0);
             const container = document.getElementById('appContainer');
             container.innerHTML = '';
@@ -341,10 +352,7 @@
             const activeNav = document.querySelector(`.nav-item[onclick*="${tab}"]`);
             if (activeNav) activeNav.classList.add('active');
 
-            const fab = document.getElementById('fab');
-            fab.classList.remove('show');
-            if (tab === 'mood') fab.classList.add('show');
-            if (isAdmin && (tab === 'editor' || tab === 'letter' || tab === 'mypage')) fab.classList.add('show');
+            checkFabVisibility(); // 버튼 표시 여부 재확인
 
             if (tab === 'home') renderHome(container);
             else if (tab === 'letter') renderLetter(container);
@@ -352,7 +360,6 @@
             else if (tab === 'editor') renderEditor(container);
             else if (tab === 'mypage') renderMyPage(container);
             else if (tab === 'play') renderPlay(container);
-            else if (tab === 'notice') renderNoticeList(container);
         };
 
         function renderHome(container) {
@@ -367,7 +374,7 @@
                     <div class="bento-item clickable" onclick="window.renderTab('mood')" style="background:#FFF8E1;"><div><div class="bento-title">오늘의 무드</div><div class="bento-desc">마음 날씨 기록하기</div></div><div class="bento-icon">🎨</div></div>
                     <div class="bento-item clickable" onclick="window.renderTab('play')" style="background:#F3E5F5;"><div><div class="bento-title">플레이</div><div class="bento-desc">우리 같이 휴식을 즐겨요!</div></div><div class="bento-icon">🎡</div></div>
                     <div class="bento-item clickable" onclick="window.renderTab('letter')" style="background:#E0F2F1;"><div><div class="bento-title">레터 읽기</div><div class="bento-desc">메마른 일상을 촉촉하게!</div></div><div class="bento-icon">💌</div></div>
-                    <div class="bento-item clickable" onclick="window.renderTab('editor')" style="background:#FFEBEE;"><div><div class="bento-title">자휴 메이트</div><div class="bento-desc">이번 레터는 어땠나요?</div></div><div class="bento-icon">💬</div></div>
+                    <div class="bento-item clickable" onclick="window.renderTab('editor')" style="background:#FFEBEE;"><div><div class="bento-title">에디터를 클릭해 보세요!</div><div class="bento-desc">이번 레터는 어땠나요?</div></div><div class="bento-icon">💬</div></div>
                     <div class="bento-item bento-full clickable" onclick="window.open('http://pf.kakao.com/_Jfjxgn/111753149', '_blank')" style="background:#E8F5E9;">
                         <div style="display:flex; justify-content:space-between; align-items:center;"><div><div class="bento-title" style="color:#333;">에디터 PICK! 문장수집</div><div class="bento-desc" style="color:#666;">응원을 꾹꾹 눌러담았어요!</div></div><div style="font-size:24px;">🔖</div></div>
                     </div>
@@ -387,22 +394,10 @@
                         </div>
                         <button onclick="window.open('https://maily.so/happci', '_blank')" class="btn-main">레터 보러가기 💌</button>
                     </div>
-                    <div class="section-header">
-                        오늘은 어떤 힐링을 드릴까요?
-                        <div style="float:right; font-size:12px; margin-top:3px;">
-                            <span class="clickable" style="margin-right:5px; color:${currentLetterFilter==='all'?'var(--primary)':'#888'}" onclick="window.filterLetter('all')">전체</span> | 
-                            <span class="clickable" style="margin:0 5px; color:${currentLetterFilter==='letter'?'var(--primary)':'#888'}" onclick="window.filterLetter('letter')">레터</span> | 
-                            <span class="clickable" style="margin-left:5px; color:${currentLetterFilter==='lab'?'var(--primary)':'#888'}" onclick="window.filterLetter('lab')">랩</span>
-                        </div>
-                    </div>
+                    <div class="section-header">오늘 나에게 필요한 휴식은?</div>
                     <div id="letterList" class="card-list"></div>
                 </div>`;
             window.fetchPosts('letter', 'letterList');
-        }
-
-        window.filterLetter = (filter) => {
-            currentLetterFilter = filter;
-            window.renderTab('letter');
         }
 
         window.checkRate = (rate) => {
@@ -478,7 +473,7 @@
                         </div>
                         <button onclick="window.open('https://pf.kakao.com/_Jfjxgn', '_blank')" class="btn-main">🎁 스탬프 인증하고 선물 받기</button>
                     </div>
-                    <div class="card clickable" onclick="window.renderTab('notice')">
+                    <div class="card clickable" onclick="window.renderTab('letter', 'notice')">
                         <div style="display:flex; justify-content:space-between; color:#333;"><span>📢 공지사항</span><i class="fas fa-chevron-right"></i></div>
                     </div>
                     <div class="card clickable" onclick="window.resetPw()">
@@ -489,16 +484,6 @@
                     </div>
                 </div>`;
             window.loadStamps();
-        }
-
-        function renderNoticeList(container) {
-            container.innerHTML = `
-                <div style="padding:0 20px;">
-                    <div class="section-header">📢 공지사항</div>
-                    <div id="noticeList" class="card-list"></div>
-                    <button onclick="window.renderTab('mypage')" class="btn-sub">뒤로가기</button>
-                </div>`;
-            window.fetchPosts('notice', 'noticeList');
         }
 
         function renderPlay(container) {
@@ -532,14 +517,24 @@
             list.innerHTML = '';
             let q;
             
+            // 1. 무드 (내 글만)
             if(type === 'mood') {
                 q = query(collection(db, "posts"), where("type", "==", "mood"), where("authorId", "==", currentUser.uid), orderBy("date", "desc"));
-            } else if(type === 'editor' && currentEditorFilter) {
-                q = query(collection(db, "posts"), where("type", "==", "editor"), where("title", "==", currentEditorFilter), orderBy("date", "desc"));
-            } else if(type === 'letter') {
-                if(currentLetterFilter === 'all') q = query(collection(db, "posts"), where("type", "in", ["letter", "lab"]), orderBy("date", "desc"));
-                else q = query(collection(db, "posts"), where("type", "==", currentLetterFilter), orderBy("date", "desc"));
-            } else {
+            } 
+            // 2. 에디터 톡 (전체 or 필터)
+            else if(type === 'editor') {
+                if(currentEditorFilter) q = query(collection(db, "posts"), where("type", "==", "editor"), where("title", "==", currentEditorFilter), orderBy("date", "desc"));
+                else q = query(collection(db, "posts"), where("type", "==", "editor"), orderBy("date", "desc"));
+            } 
+            // 3. 레터 탭 (레터 + 공지)
+            else if(type === 'letter') {
+                // 공지사항 필터링 (마이페이지에서 넘어온 경우)
+                if(currentLetterFilter === 'notice') q = query(collection(db, "posts"), where("type", "==", "notice"), orderBy("date", "desc"));
+                // 기본 (레터 + 공지 모두)
+                else q = query(collection(db, "posts"), where("type", "in", ["letter", "notice"]), orderBy("date", "desc"));
+            } 
+            // 4. 기타
+            else {
                 q = query(collection(db, "posts"), where("type", "==", type), orderBy("date", "desc"));
             }
 
@@ -556,13 +551,14 @@
                 const date = new Date(data.date).toLocaleDateString();
                 const isNew = (new Date() - new Date(data.date)) / (1000 * 60 * 60 * 24) < 7;
                 const newBadge = isNew ? '<span class="badge-new">N</span>' : '';
+                const noticeBadge = data.type === 'notice' ? '<span class="badge-notice">공지</span> ' : '';
 
                 if(type === 'mood') {
                     list.innerHTML += `<div class="card" style="display:flex; gap:15px; align-items:center;"><div style="font-size:30px;">${data.emoji}</div><div><div style="font-size:12px; color:#aaa;">${date}</div><div style="font-size:14px; margin-top:2px;">${data.content}</div></div></div>`;
                 } else {
                     list.innerHTML += `
                         <div class="card">
-                            <div style="font-weight:700; margin-bottom:5px;">${data.title} ${newBadge}</div>
+                            <div style="font-weight:700; margin-bottom:5px;">${noticeBadge}${data.title} ${newBadge}</div>
                             <div style="font-size:14px; color:#444; line-height:1.5;">${data.content}</div>
                             ${data.url ? `<button onclick="window.open('${data.url}')" class="btn-sub" style="width:auto; padding:8px 15px; font-size:12px; margin-top:10px;">${data.btnText || '보러가기'}</button>` : ''}
                             ${type === 'editor' ? `<div class="empathy-bar"><button class="empathy-btn">🔥 공감</button><button class="empathy-btn">🌿 힐링</button><button class="empathy-btn">☕️ 수고</button></div>` : ''}
@@ -581,7 +577,6 @@
             grid.innerHTML = '';
             for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
 
-            // DB에서만 로드
             const q = query(collection(db, "posts"), where("type", "==", "mood"), where("authorId", "==", currentUser.uid));
             const snap = await getDocs(q);
             const moods = {};
@@ -625,10 +620,11 @@
                 });
                 window.showAlert("게시글 등록 완료!");
                 window.closeModal();
-                // 탭 리프레시
+                
+                // 탭 리프레시 (공지 작성시 레터 탭으로)
                 const t = document.getElementById('postType').value;
-                if(t === 'notice') window.renderTab('notice');
-                else if(t === 'letter' || t === 'lab') window.renderTab('letter');
+                if(t === 'notice') window.renderTab('letter');
+                else if(t === 'letter') window.renderTab('letter');
                 else window.renderTab('editor', null);
             }
         };
@@ -698,11 +694,22 @@
         };
 
         // ... 기본 함수들 ...
+        window.openWriteModal = () => {
+            document.getElementById('writeModal').style.display = 'flex';
+            document.getElementById('moodForm').classList.add('hidden');
+            document.getElementById('adminForm').classList.add('hidden');
+            if(currentTab === 'mood') {
+                document.getElementById('moodForm').classList.remove('hidden');
+                document.getElementById('emojiList').innerHTML = MOODS.map(m => `<div class="clickable" style="font-size:24px; text-align:center;" onclick="window.selectEmoji('${m}', this)">${m}</div>`).join('');
+            } else if(isAdmin) {
+                document.getElementById('adminForm').classList.remove('hidden');
+            }
+        };
+        window.selectEmoji = (m, el) => { selectedEmoji = m; document.querySelectorAll('#emojiList div').forEach(d => d.style.background = 'none'); el.style.background = 'var(--primary-light)'; el.style.borderRadius = '50%'; };
         window.clickEmpathy = (btn) => { btn.style.color = 'var(--primary)'; btn.style.fontWeight = '700'; btn.innerHTML += ' +1'; };
         window.loadStamps = async () => { const userSnap = await getDoc(doc(db, "users", currentUser.uid)); const count = userSnap.data()?.stamps || 0; const grid = document.getElementById('stampGrid'); grid.innerHTML = ''; for(let i=1; i<=30; i++) { let giftHtml = ''; let onClick = ''; if(i===10) { giftHtml='<div class="gift-box">🎁</div>'; if(count>=10) onClick=`onclick="window.showAlert('10개 달성 축하해요! 🎉<br>비밀코드: <b>[구름한점]</b>')"` } if(i===20) { giftHtml='<div class="gift-box">📜</div>'; if(count>=20) onClick=`onclick="window.showAlert('20개 달성! 👍<br>비밀코드: <b>[달빛산책]</b>')"` } if(i===30) { giftHtml='<div class="gift-box">👑</div>'; if(count>=30) onClick=`onclick="window.showAlert('30개 달성! VIP 👑<br>비밀코드: <b>[온전한쉼]</b>')"` } grid.innerHTML += `<div class="stamp-slot ${i<=count?'active':''} clickable" ${onClick}>${i}${giftHtml}</div>`; } };
         window.shredWorry = () => { const box = document.getElementById('shredderBox'); box.classList.add('shredder-act'); setTimeout(() => { window.showAlert("걱정이 말끔히 사라졌어요! ✨"); box.classList.remove('shredder-act'); document.getElementById('worryInput').value=''; }, 1000); };
         window.openCookie = async () => { 
-            // LocalStorage 초기화 (오류 해결)
             const today = new Date().toDateString();
             if(localStorage.getItem('cookieDate_v2') === today) return window.showAlert("쿠키는 하루에 한 번만<br>열 수 있어요! 🥠");
             const q = query(collection(db, "contents"), where("type", "==", "cookie"));
