@@ -15,9 +15,9 @@
             --primary: #8E70B3; 
             --primary-dark: #6A4C93;
             --primary-light: #F3E5F5;
-            --bg-body: #FFFEF5; /* 아주 연한 아이보리 */
+            --bg-body: #FFFEF5;
             --white: #ffffff;
-            --text-main: #333333; /* 가독성 좋은 진한 회색 */
+            --text-main: #333333;
             --text-sub: #666666;
             --border: #DDDDDD; 
             --shadow: 0 4px 15px rgba(0,0,0,0.08);
@@ -26,7 +26,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
         body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         
-        /* 앱 컨테이너 */
         .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg-body); padding-bottom: 90px; padding-top: 70px; position: relative; }
         .clickable { cursor: pointer; transition: transform 0.1s, opacity 0.1s; }
         .clickable:active { transform: scale(0.97); opacity: 0.8; }
@@ -35,7 +34,7 @@
         .header { position: fixed; top: 0; width: 100%; max-width: 480px; height: 60px; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 100; border-bottom: 1px solid var(--border); }
         .logo { font-family: 'Dancing Script', cursive; font-size: 26px; color: var(--primary); font-weight: 700; }
 
-        /* 벤토 그리드 (가시성 강화) */
+        /* 벤토 그리드 */
         .bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px; }
         .bento-item { background: var(--white); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); border: 1px solid #EAEAEA; display: flex; flex-direction: column; justify-content: space-between; min-height: 110px; }
         .bento-full { grid-column: span 2; background: linear-gradient(135deg, #B39CD0 0%, #9FA8DA 100%); color: white; border: none; }
@@ -60,11 +59,16 @@
         /* 에디터 아이콘 */
         .editor-circle { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 2px solid #fff; box-shadow: 0 3px 6px rgba(0,0,0,0.1); margin: 0 auto 5px; }
         .editor-name { font-size: 12px; font-weight: 600; text-align: center; color: #555; }
+        .editor-scroll { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
 
         /* 버튼 */
         .btn-main { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: 700; font-size: 15px; margin-top: 10px; cursor: pointer; background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(142, 112, 179, 0.3); }
         .btn-sub { background: #F5F5F5; color: #666; width: 100%; padding: 12px; border-radius: 12px; border: none; font-weight: 600; margin-top: 5px; }
-        
+        .rate-group { display: flex; gap: 5px; margin: 15px 0; }
+        .rate-btn { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: white; font-size: 12px; color: #666; }
+        .empathy-bar { display: flex; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #f5f5f5; }
+        .empathy-btn { flex: 1; padding: 8px; border-radius: 20px; background: #f9f9f9; border: none; font-size: 12px; color: #666; display: flex; align-items: center; justify-content: center; gap: 5px; }
+
         /* 팝업 */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
         .popup-box { background: white; width: 85%; max-width: 360px; padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; }
@@ -86,7 +90,6 @@
         .vip-name { font-size: 24px; font-weight: 800; color: #333; margin-bottom: 10px; }
         .vip-desc { font-size: 14px; color: #666; line-height: 1.6; }
 
-        /* 플레이 콘텐츠 애니메이션 */
         .shredder-box { transition: 1s; }
         .shredder-act { transform: translateY(100px) scale(0, 0); opacity: 0; }
 
@@ -133,18 +136,23 @@
 
     <div id="fab" class="fab clickable" onclick="window.openWriteModal()"><i class="fas fa-pen"></i></div>
 
-    <!-- 로그인 모달 -->
+    <!-- 🔑 로그인 모달 (수정됨) -->
     <div id="authModal" class="modal-overlay" style="display:flex;">
         <div class="popup-box">
             <h2 style="font-family:'Dancing Script'; color:var(--primary); margin-bottom:10px; font-size:32px;">Jahyu</h2>
             <p style="color:#666; margin-bottom:25px; font-size:14px;">메마른 일상 속 휴식 한 방울 💧</p>
             <input type="email" id="authEmail" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:10px; margin-bottom:10px;" placeholder="이메일">
-            <input type="password" id="authPw" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:10px; margin-bottom:10px;" placeholder="비밀번호">
+            <input type="password" id="authPw" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:10px; margin-bottom:10px;" placeholder="비밀번호 (6자리 이상)">
             <div id="signupFields" class="hidden">
                 <input type="text" id="authNick" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:10px; margin-bottom:10px;" placeholder="닉네임">
             </div>
+            
+            <!-- 버튼 연결을 window 함수로 확실하게 처리 -->
             <button onclick="window.doLogin()" class="btn-main" id="loginBtn">로그인</button>
             <button onclick="window.toggleSignup()" class="btn-sub" id="signupBtn">회원가입</button>
+            
+            <!-- 비밀번호 찾기 추가 -->
+            <p onclick="window.resetPw()" style="font-size:12px; color:#999; margin-top:15px; cursor:pointer; text-decoration:underline;">비밀번호를 잊으셨나요?</p>
         </div>
     </div>
 
@@ -154,281 +162,4 @@
             <h3 id="modalTitle" style="text-align:center; color:#333; margin-bottom:20px;">기록하기</h3>
             
             <div id="moodForm" class="hidden">
-                <div id="emojiList" style="display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:15px;"></div>
-                <textarea id="moodContent" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:10px; height:80px; resize:none;" placeholder="오늘 기분은 어땠나요?"></textarea>
-            </div>
-
-            <div id="adminForm" class="hidden">
-                <select id="postType" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-                    <option value="editor">☕️ 에디터 톡</option>
-                    <option value="letter">💌 자휴레터/랩</option>
-                    <option value="notice">📢 공지사항</option>
-                </select>
-                <input type="text" id="postTitle" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;" placeholder="제목 (선택)">
-                <textarea id="postContent" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:10px; height:120px; resize:none;" placeholder="내용"></textarea>
-                <input type="text" id="postUrl" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;" placeholder="관련 URL">
-            </div>
-
-            <button onclick="window.submitPost()" class="btn-main">등록하기</button>
-            <button onclick="window.closeModal()" class="btn-sub">닫기</button>
-        </div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDq2eT8H6tNcsrT8dhZWsEyyMZbpCZIZZQ",
-            authDomain: "jahyu-e24cd.firebaseapp.com",
-            databaseURL: "https://jahyu-e24cd-default-rtdb.firebaseio.com",
-            projectId: "jahyu-e24cd",
-            storageBucket: "jahyu-e24cd.firebasestorage.app",
-            messagingSenderId: "955637836464",
-            appId: "1:955637836464:web:096ed0c28e0070f4fca975",
-            measurementId: "G-CTDZFNYJV7"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        let currentUser = null;
-        let currentTab = 'home';
-        let isAdmin = false;
-        let isSuperAdmin = false;
-        let selectedEmoji = null;
-
-        // 관리자 설정
-        const ADMIN_EMAILS = ['happci@test.com', 'gocal@test.com', 'yudan@test.com', 'sunny@test.com', 'elly@test.com'];
-        const SUPER_ADMIN = 'happci@test.com';
-
-        // 에디터 아이콘 데이터 (배경색 및 이모지)
-        const EDITORS = [
-            { id: 'happci', name: '햅씨', icon: '✏️', bg: '#FFEBEE' },
-            { id: 'elly', name: '엘리', icon: '🥯', bg: '#F3E5F5' },
-            { id: 'sunny', name: '써니', icon: '🍪', bg: '#FFFDE7' },
-            { id: 'yudan', name: '유단', icon: '👟', bg: '#E8F5E9' },
-            { id: 'gocal', name: '고칼', icon: '📚', bg: '#E1F5FE' }
-        ];
-
-        // 플레이 콘텐츠 데이터 (DB 대체용 하드코딩 + 추후 관리자 연동 가능)
-        let COOKIE_MSGS = ["잠시 멈춰도 괜찮아요.", "당신의 속도는 틀리지 않았어요.", "오늘도 버티느라 고생했어요.", "쉼은 게으름이 아니에요."];
-        let BALANCE_GAME = { q: "이번 주말, 당신의 선택은?", a: "하루종일 잠자기", b: "맛집 오픈런" };
-
-        const MOODS = ['☁️','😊','🥰','😭','😡','🔥','☔','🍀','🍷','🧸','🎧','💸','🥑','🧁','🧘‍♀️','👻','🤧','🧶','🌙','🍰'];
-
-        // --- 유틸리티 ---
-        window.showAlert = (msg) => {
-            document.getElementById('alertMsg').innerHTML = msg;
-            document.getElementById('customAlert').style.display = 'flex';
-        };
-        window.closeAlert = () => document.getElementById('customAlert').style.display = 'none';
-
-        window.closeModal = () => {
-            document.getElementById('writeModal').style.display = 'none';
-            const fab = document.getElementById('fab');
-            if(currentTab === 'mood' || (isAdmin && (currentTab === 'editor' || currentTab === 'letter'))) fab.classList.add('show');
-        };
-
-        // --- 탭 렌더링 ---
-        window.renderTab = (tab) => {
-            currentTab = tab;
-            window.scrollTo(0, 0);
-            
-            const container = document.getElementById('appContainer');
-            container.innerHTML = '';
-            
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            const activeNav = document.querySelector(`.nav-item[onclick*="${tab}"]`);
-            if (activeNav) activeNav.classList.add('active');
-
-            const fab = document.getElementById('fab');
-            fab.classList.remove('show');
-            if (tab === 'mood') fab.classList.add('show');
-            if (isAdmin && (tab === 'editor' || tab === 'letter')) fab.classList.add('show');
-
-            if (tab === 'home') renderHome(container);
-            else if (tab === 'letter') renderLetter(container);
-            else if (tab === 'mood') renderMood(container);
-            else if (tab === 'editor') renderEditor(container);
-            else if (tab === 'mypage') renderMyPage(container);
-            else if (tab === 'play') renderPlay(container);
-        };
-
-        // 🏠 홈 화면
-        function renderHome(container) {
-            container.innerHTML = `
-                <div style="padding:0 20px 20px;">
-                    <div class="bento-item bento-full clickable" onclick="window.open('https://index-html-zak5.vercel.app/', '_blank')">
-                        <div>
-                            <div style="font-size:12px; opacity:0.9; margin-bottom:5px;">오늘 당신의 마음에, 쉼표 하나 🌿</div>
-                            <div class="bento-title">나의 힐링 유형 테스트</div>
-                        </div>
-                        <div style="text-align:right; font-size:13px;">알아보러 가기 👉</div>
-                    </div>
-                </div>
-
-                <div class="bento-grid">
-                    <div class="bento-item clickable" onclick="window.renderTab('mood')" style="background:#FFF8E1;">
-                        <div>
-                            <div class="bento-title">오늘의 무드</div>
-                            <div class="bento-desc">마음 날씨 기록하기</div>
-                        </div>
-                        <div class="bento-icon">🎨</div>
-                    </div>
-                    
-                    <div class="bento-item clickable" onclick="window.renderTab('play')" style="background:#F3E5F5;">
-                        <div>
-                            <div class="bento-title">플레이</div>
-                            <div class="bento-desc">복잡한 생각 비우기</div>
-                        </div>
-                        <div class="bento-icon">🎡</div>
-                    </div>
-
-                    <div class="bento-item clickable" onclick="window.renderTab('letter')" style="background:#E0F2F1;">
-                        <div>
-                            <div class="bento-title">레터 읽기</div>
-                            <div class="bento-desc">메마른 일상 적시기</div>
-                        </div>
-                        <div class="bento-icon">💌</div>
-                    </div>
-
-                    <div class="bento-item clickable" onclick="window.renderTab('editor')" style="background:#FFEBEE;">
-                        <div>
-                            <div class="bento-title">에디터 톡</div>
-                            <div class="bento-desc">이번 주 어땠나요?</div>
-                        </div>
-                        <div class="bento-icon">💬</div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // 🎡 플레이 (챌린지 대체)
-        function renderPlay(container) {
-            container.innerHTML = `
-                <div style="padding:0 20px;">
-                    <div class="section-header">복잡한 마음, 가볍게 비워요!</div>
-                    
-                    <!-- 걱정 파쇄기 -->
-                    <div class="card">
-                        <div style="font-weight:700; margin-bottom:10px;">🌪 걱정 파쇄기</div>
-                        <p style="font-size:13px; color:#666; margin-bottom:10px;">마음 속 걱정을 적고 버튼을 누르면 사라져요.</p>
-                        <div id="shredderBox" class="shredder-box">
-                            <input type="text" id="worryInput" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:10px;" placeholder="걱정을 입력하세요...">
-                            <button onclick="window.shredWorry()" class="btn-sub" style="background:#eee;">갈아버리기 🗑️</button>
-                        </div>
-                    </div>
-
-                    <!-- 밸런스 게임 -->
-                    <div class="card" style="text-align:center;">
-                        <div style="font-weight:700; margin-bottom:15px;">⚖️ 힐링 밸런스</div>
-                        <p style="font-size:14px; margin-bottom:15px;">${BALANCE_GAME.q}</p>
-                        <div style="display:flex; gap:10px;">
-                            <button class="btn-main" onclick="window.showAlert('A 선택! 취향이 확고하시네요 😎')">${BALANCE_GAME.a}</button>
-                            <button class="btn-main" style="background:var(--primary-dark);" onclick="window.showAlert('B 선택! 역시 휴식은 이거죠 👍')">${BALANCE_GAME.b}</button>
-                        </div>
-                    </div>
-
-                    <!-- 휴식 쿠키 -->
-                    <div class="card clickable" onclick="window.openCookie()" style="background:#FFFDE7; border-color:#FFF9C4;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <div style="font-weight:700;">🥠 휴식 쿠키 뽑기</div>
-                                <div style="font-size:12px; margin-top:5px;">오늘 나에게 필요한 한 마디는?</div>
-                            </div>
-                            <div style="font-size:30px;">✨</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        window.shredWorry = () => {
-            const input = document.getElementById('worryInput').value;
-            if(!input) return window.showAlert("걱정을 먼저 적어주세요!");
-            const box = document.getElementById('shredderBox');
-            box.classList.add('shredder-act');
-            setTimeout(() => {
-                window.showAlert("걱정이 말끔히 사라졌어요! ✨");
-                box.classList.remove('shredder-act');
-                document.getElementById('worryInput').value = '';
-            }, 1000);
-        };
-
-        window.openCookie = () => {
-            const msg = COOKIE_MSGS[Math.floor(Math.random() * COOKIE_MSGS.length)];
-            window.showAlert(`💌 오늘의 메시지<br><br>"${msg}"`);
-        };
-
-        // 💌 레터
-        function renderLetter(container) {
-            container.innerHTML = `
-                <div style="padding:0 20px;">
-                    <div class="card" style="text-align:center;">
-                        <h3 style="margin-bottom:10px;">이번 주 레터, 얼마나 읽으셨나요? 🧐</h3>
-                        <div class="rate-group">
-                            <button class="rate-btn" onclick="window.checkRate(25)">25%</button>
-                            <button class="rate-btn" onclick="window.checkRate(50)">50%</button>
-                            <button class="rate-btn" onclick="window.checkRate(75)">75%</button>
-                            <button class="rate-btn" onclick="window.checkRate(100)">100%</button>
-                        </div>
-                        <button onclick="window.open('https://maily.so/happci', '_blank')" class="btn-main">레터 보러가기 💌</button>
-                    </div>
-                    <div class="section-header">지난 레터 모아보기</div>
-                    <div id="letterList" class="card-list"></div>
-                </div>
-            `;
-            window.fetchPosts('letter', 'letterList');
-        }
-
-        window.checkRate = (rate) => {
-            let msg = "";
-            if(rate === 25) msg = "시작이 반이에요! 가볍게 읽어보세요 🌱";
-            else if(rate === 50) msg = "절반이나 읽으셨군요! 조금만 더 힘내요 🌿";
-            else if(rate === 75) msg = "거의 다 읽어가요! 푹 빠지셨네요 📖";
-            else msg = "완독하신 당신, 멋져요! 지식과 감성이 +1 되었습니다 ✨";
-            window.showAlert(msg);
-        };
-
-        // 🎨 무드
-        function renderMood(container) {
-            container.innerHTML = `
-                <div style="padding:0 20px;">
-                    <div class="section-header">오늘 하루, 당신의 마음 날씨는?</div>
-                    <div class="cal-container" id="moodCapture">
-                        <div class="cal-header">
-                            <span>Mood Log</span>
-                            <span>${new Date().getMonth()+1}월</span>
-                        </div>
-                        <div class="cal-grid" style="margin-bottom:10px; font-size:12px; color:#888;">
-                            <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
-                        </div>
-                        <div id="calGrid" class="cal-grid"></div>
-                    </div>
-                    <button onclick="window.saveImage('moodCapture')" class="btn-sub" style="margin-bottom:20px;"><i class="fas fa-download"></i> 캘린더 이미지 저장</button>
-                    
-                    <div class="section-header">지난 이야기들</div>
-                    <div id="moodList"></div>
-                    <button onclick="window.fetchPosts('mood', 'moodList', 100)" class="btn-sub">이전 기록 더보기</button>
-                </div>
-            `;
-            window.loadCalendar();
-            window.fetchPosts('mood', 'moodList', 5);
-        }
-
-        // ☕️ 에디터 톡
-        function renderEditor(container) {
-            container.innerHTML = `
-                <div style="padding:0 20px;">
-                    <div class="section-header">에디터 프로필</div>
-                    <div class="editor-scroll">
-                        ${EDITORS.map(e => `
-                            <div class="editor-profile clickable" onclick="window.showAlert('${e.name}의 한줄 소개:<br>당신의 휴식을 응원합니다 🍀')">
-                                <div class="editor-circle" style="background:${e.bg}">${e.icon}</div>
-                                <div class="editor-name">${e.name}</div>
-                            </div>
-                        `).join('')}
-                    </div>
+                <div id="emojiList" style="display:grid; grid-t
