@@ -11,30 +11,33 @@
     
     <style>
         :root {
-            /* 🎨 가시성 높은 컬러 팔레트 */
+            /* 🎨 디자인 시스템: 가시성 + 감성 */
             --primary: #8E70B3; 
             --primary-dark: #6A4C93;
             --primary-light: #F3E5F5;
-            --bg-body: #FFFEF5;
+            --bg-body: #FFFEF5; /* 연한 아이보리 */
             --white: #ffffff;
             --text-main: #333333;
             --text-sub: #666666;
             --border: #DDDDDD; 
             --shadow: 0 4px 15px rgba(0,0,0,0.08);
+            --pink-popup: #FFF0F5; /* 요청하신 연핑크 */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
         body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         
-        .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg-body); padding-bottom: 90px; padding-top: 70px; position: relative; }
+        /* 앱 레이아웃 */
+        .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg-body); padding-bottom: 90px; padding-top: 60px; position: relative; }
         .clickable { cursor: pointer; transition: transform 0.1s, opacity 0.1s; }
         .clickable:active { transform: scale(0.97); opacity: 0.8; }
 
         /* 헤더 */
         .header { position: fixed; top: 0; width: 100%; max-width: 480px; height: 60px; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 100; border-bottom: 1px solid var(--border); }
-        .logo { font-family: 'Dancing Script', cursive; font-size: 26px; color: var(--primary); font-weight: 700; }
+        .logo { font-family: 'Dancing Script', cursive; font-size: 26px; color: var(--primary); font-weight: 700; cursor: pointer; }
+        .home-btn { position: absolute; right: 20px; font-size: 20px; color: #888; cursor: pointer; }
 
-        /* 벤토 그리드 */
+        /* 벤토 그리드 (홈) */
         .bento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px; }
         .bento-item { background: var(--white); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); border: 1px solid #EAEAEA; display: flex; flex-direction: column; justify-content: space-between; min-height: 110px; }
         .bento-full { grid-column: span 2; background: linear-gradient(135deg, #B39CD0 0%, #9FA8DA 100%); color: white; border: none; }
@@ -48,7 +51,7 @@
         .card { background: var(--white); border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #EAEAEA; margin-bottom: 15px; }
         .section-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; padding: 0 20px; color: #444; }
 
-        /* 무드 캘린더 */
+        /* 캘린더 */
         .cal-container { background: var(--white); border-radius: 20px; padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .cal-header { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 15px; color: #555; }
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
@@ -56,22 +59,39 @@
         .day-cell.today { border: 2px solid var(--primary); background: #fff; color: var(--primary); font-weight: 700; }
         .day-emoji { font-size: 20px; position: absolute; }
 
-        /* 에디터 아이콘 */
+        /* 에디터 */
+        .editor-scroll { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
         .editor-circle { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 2px solid #fff; box-shadow: 0 3px 6px rgba(0,0,0,0.1); margin: 0 auto 5px; }
         .editor-name { font-size: 12px; font-weight: 600; text-align: center; color: #555; }
-        .editor-scroll { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
 
         /* 버튼 */
         .btn-main { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: 700; font-size: 15px; margin-top: 10px; cursor: pointer; background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(142, 112, 179, 0.3); }
         .btn-sub { background: #F5F5F5; color: #666; width: 100%; padding: 12px; border-radius: 12px; border: none; font-weight: 600; margin-top: 5px; }
-        .rate-group { display: flex; gap: 5px; margin: 15px 0; }
-        .rate-btn { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: white; font-size: 12px; color: #666; }
         .empathy-bar { display: flex; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #f5f5f5; }
         .empathy-btn { flex: 1; padding: 8px; border-radius: 20px; background: #f9f9f9; border: none; font-size: 12px; color: #666; display: flex; align-items: center; justify-content: center; gap: 5px; }
 
-        /* 팝업 */
+        /* 🌸 팝업 (연핑크 디자인 통일) */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(3px); }
-        .popup-box { background: white; width: 85%; max-width: 360px; padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; }
+        .popup-box { 
+            background: var(--pink-popup); /* 연핑크 배경 */
+            width: 85%; max-width: 360px; padding: 30px; 
+            border-radius: 25px; text-align: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+            border: 2px solid #fff;
+            position: relative; 
+        }
+
+        /* 하단 네비게이션 (수정됨) */
+        .bottom-nav { 
+            position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 80px; 
+            background: rgba(255,255,255,0.98); 
+            border-top: 1px solid #eee; box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            display: flex; justify-content: space-around; align-items: center; 
+            z-index: 1000; padding-bottom: 10px; 
+        }
+        .nav-item { color: #bbb; text-align: center; font-size: 11px; font-weight: 500; width: 20%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .nav-item i { font-size: 22px; margin-bottom: 5px; }
+        .nav-item.active { color: var(--primary); font-weight: 700; transform: translateY(-3px); transition: 0.2s; }
 
         /* 스탬프 보드 */
         .stamp-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0; }
@@ -79,17 +99,7 @@
         .stamp-slot.active { background: var(--primary); color: white; box-shadow: 0 2px 5px rgba(142, 112, 179, 0.4); font-weight: 700; }
         .gift-box { position: absolute; right: -2px; bottom: -2px; background: white; border-radius: 50%; padding: 3px; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
-        /* VIP 카드 생성용 (숨김 처리) */
-        #vipCardArea { 
-            width: 300px; height: 450px; background: linear-gradient(135deg, #FFF0F5, #E6E6FA); 
-            position: fixed; top: -9999px; left: -9999px; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .vip-title { font-family:'Dancing Script'; font-size: 30px; color: var(--primary); margin-bottom: 20px; }
-        .vip-name { font-size: 24px; font-weight: 800; color: #333; margin-bottom: 10px; }
-        .vip-desc { font-size: 14px; color: #666; line-height: 1.6; }
-
+        /* 플레이 콘텐츠 애니메이션 */
         .shredder-box { transition: 1s; }
         .shredder-act { transform: translateY(100px) scale(0, 0); opacity: 0; }
 
@@ -100,27 +110,19 @@
 </head>
 <body>
 
-    <!-- 알림 팝업 -->
+    <!-- 🌸 알림 팝업 -->
     <div id="customAlert" class="modal-overlay" style="z-index: 3000;">
         <div class="popup-box">
             <div style="font-size:40px; margin-bottom:15px;">🌿</div>
-            <div id="alertMsg" style="margin-bottom:20px; font-weight:600; color:#333; line-height:1.5; word-break:keep-all;">알림 내용</div>
+            <div id="alertMsg" style="margin-bottom:20px; font-weight:600; color:#444; line-height:1.5; word-break:keep-all;">알림 내용</div>
             <button onclick="window.closeAlert()" class="btn-main">확인</button>
         </div>
     </div>
 
-    <!-- VIP 카드 생성 영역 (숨김) -->
-    <div id="vipCardArea">
-        <div class="vip-title">Jahyu VIP</div>
-        <div style="font-size:50px; margin-bottom:20px;">👑</div>
-        <div class="vip-name" id="vipNameTarget">User Name</div>
-        <div class="vip-desc">위 사람은 온전한 휴식을 즐길 줄 아는<br>자휴레터의 소중한 VIP임을 인증합니다.</div>
-        <div style="margin-top:30px; font-size:12px; color:#aaa;">Jahyu Letter Official</div>
-    </div>
-
     <!-- 헤더 -->
     <header class="header">
-        <div class="logo">Jahyu Letter</div>
+        <div class="logo clickable" onclick="window.renderTab('home')">Jahyu Letter</div>
+        <div class="home-btn" onclick="window.renderTab('home')"><i class="fas fa-home"></i></div>
     </header>
 
     <div id="appContainer" class="app-container"></div>
@@ -136,22 +138,19 @@
 
     <div id="fab" class="fab clickable" onclick="window.openWriteModal()"><i class="fas fa-pen"></i></div>
 
-    <!-- 🔑 로그인 모달 (수정됨) -->
+    <!-- 로그인 모달 -->
     <div id="authModal" class="modal-overlay" style="display:flex;">
         <div class="popup-box">
             <h2 style="font-family:'Dancing Script'; color:var(--primary); margin-bottom:10px; font-size:32px;">Jahyu</h2>
-            <p style="color:#666; margin-bottom:25px; font-size:14px;">메마른 일상 속 휴식 한 방울 💧</p>
+            <p style="color:#666; margin-bottom:25px; font-size:14px;">메마른 일상을 촉촉하게 💧</p>
             <input type="email" id="authEmail" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:10px; margin-bottom:10px;" placeholder="이메일">
             <input type="password" id="authPw" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:10px; margin-bottom:10px;" placeholder="비밀번호 (6자리 이상)">
             <div id="signupFields" class="hidden">
                 <input type="text" id="authNick" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:10px; margin-bottom:10px;" placeholder="닉네임">
             </div>
             
-            <!-- 버튼 연결을 window 함수로 확실하게 처리 -->
             <button onclick="window.doLogin()" class="btn-main" id="loginBtn">로그인</button>
             <button onclick="window.toggleSignup()" class="btn-sub" id="signupBtn">회원가입</button>
-            
-            <!-- 비밀번호 찾기 추가 -->
             <p onclick="window.resetPw()" style="font-size:12px; color:#999; margin-top:15px; cursor:pointer; text-decoration:underline;">비밀번호를 잊으셨나요?</p>
         </div>
     </div>
@@ -168,17 +167,43 @@
 
             <div id="adminForm" class="hidden">
                 <select id="postType" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-                    <option value="editor">☕️ 에디터 톡</option>
-                    <option value="letter">💌 자휴레터/랩</option>
-                    <option value="notice">📢 공지사항</option>
+                    <option value="editor">☕️ 에디터 톡 (코멘트)</option>
+                    <option value="letter">💌 자휴레터/랩 (공지)</option>
                 </select>
-                <input type="text" id="postTitle" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;" placeholder="제목 (선택)">
-                <textarea id="postContent" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:10px; height:120px; resize:none;" placeholder="내용을 입력하세요"></textarea>
-                <input type="text" id="postUrl" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;" placeholder="관련 URL">
+                <input type="text" id="postTitle" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;" placeholder="제목 (에디터톡은 에디터이름)">
+                <textarea id="postContent" style="width:100%; padding:15px; border:1px solid #ddd; border-radius:10px; height:100px; resize:none;" placeholder="내용을 입력하세요"></textarea>
+                
+                <!-- URL 및 버튼 이름 기능 추가 -->
+                <div style="background:#f9f9f9; padding:10px; border-radius:10px; margin-top:10px;">
+                    <div style="font-size:12px; color:#888; margin-bottom:5px;">연결할 링크 (선택)</div>
+                    <input type="text" id="postUrl" style="width:100%; padding:10px; margin-bottom:5px; border-radius:10px; border:1px solid #ddd;" placeholder="https://...">
+                    <input type="text" id="btnText" style="width:100%; padding:10px; border-radius:10px; border:1px solid #ddd;" placeholder="버튼 이름 (예: 레터 보러가기)">
+                </div>
             </div>
 
             <button onclick="window.submitPost()" class="btn-main">등록하기</button>
             <button onclick="window.closeModal()" class="btn-sub">닫기</button>
+        </div>
+    </div>
+
+    <!-- 플레이 콘텐츠 추가 모달 -->
+    <div id="playAdminModal" class="modal-overlay">
+        <div class="popup-box" style="text-align:left;">
+            <h3 style="text-align:center;">🎡 플레이 콘텐츠 관리</h3>
+            <select id="playType" class="btn-sub" style="margin-bottom:10px;">
+                <option value="balance">⚖️ 밸런스 게임 추가</option>
+                <option value="cookie">🥠 휴식 쿠키 문구 추가</option>
+            </select>
+            <div id="balanceInputs">
+                <input type="text" id="balQ" class="btn-sub" style="background:white; border:1px solid #ddd;" placeholder="질문 (예: 주말엔?)">
+                <input type="text" id="balA" class="btn-sub" style="background:white; border:1px solid #ddd;" placeholder="선택지 A">
+                <input type="text" id="balB" class="btn-sub" style="background:white; border:1px solid #ddd;" placeholder="선택지 B">
+            </div>
+            <div id="cookieInputs" class="hidden">
+                <input type="text" id="cookieMsg" class="btn-sub" style="background:white; border:1px solid #ddd;" placeholder="위로 문구 입력">
+            </div>
+            <button onclick="window.savePlayContent()" class="btn-main">저장하기</button>
+            <button onclick="document.getElementById('playAdminModal').style.display='none'" class="btn-sub">닫기</button>
         </div>
     </div>
 
@@ -187,7 +212,7 @@
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // 🔥 파이어베이스 설정값 (수정 완료) 🔥
+        // 🔥 파이어베이스 설정 🔥
         const firebaseConfig = {
             apiKey: "AIzaSyDq2eT8H6tNcsrT8dhZWsEyyMZbpCZIZZQ",
             authDomain: "jahyu-e24cd.firebaseapp.com",
@@ -220,11 +245,15 @@
             { id: 'gocal', name: '고칼', icon: '📚', bg: '#E1F5FE' }
         ];
 
+        // 기본 데이터 (DB 없을 때 Fallback)
         let COOKIE_MSGS = ["잠시 멈춰도 괜찮아요.", "당신의 속도는 틀리지 않았어요.", "오늘도 버티느라 고생했어요.", "쉼은 게으름이 아니에요."];
-        let BALANCE_GAME = { q: "이번 주말, 당신의 선택은?", a: "하루종일 잠자기", b: "맛집 오픈런" };
+        let BALANCE_GAMES = [
+            { q: "이번 주말, 당신의 선택은?", a: "하루종일 잠자기", b: "맛집 오픈런" },
+            { q: "더 힐링되는 순간은?", a: "비 오는 날 빗소리", b: "맑은 날 햇살" }
+        ];
         const MOODS = ['☁️','😊','🥰','😭','😡','🔥','☔','🍀','🍷','🧸','🎧','💸','🥑','🧁','🧘‍♀️','👻','🤧','🧶','🌙','🍰'];
 
-        // --- 전역 함수 연결 (버튼 클릭 보장) ---
+        // --- 전역 유틸리티 ---
         window.showAlert = (msg) => {
             document.getElementById('alertMsg').innerHTML = msg;
             document.getElementById('customAlert').style.display = 'flex';
@@ -278,10 +307,10 @@
                         <div><div class="bento-title">오늘의 무드</div><div class="bento-desc">마음 날씨 기록하기</div></div><div class="bento-icon">🎨</div>
                     </div>
                     <div class="bento-item clickable" onclick="window.renderTab('play')" style="background:#F3E5F5;">
-                        <div><div class="bento-title">플레이</div><div class="bento-desc">복잡한 생각 비우기</div></div><div class="bento-icon">🎡</div>
+                        <div><div class="bento-title">플레이</div><div class="bento-desc">우리 같이 휴식을 즐겨요!</div></div><div class="bento-icon">🎡</div>
                     </div>
                     <div class="bento-item clickable" onclick="window.renderTab('letter')" style="background:#E0F2F1;">
-                        <div><div class="bento-title">레터 읽기</div><div class="bento-desc">메마른 일상 적시기</div></div><div class="bento-icon">💌</div>
+                        <div><div class="bento-title">레터 읽기</div><div class="bento-desc">메마른 일상을 촉촉하게!</div></div><div class="bento-icon">💌</div>
                     </div>
                     <div class="bento-item clickable" onclick="window.renderTab('editor')" style="background:#FFEBEE;">
                         <div><div class="bento-title">에디터 톡</div><div class="bento-desc">이번 주 어땠나요?</div></div><div class="bento-icon">💬</div>
@@ -290,10 +319,15 @@
             `;
         }
 
-        function renderPlay(container) {
+        async function renderPlay(container) {
+            // 주차별 밸런스 게임 자동 로테이션 로직
+            const weekNum = getWeekNumber(new Date());
+            const balanceIndex = weekNum % BALANCE_GAMES.length;
+            const bg = BALANCE_GAMES[balanceIndex];
+
             container.innerHTML = `
                 <div style="padding:0 20px;">
-                    <div class="section-header">복잡한 마음, 가볍게 비워요!</div>
+                    <div class="section-header">우리 같이 휴식을 즐겨요!</div>
                     <div class="card">
                         <div style="font-weight:700; margin-bottom:10px;">🌪 걱정 파쇄기</div>
                         <p style="font-size:13px; color:#666; margin-bottom:10px;">마음 속 걱정을 적고 버튼을 누르면 사라져요.</p>
@@ -304,10 +338,10 @@
                     </div>
                     <div class="card" style="text-align:center;">
                         <div style="font-weight:700; margin-bottom:15px;">⚖️ 힐링 밸런스</div>
-                        <p style="font-size:14px; margin-bottom:15px;">${BALANCE_GAME.q}</p>
+                        <p style="font-size:14px; margin-bottom:15px;">${bg.q}</p>
                         <div style="display:flex; gap:10px;">
-                            <button class="btn-main" onclick="window.showAlert('A 선택! 취향이 확고하시네요 😎')">${BALANCE_GAME.a}</button>
-                            <button class="btn-main" style="background:var(--primary-dark);" onclick="window.showAlert('B 선택! 역시 휴식은 이거죠 👍')">${BALANCE_GAME.b}</button>
+                            <button class="btn-main" onclick="window.showAlert('A 선택! 취향이 확고하시네요 😎')">${bg.a}</button>
+                            <button class="btn-main" style="background:var(--primary-dark);" onclick="window.showAlert('B 선택! 역시 휴식은 이거죠 👍')">${bg.b}</button>
                         </div>
                     </div>
                     <div class="card clickable" onclick="window.openCookie()" style="background:#FFFDE7; border-color:#FFF9C4;">
@@ -317,6 +351,13 @@
                     </div>
                 </div>
             `;
+        }
+
+        function getWeekNumber(d) {
+            d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+            var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
         }
 
         window.shredWorry = () => {
@@ -396,7 +437,7 @@
                             </div>
                         `).join('')}
                     </div>
-                    <div style="margin-top:20px;" class="section-header">이번 주 레터는 어땠나요?</div>
+                    <div style="margin-top:20px;" class="section-header">이번 주 자휴레터는 어땠나요?</div>
                     <div id="editorList" class="card-list"></div>
                 </div>
             `;
@@ -408,7 +449,7 @@
             if (isSuperAdmin) {
                 adminHtml = `<button onclick="window.manageAdmin()" class="btn-sub" style="margin-top:10px; background:#333; color:white;">👑 관리자 권한 관리</button>`;
             } else if (isAdmin) {
-                adminHtml = `<button onclick="window.manageContents()" class="btn-sub" style="margin-top:10px; background:#555; color:white;">⚙️ 플레이 콘텐츠 관리</button>`;
+                adminHtml = `<button onclick="document.getElementById('playAdminModal').style.display='flex'" class="btn-sub" style="margin-top:10px; background:#555; color:white;">⚙️ 플레이 콘텐츠 관리</button>`;
             }
 
             container.innerHTML = `
@@ -420,8 +461,12 @@
                 </div>
                 <div style="padding:0 20px;">
                     <div class="card">
-                        <div style="font-weight:700;">나의 스탬프 🐾</div>
-                        <p style="font-size:12px; color:#666; margin-top:5px;">무드 기록 1회 = 스탬프 1개</p>
+                        <div style="font-weight:700; margin-bottom:10px;">🎁 스탬프 리워드 안내</div>
+                        <div style="font-size:12px; color:#666; line-height:1.6; background:#f9f9f9; padding:10px; border-radius:10px; margin-bottom:15px;">
+                            10개: 🎁 감성 배경화면<br>
+                            20개: 📜 휴식 허가증<br>
+                            30개: 👑 자휴레터 VIP 카드
+                        </div>
                         <div id="stampGrid" class="stamp-grid"></div>
                     </div>
                     <div class="card clickable" onclick="window.open('http://pf.kakao.com/_Jfjxgn/111753149', '_blank')">
@@ -435,16 +480,18 @@
             window.loadStamps();
         }
 
-        // --- 로직 구현 ---
+        // --- Fetch Logic (Fetch) ---
         window.fetchPosts = async (type, elId, limitNum=100) => {
             const list = document.getElementById(elId);
             list.innerHTML = '';
             let q;
+            
             if(type === 'mood') {
                 q = query(collection(db, "posts"), where("type", "==", "mood"), where("authorId", "==", currentUser.uid), orderBy("date", "desc"));
             } else {
                 q = query(collection(db, "posts"), where("type", "==", type), orderBy("date", "desc"));
             }
+
             const snap = await getDocs(q);
             if(snap.empty) { list.innerHTML = `<div style="text-align:center; padding:30px; color:#bbb; font-size:13px;">아직 글이 없어요. 🍃</div>`; return; }
 
@@ -457,9 +504,24 @@
                 if(type === 'mood') {
                     list.innerHTML += `<div class="card" style="display:flex; gap:15px; align-items:center;"><div style="font-size:30px;">${data.emoji}</div><div><div style="font-size:12px; color:#aaa;">${date}</div><div style="font-size:14px; margin-top:2px;">${data.content}</div></div></div>`;
                 } else if(type === 'editor') {
-                    list.innerHTML += `<div class="card"><div style="font-weight:700; margin-bottom:5px;">${data.title}</div><div style="font-size:14px; color:#444; line-height:1.5;">${data.content}</div><div class="empathy-bar"><button class="empathy-btn" onclick="window.clickEmpathy(this)">🔥 공감해요</button><button class="empathy-btn" onclick="window.clickEmpathy(this)">🌿 힐링돼요</button><button class="empathy-btn" onclick="window.clickEmpathy(this)">☕️ 수고했어요</button></div></div>`;
+                    list.innerHTML += `
+                        <div class="card">
+                            <div style="font-weight:700; margin-bottom:5px;">${data.title}</div>
+                            <div style="font-size:14px; color:#444; line-height:1.5;">${data.content}</div>
+                            ${data.url ? `<button onclick="window.open('${data.url}')" class="btn-sub" style="width:auto; padding:8px 15px; font-size:12px; margin-top:10px;">${data.btnText || '보러가기'}</button>` : ''}
+                            <div class="empathy-bar">
+                                <button class="empathy-btn" onclick="window.clickEmpathy(this)">🔥 공감해요</button>
+                                <button class="empathy-btn" onclick="window.clickEmpathy(this)">🌿 힐링돼요</button>
+                                <button class="empathy-btn" onclick="window.clickEmpathy(this)">☕️ 수고했어요</button>
+                            </div>
+                        </div>`;
                 } else {
-                    list.innerHTML += `<div class="card"><div style="font-weight:700;">${data.title}</div><p style="font-size:13px; color:#666; margin:5px 0;">${data.content}</p>${data.url ? `<button onclick="window.open('${data.url}')" class="btn-sub" style="width:auto; padding:8px 15px; font-size:12px;">보러가기</button>` : ''}</div>`;
+                    list.innerHTML += `
+                        <div class="card">
+                            <div style="font-weight:700;">${data.title}</div>
+                            <p style="font-size:13px; color:#666; margin:5px 0;">${data.content}</p>
+                            ${data.url ? `<button onclick="window.open('${data.url}')" class="btn-sub" style="width:auto; padding:8px 15px; font-size:12px;">${data.btnText || '보러가기'}</button>` : ''}
+                        </div>`;
                 }
                 count++;
             });
@@ -478,6 +540,7 @@
             grid.innerHTML = '';
             for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
 
+            // DB에서 이번달 데이터만 가져와서 표시 (하드코딩 제거됨)
             const q = query(collection(db, "posts"), where("type", "==", "mood"), where("authorId", "==", currentUser.uid));
             const snap = await getDocs(q);
             const moods = {};
@@ -521,6 +584,7 @@
 
         window.saveImage = (targetId, fileName) => {
             const el = document.getElementById(targetId);
+            const originalPos = el.style.position;
             if(targetId === 'vipCardArea') { el.style.position = 'fixed'; el.style.top = '50%'; el.style.left = '50%'; el.style.transform = 'translate(-50%, -50%)'; el.style.zIndex = '9999'; }
             html2canvas(el, { scale: 2, backgroundColor: null }).then(canvas => {
                 const link = document.createElement("a");
@@ -531,7 +595,7 @@
             });
         };
 
-        // --- 버튼 클릭 함수들 (window 객체에 할당) ---
+        // --- 글쓰기/로그인 ---
         window.openWriteModal = () => {
             document.getElementById('writeModal').style.display = 'flex';
             document.getElementById('moodForm').classList.add('hidden');
@@ -565,11 +629,46 @@
                 await setDoc(userRef, { stamps: (userSnap.data()?.stamps || 0) + 1 }, { merge: true });
                 window.showAlert("기록이 저장되었습니다 ☁️");
             } else {
-                await addDoc(collection(db, "posts"), { type: document.getElementById('postType').value, title: document.getElementById('postTitle').value, content: document.getElementById('postContent').value, url: document.getElementById('postUrl').value, date: now.toISOString(), authorId: currentUser.uid });
+                await addDoc(collection(db, "posts"), { 
+                    type: document.getElementById('postType').value, 
+                    title: document.getElementById('postTitle').value, 
+                    content: document.getElementById('postContent').value, 
+                    url: document.getElementById('postUrl').value, 
+                    btnText: document.getElementById('btnText').value,
+                    date: now.toISOString(), authorId: currentUser.uid 
+                });
                 window.showAlert("게시글 등록 완료!");
             }
             window.closeModal(); window.renderTab(currentTab);
         };
+
+        window.savePlayContent = async () => {
+            const type = document.getElementById('playType').value;
+            if(type === 'balance') {
+                const q = document.getElementById('balQ').value;
+                const a = document.getElementById('balA').value;
+                const b = document.getElementById('balB').value;
+                if(!q || !a || !b) return window.showAlert("모두 입력해주세요.");
+                BALANCE_GAMES.push({q, a, b}); // 임시 (실제론 DB저장 필요)
+            } else {
+                const msg = document.getElementById('cookieMsg').value;
+                if(!msg) return;
+                COOKIE_MSGS.push(msg);
+            }
+            window.showAlert("저장되었습니다! (새로고침 시 초기화됨/DB연동 필요)");
+            document.getElementById('playAdminModal').style.display='none';
+        };
+
+        // 플레이 관리 모달 토글 (select 변경 시)
+        document.getElementById('playType').addEventListener('change', (e) => {
+            if(e.target.value === 'balance') {
+                document.getElementById('balanceInputs').classList.remove('hidden');
+                document.getElementById('cookieInputs').classList.add('hidden');
+            } else {
+                document.getElementById('balanceInputs').classList.add('hidden');
+                document.getElementById('cookieInputs').classList.remove('hidden');
+            }
+        });
 
         window.doLogin = async () => {
             try { await signInWithEmailAndPassword(auth, document.getElementById('authEmail').value, document.getElementById('authPw').value); }
@@ -596,22 +695,17 @@
             document.getElementById('signupBtn').innerText = isHidden ? "취소" : "회원가입";
         };
 
-        // 비밀번호 재설정 함수 추가
         window.resetPw = async () => {
             const email = prompt("가입한 이메일을 입력해주세요:");
             if(email) {
-                try {
-                    await sendPasswordResetEmail(auth, email);
-                    window.showAlert("비밀번호 재설정 이메일을 보냈습니다.<br>메일함을 확인해주세요.");
-                } catch(e) {
-                    window.showAlert("가입되지 않은 이메일이거나<br>형식이 올바르지 않습니다.");
-                }
+                try { await sendPasswordResetEmail(auth, email); window.showAlert("재설정 메일을 보냈습니다."); }
+                catch(e) { window.showAlert("가입되지 않은 이메일입니다."); }
             }
         };
 
         window.handleLogout = async () => { await signOut(auth); window.location.reload(); };
-        window.manageAdmin = async () => { const email = prompt("관리자 권한을 부여할 이메일:"); if(email) window.showAlert("처리되었습니다."); };
-        window.manageContents = () => { const type = prompt("추가할 콘텐츠 (1:휴식쿠키, 2:밸런스게임)"); if(type) window.showAlert("추가되었습니다."); };
+
+        window.manageAdmin = async () => { const email = prompt("관리자 권한을 부여할 이메일:"); if(email) window.showAlert("처리되었습니다. (DB 반영 필요)"); };
 
         onAuthStateChanged(auth, (user) => {
             if(user) {
