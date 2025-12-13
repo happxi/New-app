@@ -98,9 +98,11 @@
         .fab.show { display: flex; }
         .empathy-bar { display: flex; gap: 8px; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
         .empathy-btn { flex: 1; padding: 8px; border-radius: 12px; background: #fafafa; border: 1px solid #eee; font-size: 11px; color: #666; }
-        
-        /* 텍스트 입력 팝업용 */
         .input-popup { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 10px; outline: none; }
+        
+        /* 관리 리스트 스타일 */
+        .admin-list-item { background:white; padding:10px; margin-bottom:5px; border-radius:10px; border:1px solid #eee; display:flex; justify-content:space-between; align-items:center; text-align:left; font-size:13px; }
+        .admin-delete-btn { color:#ff6b6b; font-weight:bold; cursor:pointer; font-size:18px; }
     </style>
 </head>
 <body>
@@ -114,7 +116,7 @@
         </div>
     </div>
 
-    <!-- 🔑 입력 팝업 (비밀번호 변경 등) -->
+    <!-- 🔑 입력 팝업 -->
     <div id="inputModal" class="modal-overlay" style="z-index: 2900;">
         <div class="popup-box">
             <h3 id="inputTitle" style="margin-bottom:15px; color:var(--primary);">입력해주세요</h3>
@@ -170,16 +172,16 @@
 
             <div id="adminForm" class="hidden">
                 <select id="postType" class="btn-sub" style="background:white;">
-                    <option value="editor">☕️ 에디터톡 (코멘트)</option>
+                    <option value="editor">☕️ 에디터톡</option>
                     <option value="letter">💌 레터 아카이브</option>
-                    <option value="notice">📢 공지사항 (마이페이지)</option>
+                    <option value="notice">📢 공지사항</option>
                 </select>
-                <input type="text" id="postTitle" class="btn-sub" style="background:white; text-align:left;" placeholder="제목 (에디터톡은 에디터 이름)">
+                <input type="text" id="postTitle" class="btn-sub" style="background:white; text-align:left;" placeholder="제목 (에디터톡은 에디터 닉네임 입력)">
                 <textarea id="postContent" class="btn-sub" style="background:white; height:100px; text-align:left; resize:none;" placeholder="내용을 입력하세요"></textarea>
                 <div style="background:#f9f9f9; padding:10px; border-radius:10px; margin-top:10px; border:1px solid #eee;">
                     <div style="font-size:12px; color:#888; margin-bottom:5px;">🔗 연결 링크 (선택)</div>
                     <input type="text" id="postUrl" class="btn-sub" style="background:white; text-align:left; margin-top:0;" placeholder="https://...">
-                    <input type="text" id="btnText" class="btn-sub" style="background:white; text-align:left;" placeholder="버튼 이름 (예: 레터 보러가기)">
+                    <input type="text" id="btnText" class="btn-sub" style="background:white; text-align:left;" placeholder="버튼 이름 (예: 보러가기)">
                 </div>
             </div>
 
@@ -188,20 +190,44 @@
         </div>
     </div>
 
-    <!-- 슈퍼 관리자 대시보드 모달 -->
+    <!-- 관리자 대시보드 (통합) -->
     <div id="adminDashboardModal" class="modal-overlay">
-        <div class="popup-box" style="text-align:left;">
+        <div class="popup-box" style="text-align:left; max-height:80vh; overflow-y:auto;">
             <h3 style="text-align:center;">👑 관리자 대시보드</h3>
             
-            <div style="margin-bottom:20px;">
+            <div id="superAdminSection" class="hidden" style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
                 <h4 style="margin-bottom:5px;">관리자 권한 관리</h4>
-                <button onclick="window.adminAction('add')" class="btn-main" style="padding:10px; font-size:13px;">➕ 관리자 추가</button>
-                <button onclick="window.adminAction('remove')" class="btn-sub" style="padding:10px; font-size:13px; color:#FF6B6B;">➖ 관리자 삭제</button>
+                <div style="display:flex; gap:5px;">
+                    <input type="email" id="adminEmailInput" class="btn-sub" style="background:white; flex:1;" placeholder="이메일 입력">
+                    <button onclick="window.addAdmin()" class="btn-main" style="width:auto; margin-top:5px;">추가</button>
+                </div>
+                <div style="font-size:11px; color:#888; margin-top:5px;">* 삭제는 아래 리스트에서 X 클릭</div>
             </div>
 
             <div style="margin-bottom:20px;">
-                <h4 style="margin-bottom:5px;">플레이 콘텐츠 관리</h4>
-                <button onclick="window.managePlayContent()" class="btn-sub">⚙️ 밸런스/쿠키 설정</button>
+                <h4 style="margin-bottom:10px;">휴식밸런스 / 휴식쿠키 문구 변경</h4>
+                <select id="manageContentType" class="btn-sub" style="background:white; margin-bottom:10px;" onchange="window.loadContentList()">
+                    <option value="balance">⚖️ 휴식 밸런스</option>
+                    <option value="cookie">🥠 휴식 쿠키</option>
+                </select>
+                
+                <!-- 입력폼 -->
+                <div id="balanceInputArea">
+                    <input type="text" id="mBalQ" class="btn-sub" style="background:white;" placeholder="질문 (예: 주말엔?)">
+                    <div style="display:flex; gap:5px;">
+                        <input type="text" id="mBalA" class="btn-sub" style="background:white;" placeholder="선택 A">
+                        <input type="text" id="mBalB" class="btn-sub" style="background:white;" placeholder="선택 B">
+                    </div>
+                </div>
+                <div id="cookieInputArea" class="hidden">
+                    <input type="text" id="mCookieMsg" class="btn-sub" style="background:white;" placeholder="위로 문구 입력">
+                </div>
+                <button onclick="window.addContentItem()" class="btn-main" style="padding:10px; margin-bottom:15px;">리스트에 추가</button>
+
+                <!-- 리스트 영역 -->
+                <div id="contentListArea" style="max-height:150px; overflow-y:auto; background:#f9f9f9; padding:10px; border-radius:10px;">
+                    <!-- JS로 로드됨 -->
+                </div>
             </div>
 
             <button onclick="document.getElementById('adminDashboardModal').style.display='none'" class="btn-sub">닫기</button>
@@ -210,9 +236,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail, updatePassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+        // Firebase Config (기존 유지)
         const firebaseConfig = {
             apiKey: "AIzaSyDq2eT8H6tNcsrT8dhZWsEyyMZbpCZIZZQ",
             authDomain: "jahyu-e24cd.firebaseapp.com",
@@ -236,10 +263,10 @@
         let currentEditorFilter = null;
 
         // 관리자 목록 (햅씨 포함)
-        const ADMIN_EMAILS = ['hyeran5382@naver.com', 'happci@test.com', 'gocal@test.com', 'yudan@test.com', 'sunny@test.com', 'elly@test.com'];
+        let ADMIN_EMAILS = ['hyeran5382@naver.com', 'happci@test.com', 'gocal@test.com', 'yudan@test.com', 'sunny@test.com', 'elly@test.com'];
         const SUPER_ADMIN = 'hyeran5382@naver.com';
 
-        // 에디터 순서 및 아이콘 변경
+        // 에디터 순서 및 아이콘 (변경됨)
         const EDITORS = [
             { id: 'happci', name: '햅씨', icon: '✏️', bg: '#FFEBEE' },
             { id: 'gocal', name: '고칼', icon: '📚', bg: '#E1F5FE' },
@@ -248,6 +275,7 @@
             { id: 'sunny', name: '써니', icon: '🍪', bg: '#FFFDE7' }
         ];
 
+        // 플레이 콘텐츠 기본 데이터
         let COOKIE_MSGS = ["잠시 멈춰도 괜찮아요.", "당신의 속도는 틀리지 않았어요.", "오늘도 버티느라 고생했어요.", "쉼은 게으름이 아니에요."];
         let BALANCE_GAMES = [
             { q: "이번 주말, 당신의 선택은?", a: "하루종일 잠자기", b: "맛집 오픈런" },
@@ -262,19 +290,6 @@
             document.getElementById('customAlert').style.display = 'flex';
         };
         window.closeAlert = () => document.getElementById('customAlert').style.display = 'none';
-
-        window.showInputPopup = (title, callback) => {
-            document.getElementById('inputTitle').innerText = title;
-            document.getElementById('popupInput').value = '';
-            document.getElementById('inputModal').style.display = 'flex';
-            document.getElementById('inputConfirmBtn').onclick = () => {
-                const val = document.getElementById('popupInput').value;
-                if(val) {
-                    document.getElementById('inputModal').style.display = 'none';
-                    callback(val);
-                }
-            };
-        };
 
         window.closeModal = () => {
             document.getElementById('writeModal').style.display = 'none';
@@ -374,15 +389,14 @@
         }
 
         function renderEditor(container) {
-            let filterHtml = currentEditorFilter ? `<div style="text-align:center; margin-bottom:10px; font-size:14px; color:var(--primary);">Filter: ${currentEditorFilter} <i class="fas fa-times clickable" onclick="window.renderTab('editor')"></i></div>` : '';
+            let filterHtml = currentEditorFilter ? `<div style="text-align:center; margin-bottom:10px; font-size:14px; color:var(--primary);">에디터 ${currentEditorFilter}입니다! <i class="fas fa-times clickable" onclick="window.renderTab('editor')"></i></div>` : '';
             container.innerHTML = `
                 <div style="padding:0 20px;">
                     <div class="section-header">에디터 프로필</div>
                     <div class="editor-scroll">
                         ${EDITORS.map(e => `<div class="clickable" onclick="window.renderTab('editor', '${e.name}')"><div class="editor-circle ${currentEditorFilter === e.name ? 'active' : ''}" style="background:${e.bg}">${e.icon}</div><div class="editor-name">${e.name}</div></div>`).join('')}
                     </div>
-                    <div style="margin-top:20px;" class="section-header">${currentEditorFilter ? currentEditorFilter + '님의 글 모음' : '이번 주 레터는 어땠나요?'}</div>
-                    ${filterHtml}
+                    <div style="margin-top:20px;" class="section-header">${filterHtml || '이번 레터는 어땠나요?'}</div>
                     <div id="editorList" class="card-list"></div>
                 </div>`;
             window.fetchPosts('editor', 'editorList');
@@ -397,8 +411,8 @@
             container.innerHTML = `
                 <div style="text-align:center; padding:30px 20px;">
                     <div style="width:70px; height:70px; background:#eee; border-radius:50%; margin:0 auto 10px; font-size:30px; display:flex; align-items:center; justify-content:center;">🙂</div>
-                    <h3 style="margin-bottom:5px;">${currentUser.displayName}님${isAdmin ? ' <span class="badge-editor">에디터</span>' : ''}</h3>
-                    <p style="font-size:13px; color:#888;">${currentUser.displayName}님만의 휴식 기록장</p>
+                    <h3 style="margin-bottom:5px;">${currentUser.displayName}님</h3>
+                    <p style="font-size:13px; color:#888;">${currentUser.displayName}님만의 힐링로그</p>
                     ${adminHtml}
                 </div>
                 <div style="padding:0 20px;">
@@ -407,9 +421,9 @@
                         <div style="font-size:12px; color:#666; line-height:1.6; background:#f9f9f9; padding:15px; border-radius:10px; margin-bottom:15px;">
                             <b>[리워드 받는 법]</b><br>
                             목표 달성 시 뜨는 <b>'비밀코드'</b>를 자휴레터 카톡 채널에 입력하세요.<br><br>
-                            🎁 10개: 에디터가 찍은 감성 배경화면 세트<br>
-                            📜 20개: 나만의 휴식 허가증 & 힐링빙고<br>
-                            👑 30개: 자휴레터 VIP 모바일 카드 (우와!)
+                            🎁 10개: 에디터가 직접 찍은 감성 배경화면 세트!<br>
+                            📜 20개: 나만을 위한 휴식 허가증 & 힐링빙고 세트!<br>
+                            👑 30개: 자휴레터 VIP 모바일 카드(우와)!
                         </div>
                         <div id="stampGrid" class="stamp-grid"></div>
                         <button onclick="window.open('https://pf.kakao.com/_Jfjxgn', '_blank')" class="btn-main">🎁 스탬프 인증하고 선물 받기</button>
@@ -417,7 +431,7 @@
                     <div class="card clickable" onclick="window.renderTab('notice')">
                         <div style="display:flex; justify-content:space-between; color:#333;"><span>📢 공지사항</span><i class="fas fa-chevron-right"></i></div>
                     </div>
-                    <div class="card clickable" onclick="window.changePassword()">
+                    <div class="card clickable" onclick="window.resetPw()">
                         <div style="display:flex; justify-content:space-between; color:#555;"><span>🔒 비밀번호 변경</span><i class="fas fa-chevron-right"></i></div>
                     </div>
                     <div class="card clickable" onclick="window.handleLogout()">
@@ -439,7 +453,7 @@
 
         function renderPlay(container) {
             const weekNum = Math.ceil((((new Date() - new Date(new Date().getFullYear(),0,1)) / 86400000) + 1)/7);
-            const bg = BALANCE_GAMES[weekNum % BALANCE_GAMES.length];
+            const bg = BALANCE_GAMES[weekNum % BALANCE_GAMES.length] || BALANCE_GAMES[0];
             container.innerHTML = `
                 <div style="padding:0 20px;">
                     <div class="section-header">우리 같이 휴식을 즐겨요!</div>
@@ -463,10 +477,12 @@
             const list = document.getElementById(elId);
             list.innerHTML = '';
             let q;
+            
+            // type 매칭 수정 (editor, letter, notice)
             if(type === 'mood') {
                 q = query(collection(db, "posts"), where("type", "==", "mood"), where("authorId", "==", currentUser.uid), orderBy("date", "desc"));
             } else if(type === 'editor' && currentEditorFilter) {
-                // 에디터 이름 필터링 (제목에 에디터 이름이 포함된 경우)
+                // 에디터 닉네임 필터링 (제목=에디터명)
                 q = query(collection(db, "posts"), where("type", "==", "editor"), where("title", "==", currentEditorFilter), orderBy("date", "desc"));
             } else {
                 q = query(collection(db, "posts"), where("type", "==", type), orderBy("date", "desc"));
@@ -510,7 +526,7 @@
             grid.innerHTML = '';
             for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
 
-            // 13일 네잎클로버 코드 삭제됨 - 오직 DB 데이터만 로드
+            // DB에서만 로드
             const q = query(collection(db, "posts"), where("type", "==", "mood"), where("authorId", "==", currentUser.uid));
             const snap = await getDocs(q);
             const moods = {};
@@ -524,88 +540,109 @@
             }
         };
 
-        window.loadStamps = async () => {
-            const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-            const count = userSnap.data()?.stamps || 0;
-            const grid = document.getElementById('stampGrid');
-            grid.innerHTML = '';
-            for(let i=1; i<=30; i++) {
-                let giftHtml = ''; let onClick = '';
-                if(i===10) { giftHtml='<div class="gift-box">🎁</div>'; if(count>=10) onClick=`onclick="window.showAlert('10개 달성 축하해요! 🎉<br>비밀코드: <b>[구름한점]</b>')"` }
-                if(i===20) { giftHtml='<div class="gift-box">📜</div>'; if(count>=20) onClick=`onclick="window.showAlert('20개 달성! 👍<br>비밀코드: <b>[달빛산책]</b>')"` }
-                if(i===30) { giftHtml='<div class="gift-box">👑</div>'; if(count>=30) onClick=`onclick="window.showAlert('30개 달성! VIP 👑<br>비밀코드: <b>[온전한쉼]</b>')"` }
-                grid.innerHTML += `<div class="stamp-slot ${i<=count?'active':''} clickable" ${onClick}>${i}${giftHtml}</div>`;
-            }
-        };
-
         window.submitPost = async () => {
             const now = new Date();
+            const dateStr = now.toISOString().split('T')[0];
+            
             if(currentTab === 'mood') {
                 if(!selectedEmoji) return window.showAlert("기분을 선택해주세요!");
-                const docId = `${now.toISOString().split('T')[0]}_${currentUser.uid}`;
-                await setDoc(doc(db, "posts", docId), { type: 'mood', emoji: selectedEmoji, content: document.getElementById('moodContent').value, date: now.toISOString(), authorId: currentUser.uid });
-                // 스탬프 +1
+                const docId = `${dateStr}_${currentUser.uid}`;
+                const docRef = doc(db, "posts", docId);
+                const docSnap = await getDoc(docRef);
+                if(docSnap.exists()) return window.showAlert("오늘의 기록은 이미 완료되었어요! 🌙");
+                
+                await setDoc(docRef, { type: 'mood', emoji: selectedEmoji, content: document.getElementById('moodContent').value, date: now.toISOString(), authorId: currentUser.uid });
                 const userRef = doc(db, "users", currentUser.uid);
                 const userSnap = await getDoc(userRef);
                 await setDoc(userRef, { stamps: (userSnap.data()?.stamps || 0) + 1 }, { merge: true });
                 window.showAlert("기록이 저장되었습니다 ☁️");
+                window.closeModal(); 
+                window.renderTab(currentTab);
             } else {
-                // 관리자 글쓰기 (카테고리 수정됨)
+                // 관리자 글쓰기
                 await addDoc(collection(db, "posts"), { 
-                    type: document.getElementById('postType').value, // editor, letter, notice
+                    type: document.getElementById('postType').value, 
                     title: document.getElementById('postTitle').value, 
                     content: document.getElementById('postContent').value, 
                     url: document.getElementById('postUrl').value, 
                     btnText: document.getElementById('btnText').value,
-                    date: now.toISOString(), authorId: currentUser.uid 
+                    date: now.toISOString(), authorId: currentUser.uid, authorEmail: currentUser.email 
                 });
                 window.showAlert("게시글 등록 완료!");
-            }
-            window.closeModal(); window.renderTab(currentTab, currentEditorFilter);
-        };
-
-        // 관리자 대시보드
-        window.openAdminDashboard = () => { document.getElementById('adminDashboardModal').style.display='flex'; };
-        window.adminAction = (action) => {
-            if(!isSuperAdmin) return window.showAlert("슈퍼 관리자만 가능합니다.");
-            window.showInputPopup("이메일을 입력하세요", (email) => {
-                window.showAlert(`${email} 계정을 ${action === 'add' ? '관리자로 추가' : '권한 삭제'}했습니다.<br>(DB 반영 필요)`);
-            });
-        };
-        window.managePlayContent = () => { window.showAlert("플레이 콘텐츠 문구를<br>수정할 수 있습니다."); };
-
-        window.changePassword = () => {
-            window.showInputPopup("가입한 이메일을 입력하세요", (email) => {
-                sendPasswordResetEmail(auth, email).then(() => window.showAlert("비밀번호 재설정 메일을<br>보냈습니다! 💌")).catch(() => window.showAlert("이메일을 확인해주세요."));
-            });
-        };
-
-        // ... 기타 함수 (로그인, 셔터, 쿠키 등 기존 동일) ...
-        window.openWriteModal = () => {
-            document.getElementById('writeModal').style.display = 'flex';
-            document.getElementById('moodForm').classList.add('hidden');
-            document.getElementById('adminForm').classList.add('hidden');
-            if(currentTab === 'mood') {
-                document.getElementById('moodForm').classList.remove('hidden');
-                document.getElementById('emojiList').innerHTML = MOODS.map(m => `<div class="clickable" style="font-size:24px; text-align:center;" onclick="window.selectEmoji('${m}', this)">${m}</div>`).join('');
-            } else if(isAdmin) {
-                document.getElementById('adminForm').classList.remove('hidden');
+                window.closeModal(); 
+                // 글 작성 후 해당 탭으로 이동해서 리프레시
+                const t = document.getElementById('postType').value;
+                if(t === 'notice') window.renderTab('notice'); // 공지는 공지탭으로
+                else window.renderTab(t === 'letter' ? 'letter' : 'editor', null);
             }
         };
-        window.selectEmoji = (m, el) => { selectedEmoji = m; document.querySelectorAll('#emojiList div').forEach(d => d.style.background = 'none'); el.style.background = 'var(--primary-light)'; el.style.borderRadius = '50%'; };
+
+        // 관리자 대시보드 로직
+        window.openAdminDashboard = () => { 
+            document.getElementById('adminDashboardModal').style.display='flex'; 
+            if(isSuperAdmin) document.getElementById('superAdminSection').classList.remove('hidden');
+            window.loadContentList();
+        };
+
+        // 플레이 콘텐츠 관리 (DB연동 Sim)
+        window.loadContentList = async () => {
+            const type = document.getElementById('manageContentType').value;
+            document.getElementById('balanceInputArea').classList.toggle('hidden', type !== 'balance');
+            document.getElementById('cookieInputArea').classList.toggle('hidden', type !== 'cookie');
+            
+            const listArea = document.getElementById('contentListArea');
+            listArea.innerHTML = '';
+            
+            // 실제로는 'contents' 컬렉션에서 가져와야 함 (여기선 배열 변수 사용)
+            const targetArr = type === 'balance' ? BALANCE_GAMES : COOKIE_MSGS;
+            targetArr.forEach((item, idx) => {
+                const text = type === 'balance' ? item.q : item;
+                listArea.innerHTML += `<div class="admin-list-item"><span>${text}</span><span class="admin-delete-btn" onclick="window.delContent('${type}', ${idx})">×</span></div>`;
+            });
+        };
+
+        window.addContentItem = () => {
+            const type = document.getElementById('manageContentType').value;
+            if(type === 'balance') {
+                const q = document.getElementById('mBalQ').value;
+                const a = document.getElementById('mBalA').value;
+                const b = document.getElementById('mBalB').value;
+                if(q && a && b) BALANCE_GAMES.push({q,a,b});
+            } else {
+                const msg = document.getElementById('mCookieMsg').value;
+                if(msg) COOKIE_MSGS.push(msg);
+            }
+            window.loadContentList();
+        };
+
+        window.delContent = (type, idx) => {
+            if(type === 'balance') BALANCE_GAMES.splice(idx, 1);
+            else COOKIE_MSGS.splice(idx, 1);
+            window.loadContentList();
+        };
+
+        // 로그인 등 기존 함수들...
+        window.clickEmpathy = (btn) => { btn.style.color = 'var(--primary)'; btn.style.fontWeight = '700'; btn.innerHTML += ' +1'; };
+        window.loadStamps = async () => { const userSnap = await getDoc(doc(db, "users", currentUser.uid)); const count = userSnap.data()?.stamps || 0; const grid = document.getElementById('stampGrid'); grid.innerHTML = ''; for(let i=1; i<=30; i++) { let giftHtml = ''; let onClick = ''; if(i===10) { giftHtml='<div class="gift-box">🎁</div>'; if(count>=10) onClick=`onclick="window.showAlert('10개 달성 축하해요! 🎉<br>비밀코드: <b>[구름한점]</b>')"` } if(i===20) { giftHtml='<div class="gift-box">📜</div>'; if(count>=20) onClick=`onclick="window.showAlert('20개 달성! 👍<br>비밀코드: <b>[달빛산책]</b>')"` } if(i===30) { giftHtml='<div class="gift-box">👑</div>'; if(count>=30) onClick=`onclick="window.showAlert('30개 달성! VIP 👑<br>비밀코드: <b>[온전한쉼]</b>')"` } grid.innerHTML += `<div class="stamp-slot ${i<=count?'active':''} clickable" ${onClick}>${i}${giftHtml}</div>`; } };
         window.shredWorry = () => { const box = document.getElementById('shredderBox'); box.classList.add('shredder-act'); setTimeout(() => { window.showAlert("걱정이 말끔히 사라졌어요! ✨"); box.classList.remove('shredder-act'); document.getElementById('worryInput').value=''; }, 1000); };
-        window.openCookie = () => { window.showAlert(`💌 오늘의 메시지<br><br>"${COOKIE_MSGS[Math.floor(Math.random()*COOKIE_MSGS.length)]}"`, "힘이 나요!"); };
+        window.openCookie = () => { 
+            // 1일 1회 체크 (localStorage)
+            const today = new Date().toDateString();
+            if(localStorage.getItem('cookieDate') === today) return window.showAlert("쿠키는 하루에 한 번만<br>열 수 있어요! 🥠");
+            localStorage.setItem('cookieDate', today);
+            window.showAlert(`💌 오늘의 메시지<br><br>"${COOKIE_MSGS[Math.floor(Math.random()*COOKIE_MSGS.length)]}"`, "힘이 나요!"); 
+        };
         window.doLogin = async () => { try { await signInWithEmailAndPassword(auth, document.getElementById('authEmail').value, document.getElementById('authPw').value); } catch(e) { window.showAlert("로그인 정보를 확인해주세요."); } };
         window.doSignup = async () => { try { const cred = await createUserWithEmailAndPassword(auth, document.getElementById('authEmail').value, document.getElementById('authPw').value); await updateProfile(cred.user, { displayName: document.getElementById('authNick').value }); await setDoc(doc(db, "users", cred.user.uid), { stamps: 0 }); window.showAlert("환영합니다!"); } catch(e) { window.showAlert("가입 오류: " + e.message); } };
         window.toggleSignup = () => { const f = document.getElementById('signupFields'); f.classList.toggle('hidden'); document.getElementById('loginBtn').innerText = f.classList.contains('hidden') ? "로그인" : "가입 완료"; };
-        window.resetPw = () => window.changePassword(); // 로그인창 비번찾기도 동일 로직
+        window.resetPw = () => window.showInputPopup("이메일을 입력하세요", (email) => { sendPasswordResetEmail(auth, email).then(()=>window.showAlert("전송되었습니다!")).catch(()=>window.showAlert("오류가 발생했습니다.")); });
         window.handleLogout = async () => { await signOut(auth); window.location.reload(); };
 
         onAuthStateChanged(auth, (user) => {
             if(user) {
                 currentUser = user;
-                // 관리자 이메일 체크 (소문자로 변환하여 비교 추천)
-                isAdmin = ADMIN_EMAILS.includes(user.email.toLowerCase());
+                // 관리자 체크 (대소문자 무시)
+                isAdmin = ADMIN_EMAILS.some(e => e.toLowerCase() === user.email.toLowerCase());
                 isSuperAdmin = (user.email.toLowerCase() === SUPER_ADMIN);
                 document.getElementById('authModal').style.display = 'none';
                 window.renderTab('home');
