@@ -377,7 +377,7 @@
                     <div class="bento-item clickable" onclick="window.renderTab('mood')" style="background:#FFF8E1;"><div><div class="bento-title">오늘의 무드</div><div class="bento-desc">마음 날씨 기록하기</div></div><div class="bento-icon">🎨</div></div>
                     <div class="bento-item clickable" onclick="window.renderTab('play')" style="background:#F3E5F5;"><div><div class="bento-title">플레이</div><div class="bento-desc">같이 휴식을 즐겨요!</div></div><div class="bento-icon">🎡</div></div>
                     <div class="bento-item clickable" onclick="window.renderTab('letter')" style="background:#E0F2F1;"><div><div class="bento-title">레터 읽기</div><div class="bento-desc">메마른 일상을 촉촉하게!</div></div><div class="bento-icon">💌</div></div>
-                    <div class="bento-item clickable" onclick="window.renderTab('editor')" style="background:#FFEBEE;"><div><div class="bento-title">답장을 기다려요!</div><div class="bento-desc">이번 레터는 어땠나요?</div></div><div class="bento-icon">💬</div></div>
+                    <div class="bento-item clickable" onclick="window.open('http://pf.kakao.com/_Jfjxgn', '_blank')" style="background:#FFEBEE;"><div><div class="bento-title">답장을 기다려요!</div><div class="bento-desc">이번 레터는 어땠나요?</div></div><div class="bento-icon">💬</div></div>
                     <div class="bento-item bento-full clickable" onclick="window.open('http://pf.kakao.com/_Jfjxgn/111753149', '_blank')" style="background:#E8F5E9;">
                         <div style="display:flex; justify-content:space-between; align-items:center;"><div><div class="bento-title" style="color:#333;">에디터 PICK! 문장수집</div><div class="bento-desc" style="color:#666;">응원을 꾹꾹 눌러담았어요!</div></div><div style="font-size:24px;">🔖</div></div>
                     </div>
@@ -615,7 +615,7 @@
                 try {
                     const docSnap = await getDoc(docRef);
                     if(docSnap.exists()) {
-                        return window.showAlert("오늘의 기록은 이미 완료되었어요! 🌙");
+                        return window.showAlert("오늘은 작성완료! 내일 다시 찾아주세요❤️");
                     }
                 } catch(e) {
                     console.error(e);
@@ -645,7 +645,7 @@
                 
                 try {
                     const docSnap = await getDoc(docRef);
-                    if(docSnap.exists()) return window.showAlert("오늘의 기록은 이미 완료되었어요! 🌙");
+                    if(docSnap.exists()) return window.showAlert("오늘은 작성완료! 내일 다시 찾아주세요❤️");
                     
                     await setDoc(docRef, { type: 'mood', emoji: selectedEmoji, content: document.getElementById('moodContent').value, date: now.toISOString(), authorId: currentUser.uid });
                     const userRef = doc(db, "users", currentUser.uid);
