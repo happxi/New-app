@@ -22,14 +22,14 @@
             --border: #EAEAEA; 
             --pink-popup: #FFF0F5;
             --badge-editor: #9D76C1;
-            --badge-new: #FF8A80;
+            --badge-new: #FF6B6B; 
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
         body { background: var(--bg-body); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
         
         /* 레이아웃 */
-        .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg-body); padding-bottom: 100px; padding-top: 60px; position: relative; }
+        .app-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--bg-body); padding-bottom: 140px; padding-top: 60px; position: relative; }
         .clickable { cursor: pointer; transition: transform 0.1s, opacity 0.1s; }
         .clickable:active { transform: scale(0.96); opacity: 0.8; }
 
@@ -40,7 +40,7 @@
 
         /* 글쓰기 버튼 */
         .fab { 
-            position: fixed; bottom: 100px; right: 20px; width: 55px; height: 55px; 
+            position: fixed; bottom: 110px; right: 20px; width: 55px; height: 55px; 
             background: #333; border-radius: 50%; color: white; 
             display: none; align-items: center; justify-content: center; 
             font-size: 22px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
@@ -60,7 +60,7 @@
         .bento-icon { font-size: 32px; align-self: flex-end; margin-top: 10px; }
 
         /* 카드 & 버튼 */
-        .card { background: var(--white); border-radius: 18px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid var(--border); margin-bottom: 15px; }
+        .card { background: var(--white); border-radius: 18px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); border: 1px solid var(--border); margin-bottom: 15px; position: relative; }
         .section-header { font-size: 18px; font-weight: 700; margin-bottom: 15px; padding: 0 20px; color: #444; }
         .pill-container { display: flex; gap: 8px; margin: 15px 0; justify-content: center; }
         .pill-btn { flex: 1; padding: 12px 5px; border-radius: 50px; border: 1px solid var(--primary-light); background: white; color: var(--primary); font-size: 12px; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 4px; }
@@ -110,10 +110,62 @@
         .badge-editor { background: var(--badge-editor); color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; margin-left: 5px; vertical-align: middle; font-weight: 400; }
         .badge-notice { background: #FF8A80; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-right: 5px; }
         
+        /* N 뱃지 */
+        .badge-new { 
+            background: var(--badge-new); 
+            color: white; 
+            font-size: 10px; 
+            padding: 2px 5px; 
+            border-radius: 50%; 
+            margin-left: 4px; 
+            font-weight: 800;
+            vertical-align: top;
+            display: inline-block;
+            line-height: 1.2;
+        }
+
         .admin-list-item { background:white; padding:10px; margin-bottom:5px; border-radius:10px; border:1px solid #eee; display:flex; justify-content:space-between; align-items:center; text-align:left; font-size:13px; }
         .input-popup { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 10px; outline: none; }
-        .empathy-bar { display: flex; gap: 8px; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
-        .empathy-btn { flex: 1; padding: 8px; border-radius: 12px; background: #fafafa; border: 1px solid #eee; font-size: 11px; color: #666; }
+        
+        /* 공감 버튼 */
+        .empathy-bar { display: flex; gap: 10px; margin-top: 15px; border-top: 1px solid #eee; padding-top: 12px; }
+        .empathy-btn { 
+            flex: 1; 
+            padding: 8px 0; 
+            border-radius: 20px; 
+            background: #fff; 
+            border: 1px solid #eee; 
+            font-size: 14px; 
+            color: #333; 
+            font-weight: 600; 
+            transition: 0.2s; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .empathy-btn:active { transform: scale(0.95); background: #f9f9f9; }
+        .post-date { font-size: 11px; color: #aaa; margin-bottom: 8px; display: block; }
+
+        /* 수정/삭제 버튼 스타일 */
+        .post-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #eee;
+        }
+        .action-btn {
+            font-size: 11px;
+            color: #999;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+        }
+        .action-btn:hover { color: var(--primary); }
     </style>
 </head>
 <body>
@@ -147,7 +199,7 @@
 
     <nav class="bottom-nav">
         <div class="nav-item clickable" onclick="window.renderTab('home')"><i class="fas fa-home"></i>홈</div>
-        <div class="nav-item clickable" onclick="window.renderTab('letter')"><i class="fas fa-envelope-open-text"></i>레터</div>
+        <div class="nav-item clickable" onclick="window.open('https://maily.so/happci', '_blank')"><i class="fas fa-envelope-open-text"></i>레터</div>
         <div class="nav-item clickable" onclick="window.renderTab('mood')"><i class="fas fa-calendar-check"></i>무드</div>
         <div class="nav-item clickable" onclick="window.renderTab('editor')"><i class="fas fa-comment-dots"></i>자휴메이트</div>
         <div class="nav-item clickable" onclick="window.renderTab('mypage')"><i class="fas fa-user"></i>마이</div>
@@ -181,10 +233,11 @@
         </div>
     </div>
 
-    <!-- 글쓰기 모달 -->
+    <!-- 글쓰기/수정 모달 -->
     <div id="writeModal" class="modal-overlay">
         <div class="popup-box" style="text-align:left; max-width:400px; width:90%;">
             <h3 id="modalTitle" style="text-align:center; color:#555; margin-bottom:20px;">기록하기</h3>
+            <input type="hidden" id="editPostId"> <!-- 수정할 글 ID 저장용 -->
             
             <div id="moodForm" class="hidden">
                 <div id="emojiList" style="display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:15px;"></div>
@@ -206,7 +259,7 @@
                 </div>
             </div>
 
-            <button onclick="window.submitPost()" class="btn-main">등록하기</button>
+            <button onclick="window.submitPost()" class="btn-main" id="submitBtn">등록하기</button>
             <button onclick="window.closeModal()" class="btn-sub">닫기</button>
         </div>
     </div>
@@ -260,7 +313,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy, deleteDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDq2eT8H6tNcsrT8dhZWsEyyMZbpCZIZZQ",
@@ -285,6 +338,7 @@
         let currentEditorFilter = null;
         let currentLetterFilter = 'all';
         let currentMoodDate = new Date(); // 캘린더 날짜 상태
+        let postCache = {}; // 수정 시 데이터 로드를 위한 캐시
 
         // 관리자 목록
         let ADMIN_EMAILS = ['hyeran5382@naver.com', 'happci@test.com', 'gocal@test.com', 'yudan@test.com', 'sunny@test.com', 'elly@test.com'];
@@ -544,7 +598,12 @@
 
                 // 데이터를 배열로 변환 후 정렬 및 필터링
                 let posts = [];
-                snap.forEach(d => posts.push(d.data()));
+                snap.forEach(d => {
+                    let p = d.data();
+                    p.id = d.id; // 문서 ID 저장 (좋아요/수정/삭제 기능용)
+                    postCache[p.id] = p; // 캐시에 저장
+                    posts.push(p);
+                });
 
                 // 에디터 이름 필터링 (JS 처리)
                 if(type === 'editor' && currentEditorFilter) {
@@ -558,27 +617,80 @@
                 posts.forEach(data => {
                     if(count >= limitNum) return;
                     
-                    const date = new Date(data.date).toLocaleDateString();
-                    const isNew = (new Date() - new Date(data.date)) / (1000 * 60 * 60 * 24) < 7;
+                    const dateObj = new Date(data.date);
+                    const dateStr = `${dateObj.getFullYear()}.${dateObj.getMonth()+1}.${dateObj.getDate()}`;
+                    const isNew = (new Date() - dateObj) / (1000 * 60 * 60 * 24) < 7;
                     const newBadge = isNew ? '<span class="badge-new">N</span>' : '';
                     const noticeBadge = data.type === 'notice' ? '<span class="badge-notice">공지</span> ' : '';
 
+                    // 수정/삭제 버튼 (작성자 본인 또는 관리자만)
+                    let actionBtns = '';
+                    if (currentUser && (currentUser.uid === data.authorId || isSuperAdmin)) {
+                        actionBtns = `
+                            <div class="post-actions">
+                                <button class="action-btn" onclick="window.openEditModal('${data.id}')">수정</button>
+                                <button class="action-btn" onclick="window.deletePost('${data.id}')">삭제</button>
+                            </div>`;
+                    }
+
                     if(type === 'mood') {
-                        list.innerHTML += `<div class="card" style="display:flex; gap:15px; align-items:center;"><div style="font-size:30px;">${data.emoji}</div><div><div style="font-size:12px; color:#aaa;">${date}</div><div style="font-size:14px; margin-top:2px;">${data.content}</div></div></div>`;
-                    } else {
                         list.innerHTML += `
                             <div class="card">
-                                <div style="font-weight:700; margin-bottom:5px;">${noticeBadge}${data.title} ${newBadge}</div>
+                                <div style="display:flex; gap:15px; align-items:center;">
+                                    <div style="font-size:30px;">${data.emoji}</div>
+                                    <div>
+                                        <div style="font-size:12px; color:#aaa;">${dateStr}</div>
+                                        <div style="font-size:14px; margin-top:2px;">${data.content}</div>
+                                    </div>
+                                </div>
+                                ${actionBtns}
+                            </div>`;
+                    } else {
+                        // 반응형 버튼 (좋아요)
+                        const reactions = data.reactions || { heart: 0, thumb: 0, laugh: 0 };
+                        
+                        list.innerHTML += `
+                            <div class="card">
+                                <div style="font-weight:700; margin-bottom:5px; display:flex; align-items:center;">
+                                    ${noticeBadge}${data.title} ${newBadge}
+                                </div>
+                                <span class="post-date">${dateStr}</span>
                                 <div style="font-size:14px; color:#444; line-height:1.5;">${data.content}</div>
                                 ${data.url ? `<button onclick="window.open('${data.url}')" class="btn-sub" style="width:auto; padding:8px 15px; font-size:12px; margin-top:10px;">${data.btnText || '보러가기'}</button>` : ''}
-                                ${type === 'editor' ? `<div class="empathy-bar"><button class="empathy-btn">🔥 공감</button><button class="empathy-btn">🌿 힐링</button><button class="empathy-btn">☕️ 수고</button></div>` : ''}
+                                ${type === 'editor' ? `
+                                    <div class="empathy-bar">
+                                        <button class="empathy-btn" onclick="window.updateReaction('${data.id}', 'heart', this)">❤️ <span>${reactions.heart || 0}</span></button>
+                                        <button class="empathy-btn" onclick="window.updateReaction('${data.id}', 'thumb', this)">👍 <span>${reactions.thumb || 0}</span></button>
+                                        <button class="empathy-btn" onclick="window.updateReaction('${data.id}', 'laugh', this)">😂 <span>${reactions.laugh || 0}</span></button>
+                                    </div>` : ''}
+                                ${actionBtns}
                             </div>`;
                     }
                     count++;
                 });
             } catch (e) {
                 console.error("Fetch Error:", e);
-                // 에러 문구 제거 요청 반영 (콘솔에만 출력)
+            }
+        };
+
+        // 반응(좋아요) 업데이트 함수
+        window.updateReaction = async (postId, type, btn) => {
+            if(!currentUser) return window.showAlert("로그인이 필요합니다.");
+            
+            // UI 즉시 업데이트 (낙관적 업데이트)
+            const span = btn.querySelector('span');
+            let currentCount = parseInt(span.innerText);
+            span.innerText = currentCount + 1;
+
+            try {
+                const postRef = doc(db, "posts", postId);
+                await updateDoc(postRef, {
+                    [`reactions.${type}`]: increment(1)
+                });
+            } catch(e) {
+                console.error("Reaction Error:", e);
+                span.innerText = currentCount; // 실패시 롤백
+                window.showAlert("오류가 발생했습니다.");
             }
         };
 
@@ -615,8 +727,19 @@
             window.showAlert(content, "닫기");
         };
 
-        // 글쓰기 모달 열기 (중복 체크 추가)
+        // 글쓰기 모달 열기 (신규 작성)
         window.openWriteModal = async () => {
+            // 초기화
+            document.getElementById('editPostId').value = ''; 
+            document.getElementById('modalTitle').innerText = '기록하기';
+            document.getElementById('submitBtn').innerText = '등록하기';
+            document.getElementById('moodContent').value = '';
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+            document.getElementById('postUrl').value = '';
+            document.getElementById('btnText').value = '';
+            selectedEmoji = null;
+
             if(currentTab === 'mood') {
                 const now = new Date();
                 const dateStr = now.toISOString().split('T')[0];
@@ -628,9 +751,7 @@
                     if(docSnap.exists()) {
                         return window.showAlert("오늘은 작성완료! 내일 다시 찾아주세요❤️");
                     }
-                } catch(e) {
-                    console.error(e);
-                }
+                } catch(e) { console.error(e); }
 
                 document.getElementById('moodForm').classList.remove('hidden');
                 document.getElementById('adminForm').classList.add('hidden');
@@ -639,30 +760,82 @@
                 document.getElementById('moodForm').classList.add('hidden');
                 document.getElementById('adminForm').classList.remove('hidden');
             } else {
-                return; // 관리자가 아니고 무드탭도 아니면 아무것도 안함
+                return; 
             }
             document.getElementById('writeModal').style.display = 'flex';
         };
 
+        // 수정 모달 열기
+        window.openEditModal = (postId) => {
+            const data = postCache[postId];
+            if(!data) return window.showAlert("데이터를 불러올 수 없습니다.");
+
+            document.getElementById('editPostId').value = postId;
+            document.getElementById('modalTitle').innerText = '수정하기';
+            document.getElementById('submitBtn').innerText = '수정완료';
+
+            if(data.type === 'mood') {
+                document.getElementById('moodForm').classList.remove('hidden');
+                document.getElementById('adminForm').classList.add('hidden');
+                document.getElementById('moodContent').value = data.content;
+                selectedEmoji = data.emoji;
+                document.getElementById('emojiList').innerHTML = MOODS.map(m => {
+                    const activeStyle = m === data.emoji ? 'background:var(--primary-light); border-radius:50%;' : '';
+                    return `<div class="clickable" style="font-size:24px; text-align:center; ${activeStyle}" onclick="window.selectEmoji('${m}', this)">${m}</div>`
+                }).join('');
+            } else {
+                document.getElementById('moodForm').classList.add('hidden');
+                document.getElementById('adminForm').classList.remove('hidden');
+                document.getElementById('postType').value = data.type;
+                document.getElementById('postTitle').value = data.title;
+                document.getElementById('postContent').value = data.content;
+                document.getElementById('postUrl').value = data.url || '';
+                document.getElementById('btnText').value = data.btnText || '';
+            }
+            document.getElementById('writeModal').style.display = 'flex';
+        };
+
+        // 글 삭제
+        window.deletePost = async (postId) => {
+            if(confirm("정말 삭제하시겠습니까?")) {
+                try {
+                    await deleteDoc(doc(db, "posts", postId));
+                    window.showAlert("삭제되었습니다.");
+                    window.renderTab(currentTab); // 즉시 반영
+                } catch(e) {
+                    window.showAlert("삭제 실패: " + e.message);
+                }
+            }
+        };
+
+        // 글 등록/수정
         window.submitPost = async () => {
             if (!currentUser) return window.showAlert("로그인이 필요합니다.");
+            
+            const editId = document.getElementById('editPostId').value;
             const now = new Date();
             const dateStr = now.toISOString().split('T')[0];
             
-            if(currentTab === 'mood') {
+            // 무드 작성/수정
+            if(currentTab === 'mood' || (editId && postCache[editId].type === 'mood')) {
                 if(!selectedEmoji) return window.showAlert("기분을 선택해주세요!");
-                const docId = `${dateStr}_${currentUser.uid}`;
-                const docRef = doc(db, "posts", docId);
                 
+                const content = document.getElementById('moodContent').value;
+                const postData = { type: 'mood', emoji: selectedEmoji, content: content, date: now.toISOString(), authorId: currentUser.uid };
+
                 try {
-                    const docSnap = await getDoc(docRef);
-                    if(docSnap.exists()) return window.showAlert("오늘은 작성완료! 내일 다시 찾아주세요❤️");
-                    
-                    await setDoc(docRef, { type: 'mood', emoji: selectedEmoji, content: document.getElementById('moodContent').value, date: now.toISOString(), authorId: currentUser.uid });
-                    const userRef = doc(db, "users", currentUser.uid);
-                    const userSnap = await getDoc(userRef);
-                    await setDoc(userRef, { stamps: (userSnap.data()?.stamps || 0) + 1 }, { merge: true });
-                    window.showAlert("기록이 저장되었습니다 ☁️");
+                    if(editId) {
+                        // 수정
+                        await updateDoc(doc(db, "posts", editId), { emoji: selectedEmoji, content: content });
+                        window.showAlert("수정되었습니다.");
+                    } else {
+                        // 신규
+                        const docId = `${dateStr}_${currentUser.uid}`;
+                        await setDoc(doc(db, "posts", docId), postData);
+                        const userRef = doc(db, "users", currentUser.uid);
+                        await setDoc(userRef, { stamps: increment(1) }, { merge: true });
+                        window.showAlert("기록이 저장되었습니다 ☁️");
+                    }
                     window.closeModal(); 
                     window.renderTab(currentTab);
                 } catch (e) {
@@ -670,18 +843,27 @@
                     window.showAlert("저장 실패: " + e.message);
                 }
             } else {
+                // 관리자 글 작성/수정
+                const postData = { 
+                    type: document.getElementById('postType').value, 
+                    title: document.getElementById('postTitle').value, 
+                    content: document.getElementById('postContent').value, 
+                    url: document.getElementById('postUrl').value, 
+                    btnText: document.getElementById('btnText').value,
+                    date: now.toISOString(), authorId: currentUser.uid, authorEmail: currentUser.email 
+                };
+
                 try {
-                    await addDoc(collection(db, "posts"), { 
-                        type: document.getElementById('postType').value, 
-                        title: document.getElementById('postTitle').value, 
-                        content: document.getElementById('postContent').value, 
-                        url: document.getElementById('postUrl').value, 
-                        btnText: document.getElementById('btnText').value,
-                        date: now.toISOString(), authorId: currentUser.uid, authorEmail: currentUser.email 
-                    });
-                    window.showAlert("게시글 등록 완료!");
+                    if(editId) {
+                        await updateDoc(doc(db, "posts", editId), postData);
+                        window.showAlert("수정되었습니다.");
+                    } else {
+                        await addDoc(collection(db, "posts"), postData);
+                        window.showAlert("게시글 등록 완료!");
+                    }
                     window.closeModal();
                     
+                    // 탭 리프레시
                     const t = document.getElementById('postType').value;
                     if(t === 'notice') window.renderTab('letter');
                     else if(t === 'letter') window.renderTab('letter');
