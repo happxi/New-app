@@ -13,7 +13,7 @@
     <style>
         :root {
             --primary: #9D76C1; 
-            --primary-dark: #7B52A9; /* 밸런스게임 B버튼용 */
+            --primary-dark: #7B52A9;
             --primary-light: #F3E5F5;
             --bg-body: #FFFEF5;
             --white: #ffffff;
@@ -38,13 +38,13 @@
         .logo { font-family: 'Dancing Script', cursive; font-size: 26px; color: var(--primary); font-weight: 700; cursor: pointer; }
         .home-btn { position: absolute; right: 20px; font-size: 20px; color: #888; cursor: pointer; }
 
-        /* 글쓰기 버튼 (최상단 배치) */
+        /* 글쓰기 버튼 */
         .fab { 
             position: fixed; bottom: 100px; right: 20px; width: 55px; height: 55px; 
             background: #333; border-radius: 50%; color: white; 
             display: none; align-items: center; justify-content: center; 
             font-size: 22px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); 
-            z-index: 10000; /* 무조건 맨 위 */
+            z-index: 10000; 
             cursor: pointer;
         }
         .fab.show { display: flex !important; }
@@ -473,9 +473,7 @@
                         <div id="stampGrid" class="stamp-grid"></div>
                         <div style="background:#f9f9f9; padding:15px; border-radius:12px; font-size:12px; color:#666; line-height:1.6; margin-bottom:15px;">
                             <b>💡 스탬프 혜택 안내</b><br>
-                            10개: 감성가득 배경화면 (비밀코드: <b>[구름한점]</b>)<br>
-                            20개: 휴식 허가증 & 힐링빙고 (비밀코드: <b>[달빛산책]</b>)<br>
-                            30개: 자휴레터 VIP 모바일 카드 (비밀코드: <b>[온전한쉼]</b>)<br>
+                            스탬프를 모으면 도착하는 비밀코드를 자휴레터 카톡채널에 입력해주세요! 바로 선물이 도착할 거예요🎁<br>
                             * 스탬프를 클릭하면 비밀코드를 다시 볼 수 있어요!
                         </div>
                         <button onclick="window.open('https://pf.kakao.com/_Jfjxgn', '_blank')" class="btn-main">🎁 스탬프 인증하고 선물 받기</button>
@@ -521,19 +519,20 @@
             list.innerHTML = '';
             let q;
             
+            // 오류 원인 제거: orderBy를 쿼리에서 제거하고 JS에서 정렬 (인덱스 에러 방지)
             if(type === 'mood') {
-                q = query(collection(db, "posts"), where("type", "==", "mood"), where("authorId", "==", currentUser.uid), orderBy("date", "desc"));
+                q = query(collection(db, "posts"), where("type", "==", "mood"), where("authorId", "==", currentUser.uid));
             } 
             else if(type === 'editor') {
-                if(currentEditorFilter) q = query(collection(db, "posts"), where("type", "==", "editor"), where("title", "==", currentEditorFilter), orderBy("date", "desc"));
-                else q = query(collection(db, "posts"), where("type", "==", "editor"), orderBy("date", "desc"));
+                // 에디터 필터링도 JS에서 처리하여 복합 인덱스 문제 해결
+                q = query(collection(db, "posts"), where("type", "==", "editor"));
             } 
             else if(type === 'letter') {
-                if(currentLetterFilter === 'notice') q = query(collection(db, "posts"), where("type", "==", "notice"), orderBy("date", "desc"));
-                else q = query(collection(db, "posts"), where("type", "in", ["letter", "notice"]), orderBy("date", "desc"));
+                if(currentLetterFilter === 'notice') q = query(collection(db, "posts"), where("type", "==", "notice"));
+                else q = query(collection(db, "posts"), where("type", "in", ["letter", "notice"]));
             } 
             else {
-                q = query(collection(db, "posts"), where("type", "==", type), orderBy("date", "desc"));
+                q = query(collection(db, "posts"), where("type", "==", type));
             }
 
             try {
@@ -543,10 +542,22 @@
                     list.innerHTML = `<div style="text-align:center; padding:30px; color:#bbb; font-size:13px;">아직 글이 없어요. 🍃</div>`; return; 
                 }
 
+                // 데이터를 배열로 변환 후 정렬 및 필터링
+                let posts = [];
+                snap.forEach(d => posts.push(d.data()));
+
+                // 에디터 이름 필터링 (JS 처리)
+                if(type === 'editor' && currentEditorFilter) {
+                    posts = posts.filter(p => p.title === currentEditorFilter);
+                }
+
+                // 날짜 내림차순 정렬 (JS 처리)
+                posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
                 let count = 0;
-                snap.forEach(d => {
+                posts.forEach(data => {
                     if(count >= limitNum) return;
-                    const data = d.data();
+                    
                     const date = new Date(data.date).toLocaleDateString();
                     const isNew = (new Date() - new Date(data.date)) / (1000 * 60 * 60 * 24) < 7;
                     const newBadge = isNew ? '<span class="badge-new">N</span>' : '';
@@ -567,7 +578,7 @@
                 });
             } catch (e) {
                 console.error("Fetch Error:", e);
-                list.innerHTML = `<div style="text-align:center; padding:20px;">로딩 중 오류가 발생했습니다.</div>`;
+                // 에러 문구 제거 요청 반영 (콘솔에만 출력)
             }
         };
 
